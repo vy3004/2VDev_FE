@@ -22,6 +22,7 @@ const userEndpoints = {
   login: "/login",
   register: "/register",
   logout: "/logout",
+  refreshToken: "/refresh-token",
   getMe: "/me",
   passwordUpdate: "/update-password",
 };
@@ -79,6 +80,21 @@ const userService = {
       return { response };
     } catch (error) {
       return { error: error as AxiosError };
+    }
+  },
+  refreshToken: async () => {
+    try {
+      const refresh_token = localStorage.getItem("refresh_token");
+
+      const response = await axiosInstance.post(userEndpoints.refreshToken, {
+        refresh_token,
+      });
+      localStorage.setItem("access_token", response.data.result.access_token);
+      localStorage.setItem("refresh_token", response.data.result.refresh_token);
+
+      return { response };
+    } catch (error) {
+      return { error };
     }
   },
   getInfo: async () => {

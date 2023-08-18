@@ -13,21 +13,51 @@ import authService from "../../services/user-service";
 import { selectUser, setUser } from "../../redux/features/user-slice";
 import { Typography } from "@material-tailwind/react";
 import { CheckBadgeIcon } from "@heroicons/react/24/solid";
+import jwtDecode from "jwt-decode";
 
 const MainLayout = () => {
   const { user } = useSelector(selectUser);
 
   const dispatch = useDispatch();
 
+  const accessToken = localStorage.getItem("access_token") || "";
+
   useEffect(() => {
     const authUser = async () => {
-      const { response } = await authService.getInfo();
+      if (accessToken) {
+        try {
+          const decodedToken: any = jwtDecode(accessToken);
+          const currentTime = Math.floor(Date.now() / 1000);
+          const tokenTimeout = 15; // 15 minutes in seconds
 
-      if (response) dispatch(setUser(response.data.result));
+          if (decodedToken.exp - currentTime < tokenTimeout) {
+            const { response } = await authService.refreshToken();
+
+            localStorage.setItem(
+              "access_token",
+              response?.data.result.access_token
+            );
+          } else {
+            const { response } = await authService.getInfo();
+            if (response) dispatch(setUser(response.data.result));
+          }
+        } catch (error) {
+          // Error occurred while decoding or refreshing token
+          console.error("Token check failed:", error);
+        }
+      } else {
+        // Handle case when token is missing or invalid
+        console.log("Token is missing or invalid");
+      }
     };
+    const tokenCheckInterval = setInterval(() => {
+      authUser();
+    }, 89000); // Check token every 14 minutes and 50 seconds
 
-    authUser();
-  }, [dispatch]);
+    return () => {
+      clearInterval(tokenCheckInterval); // Clear the interval when the component unmounts
+    };
+  }, [dispatch, accessToken]);
 
   return (
     <>
