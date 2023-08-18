@@ -1,4 +1,4 @@
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { Typography, IconButton, Button } from "@material-tailwind/react";
 import {
   BellIcon,
@@ -15,9 +15,10 @@ import {
   setAuthModalName,
   setAuthModalOpen,
 } from "../redux/features/auth-modal-slice";
+import { selectUser } from "../redux/features/user-slice";
 
 const Header = () => {
-  const auth = false;
+  const { user } = useSelector(selectUser);
 
   const dispatch = useDispatch();
 
@@ -55,7 +56,7 @@ const Header = () => {
             </div>
 
             {/* Auth start */}
-            {auth ? (
+            {user ? (
               <div className="flex items-center space-x-2">
                 <IconButton variant="text" className="hidden xl:flex">
                   <ChatBubbleBottomCenterTextIcon className="h-5 w-5" />

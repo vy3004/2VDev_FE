@@ -1,5 +1,7 @@
 import { useState } from "react";
 import { useFormik } from "formik";
+import { useDispatch } from "react-redux";
+import { toast } from "react-hot-toast";
 import * as Yup from "yup";
 
 import {
@@ -13,10 +15,14 @@ import {
   CardBody,
   Typography,
   Input,
+  Spinner,
 } from "@material-tailwind/react";
 
+import userService from "../../services/user-service";
+import { setAuthModalOpen } from "../../redux/features/auth-modal-slice";
 interface SignInFormProps {
   switchAuthState: () => void;
+  authUser: () => void;
 }
 
 interface SignInFormValues {
@@ -24,10 +30,15 @@ interface SignInFormValues {
   password: string;
 }
 
-const SignInForm: React.FC<SignInFormProps> = ({ switchAuthState }) => {
-  const [showPassword, setShowPassword] = useState(false);
+const SignInForm: React.FC<SignInFormProps> = ({
+  switchAuthState,
+  authUser,
+}) => {
+  const dispatch = useDispatch();
 
-  const handleClickShowPassword = () => setShowPassword((show) => !show);
+  const [isLoginRequest, setIsLoginRequest] = useState(false);
+  const [errorMessage, setErrorMessage] = useState("");
+  const [showPassword, setShowPassword] = useState(false);
 
   const signInForm = useFormik<SignInFormValues>({
     initialValues: {
@@ -47,7 +58,20 @@ const SignInForm: React.FC<SignInFormProps> = ({ switchAuthState }) => {
         .required("Password is required"),
     }),
     onSubmit: async (values: SignInFormValues) => {
-      console.log("CHECK===", values);
+      setErrorMessage("");
+      setIsLoginRequest(true);
+
+      const { response, error } = await userService.login(values);
+      setIsLoginRequest(false);
+
+      if (response) {
+        authUser();
+        signInForm.resetForm();
+        dispatch(setAuthModalOpen(false));
+        toast.success("Sign In Success");
+      }
+
+      if (error) setErrorMessage(error.message);
     },
   });
 
@@ -88,6 +112,19 @@ const SignInForm: React.FC<SignInFormProps> = ({ switchAuthState }) => {
           </div>
           {/* Form header end */}
 
+          {/* Form error message start */}
+          {errorMessage && (
+            <Typography
+              className="p-2 mb-8 border border-red-500 rounded-full bg-red-100 flex items-center gap-1 font-normal"
+              color="red"
+              variant="small"
+            >
+              <InformationCircleIcon className="h-4 w-4" />
+              {errorMessage}
+            </Typography>
+          )}
+          {/* Form error message end */}
+
           {/* Form body start */}
           <form onSubmit={signInForm.handleSubmit} className="w-full space-y-4">
             {/* Email input start */}
@@ -99,6 +136,10 @@ const SignInForm: React.FC<SignInFormProps> = ({ switchAuthState }) => {
               crossOrigin=""
               value={signInForm.values.email}
               onChange={signInForm.handleChange}
+              error={
+                signInForm.touched.email &&
+                signInForm.errors.email !== undefined
+              }
             />
             {signInForm.touched.email && signInForm.errors.email && (
               <Typography
@@ -119,7 +160,7 @@ const SignInForm: React.FC<SignInFormProps> = ({ switchAuthState }) => {
               type={showPassword ? "text" : "password"}
               size="lg"
               icon={
-                <button onClick={handleClickShowPassword}>
+                <button onClick={() => setShowPassword((show) => !show)}>
                   {showPassword ? (
                     <EyeIcon className="h-4 w-4" />
                   ) : (
@@ -130,6 +171,10 @@ const SignInForm: React.FC<SignInFormProps> = ({ switchAuthState }) => {
               crossOrigin=""
               value={signInForm.values.password}
               onChange={signInForm.handleChange}
+              error={
+                signInForm.touched.password &&
+                signInForm.errors.password !== undefined
+              }
             />
             {signInForm.touched.password && signInForm.errors.password && (
               <Typography
@@ -159,8 +204,13 @@ const SignInForm: React.FC<SignInFormProps> = ({ switchAuthState }) => {
               className="mt-10"
               variant="gradient"
               fullWidth
+              disabled={isLoginRequest}
             >
-              Sign In
+              {isLoginRequest ? (
+                <Spinner className="h-4 w-4 m-auto" />
+              ) : (
+                "Sign In"
+              )}
             </Button>
           </form>
           {/* Form body end */}
