@@ -3,11 +3,13 @@ import { configureStore } from "@reduxjs/toolkit";
 
 import authModalSlice from "./features/auth-modal-slice";
 import userSlice from "./features/user-slice";
+import appStateSlice from "./features/app-state-slice";
 
 const store = configureStore({
   reducer: {
     authModal: authModalSlice,
     user: userSlice,
+    appState: appStateSlice,
   },
   middleware: (getDefaultMiddleware) =>
     getDefaultMiddleware().concat(thunkMiddleware),

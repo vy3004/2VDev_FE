@@ -1,4 +1,6 @@
 import { useState } from "react";
+import { useSelector } from "react-redux";
+
 import {
   Card,
   Typography,
@@ -15,7 +17,6 @@ import {
   PresentationChartBarIcon,
   UserCircleIcon,
   Cog6ToothIcon,
-  PowerIcon,
   BookOpenIcon,
   HomeIcon,
   NewspaperIcon,
@@ -23,29 +24,32 @@ import {
   IdentificationIcon,
   ChatBubbleBottomCenterTextIcon,
   BellIcon,
+  UserGroupIcon,
 } from "@heroicons/react/24/solid";
 import { ChevronRightIcon, ChevronDownIcon } from "@heroicons/react/24/outline";
 
+import { selectUser } from "../redux/features/user-slice";
+
 const Sidebar = () => {
+  const { user } = useSelector(selectUser);
+
   const [open, setOpen] = useState(0);
 
   const handleOpen = (value: number) => {
     setOpen(open === value ? 0 : value);
   };
 
-  const isAdmin = true;
-
   return (
-    <Card className="shadow-none">
+    <Card className="shadow-none h-full overflow-hidden hover:overflow-y-scroll">
       <List className="min-w-full my-4">
-        <ListItem>
+        <ListItem onClick={() => {}}>
           <ListItemPrefix>
             <HomeIcon className="h-5 w-5" />
           </ListItemPrefix>
           Home
         </ListItem>
         {/* Admin dashboard start */}
-        {isAdmin && (
+        {user?.role === 1 && (
           <Accordion
             open={open === 1}
             icon={
@@ -82,13 +86,13 @@ const Sidebar = () => {
                   <ListItemPrefix>
                     <ChevronRightIcon strokeWidth={3} className="h-3 w-5" />
                   </ListItemPrefix>
-                  Users
+                  Manage users
                 </ListItem>
                 <ListItem>
                   <ListItemPrefix>
                     <ChevronRightIcon strokeWidth={3} className="h-3 w-5" />
                   </ListItemPrefix>
-                  Posts
+                  Manage posts
                 </ListItem>
               </List>
             </AccordionBody>
@@ -151,6 +155,7 @@ const Sidebar = () => {
           </AccordionBody>
         </Accordion>
         {/* Questions end */}
+
         <ListItem>
           <ListItemPrefix>
             <NewspaperIcon className="h-5 w-5" />
@@ -169,56 +174,63 @@ const Sidebar = () => {
           </ListItemPrefix>
           Communities
         </ListItem>
+        <ListItem>
+          <ListItemPrefix>
+            <UserGroupIcon className="h-5 w-5" />
+          </ListItemPrefix>
+          Users
+        </ListItem>
 
-        <hr className="my-2 border-blue-gray-50" />
-        <ListItem>
-          <ListItemPrefix>
-            <ChatBubbleBottomCenterTextIcon className="h-5 w-5" />
-          </ListItemPrefix>
-          Message
-          <ListItemSuffix>
-            <Chip
-              value="14"
-              size="sm"
-              variant="ghost"
-              color="blue-gray"
-              className="rounded-full"
-            />
-          </ListItemSuffix>
-        </ListItem>
-        <ListItem>
-          <ListItemPrefix>
-            <BellIcon className="h-5 w-5" />
-          </ListItemPrefix>
-          Notification
-          <ListItemSuffix>
-            <Chip
-              value="7"
-              size="sm"
-              variant="ghost"
-              color="blue-gray"
-              className="rounded-full"
-            />
-          </ListItemSuffix>
-        </ListItem>
-        <ListItem>
-          <ListItemPrefix>
-            <UserCircleIcon className="h-5 w-5" />
-          </ListItemPrefix>
-          Profile
-        </ListItem>
-        <ListItem>
-          <ListItemPrefix>
-            <Cog6ToothIcon className="h-5 w-5" />
-          </ListItemPrefix>
-          Settings
-        </ListItem>
-        <ListItem>
-          <ListItemPrefix>
-            <PowerIcon className="h-5 w-5" />
-          </ListItemPrefix>
-          Log Out
-        </ListItem>
+        {/* User items start */}
+        {user && (
+          <>
+            <hr className="my-2 border-blue-gray-50" />
+
+            <ListItem>
+              <ListItemPrefix>
+                <ChatBubbleBottomCenterTextIcon className="h-5 w-5" />
+              </ListItemPrefix>
+              Message
+              <ListItemSuffix>
+                <Chip
+                  value="14"
+                  size="sm"
+                  variant="ghost"
+                  color="blue-gray"
+                  className="rounded-full"
+                />
+              </ListItemSuffix>
+            </ListItem>
+            <ListItem>
+              <ListItemPrefix>
+                <BellIcon className="h-5 w-5" />
+              </ListItemPrefix>
+              Notification
+              <ListItemSuffix>
+                <Chip
+                  value="7"
+                  size="sm"
+                  variant="ghost"
+                  color="blue-gray"
+                  className="rounded-full"
+                />
+              </ListItemSuffix>
+            </ListItem>
+            <ListItem>
+              <ListItemPrefix>
+                <UserCircleIcon className="h-5 w-5" />
+              </ListItemPrefix>
+              Profile
+            </ListItem>
+            <ListItem>
+              <ListItemPrefix>
+                <Cog6ToothIcon className="h-5 w-5" />
+              </ListItemPrefix>
+              Settings
+            </ListItem>
+          </>
+        )}
+        {/* User items start */}
       </List>
     </Card>
   );

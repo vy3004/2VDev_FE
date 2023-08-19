@@ -111,10 +111,9 @@ const SignUpForm: React.FC<SignUpFormProps> = ({
               Have an Account?
               <Typography
                 as="a"
-                href="#signUp"
                 variant="small"
                 color="blue"
-                className="font-bold"
+                className="font-bold cursor-pointer"
                 onClick={() => switchAuthState()}
               >
                 Sign in

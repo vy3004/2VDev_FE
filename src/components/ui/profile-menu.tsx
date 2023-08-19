@@ -1,4 +1,6 @@
 import React, { useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { toast } from "react-hot-toast";
 
 import {
   ChevronDownIcon,
@@ -15,19 +17,16 @@ import {
   MenuList,
   Typography,
 } from "@material-tailwind/react";
-import { useDispatch, useSelector } from "react-redux";
-import { selectUser, setUser } from "../../redux/features/user-slice";
+
 import authService from "../../services/user-service";
+import { selectUser, setUser } from "../../redux/features/user-slice";
+
 import { getLastTwoWords } from "../../utils/string-utils";
 
 interface profileMenuItem {
   label: string;
   icon: any;
   onClick: () => void;
-}
-
-interface MenuItems {
-  items: Array<profileMenuItem>;
 }
 
 const ProfileMenu = () => {
@@ -43,28 +42,27 @@ const ProfileMenu = () => {
     const { response } = await authService.logout();
     if (response) {
       dispatch(setUser(null));
+      toast.success("Sign Out Success");
     }
   };
 
-  const profileMenuItems: MenuItems = {
-    items: [
-      {
-        label: "My Profile",
-        icon: UserCircleIcon,
-        onClick() {},
-      },
-      {
-        label: "Setting",
-        icon: Cog6ToothIcon,
-        onClick() {},
-      },
-      {
-        label: "Sign Out",
-        icon: PowerIcon,
-        onClick: handleLogout,
-      },
-    ],
-  };
+  const profileMenuItems: profileMenuItem[] = [
+    {
+      label: "My Profile",
+      icon: UserCircleIcon,
+      onClick() {},
+    },
+    {
+      label: "Setting",
+      icon: Cog6ToothIcon,
+      onClick() {},
+    },
+    {
+      label: "Sign Out",
+      icon: PowerIcon,
+      onClick: handleLogout,
+    },
+  ];
 
   return (
     <Menu open={isMenuOpen} handler={setIsMenuOpen} placement="bottom-end">
@@ -102,8 +100,8 @@ const ProfileMenu = () => {
         </Button>
       </MenuHandler>
       <MenuList className="p-1" onClick={closeMenu}>
-        {profileMenuItems.items.map(({ label, icon, onClick }, key) => {
-          const isLastItem = key === profileMenuItems.items.length - 1;
+        {profileMenuItems.map(({ label, icon, onClick }, key) => {
+          const isLastItem = key === profileMenuItems.length - 1;
           return (
             <MenuItem
               key={label}
