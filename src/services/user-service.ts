@@ -26,6 +26,7 @@ const userEndpoints = {
   refreshToken: "/refresh-token",
   getMe: "/me",
   verifyEmail: "/verify-email",
+  resendVerifyEmail: "/resend-verify-email",
   passwordUpdate: "/update-password",
 };
 
@@ -120,6 +121,17 @@ const userService = {
       return { response };
     } catch (error) {
       return { error: error as AxiosError };
+    }
+  },
+  resendVerifyEmail: async () => {
+    try {
+      const response = await axiosInstance.post(
+        userEndpoints.resendVerifyEmail
+      );
+
+      return { response };
+    } catch (error) {
+      return { error };
     }
   },
 };

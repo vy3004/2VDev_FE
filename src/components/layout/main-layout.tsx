@@ -12,12 +12,10 @@ import Container from "../ui/container";
 import GlobalLoading from "../ui/global-loading";
 import AuthModal from "../modals/auth-modal";
 
-import { Typography } from "@material-tailwind/react";
-import { CheckBadgeIcon } from "@heroicons/react/24/solid";
-
 import authService from "../../services/user-service";
 import { selectUser, setUser } from "../../redux/features/user-slice";
 import { setIsLoading } from "../../redux/features/global-loading";
+import VerifyMailAlert from "../ui/verify-mail-alert";
 
 const MainLayout = () => {
   const { user } = useSelector(selectUser);
@@ -120,25 +118,14 @@ const MainLayout = () => {
 
           {/* Main content */}
           <div className="col-span-10 md:col-span-7 xl:col-span-6 border-x">
-            <GlobalLoading children={<Outlet />} />
-
-            {user && !user?.verify ? (
-              <div className="flex border rounded-lg p-4 space-x-4">
-                <CheckBadgeIcon className="h-10 w-10" />
-                <Typography className="font-bold">
-                  A confirmation mail has been sent to your registered email
-                  account, If you have not received the confirmation mail,
-                  kindly
-                  <span className="text-blue-500 cursor-pointer">
-                    {" "}
-                    Click here
-                  </span>{" "}
-                  to re-send another confirmation mail.
-                </Typography>
-              </div>
-            ) : (
-              <></>
-            )}
+            <GlobalLoading
+              children={
+                <div className="p-4">
+                  {user && !user?.verify ? <VerifyMailAlert /> : <></>}
+                  <Outlet />
+                </div>
+              }
+            />
           </div>
           {/* Main content */}
 
