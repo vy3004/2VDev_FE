@@ -16,6 +16,7 @@ import authService from "../../services/user-service";
 import { selectUser, setUser } from "../../redux/features/user-slice";
 import { setIsLoading } from "../../redux/features/global-loading";
 import VerifyMailAlert from "../ui/verify-mail-alert";
+import queryString from "query-string";
 
 const MainLayout = () => {
   const { user } = useSelector(selectUser);
@@ -24,6 +25,9 @@ const MainLayout = () => {
   const navigate = useNavigate();
 
   const accessToken = localStorage.getItem("access_token") || "";
+
+  const value = queryString.parse(window.location.search);
+  const email_verify_token = value.token;
 
   // Auto refresh access token
   useEffect(() => {
@@ -97,7 +101,7 @@ const MainLayout = () => {
       }
     };
 
-    if (user && !user?.verify) verifyEmail();
+    if (email_verify_token && user && !user?.verify) verifyEmail();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [dispatch, user]);
 
