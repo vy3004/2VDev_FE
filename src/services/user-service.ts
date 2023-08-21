@@ -14,6 +14,15 @@ interface RegisterPayload {
   confirm_password: string;
 }
 
+interface ForgotPasswordPayload {
+  email: string;
+}
+
+interface ResetPasswordPayload {
+  password: string;
+  confirm_password: string;
+}
+
 interface ApiResponse<T> {
   response?: AxiosResponse<T>;
   error?: AxiosError;
@@ -27,7 +36,9 @@ const userEndpoints = {
   getMe: "/me",
   verifyEmail: "/verify-email",
   resendVerifyEmail: "/resend-verify-email",
-  passwordUpdate: "/update-password",
+  forgotPassword: "/forgot-password",
+  verifyForgotPassword: "/verify-forgot-password",
+  resetPassword: "/reset-password",
 };
 
 const userService = {
@@ -85,7 +96,7 @@ const userService = {
       return { error: error as AxiosError };
     }
   },
-  refreshToken: async () => {
+  refreshToken: async (): Promise<ApiResponse<any>> => {
     try {
       const refresh_token = localStorage.getItem("refresh_token");
 
@@ -97,16 +108,16 @@ const userService = {
 
       return { response };
     } catch (error) {
-      return { error };
+      return { error: error as AxiosError };
     }
   },
-  getInfo: async () => {
+  getInfo: async (): Promise<ApiResponse<any>> => {
     try {
       const response = await axiosInstance.get(userEndpoints.getMe);
 
       return { response };
     } catch (error) {
-      return { error };
+      return { error: error as AxiosError };
     }
   },
   verifyEmail: async (): Promise<ApiResponse<any>> => {
@@ -123,7 +134,7 @@ const userService = {
       return { error: error as AxiosError };
     }
   },
-  resendVerifyEmail: async () => {
+  resendVerifyEmail: async (): Promise<ApiResponse<any>> => {
     try {
       const response = await axiosInstance.post(
         userEndpoints.resendVerifyEmail
@@ -131,7 +142,56 @@ const userService = {
 
       return { response };
     } catch (error) {
-      return { error };
+      return { error: error as AxiosError };
+    }
+  },
+  forgotPassword: async ({
+    email,
+  }: ForgotPasswordPayload): Promise<ApiResponse<any>> => {
+    try {
+      const response = await axiosInstance.post(userEndpoints.forgotPassword, {
+        email,
+      });
+
+      return { response };
+    } catch (error) {
+      return { error: error as AxiosError };
+    }
+  },
+  verifyForgotPassword: async (): Promise<ApiResponse<any>> => {
+    try {
+      const value = queryString.parse(window.location.search);
+      const forgot_password_token = value.token;
+
+      const response = await axiosInstance.post(
+        userEndpoints.verifyForgotPassword,
+        {
+          forgot_password_token,
+        }
+      );
+
+      return { response };
+    } catch (error) {
+      return { error: error as AxiosError };
+    }
+  },
+  resetPassword: async ({
+    password,
+    confirm_password,
+  }: ResetPasswordPayload): Promise<ApiResponse<any>> => {
+    try {
+      const value = queryString.parse(window.location.search);
+      const forgot_password_token = value.token;
+
+      const response = await axiosInstance.post(userEndpoints.resetPassword, {
+        forgot_password_token,
+        password,
+        confirm_password,
+      });
+
+      return { response };
+    } catch (error) {
+      return { error: error as AxiosError };
     }
   },
 };

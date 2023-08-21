@@ -1,7 +1,6 @@
 import { useState } from "react";
 import { useFormik } from "formik";
-import { useDispatch } from "react-redux";
-import { toast } from "react-hot-toast";
+import { useNavigate } from "react-router-dom";
 import * as Yup from "yup";
 
 import {
@@ -19,47 +18,33 @@ import {
 } from "@material-tailwind/react";
 
 import userService from "../../services/user-service";
-import { setAuthModalOpen } from "../../redux/features/auth-modal-slice";
 
-interface SignUpFormProps {
+interface ResetPasswordFormProps {
   switchAuthState: (name: string) => void;
   authUser: () => void;
 }
 
-interface SignUpFormValues {
-  name: string;
-  email: string;
+interface ResetPasswordFormValues {
   password: string;
   confirm_password: string;
 }
 
-const SignUpForm: React.FC<SignUpFormProps> = ({
+const ResetPasswordForm: React.FC<ResetPasswordFormProps> = ({
   switchAuthState,
-  authUser,
 }) => {
-  const dispatch = useDispatch();
+  const navigate = useNavigate();
 
   const [isSubmit, setIsSubmit] = useState(false);
   const [errorMessage, setErrorMessage] = useState("");
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
 
-  const signUpForm = useFormik<SignUpFormValues>({
+  const resetPasswordForm = useFormik<ResetPasswordFormValues>({
     initialValues: {
-      name: "",
-      email: "",
       password: "",
       confirm_password: "",
     },
     validationSchema: Yup.object({
-      name: Yup.string().required("Name is required"),
-      email: Yup.string()
-        .matches(
-          // eslint-disable-next-line no-useless-escape
-          /^[\w\.-]+@[a-zA-Z\d\.-]+\.[a-zA-Z]{2,}$/,
-          "Invalid email address"
-        )
-        .required("Email is required"),
       password: Yup.string()
         .min(8, "Password minimum 8 characters")
         .required("Password is required"),
@@ -68,18 +53,16 @@ const SignUpForm: React.FC<SignUpFormProps> = ({
         .min(8, "Confirm password minimum 8 characters")
         .required("Confirm password is required"),
     }),
-    onSubmit: async (values: SignUpFormValues) => {
+    onSubmit: async (values: ResetPasswordFormValues) => {
       setErrorMessage("");
       setIsSubmit(true);
 
-      const { response, error } = await userService.register(values);
+      const { response, error } = await userService.resetPassword(values);
       setIsSubmit(false);
 
       if (response) {
-        authUser();
-        signUpForm.resetForm();
-        dispatch(setAuthModalOpen(false));
-        toast.success("Sign Up success");
+        navigate("/");
+        switchAuthState("signIn");
       }
 
       if (error) setErrorMessage(error.message);
@@ -90,25 +73,21 @@ const SignUpForm: React.FC<SignUpFormProps> = ({
     <Card className="mx-auto w-full max-w-[48rem]">
       <CardBody className="flex gap-0 md:gap-8">
         <img
-          src="auth-sign-up.svg"
+          src="auth-sign-in.svg"
           alt="auth"
           className="w-0 md:w-3/6 object-cover"
         />
         <div className="w-full md:w-3/6">
           {/* Form header start */}
-          <div className="flex justify-between mb-10">
+          <div className="flex justify-between mb-4">
             <div>
-              <div className="flex font-bold text-lg">
-                Welcome to
-                <Typography color="blue" className="ml-1 font-bold text-lg">
-                  2VDev
-                </Typography>
-              </div>
-              <Typography className="text-4xl font-bold">Sign Up</Typography>
+              <Typography color="blue" className="text-lg font-bold">
+                Reset Password
+              </Typography>
             </div>
 
             <Typography variant="small" className="mt-1">
-              Have an Account?
+              No Account?
               <Typography
                 as="a"
                 variant="small"
@@ -116,10 +95,13 @@ const SignUpForm: React.FC<SignUpFormProps> = ({
                 className="font-bold cursor-pointer"
                 onClick={() => switchAuthState("signIn")}
               >
-                Sign in
+                Sign up
               </Typography>
             </Typography>
           </div>
+          <Typography className="mb-4">
+            Enter a new password, be careful not to match the old password
+          </Typography>
           {/* Form header end */}
 
           {/* Form error message start */}
@@ -136,58 +118,10 @@ const SignUpForm: React.FC<SignUpFormProps> = ({
           {/* Form error message end */}
 
           {/* Form body start */}
-          <form onSubmit={signUpForm.handleSubmit} className="w-full space-y-4">
-            {/* Name input start */}
-            <Input
-              label="Name"
-              name="name"
-              type="text"
-              size="lg"
-              crossOrigin=""
-              value={signUpForm.values.name}
-              onChange={signUpForm.handleChange}
-              error={
-                signUpForm.touched.name && signUpForm.errors.name !== undefined
-              }
-            />
-            {signUpForm.touched.name && signUpForm.errors.name && (
-              <Typography
-                className="!mt-1 ml-3 flex items-center gap-1 font-normal"
-                color="red"
-                variant="small"
-              >
-                <InformationCircleIcon className="h-4 w-4" />
-                {signUpForm.touched.name && signUpForm.errors.name}
-              </Typography>
-            )}
-            {/* Name input end */}
-
-            {/* Email address input start */}
-            <Input
-              label="Email"
-              name="email"
-              type="text"
-              size="lg"
-              crossOrigin=""
-              value={signUpForm.values.email}
-              onChange={signUpForm.handleChange}
-              error={
-                signUpForm.touched.email &&
-                signUpForm.errors.email !== undefined
-              }
-            />
-            {signUpForm.touched.email && signUpForm.errors.email && (
-              <Typography
-                className="!mt-1 ml-3 flex items-center gap-1 font-normal"
-                color="red"
-                variant="small"
-              >
-                <InformationCircleIcon className="h-4 w-4" />
-                {signUpForm.touched.email && signUpForm.errors.email}
-              </Typography>
-            )}
-            {/* Email address input end */}
-
+          <form
+            onSubmit={resetPasswordForm.handleSubmit}
+            className="w-full space-y-4"
+          >
             {/* Password input start*/}
             <Input
               label="Password"
@@ -204,23 +138,25 @@ const SignUpForm: React.FC<SignUpFormProps> = ({
                 </button>
               }
               crossOrigin=""
-              value={signUpForm.values.password}
-              onChange={signUpForm.handleChange}
+              value={resetPasswordForm.values.password}
+              onChange={resetPasswordForm.handleChange}
               error={
-                signUpForm.touched.password &&
-                signUpForm.errors.password !== undefined
+                resetPasswordForm.touched.password &&
+                resetPasswordForm.errors.password !== undefined
               }
             />
-            {signUpForm.touched.password && signUpForm.errors.password && (
-              <Typography
-                className="!mt-1 ml-3 flex items-center gap-1 font-normal"
-                color="red"
-                variant="small"
-              >
-                <InformationCircleIcon className="h-4 w-4" />
-                {signUpForm.touched.password && signUpForm.errors.password}
-              </Typography>
-            )}
+            {resetPasswordForm.touched.password &&
+              resetPasswordForm.errors.password && (
+                <Typography
+                  className="!mt-1 ml-3 flex items-center gap-1 font-normal"
+                  color="red"
+                  variant="small"
+                >
+                  <InformationCircleIcon className="h-4 w-4" />
+                  {resetPasswordForm.touched.password &&
+                    resetPasswordForm.errors.password}
+                </Typography>
+              )}
             {/* Password input end  */}
 
             {/* Confirm password input start */}
@@ -239,28 +175,38 @@ const SignUpForm: React.FC<SignUpFormProps> = ({
                 </button>
               }
               crossOrigin=""
-              value={signUpForm.values.confirm_password}
-              onChange={signUpForm.handleChange}
+              value={resetPasswordForm.values.confirm_password}
+              onChange={resetPasswordForm.handleChange}
               error={
-                signUpForm.touched.confirm_password &&
-                signUpForm.errors.confirm_password !== undefined
+                resetPasswordForm.touched.confirm_password &&
+                resetPasswordForm.errors.confirm_password !== undefined
               }
             />
-            {signUpForm.touched.confirm_password &&
-              signUpForm.errors.confirm_password && (
+            {resetPasswordForm.touched.confirm_password &&
+              resetPasswordForm.errors.confirm_password && (
                 <Typography
                   className="!mt-1 ml-3 flex items-center gap-1 font-normal"
                   color="red"
                   variant="small"
                 >
                   <InformationCircleIcon className="h-4 w-4" />
-                  {signUpForm.touched.confirm_password &&
-                    signUpForm.errors.confirm_password}
+                  {resetPasswordForm.touched.confirm_password &&
+                    resetPasswordForm.errors.confirm_password}
                 </Typography>
               )}
             {/* Confirm password input end*/}
 
-            <br />
+            <div className="flex justify-end">
+              <Typography
+                as="a"
+                variant="small"
+                color="blue"
+                className="cursor-pointer"
+                onClick={() => switchAuthState("signIn")}
+              >
+                Back to Sign In
+              </Typography>
+            </div>
 
             <Button
               type="submit"
@@ -269,7 +215,7 @@ const SignUpForm: React.FC<SignUpFormProps> = ({
               fullWidth
               disabled={isSubmit}
             >
-              {isSubmit ? <Spinner className="h-4 w-4 m-auto" /> : "Sign Up"}
+              {isSubmit ? <Spinner className="h-4 w-4 m-auto" /> : "Send"}
             </Button>
           </form>
           {/* Form body end */}
@@ -279,4 +225,4 @@ const SignUpForm: React.FC<SignUpFormProps> = ({
   );
 };
 
-export default SignUpForm;
+export default ResetPasswordForm;

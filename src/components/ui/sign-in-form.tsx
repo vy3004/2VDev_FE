@@ -21,7 +21,7 @@ import {
 import userService from "../../services/user-service";
 import { setAuthModalOpen } from "../../redux/features/auth-modal-slice";
 interface SignInFormProps {
-  switchAuthState: () => void;
+  switchAuthState: (name: string) => void;
   authUser: () => void;
 }
 
@@ -36,7 +36,7 @@ const SignInForm: React.FC<SignInFormProps> = ({
 }) => {
   const dispatch = useDispatch();
 
-  const [isLoginRequest, setIsLoginRequest] = useState(false);
+  const [isSubmit, setIsSubmit] = useState(false);
   const [errorMessage, setErrorMessage] = useState("");
   const [showPassword, setShowPassword] = useState(false);
 
@@ -59,10 +59,10 @@ const SignInForm: React.FC<SignInFormProps> = ({
     }),
     onSubmit: async (values: SignInFormValues) => {
       setErrorMessage("");
-      setIsLoginRequest(true);
+      setIsSubmit(true);
 
       const { response, error } = await userService.login(values);
-      setIsLoginRequest(false);
+      setIsSubmit(false);
 
       if (response) {
         authUser();
@@ -103,7 +103,7 @@ const SignInForm: React.FC<SignInFormProps> = ({
                 variant="small"
                 color="blue"
                 className="font-bold cursor-pointer"
-                onClick={() => switchAuthState()}
+                onClick={() => switchAuthState("signUp")}
               >
                 Sign up
               </Typography>
@@ -187,29 +187,26 @@ const SignInForm: React.FC<SignInFormProps> = ({
             )}
             {/* Password input end */}
 
-            <Typography
-              as="a"
-              href="#forgotPassword"
-              variant="small"
-              color="blue"
-              className="text-right"
-            >
-              Forgot Password
-            </Typography>
-            <br />
+            <div className="flex justify-end">
+              <Typography
+                as="a"
+                variant="small"
+                color="blue"
+                className="cursor-pointer"
+                onClick={() => switchAuthState("forgotPassword")}
+              >
+                Forgot Password
+              </Typography>
+            </div>
 
             <Button
               type="submit"
               className="mt-10"
               variant="gradient"
               fullWidth
-              disabled={isLoginRequest}
+              disabled={isSubmit}
             >
-              {isLoginRequest ? (
-                <Spinner className="h-4 w-4 m-auto" />
-              ) : (
-                "Sign In"
-              )}
+              {isSubmit ? <Spinner className="h-4 w-4 m-auto" /> : "Sign In"}
             </Button>
           </form>
           {/* Form body end */}

@@ -1,3 +1,4 @@
+import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Dialog } from "@material-tailwind/react";
 
@@ -9,15 +10,23 @@ import {
 
 import SignInForm from "../ui/sign-in-form";
 import SignUpForm from "../ui/sign-up-form";
+import ForgotPasswordForm from "../ui/forgot-password-form";
+
 import authService from "../../services/user-service";
 import { setUser } from "../../redux/features/user-slice";
+import ResetPasswordForm from "../ui/reset-password-form";
+import queryString from "query-string";
 
 const AuthModal = () => {
   const { authModalOpen, authModalName } = useSelector(selectAuthModal);
-
   const dispatch = useDispatch();
 
+  const value = queryString.parse(window.location.search);
+  const forgot_password_token = value.token;
+
   const handleClose = () => dispatch(setAuthModalOpen(false));
+
+  const switchAuthState = (name: string) => dispatch(setAuthModalName(name));
 
   const authUser = async () => {
     const { response } = await authService.getInfo();
@@ -26,6 +35,19 @@ const AuthModal = () => {
       dispatch(setUser(response.data.result));
     }
   };
+
+  useEffect(() => {
+    const verifyForgotPassword = async () => {
+      const { response } = await authService.verifyForgotPassword();
+
+      if (response) {
+        dispatch(setAuthModalOpen(true));
+        switchAuthState("resetPassword");
+      }
+    };
+
+    if (forgot_password_token) verifyForgotPassword();
+  });
 
   return (
     <>
@@ -36,14 +58,20 @@ const AuthModal = () => {
         className="bg-transparent shadow-none"
       >
         {authModalName === "signIn" && (
-          <SignInForm
-            switchAuthState={() => dispatch(setAuthModalName("signUp"))}
+          <SignInForm switchAuthState={switchAuthState} authUser={authUser} />
+        )}
+        {authModalName === "signUp" && (
+          <SignUpForm switchAuthState={switchAuthState} authUser={authUser} />
+        )}
+        {authModalName === "forgotPassword" && (
+          <ForgotPasswordForm
+            switchAuthState={switchAuthState}
             authUser={authUser}
           />
         )}
-        {authModalName === "signUp" && (
-          <SignUpForm
-            switchAuthState={() => dispatch(setAuthModalName("signIn"))}
+        {authModalName === "resetPassword" && (
+          <ResetPasswordForm
+            switchAuthState={switchAuthState}
             authUser={authUser}
           />
         )}
