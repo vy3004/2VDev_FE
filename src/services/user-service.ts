@@ -1,3 +1,4 @@
+import queryString from "query-string";
 import { AxiosResponse, AxiosError } from "axios";
 import axiosInstance from "../configs/axios-config";
 
@@ -24,6 +25,7 @@ const userEndpoints = {
   logout: "/logout",
   refreshToken: "/refresh-token",
   getMe: "/me",
+  verifyEmail: "/verify-email",
   passwordUpdate: "/update-password",
 };
 
@@ -104,6 +106,20 @@ const userService = {
       return { response };
     } catch (error) {
       return { error };
+    }
+  },
+  verifyEmail: async (): Promise<ApiResponse<any>> => {
+    try {
+      const value = queryString.parse(window.location.search);
+      const email_verify_token = value.token;
+
+      const response = await axiosInstance.post(userEndpoints.verifyEmail, {
+        email_verify_token,
+      });
+
+      return { response };
+    } catch (error) {
+      return { error: error as AxiosError };
     }
   },
 };

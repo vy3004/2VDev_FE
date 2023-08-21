@@ -1,6 +1,6 @@
 import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { Outlet } from "react-router-dom";
+import { Outlet, useNavigate } from "react-router-dom";
 import jwtDecode from "jwt-decode";
 
 import Footer from "../footer";
@@ -9,6 +9,7 @@ import Sidebar from "../sidebar";
 import RightSidebar from "../right-sidebar";
 
 import Container from "../ui/container";
+import GlobalLoading from "../ui/global-loading";
 import AuthModal from "../modals/auth-modal";
 
 import { Typography } from "@material-tailwind/react";
@@ -16,14 +17,17 @@ import { CheckBadgeIcon } from "@heroicons/react/24/solid";
 
 import authService from "../../services/user-service";
 import { selectUser, setUser } from "../../redux/features/user-slice";
+import { setIsLoading } from "../../redux/features/global-loading";
 
 const MainLayout = () => {
   const { user } = useSelector(selectUser);
 
   const dispatch = useDispatch();
+  const navigate = useNavigate();
 
   const accessToken = localStorage.getItem("access_token") || "";
 
+  // Auto refresh access token
   useEffect(() => {
     const authUser = async () => {
       if (accessToken) {
@@ -58,14 +62,46 @@ const MainLayout = () => {
     };
   }, [accessToken]);
 
+  // Get user information if access token exists
   useEffect(() => {
     const authUser = async () => {
-      const { response } = await authService.getInfo();
-      if (response) dispatch(setUser(response.data.result));
+      try {
+        dispatch(setIsLoading(true));
+        const { response } = await authService.getInfo();
+        if (response) {
+          dispatch(setUser(response.data.result));
+        }
+      } catch (error) {
+        console.log(error);
+      } finally {
+        dispatch(setIsLoading(false));
+      }
     };
 
     if (accessToken) authUser();
   }, [dispatch, accessToken]);
+
+  // Auto verify email
+  useEffect(() => {
+    const verifyEmail = async () => {
+      try {
+        dispatch(setIsLoading(true));
+        const { response } = await authService.verifyEmail();
+
+        if (response) {
+          dispatch(setUser({ ...user, verify: 1 }));
+          navigate("/");
+        }
+      } catch (error) {
+        console.log(error);
+      } finally {
+        dispatch(setIsLoading(false));
+      }
+    };
+
+    if (user && !user?.verify) verifyEmail();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [dispatch, user]);
 
   return (
     <>
@@ -83,8 +119,10 @@ const MainLayout = () => {
           {/* Left sidebar */}
 
           {/* Main content */}
-          <div className="col-span-10 md:col-span-7 xl:col-span-6 p-6 border-x h-[3000px]">
-            {/* {user && !user?.verify ? (
+          <div className="col-span-10 md:col-span-7 xl:col-span-6 border-x">
+            <GlobalLoading children={<Outlet />} />
+
+            {user && !user?.verify ? (
               <div className="flex border rounded-lg p-4 space-x-4">
                 <CheckBadgeIcon className="h-10 w-10" />
                 <Typography className="font-bold">
@@ -100,9 +138,7 @@ const MainLayout = () => {
               </div>
             ) : (
               <></>
-            )} */}
-
-            <Outlet />
+            )}
           </div>
           {/* Main content */}
 

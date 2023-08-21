@@ -5,12 +5,9 @@ import type { RootState } from "../store";
 interface UserState {
   user: {
     _id?: string;
-    name: string;
-    email: string;
+    name?: string;
+    email?: string;
     date_of_birth?: Date;
-    password: string;
-    email_verify_token?: string;
-    forgot_password_token?: string;
     verify?: number;
     role?: number;
     level?: number;
