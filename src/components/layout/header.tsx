@@ -50,7 +50,7 @@ const Header = () => {
             <NavList />
           </div>
 
-          <div className="flex items-center space-x-6">
+          <div className="flex items-center space-x-2 xl:space-x-6">
             <div className="hidden md:flex">
               <SearchInput />
             </div>

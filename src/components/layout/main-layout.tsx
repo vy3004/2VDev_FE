@@ -17,9 +17,12 @@ import { selectUser, setUser } from "../../redux/features/user-slice";
 import { setIsLoading } from "../../redux/features/global-loading";
 import VerifyMailAlert from "../common/verify-mail-alert";
 import queryString from "query-string";
+import { selectApp } from "../../redux/features/app-state-slice";
 
 const MainLayout = () => {
   const { user } = useSelector(selectUser);
+  const { appState } = useSelector(selectApp);
+  console.log("STATE", appState);
 
   const dispatch = useDispatch();
   const navigate = useNavigate();

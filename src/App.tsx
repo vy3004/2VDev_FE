@@ -44,8 +44,8 @@ function App() {
                   index
                   key={index}
                   element={
-                    route.state ? (
-                      <PageWrapper state={route.state}>
+                    route.path ? (
+                      <PageWrapper state={route.path}>
                         {route.element}
                       </PageWrapper>
                     ) : (
@@ -58,8 +58,8 @@ function App() {
                   path={route.path}
                   key={index}
                   element={
-                    route.state ? (
-                      <PageWrapper state={route.state}>
+                    route.path ? (
+                      <PageWrapper state={route.path}>
                         {route.element}
                       </PageWrapper>
                     ) : (

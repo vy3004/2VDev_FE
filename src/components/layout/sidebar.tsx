@@ -30,11 +30,19 @@ import {
 import { ChevronRightIcon, ChevronDownIcon } from "@heroicons/react/24/outline";
 
 import { selectUser } from "../../redux/features/user-slice";
+import { selectApp } from "../../redux/features/app-state-slice";
+
+interface sidebarItem {
+  label: string;
+  icon: any;
+  href: string;
+}
 
 const Sidebar = () => {
   const navigate = useNavigate();
 
   const { user } = useSelector(selectUser);
+  const { appState } = useSelector(selectApp);
 
   const [open, setOpen] = useState(0);
 
@@ -42,10 +50,74 @@ const Sidebar = () => {
     setOpen(open === value ? 0 : value);
   };
 
+  const listDashboard: sidebarItem[] = [
+    {
+      label: "Overview",
+      icon: <ChevronRightIcon strokeWidth={3} className="h-3 w-5" />,
+      href: "/overview",
+    },
+    {
+      label: "Manage users",
+      icon: <ChevronRightIcon strokeWidth={3} className="h-3 w-5" />,
+      href: "/manage-users",
+    },
+    {
+      label: "Manage posts",
+      icon: <ChevronRightIcon strokeWidth={3} className="h-3 w-5" />,
+      href: "/manage-posts",
+    },
+  ];
+
+  const listQuestions: sidebarItem[] = [
+    {
+      label: "New questions",
+      icon: <ChevronRightIcon strokeWidth={3} className="h-3 w-5" />,
+      href: "/new-questions",
+    },
+    {
+      label: "Trending questions",
+      icon: <ChevronRightIcon strokeWidth={3} className="h-3 w-5" />,
+      href: "/trending-questions",
+    },
+    {
+      label: "Popular questions",
+      icon: <ChevronRightIcon strokeWidth={3} className="h-3 w-5" />,
+      href: "/popular-questions",
+    },
+    {
+      label: "Hot questions",
+      icon: <ChevronRightIcon strokeWidth={3} className="h-3 w-5" />,
+      href: "/hot-questions",
+    },
+  ];
+
+  const listGuest: sidebarItem[] = [
+    {
+      label: "Feed",
+      icon: <NewspaperIcon className="h-5 w-5" />,
+      href: "/feed",
+    },
+    {
+      label: "Tags",
+      icon: <TagIcon className="h-5 w-5" />,
+      href: "/tags",
+    },
+    {
+      label: "Communities",
+      icon: <IdentificationIcon className="h-5 w-5" />,
+      href: "/communities",
+    },
+    {
+      label: "Users",
+      icon: <UserGroupIcon className="h-5 w-5" />,
+      href: "/users",
+    },
+  ];
+
   return (
     <Card className="shadow-none h-full overflow-hidden hover:overflow-y-scroll">
       <List className="min-w-full my-4">
-        <ListItem onClick={() => navigate("/")}>
+        <ListItem selected={appState === "/"} onClick={() => navigate("/")}>
           <ListItemPrefix>
             <HomeIcon className="h-5 w-5" />
           </ListItemPrefix>
@@ -79,24 +151,16 @@ const Sidebar = () => {
             </ListItem>
             <AccordionBody className="py-1">
               <List className="p-0">
-                <ListItem onClick={() => navigate("/overview")}>
-                  <ListItemPrefix>
-                    <ChevronRightIcon strokeWidth={3} className="h-3 w-5" />
-                  </ListItemPrefix>
-                  Overview
-                </ListItem>
-                <ListItem onClick={() => navigate("/manage-users")}>
-                  <ListItemPrefix>
-                    <ChevronRightIcon strokeWidth={3} className="h-3 w-5" />
-                  </ListItemPrefix>
-                  Manage users
-                </ListItem>
-                <ListItem onClick={() => navigate("/manage-posts")}>
-                  <ListItemPrefix>
-                    <ChevronRightIcon strokeWidth={3} className="h-3 w-5" />
-                  </ListItemPrefix>
-                  Manage posts
-                </ListItem>
+                {listDashboard.map(({ label, icon, href }, key) => (
+                  <ListItem
+                    selected={appState === href}
+                    onClick={() => navigate(href)}
+                    key={key}
+                  >
+                    <ListItemPrefix>{icon}</ListItemPrefix>
+                    {label}
+                  </ListItem>
+                ))}
               </List>
             </AccordionBody>
           </Accordion>
@@ -130,59 +194,33 @@ const Sidebar = () => {
           </ListItem>
           <AccordionBody className="py-1">
             <List className="p-0">
-              <ListItem onClick={() => navigate("/new-questions")}>
-                <ListItemPrefix>
-                  <ChevronRightIcon strokeWidth={3} className="h-3 w-5" />
-                </ListItemPrefix>
-                New questions
-              </ListItem>
-              <ListItem onClick={() => navigate("/trending-questions")}>
-                <ListItemPrefix>
-                  <ChevronRightIcon strokeWidth={3} className="h-3 w-5" />
-                </ListItemPrefix>
-                Trending questions
-              </ListItem>
-              <ListItem onClick={() => navigate("/popular-questions")}>
-                <ListItemPrefix>
-                  <ChevronRightIcon strokeWidth={3} className="h-3 w-5" />
-                </ListItemPrefix>
-                Popular questions
-              </ListItem>
-              <ListItem onClick={() => navigate("/hot-questions")}>
-                <ListItemPrefix>
-                  <ChevronRightIcon strokeWidth={3} className="h-3 w-5" />
-                </ListItemPrefix>
-                Hot questions
-              </ListItem>
+              {listQuestions.map(({ label, icon, href }, key) => (
+                <ListItem
+                  selected={appState === href}
+                  onClick={() => navigate(href)}
+                  key={key}
+                >
+                  <ListItemPrefix>{icon}</ListItemPrefix>
+                  {label}
+                </ListItem>
+              ))}
             </List>
           </AccordionBody>
         </Accordion>
         {/* Questions end */}
 
-        <ListItem onClick={() => navigate("/feed")}>
-          <ListItemPrefix>
-            <NewspaperIcon className="h-5 w-5" />
-          </ListItemPrefix>
-          Feed
-        </ListItem>
-        <ListItem onClick={() => navigate("/tags")}>
-          <ListItemPrefix>
-            <TagIcon className="h-5 w-5" />
-          </ListItemPrefix>
-          Tags
-        </ListItem>
-        <ListItem onClick={() => navigate("/communities")}>
-          <ListItemPrefix>
-            <IdentificationIcon className="h-5 w-5" />
-          </ListItemPrefix>
-          Communities
-        </ListItem>
-        <ListItem onClick={() => navigate("/users")}>
-          <ListItemPrefix>
-            <UserGroupIcon className="h-5 w-5" />
-          </ListItemPrefix>
-          Users
-        </ListItem>
+        {/* Guest items start */}
+        {listGuest.map(({ label, icon, href }, key) => (
+          <ListItem
+            selected={appState === href}
+            onClick={() => navigate(href)}
+            key={key}
+          >
+            <ListItemPrefix>{icon}</ListItemPrefix>
+            {label}
+          </ListItem>
+        ))}
+        {/* Guest items end */}
 
         {/* User items start */}
         {user && (

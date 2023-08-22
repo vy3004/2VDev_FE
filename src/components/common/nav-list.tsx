@@ -1,8 +1,16 @@
 import React from "react";
+import { useSelector } from "react-redux";
+import { useNavigate } from "react-router-dom";
+
 import { HomeIcon, PhoneIcon, UserGroupIcon } from "@heroicons/react/24/solid";
-import { MenuItem, Typography } from "@material-tailwind/react";
+import { Button } from "@material-tailwind/react";
+
+import { selectApp } from "../../redux/features/app-state-slice";
 
 const NavList = () => {
+  const navigate = useNavigate();
+  const { appState } = useSelector(selectApp);
+
   const navListItems = [
     {
       label: "Home",
@@ -22,21 +30,19 @@ const NavList = () => {
   ];
 
   return (
-    <ul className="hidden lg:flex lg:items-end">
+    <div className="hidden lg:flex lg:items-end gap-1">
       {navListItems.map(({ label, icon, href }, key) => (
-        <Typography
+        <Button
+          onClick={() => navigate(href)}
           key={key}
-          as="a"
-          href={href}
-          variant="small"
-          className="font-normal"
+          size="sm"
+          variant={`${appState === href ? "gradient" : "text"}`}
+          className="flex items-center gap-2 rounded-full normal-case text-sm"
         >
-          <MenuItem className="flex items-center gap-2 lg:rounded-full">
-            {React.createElement(icon, { className: "h-5 w-5" })} {label}
-          </MenuItem>
-        </Typography>
+          {React.createElement(icon, { className: "h-5 w-5" })} {label}
+        </Button>
       ))}
-    </ul>
+    </div>
   );
 };
 
