@@ -3,19 +3,19 @@ import { useDispatch, useSelector } from "react-redux";
 import { Outlet, useNavigate } from "react-router-dom";
 import jwtDecode from "jwt-decode";
 
-import Footer from "../footer";
-import Header from "../header";
-import Sidebar from "../sidebar";
-import RightSidebar from "../right-sidebar";
+import Footer from "./footer";
+import Header from "./header";
+import Sidebar from "./sidebar";
+import RightSidebar from "./right-sidebar";
 
-import Container from "../ui/container";
-import GlobalLoading from "../ui/global-loading";
+import Container from "../common/container";
+import GlobalLoading from "../common/global-loading";
 import AuthModal from "../modals/auth-modal";
 
 import authService from "../../services/user-service";
 import { selectUser, setUser } from "../../redux/features/user-slice";
 import { setIsLoading } from "../../redux/features/global-loading";
-import VerifyMailAlert from "../ui/verify-mail-alert";
+import VerifyMailAlert from "../common/verify-mail-alert";
 import queryString from "query-string";
 
 const MainLayout = () => {

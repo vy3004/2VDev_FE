@@ -1,6 +1,6 @@
 import { ReactElement } from "react";
 
-import ProtectedPage from "../components/ui/protected-page";
+import ProtectedPage from "../components/common/protected-page";
 
 import Home from "../pages/home/home";
 import About from "../pages/about/about";

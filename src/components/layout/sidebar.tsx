@@ -29,7 +29,7 @@ import {
 } from "@heroicons/react/24/solid";
 import { ChevronRightIcon, ChevronDownIcon } from "@heroicons/react/24/outline";
 
-import { selectUser } from "../redux/features/user-slice";
+import { selectUser } from "../../redux/features/user-slice";
 
 const Sidebar = () => {
   const navigate = useNavigate();

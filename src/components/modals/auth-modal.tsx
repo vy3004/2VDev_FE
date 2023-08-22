@@ -1,6 +1,7 @@
 import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Dialog } from "@material-tailwind/react";
+import queryString from "query-string";
 
 import {
   selectAuthModal,
@@ -8,14 +9,13 @@ import {
   setAuthModalName,
 } from "../../redux/features/auth-modal-slice";
 
-import SignInForm from "../ui/sign-in-form";
-import SignUpForm from "../ui/sign-up-form";
-import ForgotPasswordForm from "../ui/forgot-password-form";
+import SignInForm from "../auth-form/sign-in-form";
+import SignUpForm from "../auth-form/sign-up-form";
+import ForgotPasswordForm from "../auth-form/forgot-password-form";
+import ResetPasswordForm from "../auth-form/reset-password-form";
 
 import authService from "../../services/user-service";
 import { setUser } from "../../redux/features/user-slice";
-import ResetPasswordForm from "../ui/reset-password-form";
-import queryString from "query-string";
 
 const AuthModal = () => {
   const { authModalOpen, authModalName } = useSelector(selectAuthModal);
@@ -64,16 +64,10 @@ const AuthModal = () => {
           <SignUpForm switchAuthState={switchAuthState} authUser={authUser} />
         )}
         {authModalName === "forgotPassword" && (
-          <ForgotPasswordForm
-            switchAuthState={switchAuthState}
-            authUser={authUser}
-          />
+          <ForgotPasswordForm switchAuthState={switchAuthState} />
         )}
         {authModalName === "resetPassword" && (
-          <ResetPasswordForm
-            switchAuthState={switchAuthState}
-            authUser={authUser}
-          />
+          <ResetPasswordForm switchAuthState={switchAuthState} />
         )}
       </Dialog>
     </>

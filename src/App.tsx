@@ -3,7 +3,7 @@ import { Toaster } from "react-hot-toast";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 
 import MainLayout from "./components/layout/main-layout";
-import PageWrapper from "./components/ui/page-wrapper";
+import PageWrapper from "./components/common/page-wrapper";
 
 import routes from "./routes/routes";
 

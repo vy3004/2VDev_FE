@@ -5,11 +5,13 @@ import type { RootState } from "../store";
 interface AuthModalState {
   authModalOpen: boolean;
   authModalName: string;
+  notification: string;
 }
 
 const initialState: AuthModalState = {
   authModalOpen: false,
   authModalName: "",
+  notification: "",
 };
 
 const authModalSlice = createSlice({
@@ -22,10 +24,14 @@ const authModalSlice = createSlice({
     setAuthModalName: (state, action: PayloadAction<string>) => {
       state.authModalName = action.payload;
     },
+    setNotification: (state, action: PayloadAction<string>) => {
+      state.notification = action.payload;
+    },
   },
 });
 
-export const { setAuthModalOpen, setAuthModalName } = authModalSlice.actions;
+export const { setAuthModalOpen, setAuthModalName, setNotification } =
+  authModalSlice.actions;
 
 export const selectAuthModal = (state: RootState) => state.authModal;
 

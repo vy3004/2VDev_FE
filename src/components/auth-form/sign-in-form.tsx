@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { useFormik } from "formik";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { toast } from "react-hot-toast";
 import * as Yup from "yup";
 
@@ -17,9 +17,14 @@ import {
   Input,
   Spinner,
 } from "@material-tailwind/react";
+import NotificationForm from "./notification-form";
 
 import userService from "../../services/user-service";
-import { setAuthModalOpen } from "../../redux/features/auth-modal-slice";
+import {
+  selectAuthModal,
+  setAuthModalOpen,
+} from "../../redux/features/auth-modal-slice";
+
 interface SignInFormProps {
   switchAuthState: (name: string) => void;
   authUser: () => void;
@@ -35,8 +40,10 @@ const SignInForm: React.FC<SignInFormProps> = ({
   authUser,
 }) => {
   const dispatch = useDispatch();
+  const { notification } = useSelector(selectAuthModal);
 
   const [isSubmit, setIsSubmit] = useState(false);
+  const [successMessage] = useState(notification);
   const [errorMessage, setErrorMessage] = useState("");
   const [showPassword, setShowPassword] = useState(false);
 
@@ -111,16 +118,15 @@ const SignInForm: React.FC<SignInFormProps> = ({
           </div>
           {/* Form header end */}
 
+          {/* Form success message start */}
+          {successMessage && (
+            <NotificationForm type="success" message={successMessage} />
+          )}
+          {/* Form success message end */}
+
           {/* Form error message start */}
           {errorMessage && (
-            <Typography
-              className="p-2 mb-8 border border-red-500 rounded-full bg-red-100 flex items-center gap-1 font-normal"
-              color="red"
-              variant="small"
-            >
-              <InformationCircleIcon className="h-4 w-4" />
-              {errorMessage}
-            </Typography>
+            <NotificationForm type="error" message={errorMessage} />
           )}
           {/* Form error message end */}
 

@@ -5,17 +5,17 @@ import {
   ChatBubbleBottomCenterTextIcon,
 } from "@heroicons/react/24/solid";
 
-import Container from "./ui/container";
-import ProfileMenu from "./ui/profile-menu";
-import NavList from "./ui/nav-list";
-import SearchInput from "./ui/search-input";
+import Container from "../common/container";
+import ProfileMenu from "../common/profile-menu";
+import NavList from "../common/nav-list";
+import SearchInput from "../common/search-input";
 import MobileSidebar from "./mobile-sidebar";
 
 import {
   setAuthModalName,
   setAuthModalOpen,
-} from "../redux/features/auth-modal-slice";
-import { selectUser } from "../redux/features/user-slice";
+} from "../../redux/features/auth-modal-slice";
+import { selectUser } from "../../redux/features/user-slice";
 
 const Header = () => {
   const { user } = useSelector(selectUser);

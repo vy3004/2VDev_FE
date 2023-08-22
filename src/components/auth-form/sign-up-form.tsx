@@ -17,6 +17,7 @@ import {
   Input,
   Spinner,
 } from "@material-tailwind/react";
+import NotificationForm from "./notification-form";
 
 import userService from "../../services/user-service";
 import { setAuthModalOpen } from "../../redux/features/auth-modal-slice";
@@ -124,14 +125,7 @@ const SignUpForm: React.FC<SignUpFormProps> = ({
 
           {/* Form error message start */}
           {errorMessage && (
-            <Typography
-              className="p-2 mb-8 border border-red-500 rounded-full bg-red-100 flex items-center gap-1 font-normal"
-              color="red"
-              variant="small"
-            >
-              <InformationCircleIcon className="h-4 w-4" />
-              {errorMessage}
-            </Typography>
+            <NotificationForm type="error" message={errorMessage} />
           )}
           {/* Form error message end */}
 

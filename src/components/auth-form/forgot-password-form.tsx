@@ -1,5 +1,7 @@
 import { useState } from "react";
 import { useFormik } from "formik";
+import { toast } from "react-hot-toast";
+import { useDispatch } from "react-redux";
 import * as Yup from "yup";
 
 import { InformationCircleIcon } from "@heroicons/react/24/solid";
@@ -11,12 +13,13 @@ import {
   Input,
   Spinner,
 } from "@material-tailwind/react";
+import NotificationForm from "./notification-form";
 
 import userService from "../../services/user-service";
+import { setAuthModalOpen } from "../../redux/features/auth-modal-slice";
 
 interface ForgotPasswordFormProps {
   switchAuthState: (name: string) => void;
-  authUser: () => void;
 }
 
 interface ForgotPasswordFormValues {
@@ -25,8 +28,9 @@ interface ForgotPasswordFormValues {
 
 const ForgotPasswordForm: React.FC<ForgotPasswordFormProps> = ({
   switchAuthState,
-  authUser,
 }) => {
+  const dispatch = useDispatch();
+
   const [isSubmit, setIsSubmit] = useState(false);
   const [errorMessage, setErrorMessage] = useState("");
 
@@ -50,7 +54,11 @@ const ForgotPasswordForm: React.FC<ForgotPasswordFormProps> = ({
       const { response, error } = await userService.forgotPassword(values);
       setIsSubmit(false);
 
-      if (response) switchAuthState("resetPassword");
+      if (response) {
+        forgotPasswordForm.resetForm();
+        dispatch(setAuthModalOpen(false));
+        toast.success(response.data.message);
+      }
 
       if (error) setErrorMessage(error.message);
     },
@@ -94,14 +102,7 @@ const ForgotPasswordForm: React.FC<ForgotPasswordFormProps> = ({
 
           {/* Form error message start */}
           {errorMessage && (
-            <Typography
-              className="p-2 mb-8 border border-red-500 rounded-full bg-red-100 flex items-center gap-1 font-normal"
-              color="red"
-              variant="small"
-            >
-              <InformationCircleIcon className="h-4 w-4" />
-              {errorMessage}
-            </Typography>
+            <NotificationForm type="error" message={errorMessage} />
           )}
           {/* Form error message end */}
 

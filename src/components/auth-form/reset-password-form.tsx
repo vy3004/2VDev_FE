@@ -16,12 +16,14 @@ import {
   Input,
   Spinner,
 } from "@material-tailwind/react";
+import NotificationForm from "./notification-form";
 
 import userService from "../../services/user-service";
+import { useDispatch } from "react-redux";
+import { setNotification } from "../../redux/features/auth-modal-slice";
 
 interface ResetPasswordFormProps {
   switchAuthState: (name: string) => void;
-  authUser: () => void;
 }
 
 interface ResetPasswordFormValues {
@@ -33,6 +35,7 @@ const ResetPasswordForm: React.FC<ResetPasswordFormProps> = ({
   switchAuthState,
 }) => {
   const navigate = useNavigate();
+  const dispatch = useDispatch();
 
   const [isSubmit, setIsSubmit] = useState(false);
   const [errorMessage, setErrorMessage] = useState("");
@@ -61,6 +64,7 @@ const ResetPasswordForm: React.FC<ResetPasswordFormProps> = ({
       setIsSubmit(false);
 
       if (response) {
+        dispatch(setNotification(response.data.message));
         navigate("/");
         switchAuthState("signIn");
       }
@@ -106,14 +110,7 @@ const ResetPasswordForm: React.FC<ResetPasswordFormProps> = ({
 
           {/* Form error message start */}
           {errorMessage && (
-            <Typography
-              className="p-2 mb-8 border border-red-500 rounded-full bg-red-100 flex items-center gap-1 font-normal"
-              color="red"
-              variant="small"
-            >
-              <InformationCircleIcon className="h-4 w-4" />
-              {errorMessage}
-            </Typography>
+            <NotificationForm type="error" message={errorMessage} />
           )}
           {/* Form error message end */}
 
