@@ -7,7 +7,7 @@ import axios, {
 } from "axios";
 import queryString from "query-string";
 
-const baseURL = "http://localhost:5000";
+const baseURL = process.env.REACT_APP_BACKEND_URL;
 
 interface CustomAxiosRequestConfig extends AxiosRequestConfig {
   headers: AxiosRequestHeaders;

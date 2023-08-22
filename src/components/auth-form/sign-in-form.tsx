@@ -2,6 +2,7 @@ import { useState } from "react";
 import { useFormik } from "formik";
 import { useDispatch, useSelector } from "react-redux";
 import { toast } from "react-hot-toast";
+import { Link } from "react-router-dom";
 import * as Yup from "yup";
 
 import {
@@ -24,6 +25,7 @@ import {
   selectAuthModal,
   setAuthModalOpen,
 } from "../../redux/features/auth-modal-slice";
+import { getOauthGoogleUrl } from "../../utils/oauth-google-url";
 
 interface SignInFormProps {
   switchAuthState: (name: string) => void;
@@ -41,6 +43,7 @@ const SignInForm: React.FC<SignInFormProps> = ({
 }) => {
   const dispatch = useDispatch();
   const { notification } = useSelector(selectAuthModal);
+  const oauthURL = getOauthGoogleUrl();
 
   const [isSubmit, setIsSubmit] = useState(false);
   const [successMessage] = useState(notification);
@@ -213,6 +216,27 @@ const SignInForm: React.FC<SignInFormProps> = ({
               disabled={isSubmit}
             >
               {isSubmit ? <Spinner className="h-4 w-4 m-auto" /> : "Sign In"}
+            </Button>
+
+            <div className="flex items-center justify-between gap-4">
+              <div className="w-full border" />
+              <Typography className="text-center text-sm">OR</Typography>
+              <div className="w-full border" />
+            </div>
+
+            <Button variant="outlined" fullWidth>
+              <Link
+                to={oauthURL}
+                className="flex justify-center items-center gap-2"
+              >
+                <img
+                  className="w-4 h-4"
+                  src="https://www.svgrepo.com/show/475656/google-color.svg"
+                  loading="lazy"
+                  alt="google logo"
+                />
+                <span>Sign In with Google</span>
+              </Link>
             </Button>
           </form>
           {/* Form body end */}

@@ -88,7 +88,7 @@ const ForgotPasswordForm: React.FC<ForgotPasswordFormProps> = ({
                 variant="small"
                 color="blue"
                 className="font-bold cursor-pointer"
-                onClick={() => switchAuthState("signIn")}
+                onClick={() => switchAuthState("signUp")}
               >
                 Sign up
               </Typography>
