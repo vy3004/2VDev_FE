@@ -168,13 +168,16 @@ const SignInForm: React.FC<SignInFormProps> = ({
               type={showPassword ? "text" : "password"}
               size="lg"
               icon={
-                <button onClick={() => setShowPassword((show) => !show)}>
+                <div
+                  className="cursor-pointer"
+                  onClick={() => setShowPassword(!showPassword)}
+                >
                   {showPassword ? (
                     <EyeIcon className="h-4 w-4" />
                   ) : (
                     <EyeSlashIcon className="h-4 w-4" />
                   )}
-                </button>
+                </div>
               }
               crossOrigin=""
               value={signInForm.values.password}
@@ -209,7 +212,8 @@ const SignInForm: React.FC<SignInFormProps> = ({
             </div>
 
             <Button
-              type="submit"
+              // type="submit"
+              onClick={signInForm.submitForm}
               className="mt-10"
               variant="gradient"
               fullWidth

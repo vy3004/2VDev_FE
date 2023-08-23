@@ -189,13 +189,16 @@ const SignUpForm: React.FC<SignUpFormProps> = ({
               type={showPassword ? "text" : "password"}
               size="lg"
               icon={
-                <button onClick={() => setShowPassword((show) => !show)}>
+                <div
+                  className="cursor-pointer"
+                  onClick={() => setShowPassword(!showPassword)}
+                >
                   {showPassword ? (
                     <EyeIcon className="h-4 w-4" />
                   ) : (
                     <EyeSlashIcon className="h-4 w-4" />
                   )}
-                </button>
+                </div>
               }
               crossOrigin=""
               value={signUpForm.values.password}
@@ -224,13 +227,16 @@ const SignUpForm: React.FC<SignUpFormProps> = ({
               type={showConfirmPassword ? "text" : "password"}
               size="lg"
               icon={
-                <button onClick={() => setShowConfirmPassword((show) => !show)}>
+                <div
+                  className="cursor-pointer"
+                  onClick={() => setShowConfirmPassword(!showConfirmPassword)}
+                >
                   {showPassword ? (
                     <EyeIcon className="h-4 w-4" />
                   ) : (
                     <EyeSlashIcon className="h-4 w-4" />
                   )}
-                </button>
+                </div>
               }
               crossOrigin=""
               value={signUpForm.values.confirm_password}
