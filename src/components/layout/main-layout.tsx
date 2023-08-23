@@ -1,6 +1,6 @@
 import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { Outlet, useNavigate } from "react-router-dom";
+import { Outlet, useNavigate, useSearchParams } from "react-router-dom";
 import jwtDecode from "jwt-decode";
 
 import Footer from "./footer";
@@ -10,27 +10,22 @@ import RightSidebar from "./right-sidebar";
 
 import Container from "../common/container";
 import GlobalLoading from "../common/global-loading";
+import VerifyMailAlert from "../common/verify-mail-alert";
 import AuthModal from "../modals/auth-modal";
 
 import authService from "../../services/user-service";
 import { selectUser, setUser } from "../../redux/features/user-slice";
 import { setIsLoading } from "../../redux/features/global-loading";
-import VerifyMailAlert from "../common/verify-mail-alert";
-import queryString from "query-string";
-import { selectApp } from "../../redux/features/app-state-slice";
 
 const MainLayout = () => {
   const { user } = useSelector(selectUser);
-  const { appState } = useSelector(selectApp);
-  console.log("STATE", appState);
+  const [searchParams] = useSearchParams();
 
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
   const accessToken = localStorage.getItem("access_token") || "";
-
-  const value = queryString.parse(window.location.search);
-  const email_verify_token = value.token;
+  const email_verify_token = searchParams.get("token");
 
   // Auto refresh access token
   useEffect(() => {
@@ -107,6 +102,19 @@ const MainLayout = () => {
     if (email_verify_token && user && !user?.verify) verifyEmail();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [dispatch, user]);
+
+  // Navigate to home page after oauth google login
+  useEffect(() => {
+    if (window.location.pathname === "/login/oauth") {
+      const access_token = searchParams.get("access_token");
+      const refresh_token = searchParams.get("refresh_token");
+      if (access_token && refresh_token) {
+        localStorage.setItem("access_token", access_token);
+        localStorage.setItem("refresh_token", refresh_token);
+      }
+      navigate("/");
+    }
+  }, [navigate, searchParams]);
 
   return (
     <>
