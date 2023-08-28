@@ -1,3 +1,7 @@
+import { useEffect, useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { useParams } from "react-router-dom";
+
 import {
   Avatar,
   Menu,
@@ -10,19 +14,41 @@ import {
   TabsBody,
   TabsHeader,
   Typography,
+  Button,
 } from "@material-tailwind/react";
-import { useSelector } from "react-redux";
-import { selectUser } from "../../redux/features/user-slice";
+import { PencilSquareIcon } from "@heroicons/react/24/solid";
 import AboutMe from "./components/about-me";
 
+import userService from "../../services/user-service";
+import { selectUser } from "../../redux/features/user-slice";
+import { setEditMyProfileModalOpen } from "../../redux/features/edit-my-profile-modal-slice";
+
 const Profile = () => {
-  const { user } = useSelector(selectUser);
+  const { username } = useParams();
+  const dispatch = useDispatch();
+  const currentUser = useSelector(selectUser).user;
+
+  const [user, setUser] = useState(currentUser);
+
+  useEffect(() => {
+    const getUser = async () => {
+      if (username) {
+        const { response } = await userService.getUser({
+          username,
+        });
+
+        if (response) setUser(response.data.result);
+      }
+    };
+
+    getUser();
+  }, [username]);
 
   const data = [
     {
       label: "About",
       value: "about",
-      content: <AboutMe />,
+      content: <AboutMe user={user} />,
     },
     {
       label: "Questions",
@@ -88,7 +114,6 @@ const Profile = () => {
               user?.avatar ||
               "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTYmkp9a2rrD1Sskb9HLt5mDaTt4QaIs8CcBg&usqp=CAU"
             }
-            // size="xxl"
             alt="avatar"
             withBorder={true}
             className="w-20 h-20 sm:w-32 sm:h-32 p-0.5 hover:bg-blue-500 hover:border-blue-300 cursor-pointer"
@@ -102,6 +127,20 @@ const Profile = () => {
             </Typography>
           </div>
         </div>
+
+        {/* Edit button my profile start */}
+        {user?.username === currentUser?.username && (
+          <Button
+            onClick={() => dispatch(setEditMyProfileModalOpen(true))}
+            variant="outlined"
+            className="!absolute right-0 -bottom-28 sm:-bottom-24 flex items-center gap-2"
+          >
+            <PencilSquareIcon className="w-4 h-4" />
+            Edit Profile
+          </Button>
+        )}
+
+        {/* Edit button my profile end */}
       </div>
 
       <Tabs className="mt-32" value="about">

@@ -23,6 +23,15 @@ interface ResetPasswordPayload {
   confirm_password: string;
 }
 
+interface GetUsersPayload {
+  limit: number;
+  page: number;
+}
+
+interface GetUserPayload {
+  username: string;
+}
+
 interface ApiResponse<T> {
   response?: AxiosResponse<T>;
   error?: AxiosError;
@@ -33,12 +42,16 @@ const userEndpoints = {
   register: "/register",
   logout: "/logout",
   refreshToken: "/refresh-token",
-  getMe: "/me",
   verifyEmail: "/verify-email",
   resendVerifyEmail: "/resend-verify-email",
   forgotPassword: "/forgot-password",
   verifyForgotPassword: "/verify-forgot-password",
   resetPassword: "/reset-password",
+
+  getMe: "/me",
+  getUsers: ({ limit, page }: { limit: number; page: number }) =>
+    `/list-users?limit=${limit}&page=${page}`,
+  getUser: ({ username }: { username: string }) => `/${username}`,
 };
 
 const userService = {
@@ -188,6 +201,32 @@ const userService = {
         password,
         confirm_password,
       });
+
+      return { response };
+    } catch (error) {
+      return { error: error as AxiosError };
+    }
+  },
+
+  getUsers: async ({
+    limit,
+    page,
+  }: GetUsersPayload): Promise<ApiResponse<any>> => {
+    try {
+      const response = await axiosInstance.get(
+        userEndpoints.getUsers({ limit, page })
+      );
+
+      return { response };
+    } catch (error) {
+      return { error: error as AxiosError };
+    }
+  },
+  getUser: async ({ username }: GetUserPayload): Promise<ApiResponse<any>> => {
+    try {
+      const response = await axiosInstance.get(
+        userEndpoints.getUser({ username })
+      );
 
       return { response };
     } catch (error) {

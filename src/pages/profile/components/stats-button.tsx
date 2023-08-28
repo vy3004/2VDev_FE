@@ -8,7 +8,10 @@ interface StatsButtonProps {
 
 const StatsButton: React.FC<StatsButtonProps> = ({ label, stats, icon }) => {
   return (
-    <Button variant="outlined" className="normal-case w-full sm:space-y-2">
+    <Button
+      variant="outlined"
+      className="normal-case w-full sm:space-y-2 sm:p-2"
+    >
       <div className="flex items-center gap-1">
         {icon}
         <Typography className="text-xl font-semibold">{stats}</Typography>

@@ -88,7 +88,7 @@ const ProfileMenu = () => {
               "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTYmkp9a2rrD1Sskb9HLt5mDaTt4QaIs8CcBg&usqp=CAU"
             }
           />
-          <div className="hidden sm:flex sm:flex-col">
+          <div>
             <Typography className="normal-case text-gray-700 text-xs font-medium">
               Welcome!
             </Typography>

@@ -1,4 +1,3 @@
-import { useSelector } from "react-redux";
 import { format } from "date-fns";
 
 import { Avatar, Button, Typography } from "@material-tailwind/react";
@@ -14,12 +13,11 @@ import {
 } from "@heroicons/react/24/solid";
 
 import StatsButton from "./stats-button";
+interface AboutMeProps {
+  user: any;
+}
 
-import { selectUser } from "../../../redux/features/user-slice";
-
-const AboutMe = () => {
-  const { user } = useSelector(selectUser);
-
+const AboutMe: React.FC<AboutMeProps> = ({ user }) => {
   const statsItems = [
     {
       label: "Questions",
@@ -57,8 +55,8 @@ const AboutMe = () => {
   return (
     <div className="space-y-6">
       <div className="border rounded-lg space-y-6 p-10">
-        <Typography className="text-center text-2xl font-bold">
-          "{user?.bio}"
+        <Typography className="text-center text-2xl italic font-bold">
+          {user?.bio}
         </Typography>
 
         <div className="lg:flex justify-center gap-4">
@@ -88,7 +86,7 @@ const AboutMe = () => {
 
       <div className="grid grid-cols-4 gap-4 sm:gap-8">
         {statsItems.map((item, key) => (
-          <div key={key} className="col-span-2 lg:col-span-1">
+          <div key={key} className="col-span-4 sm:col-span-2 lg:col-span-1">
             <StatsButton
               label={item.label}
               stats={item.stats}
@@ -105,7 +103,7 @@ const AboutMe = () => {
           <Button
             key={key}
             variant="outlined"
-            className="normal-case w-full space-y-2"
+            className="normal-case w-full space-y-2 col-span-2 sm:col-span-1"
           >
             <div className="flex items-center gap-1">
               <UserGroupIcon className="w-8 h-8" />

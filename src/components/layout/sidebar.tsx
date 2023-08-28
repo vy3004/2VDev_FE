@@ -257,7 +257,10 @@ const Sidebar = () => {
                 />
               </ListItemSuffix>
             </ListItem>
-            <ListItem onClick={() => navigate("/profile")}>
+            <ListItem
+              onClick={() => navigate(`/profile/${user.username}`)}
+              selected={appState === "/profile/:username"}
+            >
               <ListItemPrefix>
                 <UserCircleIcon className="h-5 w-5" />
               </ListItemPrefix>

@@ -25,37 +25,30 @@ const routes: Route[] = [
   {
     path: "/",
     element: <Home />,
-    state: "home",
   },
   {
     path: "/about",
     element: <About />,
-    state: "about",
   },
   {
     path: "/contact",
     element: <Contact />,
-    state: "contact",
   },
   {
     path: "/feed",
     element: <Feed />,
-    state: "feed",
   },
   {
     path: "/tags",
     element: <Tags />,
-    state: "tags",
   },
   {
     path: "/communities",
     element: <Communities />,
-    state: "communities",
   },
   {
     path: "/users",
     element: <Users />,
-    state: "communities",
   },
   {
     path: "/message",
@@ -73,26 +66,22 @@ const routes: Route[] = [
         <Notification />
       </ProtectedPage>
     ),
-    state: "notification",
   },
   {
-    path: "/profile",
+    path: "/profile/:username",
     element: (
       <ProtectedPage>
         <Profile />
       </ProtectedPage>
     ),
-    state: "profile",
   },
   {
     path: "/settings",
     element: <Settings />,
-    state: "settings",
   },
   {
     path: "*",
     element: <NotFoundPage />,
-    state: "not-found-page",
   },
 ];
 

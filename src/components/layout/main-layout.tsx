@@ -12,6 +12,7 @@ import Container from "../common/container";
 import GlobalLoading from "../common/global-loading";
 import VerifyMailAlert from "../common/verify-mail-alert";
 import AuthModal from "../modals/auth-modal";
+import EditMyProfileModal from "../modals/edit-my-profile-modal";
 
 import authService from "../../services/user-service";
 import { selectUser, setUser } from "../../redux/features/user-slice";
@@ -103,7 +104,7 @@ const MainLayout = () => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [dispatch, user]);
 
-  // Navigate to home page after oauth google login
+  // Navigate to current page after oauth google login
   useEffect(() => {
     if (window.location.pathname === "/login/oauth") {
       const access_token = searchParams.get("access_token");
@@ -112,13 +113,16 @@ const MainLayout = () => {
         localStorage.setItem("access_token", access_token);
         localStorage.setItem("refresh_token", refresh_token);
       }
-      navigate("/");
+      navigate(-2);
     }
   }, [navigate, searchParams]);
 
   return (
     <>
+      {/* Modal */}
       <AuthModal />
+      <EditMyProfileModal />
+      {/* Modal */}
 
       <Header />
 
@@ -145,7 +149,7 @@ const MainLayout = () => {
           {/* Main content */}
 
           {/* Right sidebar */}
-          <div className="h-screen sticky top-[73px] hidden md:flex md:col-span-3 xl:col-span-2">
+          <div className="h-screen sticky top-[73px] col-span-10 md:col-span-3 xl:col-span-2">
             <div className="overflow-hidden hover:overflow-y-scroll w-full">
               <RightSidebar />
             </div>
