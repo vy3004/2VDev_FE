@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { toast } from "react-hot-toast";
+import { useNavigate } from "react-router-dom";
 
 import {
   ChevronDownIcon,
@@ -33,6 +34,7 @@ const ProfileMenu = () => {
   const { user } = useSelector(selectUser);
 
   const dispatch = useDispatch();
+  const navigate = useNavigate();
 
   const [isMenuOpen, setIsMenuOpen] = useState(false);
 
@@ -50,12 +52,16 @@ const ProfileMenu = () => {
     {
       label: "My Profile",
       icon: UserCircleIcon,
-      onClick() {},
+      onClick() {
+        navigate("/profile");
+      },
     },
     {
       label: "Setting",
       icon: Cog6ToothIcon,
-      onClick() {},
+      onClick() {
+        navigate("/settings");
+      },
     },
     {
       label: "Sign Out",

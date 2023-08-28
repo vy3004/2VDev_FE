@@ -1,5 +1,9 @@
 import {
   Avatar,
+  Menu,
+  MenuHandler,
+  MenuList,
+  MenuItem,
   Tab,
   TabPanel,
   Tabs,
@@ -9,6 +13,7 @@ import {
 } from "@material-tailwind/react";
 import { useSelector } from "react-redux";
 import { selectUser } from "../../redux/features/user-slice";
+import AboutMe from "./components/about-me";
 
 const Profile = () => {
   const { user } = useSelector(selectUser);
@@ -17,21 +22,19 @@ const Profile = () => {
     {
       label: "About",
       value: "about",
-      desc: `It really matters and then like it really doesn't matter.
-      What matters is the people who are sparked by it. And the people
-      who are like offended by it, it doesn't matter.`,
+      content: <AboutMe />,
     },
     {
       label: "Questions",
       value: "questions",
-      desc: `Because it's about motivating the doers. Because I'm here
+      content: `Because it's about motivating the doers. Because I'm here
       to follow my dreams and inspire other people to follow their dreams, too.`,
     },
 
     {
       label: "Answers",
       value: "answers",
-      desc: `We're not always in the position that we want to be at.
+      content: `We're not always in the position that we want to be at.
       We're constantly growing. We're constantly making mistakes. We're
       constantly trying to express ourselves and actualize our dreams.`,
     },
@@ -39,14 +42,32 @@ const Profile = () => {
     {
       label: "Best Answers",
       value: "best-answers",
-      desc: `Because it's about motivating the doers. Because I'm here
+      content: `Because it's about motivating the doers. Because I'm here
       to follow my dreams and inspire other people to follow their dreams, too.`,
     },
 
     {
-      label: "Svelte",
-      value: "svelte",
-      desc: `We're not always in the position that we want to be at.
+      label: (
+        <Menu
+          allowHover
+          animate={{
+            mount: { y: 0 },
+            unmount: { y: 25 },
+          }}
+        >
+          <MenuHandler>
+            <div>More</div>
+          </MenuHandler>
+
+          <MenuList>
+            <MenuItem>Menu Item 1</MenuItem>
+            <MenuItem>Menu Item 2</MenuItem>
+            <MenuItem>Menu Item 3</MenuItem>
+          </MenuList>
+        </Menu>
+      ),
+      value: "more",
+      content: `We're not always in the position that we want to be at.
       We're constantly growing. We're constantly making mistakes. We're
       constantly trying to express ourselves and actualize our dreams.`,
     },
@@ -61,28 +82,30 @@ const Profile = () => {
           alt="cover"
         />
 
-        <div className="absolute -bottom-20 left-10 flex items-center gap-2">
+        <div className="absolute -bottom-14 sm:-bottom-24 left-10 flex items-center gap-2">
           <Avatar
             src={
               user?.avatar ||
               "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTYmkp9a2rrD1Sskb9HLt5mDaTt4QaIs8CcBg&usqp=CAU"
             }
-            size="xxl"
+            // size="xxl"
             alt="avatar"
             withBorder={true}
-            className="p-0.5 hover:bg-blue-500 hover:border-blue-300 cursor-pointer"
+            className="w-20 h-20 sm:w-32 sm:h-32 p-0.5 hover:bg-blue-500 hover:border-blue-300 cursor-pointer"
           />
           <div>
-            <Typography className="font-bold text-2xl mt-8">
+            <Typography className="font-bold text-xl sm:text-2xl mt-8">
               {user?.name}
             </Typography>
-            <Typography className="text-sm">{user?.email}</Typography>
+            <Typography className="text-xs sm:text-sm">
+              {user?.email}
+            </Typography>
           </div>
         </div>
       </div>
 
-      <Tabs className="mt-32" value="html">
-        <TabsHeader>
+      <Tabs className="mt-32" value="about">
+        <TabsHeader className="z-0">
           {data.map(({ label, value }) => (
             <Tab key={value} value={value}>
               {label}
@@ -96,9 +119,9 @@ const Profile = () => {
             unmount: { y: 250 },
           }}
         >
-          {data.map(({ value, desc }) => (
+          {data.map(({ value, content }) => (
             <TabPanel key={value} value={value}>
-              {desc}
+              {content}
             </TabPanel>
           ))}
         </TabsBody>
