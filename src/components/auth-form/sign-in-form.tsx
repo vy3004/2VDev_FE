@@ -123,13 +123,17 @@ const SignInForm: React.FC<SignInFormProps> = ({
 
           {/* Form success message start */}
           {successMessage && (
-            <NotificationForm type="success" message={successMessage} />
+            <div className="mb-8">
+              <NotificationForm type="success" message={successMessage} />
+            </div>
           )}
           {/* Form success message end */}
 
           {/* Form error message start */}
           {errorMessage && (
-            <NotificationForm type="error" message={errorMessage} />
+            <div className="mb-8">
+              <NotificationForm type="error" message={errorMessage} />
+            </div>
           )}
           {/* Form error message end */}
 

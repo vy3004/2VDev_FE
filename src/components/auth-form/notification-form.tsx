@@ -17,7 +17,7 @@ const NotificationForm: React.FC<NotificationFormProps> = ({
     <>
       {type === "success" && (
         <Typography
-          className="p-2 mb-8 border border-green-500 rounded-full bg-green-100 flex items-center gap-1 font-normal text-green-500"
+          className="p-2 border border-green-500 rounded-full bg-green-100 flex items-center gap-1 font-normal text-green-500"
           variant="small"
         >
           <CheckCircleIcon className="h-4 w-4" />
@@ -26,7 +26,7 @@ const NotificationForm: React.FC<NotificationFormProps> = ({
       )}
       {type === "error" && (
         <Typography
-          className="p-2 mb-8 border border-red-500 rounded-full bg-red-100 flex items-center gap-1 font-normal text-red-500"
+          className="p-2 border border-red-500 rounded-full bg-red-100 flex items-center gap-1 font-normal text-red-500"
           variant="small"
         >
           <InformationCircleIcon className="h-4 w-4" />
