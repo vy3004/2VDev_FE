@@ -33,7 +33,7 @@ function App() {
 
   return (
     <>
-      <Toaster />
+      <Toaster toastOptions={{ duration: 5000 }} />
 
       <BrowserRouter>
         <Routes>
