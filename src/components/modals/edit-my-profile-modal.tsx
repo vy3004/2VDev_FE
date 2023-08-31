@@ -1,29 +1,45 @@
+import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
+import { useParams } from "react-router-dom";
+
 import {
-  Button,
   Dialog,
   DialogHeader,
   DialogBody,
-  DialogFooter,
-  Typography,
-  Avatar,
+  IconButton,
 } from "@material-tailwind/react";
+import { XMarkIcon } from "@heroicons/react/24/solid";
+import EditProfileForm from "../../pages/profile/components/edit-profile-form";
 
 import {
   selectEditMyProfileModal,
   setEditMyProfileModalOpen,
 } from "../../redux/features/edit-my-profile-modal-slice";
-import { selectUser } from "../../redux/features/user-slice";
+import userService from "../../services/user-service";
 
 const EditMyProfileModal = () => {
+  const { username } = useParams();
   const { editMyProfileModalOpen } = useSelector(selectEditMyProfileModal);
-  const { user } = useSelector(selectUser);
 
-  console.log(user);
+  const [user, setUser] = useState();
 
   const dispatch = useDispatch();
 
-  if (!user) dispatch(setEditMyProfileModalOpen(false));
+  useEffect(() => {
+    const getUser = async () => {
+      if (username) {
+        const { response } = await userService.getUser({
+          username,
+        });
+
+        if (response) {
+          setUser(response.data.result);
+        }
+      }
+    };
+
+    getUser();
+  }, [username]);
 
   const handleClose = () => dispatch(setEditMyProfileModalOpen(false));
 
@@ -32,44 +48,26 @@ const EditMyProfileModal = () => {
       <Dialog
         size="md"
         open={editMyProfileModalOpen}
-        handler={handleClose}
+        handler={() => {}}
         animate={{
           mount: { scale: 1, y: 0 },
           unmount: { scale: 0.9, y: -100 },
         }}
       >
-        <DialogHeader>Edit Profile</DialogHeader>
-        <DialogBody divider className="text-black">
-          <Typography className="font-bold">Avatar</Typography>
-          <Avatar
-            src={
-              user?.avatar ||
-              "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTYmkp9a2rrD1Sskb9HLt5mDaTt4QaIs8CcBg&usqp=CAU"
-            }
-            alt="avatar"
-            withBorder={true}
-            className="w-20 h-20 sm:w-32 sm:h-32 p-0.5 hover:bg-blue-500 hover:border-blue-300 cursor-pointer"
-          />
-          <Typography className="font-bold">Cover Photo</Typography>
-          <img
-            className="h-60 w-full border rounded-lg object-cover object-center"
-            src={user?.cover_photo || "/cover-photo.svg"}
-            alt="cover"
-          />
-        </DialogBody>
-        <DialogFooter>
-          <Button
+        <DialogHeader className="flex items-center justify-between">
+          Edit Profile
+          <IconButton
             variant="text"
             color="red"
             onClick={handleClose}
-            className="mr-1"
+            className="rounded-full"
           >
-            <span>Cancel</span>
-          </Button>
-          <Button variant="gradient" onClick={handleClose}>
-            <span>Confirm</span>
-          </Button>
-        </DialogFooter>
+            <XMarkIcon className="w-8 h-8" />
+          </IconButton>
+        </DialogHeader>
+        <DialogBody className="p-0 border-t">
+          {user ? <EditProfileForm user={user} /> : <></>}
+        </DialogBody>
       </Dialog>
     </>
   );
