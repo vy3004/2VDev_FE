@@ -59,12 +59,12 @@ const AboutMe: React.FC<AboutMeProps> = ({ user }) => {
           {user?.bio}
         </Typography>
 
-        <div className="lg:flex justify-center gap-4">
+        <div className="md:flex justify-center gap-4">
           <div className="flex items-center gap-2">
             {user?.date_of_birth && <CakeIcon className="w4 h-4" />}
             <Typography className="text-center font-bold">
               {user?.date_of_birth &&
-                format(new Date(user?.date_of_birth), "MM/dd/yyyy")}
+                format(new Date(user?.date_of_birth), "dd/MM/yyyy")}
             </Typography>
           </div>
 

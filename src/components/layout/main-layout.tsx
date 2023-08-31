@@ -136,7 +136,7 @@ const MainLayout = () => {
           {/* Left sidebar */}
 
           {/* Main content */}
-          <div className="col-span-10 md:col-span-7 xl:col-span-6 border-x">
+          <div className="col-span-10 lg:col-span-7 xl:col-span-6 border-x">
             <GlobalLoading
               children={
                 <div className="p-4">
@@ -149,7 +149,7 @@ const MainLayout = () => {
           {/* Main content */}
 
           {/* Right sidebar */}
-          <div className="h-screen sticky top-[73px] col-span-10 md:col-span-3 xl:col-span-2">
+          <div className="h-screen sticky top-[73px] col-span-10 lg:col-span-3 xl:col-span-2">
             <div className="overflow-hidden hover:overflow-y-scroll w-full">
               <RightSidebar />
             </div>

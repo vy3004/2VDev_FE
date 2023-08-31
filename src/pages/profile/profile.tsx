@@ -133,7 +133,7 @@ const Profile = () => {
           <Button
             onClick={() => dispatch(setEditMyProfileModalOpen(true))}
             variant="outlined"
-            className="!absolute right-0 -bottom-28 sm:-bottom-24 flex items-center gap-2"
+            className="!absolute right-0 -bottom-28 lg:-bottom-24 flex items-center gap-2"
           >
             <PencilSquareIcon className="w-4 h-4" />
             Edit Profile

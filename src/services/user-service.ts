@@ -32,6 +32,17 @@ interface GetUserPayload {
   username: string;
 }
 
+interface UpdateMePayLoad {
+  name?: string;
+  date_of_birth?: string;
+  bio?: string;
+  location?: string;
+  website?: string;
+  username?: string;
+  avatar?: string;
+  cover_photo?: string;
+}
+
 interface ApiResponse<T> {
   response?: AxiosResponse<T>;
   error?: AxiosError;
@@ -49,6 +60,7 @@ const userEndpoints = {
   resetPassword: "/reset-password",
 
   getMe: "/me",
+  updateMe: "/me",
   getUsers: ({ limit, page }: { limit: number; page: number }) =>
     `/list-users?limit=${limit}&page=${page}`,
   getUser: ({ username }: { username: string }) => `/${username}`,
@@ -127,6 +139,33 @@ const userService = {
   getInfo: async (): Promise<ApiResponse<any>> => {
     try {
       const response = await axiosInstance.get(userEndpoints.getMe);
+
+      return { response };
+    } catch (error) {
+      return { error: error as AxiosError };
+    }
+  },
+  updateMe: async ({
+    name,
+    date_of_birth,
+    bio,
+    location,
+    website,
+    username,
+    avatar,
+    cover_photo,
+  }: UpdateMePayLoad): Promise<ApiResponse<any>> => {
+    try {
+      const response = await axiosInstance.patch(userEndpoints.updateMe, {
+        name,
+        date_of_birth,
+        bio,
+        location,
+        website,
+        username,
+        avatar,
+        cover_photo,
+      });
 
       return { response };
     } catch (error) {

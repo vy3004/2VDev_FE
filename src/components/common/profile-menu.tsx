@@ -53,7 +53,7 @@ const ProfileMenu = () => {
       label: "My Profile",
       icon: UserCircleIcon,
       onClick() {
-        navigate("/profile");
+        navigate(`/profile/${user?.username}`);
       },
     },
     {

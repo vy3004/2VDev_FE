@@ -41,7 +41,7 @@ const Header = () => {
 
             <Typography
               as="a"
-              href="#"
+              href="/"
               className="sm:mr-4 ml-3 cursor-pointer py-1.5 pr-4 font-bold border-r-2 border-r-blue-gray-900"
             >
               2VDev
