@@ -151,8 +151,8 @@ const MainLayout = () => {
           {/* Main content */}
 
           {/* Right sidebar */}
-          <div className="h-screen sticky top-[73px] col-span-10 lg:col-span-3 xl:col-span-2">
-            <div className="overflow-hidden hover:overflow-y-scroll w-full h-full border-x">
+          <div className="h-screen sticky top-[73px] col-span-10 lg:col-span-3 xl:col-span-2 border-x">
+            <div className="overflow-hidden hover:overflow-y-scroll w-full h-[calc(100%-5rem)]">
               <RightSidebar />
             </div>
           </div>

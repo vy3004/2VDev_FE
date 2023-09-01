@@ -115,7 +115,7 @@ const Sidebar = () => {
   ];
 
   return (
-    <Card className="shadow-none h-full overflow-hidden hover:overflow-y-scroll">
+    <Card className="shadow-none h-[calc(100%-5rem)] overflow-hidden hover:overflow-y-scroll">
       <List className="min-w-full my-4">
         <ListItem selected={appState === "/"} onClick={() => navigate("/")}>
           <ListItemPrefix>
