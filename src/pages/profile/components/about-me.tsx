@@ -55,9 +55,13 @@ const AboutMe: React.FC<AboutMeProps> = ({ user }) => {
   return (
     <div className="space-y-6">
       <div className="border rounded-lg space-y-6 p-10">
-        <Typography className="text-center text-2xl italic font-bold">
-          {user?.bio}
-        </Typography>
+        <div className="flex justify-center">
+          {user?.bio && (
+            <Typography className="border-l-8 px-4 py-2 w-fit text-center sm:text-2xl italic font-bold">
+              "{user?.bio}"
+            </Typography>
+          )}
+        </div>
 
         <div className="md:flex justify-center gap-4">
           <div className="flex items-center gap-2">

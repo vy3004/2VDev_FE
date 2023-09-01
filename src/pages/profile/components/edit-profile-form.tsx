@@ -3,7 +3,6 @@ import { useFormik } from "formik";
 import { format } from "date-fns";
 import { toast } from "react-hot-toast";
 import { useDispatch } from "react-redux";
-import { useNavigate } from "react-router-dom";
 import AvatarEdit from "react-avatar-edit";
 
 import { GlobeAltIcon, MapPinIcon } from "@heroicons/react/24/solid";
@@ -40,7 +39,6 @@ interface EditMyProfileFormValues {
 
 const EditProfileForm: React.FC<EditProfileFormProps> = ({ user }) => {
   const dispatch = useDispatch();
-  const navigate = useNavigate();
 
   const [avatar, setAvatar] = useState(user.avatar);
   const [coverPhoto, setCoverPhoto] = useState(user.cover_photo);
@@ -120,7 +118,7 @@ const EditProfileForm: React.FC<EditProfileFormProps> = ({ user }) => {
         dispatch(setEditMyProfileModalOpen(false));
         data.username === user.username
           ? window.location.reload()
-          : navigate(`/profile/${data.username}`);
+          : (window.location.href = `/profile/${data.username}`);
         toast.success("Edit Profile Success");
       }
       if (error) setErrorMessage(error.message);

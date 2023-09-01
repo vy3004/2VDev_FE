@@ -20,7 +20,7 @@ import { PencilSquareIcon } from "@heroicons/react/24/solid";
 import AboutMe from "./components/about-me";
 
 import userService from "../../services/user-service";
-import { selectUser, setUser } from "../../redux/features/user-slice";
+import { selectUser } from "../../redux/features/user-slice";
 import { setEditMyProfileModalOpen } from "../../redux/features/edit-my-profile-modal-slice";
 
 const Profile = () => {
@@ -39,7 +39,6 @@ const Profile = () => {
 
         if (response) {
           setUserProfile(response.data.result);
-          dispatch(setUser(response.data.result));
         }
       }
     };
@@ -119,7 +118,7 @@ const Profile = () => {
             }
             alt="avatar"
             withBorder={true}
-            className="w-20 h-20 sm:w-32 sm:h-32 p-0.5 hover:bg-blue-500 hover:border-blue-300 cursor-pointer"
+            className="w-20 h-20 sm:w-32 sm:h-32 p-0.5 bg-white hover:bg-blue-500 hover:border-blue-300 cursor-pointer"
           />
           <div>
             <Typography className="font-bold text-xl sm:text-2xl mt-8">
@@ -162,7 +161,7 @@ const Profile = () => {
           }}
         >
           {data.map(({ value, content }) => (
-            <TabPanel key={value} value={value}>
+            <TabPanel className="px-0" key={value} value={value}>
               {content}
             </TabPanel>
           ))}

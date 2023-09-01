@@ -16,7 +16,6 @@ import {
   selectEditMyProfileModal,
   setEditMyProfileModalOpen,
 } from "../../redux/features/edit-my-profile-modal-slice";
-import { setUser } from "../../redux/features/user-slice";
 
 const EditMyProfileModal = () => {
   const { username } = useParams();
@@ -35,7 +34,6 @@ const EditMyProfileModal = () => {
 
         if (response) {
           setUserProfile(response.data.result);
-          dispatch(setUser(response.data.result));
         }
       }
     };
