@@ -11,17 +11,18 @@ import {
 import { XMarkIcon } from "@heroicons/react/24/solid";
 import EditProfileForm from "../../pages/profile/components/edit-profile-form";
 
+import userService from "../../services/user-service";
 import {
   selectEditMyProfileModal,
   setEditMyProfileModalOpen,
 } from "../../redux/features/edit-my-profile-modal-slice";
-import userService from "../../services/user-service";
+import { setUser } from "../../redux/features/user-slice";
 
 const EditMyProfileModal = () => {
   const { username } = useParams();
   const { editMyProfileModalOpen } = useSelector(selectEditMyProfileModal);
 
-  const [user, setUser] = useState();
+  const [userProfile, setUserProfile] = useState();
 
   const dispatch = useDispatch();
 
@@ -33,13 +34,14 @@ const EditMyProfileModal = () => {
         });
 
         if (response) {
-          setUser(response.data.result);
+          setUserProfile(response.data.result);
+          dispatch(setUser(response.data.result));
         }
       }
     };
 
     getUser();
-  }, [username]);
+  }, [username, dispatch]);
 
   const handleClose = () => dispatch(setEditMyProfileModalOpen(false));
 
@@ -66,7 +68,7 @@ const EditMyProfileModal = () => {
           </IconButton>
         </DialogHeader>
         <DialogBody className="p-0 border-t">
-          {user ? <EditProfileForm user={user} /> : <></>}
+          {userProfile ? <EditProfileForm user={userProfile} /> : <></>}
         </DialogBody>
       </Dialog>
     </>

@@ -20,7 +20,7 @@ import { PencilSquareIcon } from "@heroicons/react/24/solid";
 import AboutMe from "./components/about-me";
 
 import userService from "../../services/user-service";
-import { selectUser } from "../../redux/features/user-slice";
+import { selectUser, setUser } from "../../redux/features/user-slice";
 import { setEditMyProfileModalOpen } from "../../redux/features/edit-my-profile-modal-slice";
 
 const Profile = () => {
@@ -28,7 +28,7 @@ const Profile = () => {
   const dispatch = useDispatch();
   const currentUser = useSelector(selectUser).user;
 
-  const [user, setUser] = useState(currentUser);
+  const [userProfile, setUserProfile] = useState(currentUser);
 
   useEffect(() => {
     const getUser = async () => {
@@ -37,18 +37,21 @@ const Profile = () => {
           username,
         });
 
-        if (response) setUser(response.data.result);
+        if (response) {
+          setUserProfile(response.data.result);
+          dispatch(setUser(response.data.result));
+        }
       }
     };
 
     getUser();
-  }, [username]);
+  }, [username, dispatch]);
 
   const data = [
     {
       label: "About",
       value: "about",
-      content: <AboutMe user={user} />,
+      content: <AboutMe user={userProfile} />,
     },
     {
       label: "Questions",
@@ -104,14 +107,14 @@ const Profile = () => {
       <div className="relative">
         <img
           className="h-60 w-full border rounded-lg object-cover object-center"
-          src={user?.cover_photo || "/cover-photo.svg"}
+          src={userProfile?.cover_photo || "/cover-photo.svg"}
           alt="cover"
         />
 
         <div className="absolute -bottom-14 sm:-bottom-24 left-10 flex items-center gap-2">
           <Avatar
             src={
-              user?.avatar ||
+              userProfile?.avatar ||
               "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTYmkp9a2rrD1Sskb9HLt5mDaTt4QaIs8CcBg&usqp=CAU"
             }
             alt="avatar"
@@ -120,16 +123,16 @@ const Profile = () => {
           />
           <div>
             <Typography className="font-bold text-xl sm:text-2xl mt-8">
-              {user?.name}
+              {userProfile?.name}
             </Typography>
             <Typography className="text-xs sm:text-sm">
-              {user?.email}
+              {userProfile?.email}
             </Typography>
           </div>
         </div>
 
         {/* Edit button my profile start */}
-        {user?.username === currentUser?.username && (
+        {userProfile?.username === currentUser?.username && (
           <Button
             onClick={() => dispatch(setEditMyProfileModalOpen(true))}
             variant="outlined"

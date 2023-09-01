@@ -22,7 +22,6 @@ import userService from "../../../services/user-service";
 import { base64ToFile, fileToBase64 } from "../../../utils/file-utils";
 
 import { setEditMyProfileModalOpen } from "../../../redux/features/edit-my-profile-modal-slice";
-import { setUser } from "../../../redux/features/user-slice";
 
 interface EditProfileFormProps {
   user: any;
@@ -51,8 +50,6 @@ const EditProfileForm: React.FC<EditProfileFormProps> = ({ user }) => {
   const [isSubmit, setIsSubmit] = useState(false);
   const [changeAvatar, setChangeAvatar] = useState(false);
   const [changeCoverPhoto, setChangeCoverPhoto] = useState(false);
-
-  console.log("USER", user);
 
   const onClose = () => {
     setAvatar(user.avatar);
@@ -120,9 +117,10 @@ const EditProfileForm: React.FC<EditProfileFormProps> = ({ user }) => {
 
       const { response, error } = await userService.updateMe(data);
       if (response) {
-        dispatch(setUser({ username: data.username }));
         dispatch(setEditMyProfileModalOpen(false));
-        navigate(`/profile/${data.username}`);
+        data.username === user.username
+          ? window.location.reload()
+          : navigate(`/profile/${data.username}`);
         toast.success("Edit Profile Success");
       }
       if (error) setErrorMessage(error.message);
@@ -141,6 +139,7 @@ const EditProfileForm: React.FC<EditProfileFormProps> = ({ user }) => {
       )}
       {/* Error message form end */}
 
+      {/* Edit avatar start */}
       <div className="h-[500px] overflow-hidden overflow-y-scroll p-4 space-y-4">
         <div className="flex items-center justify-between">
           <Typography className="font-bold">Avatar</Typography>
@@ -166,6 +165,9 @@ const EditProfileForm: React.FC<EditProfileFormProps> = ({ user }) => {
             />
           )}
         </div>
+        {/* Edit avatar end */}
+
+        {/* Edit cover photo start */}
         <div className="flex items-center justify-between">
           <Typography className="font-bold">Cover Photo</Typography>
           <Button
@@ -192,6 +194,8 @@ const EditProfileForm: React.FC<EditProfileFormProps> = ({ user }) => {
           alt="cover"
           src={coverPhoto}
         />
+        {/* Edit cover photo start */}
+
         <Typography className="font-bold">Personal Information</Typography>
         <div className="grid grid-cols-2 gap-4">
           <Input
@@ -223,6 +227,7 @@ const EditProfileForm: React.FC<EditProfileFormProps> = ({ user }) => {
           value={editMyProfileForm.values.bio}
           onChange={editMyProfileForm.handleChange}
         />
+
         <div className="grid grid-cols-2 gap-4">
           <Input
             containerProps={{ className: "col-span-2 sm:col-span-1" }}
