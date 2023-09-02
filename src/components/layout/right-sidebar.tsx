@@ -1,6 +1,5 @@
 import {
   ChatBubbleLeftIcon,
-  QuestionMarkCircleIcon,
   TagIcon,
   UsersIcon,
 } from "@heroicons/react/24/solid";
@@ -14,6 +13,9 @@ import {
   TabPanel,
   Avatar,
 } from "@material-tailwind/react";
+import QuestionButton from "../common/question-button";
+
+import { getLastTwoWords } from "../../utils/string-utils";
 
 const RightSidebar = () => {
   const tags = [
@@ -78,13 +80,14 @@ const RightSidebar = () => {
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-2">
               <Avatar
+                className="p-0.5 border border-black"
                 size="sm"
                 variant="circular"
                 src={item.user.avatar}
                 alt="avatar"
               />
-              <Typography className="font-bold text-sm">
-                {item.user.name}
+              <Typography className="font-bold text-sm text-black">
+                {getLastTwoWords(item.user.name)}
               </Typography>
             </div>
 
@@ -107,11 +110,8 @@ const RightSidebar = () => {
 
   return (
     <div className="">
-      <div className="border-y flex justify-center py-4">
-        <Button className="flex items-center gap-2 text-lg normal-case">
-          <QuestionMarkCircleIcon className="w-6 h-6" />
-          Ask Question
-        </Button>
+      <div className="hidden border-y lg:flex lg:justify-center py-4">
+        <QuestionButton />
       </div>
       <div className="grid grid-cols-2 gap-2 p-4 bg-gray-100">
         <div className="relative block border rounded-bl-3xl rounded-tr-3xl overflow-hidden p-2 bg-white shadow-md">
@@ -174,6 +174,7 @@ const RightSidebar = () => {
             ))}
           </TabsHeader>
           <TabsBody
+            className="bg-gray-100"
             animate={{
               initial: { y: 250 },
               mount: { y: 0 },
@@ -181,11 +182,7 @@ const RightSidebar = () => {
             }}
           >
             {data.map(({ value, desc }) => (
-              <TabPanel
-                className="bg-gray-100 space-y-2"
-                key={value}
-                value={value}
-              >
+              <TabPanel className="space-y-2" key={value} value={value}>
                 {desc}
               </TabPanel>
             ))}
@@ -201,23 +198,32 @@ const RightSidebar = () => {
 
         <div>
           <div className="border rounded-lg p-2 bg-white shadow-md">
-            <div className="flex items-center justify-between">
-              <div className="flex items-center gap-2">
-                <Avatar
-                  size="sm"
-                  variant="circular"
-                  src="https://images.unsplash.com/photo-1633332755192-727a05c4013d?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1480&q=80"
-                  alt="avatar"
-                />
-                <Typography className="font-bold text-sm">test</Typography>
-              </div>
+            <div className="flex gap-2">
+              <Avatar
+                className="p-0.5 border border-black"
+                size="md"
+                variant="circular"
+                src="https://images.unsplash.com/photo-1633332755192-727a05c4013d?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1480&q=80"
+                alt="avatar"
+              />
+              <div>
+                <Typography className="font-bold text-black">
+                  {getLastTwoWords("Tran Nguyen Kha Vy")}
+                </Typography>
+                <Typography className="border border-black rounded-full w-fit px-2 text-xs font-bold">
+                  Beginner
+                </Typography>
 
-              <Button variant="text" className="flex items-center gap-1 p-1">
-                test
-                <ChatBubbleLeftIcon className="w-4 h-4" />
-              </Button>
+                <div className="mt-2 flex gap-1">
+                  <Typography as="a" href="#" className="text-xs">
+                    5 Questions
+                  </Typography>
+                  <Typography as="a" href="#" className="text-xs">
+                    800 Points
+                  </Typography>
+                </div>
+              </div>
             </div>
-            <Typography className="font-bold">test</Typography>
           </div>
         </div>
       </div>

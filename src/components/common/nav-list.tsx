@@ -30,7 +30,7 @@ const NavList = () => {
   ];
 
   return (
-    <div className="hidden lg:flex lg:items-end gap-1">
+    <div className="hidden md:flex md:items-end gap-1">
       {navListItems.map(({ label, icon, href }, key) => (
         <Button
           onClick={() => navigate(href)}

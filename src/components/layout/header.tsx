@@ -33,7 +33,7 @@ const Header = () => {
   };
 
   return (
-    <nav className="sticky top-0 z-10 bg-white h-max max-w-full border-b p-2 sm:p-4">
+    <nav className="sticky top-0 z-50 bg-white h-max max-w-full border-b p-2 sm:p-4">
       <Container>
         <div className="flex flex-wrap items-center justify-between text-blue-gray-900">
           <div className="flex items-center">
@@ -51,7 +51,7 @@ const Header = () => {
           </div>
 
           <div className="flex items-center space-x-2 xl:space-x-6">
-            <div className="hidden md:flex">
+            <div className="hidden lg:flex">
               <SearchInput />
             </div>
 
