@@ -11,13 +11,14 @@ import RightSidebar from "./right-sidebar";
 import Container from "../common/container";
 import GlobalLoading from "../common/global-loading";
 import VerifyMailAlert from "../common/verify-mail-alert";
+import BreadcrumbsCustom from "../common/breadcrumbs";
+import AnswerQuestion from "../common/answer-question";
 import AuthModal from "../modals/auth-modal";
 import EditMyProfileModal from "../modals/edit-my-profile-modal";
 
 import authService from "../../services/user-service";
 import { selectUser, setUser } from "../../redux/features/user-slice";
 import { setIsLoading } from "../../redux/features/global-loading";
-import BreadcrumbsCustom from "../common/breadcrumbs";
 
 const MainLayout = () => {
   const { user } = useSelector(selectUser);
@@ -140,7 +141,8 @@ const MainLayout = () => {
           <div className="col-span-10 lg:col-span-7 xl:col-span-6 border-x">
             <GlobalLoading
               children={
-                <div className="p-4 space-y-4">
+                <div className="px-4 space-y-4">
+                  <AnswerQuestion />
                   <BreadcrumbsCustom />
                   {user && !user?.verify ? <VerifyMailAlert /> : <></>}
                   <Outlet />
@@ -151,8 +153,8 @@ const MainLayout = () => {
           {/* Main content */}
 
           {/* Right sidebar */}
-          <div className="h-screen sticky top-[73px] col-span-10 lg:col-span-3 xl:col-span-2 border-x">
-            <div className="overflow-hidden hover:overflow-y-scroll w-full h-[calc(100%-5rem)]">
+          <div className="lg:h-screen lg:sticky lg:top-[73px] col-span-10 lg:col-span-3 xl:col-span-2 border-x">
+            <div className="lg:overflow-hidden lg:hover:overflow-y-scroll w-full h-[calc(100%-77px)]">
               <RightSidebar />
             </div>
           </div>
