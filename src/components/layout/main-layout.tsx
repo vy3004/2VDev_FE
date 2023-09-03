@@ -141,7 +141,7 @@ const MainLayout = () => {
           <div className="col-span-10 lg:col-span-7 xl:col-span-6 border-x">
             <GlobalLoading
               children={
-                <div className="px-4 space-y-4">
+                <div className="px-4 pb-4 space-y-4">
                   <AnswerQuestion />
                   <BreadcrumbsCustom />
                   {user && !user?.verify ? <VerifyMailAlert /> : <></>}

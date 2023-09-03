@@ -24,7 +24,7 @@ const ProtectedPage: React.FC<{ children: React.ReactNode }> = ({
   return user ? (
     <>{children}</>
   ) : (
-    <div className="flex rounded-lg p-4 space-x-4 !mb-4 bg-red-100 text-red-500">
+    <div className="flex rounded-lg p-4 space-x-4 bg-red-100 text-red-500">
       <div>
         <UserIcon className="h-6 w-6" />
       </div>
