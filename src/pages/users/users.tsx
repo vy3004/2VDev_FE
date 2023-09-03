@@ -1,13 +1,15 @@
 import { useState, useEffect } from "react";
 import { useSelector } from "react-redux";
+
 import {
   Avatar,
   Typography,
   Button,
   IconButton,
-  Spinner,
 } from "@material-tailwind/react";
 import { ArrowLeftIcon, ArrowRightIcon } from "@heroicons/react/24/outline";
+
+import Loading from "../../components/common/loading";
 
 import userService from "../../services/user-service";
 import { selectUser } from "../../redux/features/user-slice";
@@ -56,12 +58,7 @@ const Users = () => {
     <div>
       <div className="mt-4 space-y-8">
         <div className="relative grid grid-cols-6 gap-6">
-          {isLoading && (
-            <div className="absolute h-full w-full z-[1] bg-white opacity-90 flex items-center justify-center text-xl gap-2">
-              <Spinner className="h-10 w-10" />
-              Loading...
-            </div>
-          )}
+          {isLoading && <Loading />}
 
           {users &&
             users.map(({ name, avatar, username }, key) => (
@@ -93,7 +90,7 @@ const Users = () => {
             ))}
         </div>
 
-        <div className="flex items-center justify-end gap-8">
+        <div className="flex items-center justify-end gap-4">
           <IconButton
             size="sm"
             variant="outlined"

@@ -17,6 +17,7 @@ import Profile from "../pages/profile/profile";
 import NotFoundPage from "../pages/not-found-page/not-found-page";
 import ManageUsers from "../pages/dashboard/manage-users/manage-users";
 import ManagePosts from "../pages/dashboard/manage-posts/manage-posts";
+import UserDetail from "../pages/dashboard/manage-users/[username]/user-detail";
 
 interface Route {
   path: string;
@@ -41,6 +42,14 @@ const routes: Route[] = [
     element: (
       <AdminPage>
         <ManageUsers />
+      </AdminPage>
+    ),
+  },
+  {
+    path: "/dashboard/manage-users/:username",
+    element: (
+      <AdminPage>
+        <UserDetail />
       </AdminPage>
     ),
   },
