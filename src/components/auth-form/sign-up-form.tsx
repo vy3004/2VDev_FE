@@ -91,7 +91,7 @@ const SignUpForm: React.FC<SignUpFormProps> = ({
     <Card className="mx-auto w-full max-w-[48rem]">
       <CardBody className="flex gap-0 md:gap-8">
         <img
-          src="auth-sign-up.svg"
+          src="/auth-sign-up.svg"
           alt="auth"
           className="w-0 md:w-3/6 object-cover"
         />

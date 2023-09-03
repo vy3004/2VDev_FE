@@ -68,7 +68,7 @@ const ForgotPasswordForm: React.FC<ForgotPasswordFormProps> = ({
     <Card className="mx-auto w-full max-w-[48rem]">
       <CardBody className="flex gap-0 md:gap-8">
         <img
-          src="auth-sign-in.svg"
+          src="/auth-sign-in.svg"
           alt="auth"
           className="w-0 md:w-3/6 object-cover"
         />
