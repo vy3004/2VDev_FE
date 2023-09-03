@@ -1,7 +1,7 @@
 import { toast } from "react-hot-toast";
 
 import { Typography } from "@material-tailwind/react";
-import { CheckBadgeIcon } from "@heroicons/react/24/solid";
+import { EnvelopeOpenIcon } from "@heroicons/react/24/solid";
 
 import authService from "../../services/user-service";
 
@@ -12,8 +12,11 @@ const VerifyMailAlert = () => {
   };
 
   return (
-    <div className="flex border rounded-lg p-4 space-x-4">
-      <CheckBadgeIcon className="h-10 w-10" />
+    <div className="flex border rounded-lg p-4 space-x-4 bg-yellow-50 text-yellow-800">
+      <div>
+        <EnvelopeOpenIcon className="h-6 w-6" />
+      </div>
+
       <Typography className="font-bold">
         A confirmation mail has been sent to your registered email account, If
         you have not received the confirmation mail, kindly

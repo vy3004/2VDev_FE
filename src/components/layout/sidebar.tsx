@@ -54,17 +54,17 @@ const Sidebar = () => {
     {
       label: "Overview",
       icon: <ChevronRightIcon strokeWidth={3} className="h-3 w-5" />,
-      href: "/overview",
+      href: "/dashboard/overview",
     },
     {
       label: "Manage users",
       icon: <ChevronRightIcon strokeWidth={3} className="h-3 w-5" />,
-      href: "/manage-users",
+      href: "/dashboard/manage-users",
     },
     {
       label: "Manage posts",
       icon: <ChevronRightIcon strokeWidth={3} className="h-3 w-5" />,
-      href: "/manage-posts",
+      href: "/dashboard/manage-posts",
     },
   ];
 
