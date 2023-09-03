@@ -1,6 +1,7 @@
 import { ReactElement } from "react";
 
 import ProtectedPage from "../components/common/protected-page";
+import AdminPage from "../components/common/admin-page";
 
 import Home from "../pages/home/home";
 import About from "../pages/about/about";
@@ -14,11 +15,12 @@ import Message from "../pages/message/message";
 import Notification from "../pages/notification/notification";
 import Profile from "../pages/profile/profile";
 import NotFoundPage from "../pages/not-found-page/not-found-page";
+import ManageUsers from "../pages/dashboard/manage-users/manage-users";
+import ManagePosts from "../pages/dashboard/manage-posts/manage-posts";
 
 interface Route {
   path: string;
   element: ReactElement;
-  state?: string;
 }
 
 const routes: Route[] = [
@@ -33,6 +35,22 @@ const routes: Route[] = [
   {
     path: "/contact",
     element: <Contact />,
+  },
+  {
+    path: "/dashboard/manage-users/",
+    element: (
+      <AdminPage>
+        <ManageUsers />
+      </AdminPage>
+    ),
+  },
+  {
+    path: "/dashboard/manage-posts",
+    element: (
+      <AdminPage>
+        <ManagePosts />
+      </AdminPage>
+    ),
   },
   {
     path: "/feed",
@@ -57,7 +75,6 @@ const routes: Route[] = [
         <Message />
       </ProtectedPage>
     ),
-    state: "message",
   },
   {
     path: "/notification",
