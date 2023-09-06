@@ -13,7 +13,7 @@ const MobileSidebar = () => {
       <Button onClick={openDrawer} className="xl:hidden mr-2">
         <Bars3Icon className="w-5 h-5" />
       </Button>
-      <Drawer open={open} onClose={closeDrawer}>
+      <Drawer className="dark:bg-gray-900" open={open} onClose={closeDrawer}>
         <Sidebar />
       </Drawer>
     </>

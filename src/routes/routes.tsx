@@ -38,7 +38,7 @@ const routes: Route[] = [
     element: <Contact />,
   },
   {
-    path: "/dashboard/manage-users/",
+    path: "/dashboard/manage-users",
     element: (
       <AdminPage>
         <ManageUsers />

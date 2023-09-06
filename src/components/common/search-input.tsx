@@ -14,13 +14,13 @@ const SearchInput = () => {
 
   return (
     <div
-      className={`p-0.5 border-2 border-black rounded-full flex ${
+      className={`p-0.5 border-2 border-gray-900 dark:bg-gray-50 dark:text-gray-900 rounded-full flex ${
         isSearch && "w-full"
       }`}
     >
       <Button
         size="sm"
-        className="rounded-full normal-case flex items-center gap-2"
+        className="rounded-full normal-case flex items-center gap-2 dark:bg-gray-900"
         onClick={() => dispatch(setIsSearch(!isSearch))}
       >
         {!isSearch ? (

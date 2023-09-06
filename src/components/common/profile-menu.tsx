@@ -76,23 +76,23 @@ const ProfileMenu = () => {
         <Button
           variant="text"
           color="blue-gray"
-          className="sm:w-32 flex items-center gap-2 rounded-full py-0.5 pr-2 pl-0.5 lg:ml-auto"
+          className="sm:w-32 flex items-center gap-2 rounded-full py-0.5 pr-2 pl-0.5 lg:ml-auto dark:bg-gray-900"
         >
           <Avatar
             variant="circular"
             size="sm"
             alt="tania andrew"
-            className="border border-gray-900 p-0.5"
+            className="border border-gray-900 dark:border-gray-50 p-0.5"
             src={
               user?.avatar ||
               "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTYmkp9a2rrD1Sskb9HLt5mDaTt4QaIs8CcBg&usqp=CAU"
             }
           />
           <div>
-            <Typography className="normal-case text-gray-700 text-xs font-medium">
+            <Typography className="normal-case text-gray-700 dark:text-gray-4   00 text-xs font-medium">
               Welcome!
             </Typography>
-            <Typography className="normal-case text-gray-900 text-sm font-bold">
+            <Typography className="normal-case text-gray-900 dark:text-gray-50 text-sm font-bold">
               {getLastTwoWords(user?.name || "")}
             </Typography>
           </div>
@@ -105,7 +105,10 @@ const ProfileMenu = () => {
           />
         </Button>
       </MenuHandler>
-      <MenuList className="p-1" onClick={closeMenu}>
+      <MenuList
+        className="p-1 dark:bg-gray-700 dark:text-gray-50 dark:border-gray-700"
+        onClick={closeMenu}
+      >
         {profileMenuItems.map(({ label, icon, onClick }, key) => {
           const isLastItem = key === profileMenuItems.length - 1;
           return (

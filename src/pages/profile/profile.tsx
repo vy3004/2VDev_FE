@@ -102,7 +102,7 @@ const Profile = () => {
   ];
 
   return (
-    <div>
+    <div className="dark:text-gray-50">
       <div className="relative">
         <img
           className="h-60 w-full border rounded-lg object-cover object-center"
@@ -135,7 +135,7 @@ const Profile = () => {
           <Button
             onClick={() => dispatch(setEditMyProfileModalOpen(true))}
             variant="outlined"
-            className="!absolute right-0 -bottom-28 lg:-bottom-24 flex items-center gap-2"
+            className="!absolute right-0 -bottom-28 lg:-bottom-24 flex items-center gap-2 dark:text-gray-50 dark:border-gray-50 dark:bg-gray-700"
           >
             <PencilSquareIcon className="w-4 h-4" />
             Edit Profile

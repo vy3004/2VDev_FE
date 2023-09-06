@@ -44,6 +44,8 @@ const Sidebar = () => {
   const { user } = useSelector(selectUser);
   const { appState } = useSelector(selectApp);
 
+  console.log(appState);
+
   const [open, setOpen] = useState(0);
 
   const handleOpen = (value: number) => {
@@ -115,9 +117,15 @@ const Sidebar = () => {
   ];
 
   return (
-    <Card className="shadow-none h-[calc(100%-77px)] overflow-hidden hover:overflow-y-scroll">
-      <List className="min-w-full my-4">
-        <ListItem selected={appState === "/"} onClick={() => navigate("/")}>
+    <Card className="shadow-none h-[calc(100%-77px)] overflow-hidden hover:overflow-y-scroll bg-transparent">
+      <List className="min-w-full my-4 dark:text-gray-50">
+        <ListItem
+          className={`${
+            appState === "/" && "dark:bg-gray-50 dark:text-gray-900"
+          }`}
+          selected={appState === "/"}
+          onClick={() => navigate("/")}
+        >
           <ListItemPrefix>
             <HomeIcon className="h-5 w-5" />
           </ListItemPrefix>
@@ -139,20 +147,23 @@ const Sidebar = () => {
             <ListItem className="p-0" selected={open === 1}>
               <AccordionHeader
                 onClick={() => handleOpen(1)}
-                className="border-b-0 p-3"
+                className="border-b-0 p-3 dark:text-gray-50"
               >
                 <ListItemPrefix>
                   <PresentationChartBarIcon className="h-5 w-5" />
                 </ListItemPrefix>
-                <Typography color="blue-gray" className="mr-auto font-normal">
+                <Typography className="mr-auto font-normal">
                   Dashboard
                 </Typography>
               </AccordionHeader>
             </ListItem>
             <AccordionBody className="py-1">
-              <List className="p-0">
+              <List className="p-0 dark:text-gray-50">
                 {listDashboard.map(({ label, icon, href }, key) => (
                   <ListItem
+                    className={`${
+                      appState === href && "dark:bg-gray-50 dark:text-gray-900"
+                    }`}
                     selected={appState === href}
                     onClick={() => navigate(href)}
                     key={key}
@@ -182,20 +193,21 @@ const Sidebar = () => {
           <ListItem className="p-0" selected={open === 2}>
             <AccordionHeader
               onClick={() => handleOpen(2)}
-              className="border-b-0 p-3"
+              className="border-b-0 p-3 dark:text-gray-50"
             >
               <ListItemPrefix>
                 <BookOpenIcon className="h-5 w-5" />
               </ListItemPrefix>
-              <Typography color="blue-gray" className="mr-auto font-normal">
-                Questions
-              </Typography>
+              <Typography className="mr-auto font-normal">Questions</Typography>
             </AccordionHeader>
           </ListItem>
           <AccordionBody className="py-1">
             <List className="p-0">
               {listQuestions.map(({ label, icon, href }, key) => (
                 <ListItem
+                  className={`${
+                    appState === href && "dark:bg-gray-50 dark:text-gray-900"
+                  }`}
                   selected={appState === href}
                   onClick={() => navigate(href)}
                   key={key}
@@ -237,8 +249,7 @@ const Sidebar = () => {
                   value="14"
                   size="sm"
                   variant="ghost"
-                  color="blue-gray"
-                  className="rounded-full"
+                  className="rounded-full dark:bg-blue-gray-50"
                 />
               </ListItemSuffix>
             </ListItem>
@@ -252,8 +263,7 @@ const Sidebar = () => {
                   value="7"
                   size="sm"
                   variant="ghost"
-                  color="blue-gray"
-                  className="rounded-full"
+                  className="rounded-full dark:bg-blue-gray-50"
                 />
               </ListItemSuffix>
             </ListItem>

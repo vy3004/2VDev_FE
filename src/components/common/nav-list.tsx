@@ -36,8 +36,11 @@ const NavList = () => {
           onClick={() => navigate(href)}
           key={key}
           size="sm"
-          variant={`${appState === href ? "gradient" : "text"}`}
-          className="flex items-center gap-2 rounded-full normal-case text-sm"
+          className={`flex items-center gap-2 rounded-full border border-gray-900 shadow-none normal-case text-sm ${
+            appState === href
+              ? "bg-gray-900 text-gray-50 dark:bg-gray-50 dark:text-gray-900"
+              : "bg-white text-gray-900 dark:bg-gray-900 dark:text-gray-50"
+          }`}
         >
           {React.createElement(icon, { className: "h-5 w-5" })} {label}
         </Button>

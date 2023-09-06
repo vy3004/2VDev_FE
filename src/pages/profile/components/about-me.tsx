@@ -53,7 +53,7 @@ const AboutMe: React.FC<AboutMeProps> = ({ user }) => {
   ];
 
   return (
-    <div className="space-y-6">
+    <div className="space-y-6 dark:text-gray-50">
       <div className="border rounded-lg space-y-6 p-10">
         <div className="flex justify-center">
           {user?.bio && (
@@ -107,7 +107,7 @@ const AboutMe: React.FC<AboutMeProps> = ({ user }) => {
           <Button
             key={key}
             variant="outlined"
-            className="normal-case w-full space-y-2 col-span-2 sm:col-span-1"
+            className="normal-case w-full space-y-2 col-span-2 sm:col-span-1 dark:text-gray-50 dark:border-gray-50"
           >
             <div className="flex items-center gap-1">
               <UserGroupIcon className="w-8 h-8" />

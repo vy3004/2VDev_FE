@@ -35,7 +35,7 @@ const AnswerQuestion = () => {
 
   return (
     <div
-      className={`lg:hidden sticky top-[61px] ms:top-[77px] z-[10] w-full py-2 bg-white flex items-center justify-between gap-10 transition-transform duration-300 ${show}`}
+      className={`lg:hidden sticky top-[61px] sm:top-[77px] z-[10] w-full p-2 rounded-b-xl bg-white dark:bg-gray-700 flex items-center justify-between gap-10 transition-transform duration-300 ${show}`}
     >
       <SearchInput />
 

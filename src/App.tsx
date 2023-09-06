@@ -1,4 +1,3 @@
-// import { useEffect, useState } from "react";
 import { Toaster } from "react-hot-toast";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 
@@ -8,29 +7,6 @@ import PageWrapper from "./components/common/page-wrapper";
 import routes from "./routes/routes";
 
 function App() {
-  // const [theme, setTheme] = useState<string | null>(null);
-
-  // useEffect(() => {
-  //   if (window.matchMedia("(prefers-color-scheme: dark)").matches) {
-  //     setTheme("dark");
-  //   } else {
-  //     setTheme("light");
-  //   }
-  // }, []);
-
-  // useEffect(() => {
-  //   if (theme === "dark") {
-  //     document.documentElement.classList.add("dark");
-  //   } else {
-  //     document.documentElement.classList.remove("dark");
-  //   }
-  // }, [theme]);
-
-  // const handleThemeSwitch = () => {
-  //   setTheme(theme === "dark" ? "light" : "dark");
-  //   console.log(theme);
-  // };
-
   return (
     <>
       <Toaster toastOptions={{ duration: 5000 }} />
@@ -72,7 +48,6 @@ function App() {
           </Route>
         </Routes>
       </BrowserRouter>
-      {/* <MainLayout /> */}
     </>
   );
 }

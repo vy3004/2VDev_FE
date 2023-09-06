@@ -19,6 +19,7 @@ import EditMyProfileModal from "../modals/edit-my-profile-modal";
 import authService from "../../services/user-service";
 import { selectUser, setUser } from "../../redux/features/user-slice";
 import { setIsLoading } from "../../redux/features/global-loading";
+import SpeedDialCustom from "../common/speed-dial";
 
 const MainLayout = () => {
   const { user } = useSelector(selectUser);
@@ -120,13 +121,15 @@ const MainLayout = () => {
   }, [navigate, searchParams]);
 
   return (
-    <>
+    <div className="relative h-full w-full dark:bg-gray-900">
       {/* Modal */}
       <AuthModal />
       <EditMyProfileModal />
       {/* Modal */}
 
       <Header />
+
+      <SpeedDialCustom />
 
       {/* Page Content */}
       <Container>
@@ -138,7 +141,7 @@ const MainLayout = () => {
           {/* Left sidebar */}
 
           {/* Main content */}
-          <div className="col-span-10 lg:col-span-7 xl:col-span-6 border-x">
+          <div className="col-span-10 lg:col-span-7 xl:col-span-6 border-x dark:border-gray-900">
             <GlobalLoading
               children={
                 <div className="px-4 pb-4 space-y-4">
@@ -153,7 +156,7 @@ const MainLayout = () => {
           {/* Main content */}
 
           {/* Right sidebar */}
-          <div className="lg:h-screen lg:sticky lg:top-[73px] col-span-10 lg:col-span-3 xl:col-span-2 border-x">
+          <div className="lg:h-screen lg:sticky lg:top-[73px] col-span-10 lg:col-span-3 xl:col-span-2 border-x dark:border-gray-900">
             <div className="lg:overflow-hidden lg:hover:overflow-y-scroll w-full h-[calc(100%-77px)]">
               <RightSidebar />
             </div>
@@ -164,7 +167,7 @@ const MainLayout = () => {
       {/* Page Content */}
 
       <Footer />
-    </>
+    </div>
   );
 };
 

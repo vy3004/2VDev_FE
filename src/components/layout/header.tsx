@@ -33,16 +33,16 @@ const Header = () => {
   };
 
   return (
-    <nav className="sticky top-0 z-50 bg-white h-max max-w-full border-b p-2 sm:p-4">
+    <nav className="sticky top-0 z-50 bg-white dark:bg-gray-800 dark:border-gray-800 h-max max-w-full border-b p-2 sm:p-4">
       <Container>
-        <div className="flex flex-wrap items-center justify-between text-blue-gray-900">
+        <div className="flex flex-wrap items-center justify-between text-black dark:text-gray-50">
           <div className="flex items-center">
             <MobileSidebar />
 
             <Typography
               as="a"
               href="/"
-              className="sm:mr-4 ml-3 cursor-pointer py-1.5 pr-4 font-bold border-r-2 border-r-blue-gray-900"
+              className="sm:mr-4 ml-3 cursor-pointer py-1.5 pr-4 font-bold border-r-2 border-r-black dark:border-r-gray-50"
             >
               2VDev
             </Typography>
@@ -58,10 +58,16 @@ const Header = () => {
             {/* Auth start */}
             {user ? (
               <div className="flex items-center space-x-2">
-                <IconButton variant="text" className="hidden xl:flex">
+                <IconButton
+                  variant="text"
+                  className="hidden xl:flex dark:text-gray-50"
+                >
                   <ChatBubbleBottomCenterTextIcon className="h-5 w-5" />
                 </IconButton>
-                <IconButton variant="text" className="hidden xl:flex">
+                <IconButton
+                  variant="text"
+                  className="hidden xl:flex dark:text-gray-50"
+                >
                   <BellIcon className="h-5 w-5" />
                 </IconButton>
 
@@ -69,7 +75,11 @@ const Header = () => {
               </div>
             ) : (
               <div className="space-x-2 ">
-                <Button onClick={handleOpenSignInModal} variant="outlined">
+                <Button
+                  className="bg-white dark:bg-gray-50"
+                  onClick={handleOpenSignInModal}
+                  variant="outlined"
+                >
                   Sign In
                 </Button>
                 <Button

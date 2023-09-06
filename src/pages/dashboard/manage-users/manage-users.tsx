@@ -82,13 +82,15 @@ const ManageUsers = () => {
   }, [page]);
 
   return (
-    <Card className="h-full w-full">
-      <CardHeader floated={false} shadow={false} className="rounded-none">
+    <Card className="h-full w-full dark:bg-gray-700">
+      <CardHeader
+        floated={false}
+        shadow={false}
+        className="rounded-none dark:bg-gray-700 dark:text-gray-50"
+      >
         {/* Title start */}
-        <Typography variant="h5" color="blue-gray">
-          Manage Users
-        </Typography>
-        <Typography color="gray" className="mt-1 mb-8 font-normal">
+        <Typography variant="h5">Manage Users</Typography>
+        <Typography className="mt-1 mb-8 font-normal">
           See information about all users
         </Typography>
         {/* Title end */}
@@ -109,6 +111,7 @@ const ManageUsers = () => {
           </div>
           <div className="w-full md:w-72">
             <Input
+              className="dark:text-gray-50"
               label="Search"
               icon={<MagnifyingGlassIcon className="h-5 w-5" />}
               crossOrigin={""}
@@ -160,7 +163,7 @@ const ManageUsers = () => {
                 const isLast = index === users.length - 1;
                 const classes = isLast
                   ? "p-4"
-                  : "p-4 border-b border-blue-gray-50";
+                  : "p-4 border-b border-blue-gray-50 dark:border-gray-800";
 
                 return (
                   <tr key={username}>
@@ -171,8 +174,7 @@ const ManageUsers = () => {
                           <div className="flex items-center gap-2">
                             <Typography
                               variant="small"
-                              color="blue-gray"
-                              className="font-normal"
+                              className="font-normal dark:text-gray-50"
                             >
                               {name}
                             </Typography>
@@ -191,8 +193,7 @@ const ManageUsers = () => {
 
                           <Typography
                             variant="small"
-                            color="blue-gray"
-                            className="font-normal opacity-70"
+                            className="font-normal opacity-70 text-gray-50"
                           >
                             {email}
                           </Typography>
@@ -250,7 +251,7 @@ const ManageUsers = () => {
                       <Typography
                         variant="small"
                         color="blue-gray"
-                        className="font-normal"
+                        className="font-normal dark:text-gray-50"
                       >
                         {format(new Date(created_at), "dd/MM/yyyy")}
                       </Typography>
@@ -259,6 +260,7 @@ const ManageUsers = () => {
                       {!role && (
                         <Tooltip content="Edit User">
                           <IconButton
+                            className="dark:text-gray-50"
                             onClick={() =>
                               navigate(
                                 `${window.location.pathname}/${username}`
@@ -281,6 +283,7 @@ const ManageUsers = () => {
       </CardBody>
       <CardFooter className="flex items-center justify-end gap-4 border-t border-blue-gray-50 p-4">
         <IconButton
+          className="dark:text-gray-50 dark:border-gray-50 dark:bg-gray-900"
           size="sm"
           variant="outlined"
           onClick={prev}
@@ -288,11 +291,11 @@ const ManageUsers = () => {
         >
           <ArrowLeftIcon strokeWidth={2} className="h-4 w-4" />
         </IconButton>
-        <Typography color="gray" className="font-normal">
-          Page <strong className="text-gray-900">{page}</strong> of{" "}
-          <strong className="text-gray-900">{totalPage}</strong>
+        <Typography className="font-normal dark:text-gray-50">
+          Page <strong>{page}</strong> of <strong>{totalPage}</strong>
         </Typography>
         <IconButton
+          className="dark:text-gray-50 dark:border-gray-50 dark:bg-gray-900"
           size="sm"
           variant="outlined"
           onClick={next}
