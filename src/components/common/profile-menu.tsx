@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { toast } from "react-hot-toast";
 import { useNavigate } from "react-router-dom";
+import { useTranslation } from "react-i18next";
 
 import {
   ChevronDownIcon,
@@ -32,6 +33,7 @@ interface profileMenuItem {
 
 const ProfileMenu = () => {
   const { user } = useSelector(selectUser);
+  const { t } = useTranslation();
 
   const dispatch = useDispatch();
   const navigate = useNavigate();
@@ -50,21 +52,21 @@ const ProfileMenu = () => {
 
   const profileMenuItems: profileMenuItem[] = [
     {
-      label: "My Profile",
+      label: t("user.profile"),
       icon: UserCircleIcon,
       onClick() {
         navigate(`/profile/${user?.username}`);
       },
     },
     {
-      label: "Setting",
+      label: t("user.setting"),
       icon: Cog6ToothIcon,
       onClick() {
         navigate("/settings");
       },
     },
     {
-      label: "Sign Out",
+      label: t("auth.logout"),
       icon: PowerIcon,
       onClick: handleLogout,
     },
@@ -90,7 +92,7 @@ const ProfileMenu = () => {
           />
           <div>
             <Typography className="normal-case text-gray-700 dark:text-gray-4   00 text-xs font-medium">
-              Welcome!
+              {t("user.welcome")}!
             </Typography>
             <Typography className="normal-case text-gray-900 dark:text-gray-50 text-sm font-bold">
               {getLastTwoWords(user?.name || "")}

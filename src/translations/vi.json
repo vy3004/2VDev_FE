@@ -1,0 +1,50 @@
+{
+  "header": {
+    "home": "Trang Chủ",
+    "about-us": "Giới thiệu",
+    "contact-us": "Liên Hệ",
+    "search": "Tìm"
+  },
+  "auth": {
+    "sign-in": "Đăng nhập",
+    "sign-up": "Đăng ký",
+    "logout": "Đăng xuất",
+    "send": "Gửi",
+    "welcome-to": "Chào mừng đến với",
+    "no-account": "Chưa có tài khoản?",
+    "have-an-account": "Đã có tài khoản?",
+    "back-to-sign-in": "Quay lại Đăng nhập",
+    "name": "Tên",
+    "email": "Email",
+    "password": "Mật khẩu",
+    "confirm-password": "Xác nhận mật khẩu",
+    "forgot-password": "Quên mật khẩu",
+    "forgot-password-content": "Nhập địa chỉ email liên kết với tài khoản của bạn để nhận link reset",
+    "reset-password": "Đặt lại Mật khẩu",
+    "reset-password-content": "Nhập mật khẩu mới, chú ý không trùng với mật khẩu cũ",
+    "or": "HOẶC",
+    "sign-in-with-google": "Đăng nhập với Google"
+  },
+  "user": {
+    "welcome": "Xin chào",
+    "profile": "Hồ sơ",
+    "setting": "Cài đặt",
+    "message": "Tin nhắn",
+    "notification": "Thông báo"
+  },
+  "side-bar": {
+    "dashboard": "Bảng điều khiển",
+    "overview": "Tổng quan",
+    "manage-users": "Quản lý người dùng",
+    "manage-posts": "Quản lý bài viết",
+    "questions": "Câu hỏi",
+    "new-questions": "Câu hỏi mới",
+    "trending-questions": "Câu hỏi xu hướng",
+    "popular-questions": "Câu hỏi phổ biến",
+    "hot-questions": "Câu hỏi hot",
+    "feed": "Bảng tin",
+    "tags": "Thẻ",
+    "communities": "Cộng đồng",
+    "users": "Danh sách người dùng"
+  }
+}

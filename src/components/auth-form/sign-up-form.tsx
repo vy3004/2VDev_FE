@@ -2,6 +2,7 @@ import { useState } from "react";
 import { useFormik } from "formik";
 import { useDispatch } from "react-redux";
 import { toast } from "react-hot-toast";
+import { useTranslation } from "react-i18next";
 import * as Yup from "yup";
 
 import {
@@ -39,6 +40,7 @@ const SignUpForm: React.FC<SignUpFormProps> = ({
   authUser,
 }) => {
   const dispatch = useDispatch();
+  const { t } = useTranslation();
 
   const [isSubmit, setIsSubmit] = useState(false);
   const [errorMessage, setErrorMessage] = useState("");
@@ -99,17 +101,19 @@ const SignUpForm: React.FC<SignUpFormProps> = ({
           {/* Form header start */}
           <div className="flex justify-between mb-10">
             <div>
-              <div className="flex font-bold text-lg">
-                Welcome to
+              <div className="flex items-end font-bold">
+                {t("auth.welcome-to")}
                 <Typography color="blue" className="ml-1 font-bold text-lg">
                   2VDev
                 </Typography>
               </div>
-              <Typography className="text-4xl font-bold">Sign Up</Typography>
+              <Typography className="text-4xl font-bold">
+                {t("auth.sign-up")}
+              </Typography>
             </div>
 
             <Typography variant="small" className="mt-1">
-              Have an Account?
+              {t("auth.have-an-account")}
               <Typography
                 as="a"
                 variant="small"
@@ -117,7 +121,7 @@ const SignUpForm: React.FC<SignUpFormProps> = ({
                 className="font-bold cursor-pointer"
                 onClick={() => switchAuthState("signIn")}
               >
-                Sign in
+                {t("auth.sign-in")}
               </Typography>
             </Typography>
           </div>
@@ -133,7 +137,7 @@ const SignUpForm: React.FC<SignUpFormProps> = ({
           <form onSubmit={signUpForm.handleSubmit} className="w-full space-y-4">
             {/* Name input start */}
             <Input
-              label="Name"
+              label={t("auth.name")}
               name="name"
               type="text"
               size="lg"
@@ -158,7 +162,7 @@ const SignUpForm: React.FC<SignUpFormProps> = ({
 
             {/* Email address input start */}
             <Input
-              label="Email"
+              label={t("auth.email")}
               name="email"
               type="text"
               size="lg"
@@ -184,7 +188,7 @@ const SignUpForm: React.FC<SignUpFormProps> = ({
 
             {/* Password input start*/}
             <Input
-              label="Password"
+              label={t("auth.password")}
               name="password"
               type={showPassword ? "text" : "password"}
               size="lg"
@@ -222,7 +226,7 @@ const SignUpForm: React.FC<SignUpFormProps> = ({
 
             {/* Confirm password input start */}
             <Input
-              label="Confirm Password"
+              label={t("auth.confirm-password")}
               name="confirm_password"
               type={showConfirmPassword ? "text" : "password"}
               size="lg"
@@ -269,7 +273,11 @@ const SignUpForm: React.FC<SignUpFormProps> = ({
               fullWidth
               disabled={isSubmit}
             >
-              {isSubmit ? <Spinner className="h-4 w-4 m-auto" /> : "Sign Up"}
+              {isSubmit ? (
+                <Spinner className="h-4 w-4 m-auto" />
+              ) : (
+                t("auth.sign-up")
+              )}
             </Button>
           </form>
           {/* Form body end */}

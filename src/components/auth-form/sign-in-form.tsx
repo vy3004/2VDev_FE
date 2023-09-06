@@ -3,6 +3,7 @@ import { useFormik } from "formik";
 import { useDispatch, useSelector } from "react-redux";
 import { toast } from "react-hot-toast";
 import { Link } from "react-router-dom";
+import { useTranslation } from "react-i18next";
 import * as Yup from "yup";
 
 import {
@@ -42,6 +43,7 @@ const SignInForm: React.FC<SignInFormProps> = ({
   authUser,
 }) => {
   const dispatch = useDispatch();
+  const { t } = useTranslation();
   const { notification } = useSelector(selectAuthModal);
   const oauthURL = getOauthGoogleUrl();
 
@@ -97,17 +99,19 @@ const SignInForm: React.FC<SignInFormProps> = ({
           {/* Form header start */}
           <div className="flex justify-between mb-10">
             <div>
-              <div className="flex font-bold text-lg">
-                Welcome to
+              <div className="flex items-end font-bold">
+                {t("auth.welcome-to")}
                 <Typography color="blue" className="ml-1 font-bold text-lg">
                   2VDev
                 </Typography>
               </div>
-              <Typography className="text-4xl font-bold">Sign In</Typography>
+              <Typography className="text-4xl font-bold">
+                {t("auth.sign-in")}
+              </Typography>
             </div>
 
             <Typography variant="small" className="mt-1">
-              No Account?
+              {t("auth.no-account")}
               <Typography
                 as="a"
                 variant="small"
@@ -115,7 +119,7 @@ const SignInForm: React.FC<SignInFormProps> = ({
                 className="font-bold cursor-pointer"
                 onClick={() => switchAuthState("signUp")}
               >
-                Sign up
+                {t("auth.sign-up")}
               </Typography>
             </Typography>
           </div>
@@ -141,7 +145,7 @@ const SignInForm: React.FC<SignInFormProps> = ({
           <form onSubmit={signInForm.handleSubmit} className="w-full space-y-4">
             {/* Email input start */}
             <Input
-              label="Email"
+              label={t("auth.email")}
               name="email"
               type="text"
               size="lg"
@@ -167,7 +171,7 @@ const SignInForm: React.FC<SignInFormProps> = ({
 
             {/* Password input start */}
             <Input
-              label="Password"
+              label={t("auth.password")}
               name="password"
               type={showPassword ? "text" : "password"}
               size="lg"
@@ -211,24 +215,29 @@ const SignInForm: React.FC<SignInFormProps> = ({
                 className="cursor-pointer"
                 onClick={() => switchAuthState("forgotPassword")}
               >
-                Forgot Password
+                {t("auth.forgot-password")}
               </Typography>
             </div>
 
             <Button
-              // type="submit"
               onClick={signInForm.submitForm}
               className="mt-10"
               variant="gradient"
               fullWidth
               disabled={isSubmit}
             >
-              {isSubmit ? <Spinner className="h-4 w-4 m-auto" /> : "Sign In"}
+              {isSubmit ? (
+                <Spinner className="h-4 w-4 m-auto" />
+              ) : (
+                t("auth.sign-in")
+              )}
             </Button>
 
             <div className="flex items-center justify-between gap-4">
               <div className="w-full border" />
-              <Typography className="text-center text-sm">OR</Typography>
+              <Typography className="text-center text-sm">
+                {t("auth.or")}
+              </Typography>
               <div className="w-full border" />
             </div>
 
@@ -243,7 +252,7 @@ const SignInForm: React.FC<SignInFormProps> = ({
                   loading="lazy"
                   alt="google logo"
                 />
-                <span>Sign In with Google</span>
+                <span>{t("auth.sign-in-with-google")}</span>
               </Link>
             </Button>
           </form>

@@ -1,26 +1,26 @@
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
+import { useTranslation } from "react-i18next";
 
 import {
   IconButton,
   SpeedDial,
   SpeedDialHandler,
   SpeedDialContent,
-  SpeedDialAction,
   Tooltip,
 } from "@material-tailwind/react";
-import {
-  PlusIcon,
-  SunIcon,
-  LanguageIcon,
-  MoonIcon,
-} from "@heroicons/react/24/outline";
+import { PlusIcon, SunIcon, MoonIcon } from "@heroicons/react/24/outline";
 
 import { selectApp, setThemeMode } from "../../redux/features/app-state-slice";
 
 const SpeedDialCustom = () => {
+  const { i18n } = useTranslation();
   const { themeMode } = useSelector(selectApp);
   const dispatch = useDispatch();
+
+  const [language, setLanguage] = useState(
+    localStorage.getItem("language") || "en"
+  );
 
   useEffect(() => {
     if (themeMode) {
@@ -32,8 +32,17 @@ const SpeedDialCustom = () => {
     }
   }, [themeMode]);
 
+  useEffect(() => {
+    i18n.changeLanguage(language);
+    localStorage.setItem("language", language);
+  }, [i18n, language]);
+
   const handleThemeSwitch = () => {
     dispatch(setThemeMode(!themeMode));
+  };
+
+  const handleLanguageChange = () => {
+    setLanguage(language === "en" ? "vi" : "en");
   };
 
   return (
@@ -57,17 +66,28 @@ const SpeedDialCustom = () => {
               onClick={handleThemeSwitch}
               className="rounded-full bg-black text-white dark:bg-white dark:text-black"
             >
-              {localStorage.getItem("theme") === "dark" ? (
+              {themeMode ? (
                 <SunIcon className="h-5 w-5" />
               ) : (
                 <MoonIcon className="h-5 w-5" />
               )}
             </IconButton>
           </Tooltip>
-          <Tooltip content="Translate" placement="left">
-            <SpeedDialAction>
-              <LanguageIcon className="h-5 w-5" />
-            </SpeedDialAction>
+          <Tooltip
+            content={language === "en" ? "Tiếng Việt" : "English"}
+            placement="left"
+          >
+            <IconButton
+              size="lg"
+              onClick={handleLanguageChange}
+              className={`rounded-full ${
+                language === "en"
+                  ? "text-yellow-500 bg-red-500"
+                  : "text-white bg-blue-500"
+              }`}
+            >
+              {language === "en" ? "VI" : "EN"}
+            </IconButton>
           </Tooltip>
         </SpeedDialContent>
       </SpeedDial>

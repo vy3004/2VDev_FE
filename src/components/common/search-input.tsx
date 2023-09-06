@@ -1,4 +1,6 @@
 import { useDispatch, useSelector } from "react-redux";
+import { useTranslation } from "react-i18next";
+
 import { Button } from "@material-tailwind/react";
 import {
   ArrowSmallLeftIcon,
@@ -9,6 +11,7 @@ import { selectApp, setIsSearch } from "../../redux/features/app-state-slice";
 
 const SearchInput = () => {
   const { isSearch } = useSelector(selectApp);
+  const { t } = useTranslation();
 
   const dispatch = useDispatch();
 
@@ -25,7 +28,7 @@ const SearchInput = () => {
       >
         {!isSearch ? (
           <>
-            <MagnifyingGlassIcon className="h-4 w-4" /> Search
+            <MagnifyingGlassIcon className="h-4 w-4" /> {t("header.search")}
           </>
         ) : (
           <ArrowSmallLeftIcon className="h-4 w-4" />

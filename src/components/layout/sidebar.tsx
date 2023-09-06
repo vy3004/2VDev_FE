@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
+import { useTranslation } from "react-i18next";
 
 import {
   Card,
@@ -40,11 +41,10 @@ interface sidebarItem {
 
 const Sidebar = () => {
   const navigate = useNavigate();
+  const { t } = useTranslation();
 
   const { user } = useSelector(selectUser);
   const { appState } = useSelector(selectApp);
-
-  console.log(appState);
 
   const [open, setOpen] = useState(0);
 
@@ -54,17 +54,17 @@ const Sidebar = () => {
 
   const listDashboard: sidebarItem[] = [
     {
-      label: "Overview",
+      label: t("side-bar.overview"),
       icon: <ChevronRightIcon strokeWidth={3} className="h-3 w-5" />,
       href: "/dashboard/overview",
     },
     {
-      label: "Manage users",
+      label: t("side-bar.manage-users"),
       icon: <ChevronRightIcon strokeWidth={3} className="h-3 w-5" />,
       href: "/dashboard/manage-users",
     },
     {
-      label: "Manage posts",
+      label: t("side-bar.manage-posts"),
       icon: <ChevronRightIcon strokeWidth={3} className="h-3 w-5" />,
       href: "/dashboard/manage-posts",
     },
@@ -72,22 +72,22 @@ const Sidebar = () => {
 
   const listQuestions: sidebarItem[] = [
     {
-      label: "New questions",
+      label: t("side-bar.new-questions"),
       icon: <ChevronRightIcon strokeWidth={3} className="h-3 w-5" />,
       href: "/new-questions",
     },
     {
-      label: "Trending questions",
+      label: t("side-bar.trending-questions"),
       icon: <ChevronRightIcon strokeWidth={3} className="h-3 w-5" />,
       href: "/trending-questions",
     },
     {
-      label: "Popular questions",
+      label: t("side-bar.popular-questions"),
       icon: <ChevronRightIcon strokeWidth={3} className="h-3 w-5" />,
       href: "/popular-questions",
     },
     {
-      label: "Hot questions",
+      label: t("side-bar.hot-questions"),
       icon: <ChevronRightIcon strokeWidth={3} className="h-3 w-5" />,
       href: "/hot-questions",
     },
@@ -95,22 +95,22 @@ const Sidebar = () => {
 
   const listGuest: sidebarItem[] = [
     {
-      label: "Feed",
+      label: t("side-bar.feed"),
       icon: <NewspaperIcon className="h-5 w-5" />,
       href: "/feed",
     },
     {
-      label: "Tags",
+      label: t("side-bar.tags"),
       icon: <TagIcon className="h-5 w-5" />,
       href: "/tags",
     },
     {
-      label: "Communities",
+      label: t("side-bar.communities"),
       icon: <IdentificationIcon className="h-5 w-5" />,
       href: "/communities",
     },
     {
-      label: "Users",
+      label: t("side-bar.users"),
       icon: <UserGroupIcon className="h-5 w-5" />,
       href: "/users",
     },
@@ -129,7 +129,7 @@ const Sidebar = () => {
           <ListItemPrefix>
             <HomeIcon className="h-5 w-5" />
           </ListItemPrefix>
-          Home
+          {t("header.home")}
         </ListItem>
         {/* Admin dashboard start */}
         {user?.role === 1 && (
@@ -153,7 +153,7 @@ const Sidebar = () => {
                   <PresentationChartBarIcon className="h-5 w-5" />
                 </ListItemPrefix>
                 <Typography className="mr-auto font-normal">
-                  Dashboard
+                  {t("side-bar.dashboard")}
                 </Typography>
               </AccordionHeader>
             </ListItem>
@@ -198,7 +198,10 @@ const Sidebar = () => {
               <ListItemPrefix>
                 <BookOpenIcon className="h-5 w-5" />
               </ListItemPrefix>
-              <Typography className="mr-auto font-normal">Questions</Typography>
+              <Typography className="mr-auto font-normal">
+                {" "}
+                {t("side-bar.questions")}
+              </Typography>
             </AccordionHeader>
           </ListItem>
           <AccordionBody className="py-1">
@@ -243,7 +246,7 @@ const Sidebar = () => {
               <ListItemPrefix>
                 <ChatBubbleBottomCenterTextIcon className="h-5 w-5" />
               </ListItemPrefix>
-              Message
+              {t("user.message")}
               <ListItemSuffix>
                 <Chip
                   value="14"
@@ -257,7 +260,7 @@ const Sidebar = () => {
               <ListItemPrefix>
                 <BellIcon className="h-5 w-5" />
               </ListItemPrefix>
-              Notification
+              {t("user.notification")}
               <ListItemSuffix>
                 <Chip
                   value="7"
@@ -274,13 +277,13 @@ const Sidebar = () => {
               <ListItemPrefix>
                 <UserCircleIcon className="h-5 w-5" />
               </ListItemPrefix>
-              Profile
+              {t("user.profile")}
             </ListItem>
             <ListItem onClick={() => navigate("/settings")}>
               <ListItemPrefix>
                 <Cog6ToothIcon className="h-5 w-5" />
               </ListItemPrefix>
-              Settings
+              {t("user.setting")}
             </ListItem>
           </>
         )}

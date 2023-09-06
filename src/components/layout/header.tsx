@@ -1,4 +1,6 @@
 import { useDispatch, useSelector } from "react-redux";
+import { useTranslation } from "react-i18next";
+
 import { Typography, IconButton, Button } from "@material-tailwind/react";
 import {
   BellIcon,
@@ -19,6 +21,7 @@ import { selectUser } from "../../redux/features/user-slice";
 
 const Header = () => {
   const { user } = useSelector(selectUser);
+  const { t } = useTranslation();
 
   const dispatch = useDispatch();
 
@@ -80,13 +83,13 @@ const Header = () => {
                   onClick={handleOpenSignInModal}
                   variant="outlined"
                 >
-                  Sign In
+                  {t("auth.sign-in")}
                 </Button>
                 <Button
                   onClick={handleOpenSignUpModal}
                   className="hidden xl:inline"
                 >
-                  Sign Up
+                  {t("auth.sign-up")}
                 </Button>
               </div>
             )}

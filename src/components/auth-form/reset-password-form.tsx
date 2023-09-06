@@ -1,6 +1,8 @@
 import { useState } from "react";
+import { useDispatch } from "react-redux";
 import { useFormik } from "formik";
 import { useNavigate } from "react-router-dom";
+import { useTranslation } from "react-i18next";
 import * as Yup from "yup";
 
 import {
@@ -19,7 +21,6 @@ import {
 import NotificationForm from "./notification-form";
 
 import userService from "../../services/user-service";
-import { useDispatch } from "react-redux";
 import { setNotification } from "../../redux/features/auth-modal-slice";
 
 interface ResetPasswordFormProps {
@@ -36,6 +37,7 @@ const ResetPasswordForm: React.FC<ResetPasswordFormProps> = ({
 }) => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
+  const { t } = useTranslation();
 
   const [isSubmit, setIsSubmit] = useState(false);
   const [errorMessage, setErrorMessage] = useState("");
@@ -86,25 +88,25 @@ const ResetPasswordForm: React.FC<ResetPasswordFormProps> = ({
           <div className="flex justify-between mb-4">
             <div>
               <Typography color="blue" className="text-lg font-bold">
-                Reset Password
+                {t("auth.reset-password")}
               </Typography>
             </div>
 
             <Typography variant="small" className="mt-1">
-              No Account?
+              {t("auth.no-account")}
               <Typography
                 as="a"
                 variant="small"
                 color="blue"
                 className="font-bold cursor-pointer"
-                onClick={() => switchAuthState("signIn")}
+                onClick={() => switchAuthState("signUp")}
               >
-                Sign up
+                {t("auth.sign-up")}
               </Typography>
             </Typography>
           </div>
           <Typography className="mb-4">
-            Enter a new password, be careful not to match the old password
+            {t("auth.reset-password-content")}
           </Typography>
           {/* Form header end */}
 
@@ -121,7 +123,7 @@ const ResetPasswordForm: React.FC<ResetPasswordFormProps> = ({
           >
             {/* Password input start*/}
             <Input
-              label="Password"
+              label={t("auth.password")}
               name="password"
               type={showPassword ? "text" : "password"}
               size="lg"
@@ -158,7 +160,7 @@ const ResetPasswordForm: React.FC<ResetPasswordFormProps> = ({
 
             {/* Confirm password input start */}
             <Input
-              label="Confirm Password"
+              label={t("auth.confirm-password")}
               name="confirm_password"
               type={showConfirmPassword ? "text" : "password"}
               size="lg"
@@ -201,7 +203,7 @@ const ResetPasswordForm: React.FC<ResetPasswordFormProps> = ({
                 className="cursor-pointer"
                 onClick={() => switchAuthState("signIn")}
               >
-                Back to Sign In
+                {t("auth.back-to-sign-in")}
               </Typography>
             </div>
 
@@ -212,7 +214,11 @@ const ResetPasswordForm: React.FC<ResetPasswordFormProps> = ({
               fullWidth
               disabled={isSubmit}
             >
-              {isSubmit ? <Spinner className="h-4 w-4 m-auto" /> : "Send"}
+              {isSubmit ? (
+                <Spinner className="h-4 w-4 m-auto" />
+              ) : (
+                t("auth.send")
+              )}
             </Button>
           </form>
           {/* Form body end */}

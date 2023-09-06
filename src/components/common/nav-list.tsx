@@ -1,6 +1,7 @@
 import React from "react";
 import { useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
+import { useTranslation } from "react-i18next";
 
 import { HomeIcon, PhoneIcon, UserGroupIcon } from "@heroicons/react/24/solid";
 import { Button } from "@material-tailwind/react";
@@ -10,20 +11,21 @@ import { selectApp } from "../../redux/features/app-state-slice";
 const NavList = () => {
   const navigate = useNavigate();
   const { appState } = useSelector(selectApp);
+  const { t } = useTranslation();
 
   const navListItems = [
     {
-      label: "Home",
+      label: t("header.home"),
       icon: HomeIcon,
       href: "/",
     },
     {
-      label: "About Us",
+      label: t("header.about-us"),
       icon: UserGroupIcon,
       href: "/about",
     },
     {
-      label: "Contact Us",
+      label: t("header.contact-us"),
       icon: PhoneIcon,
       href: "/contact",
     },

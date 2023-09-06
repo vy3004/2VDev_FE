@@ -2,6 +2,7 @@ import { useState } from "react";
 import { useFormik } from "formik";
 import { toast } from "react-hot-toast";
 import { useDispatch } from "react-redux";
+import { useTranslation } from "react-i18next";
 import * as Yup from "yup";
 
 import { InformationCircleIcon } from "@heroicons/react/24/solid";
@@ -30,6 +31,7 @@ const ForgotPasswordForm: React.FC<ForgotPasswordFormProps> = ({
   switchAuthState,
 }) => {
   const dispatch = useDispatch();
+  const { t } = useTranslation();
 
   const [isSubmit, setIsSubmit] = useState(false);
   const [errorMessage, setErrorMessage] = useState("");
@@ -77,12 +79,12 @@ const ForgotPasswordForm: React.FC<ForgotPasswordFormProps> = ({
           <div className="flex justify-between mb-4">
             <div>
               <Typography color="blue" className="text-lg font-bold">
-                Forgot Password
+                {t("auth.forgot-password")}
               </Typography>
             </div>
 
             <Typography variant="small" className="mt-1">
-              No Account?
+              {t("auth.no-account")}
               <Typography
                 as="a"
                 variant="small"
@@ -90,13 +92,12 @@ const ForgotPasswordForm: React.FC<ForgotPasswordFormProps> = ({
                 className="font-bold cursor-pointer"
                 onClick={() => switchAuthState("signUp")}
               >
-                Sign up
+                {t("auth.sign-up")}
               </Typography>
             </Typography>
           </div>
           <Typography className="mb-4">
-            Enter the email address associated with your account to receive the
-            reset link
+            {t("auth.forgot-password-content")}
           </Typography>
           {/* Form header end */}
 
@@ -147,7 +148,7 @@ const ForgotPasswordForm: React.FC<ForgotPasswordFormProps> = ({
                 className="cursor-pointer"
                 onClick={() => switchAuthState("signIn")}
               >
-                Back to Sign In
+                {t("auth.back-to-sign-in")}
               </Typography>
             </div>
 
@@ -158,7 +159,11 @@ const ForgotPasswordForm: React.FC<ForgotPasswordFormProps> = ({
               fullWidth
               disabled={isSubmit}
             >
-              {isSubmit ? <Spinner className="h-4 w-4 m-auto" /> : "Send"}
+              {isSubmit ? (
+                <Spinner className="h-4 w-4 m-auto" />
+              ) : (
+                t("auth.send")
+              )}
             </Button>
           </form>
           {/* Form body end */}
