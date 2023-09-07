@@ -62,12 +62,12 @@ const SignInForm: React.FC<SignInFormProps> = ({
         .matches(
           // eslint-disable-next-line no-useless-escape
           /^[\w\.-]+@[a-zA-Z\d\.-]+\.[a-zA-Z]{2,}$/,
-          "Invalid email address"
+          t("auth.Invalid email address")
         )
-        .required("Email is required"),
+        .required(t("auth.Email is required")),
       password: Yup.string()
-        .min(8, "Password minimum 8 characters")
-        .required("Password is required"),
+        .min(8, t("auth.Password minimum 8 characters"))
+        .required(t("auth.Password is required")),
     }),
     onSubmit: async (values: SignInFormValues) => {
       setErrorMessage("");
@@ -80,7 +80,7 @@ const SignInForm: React.FC<SignInFormProps> = ({
         authUser();
         signInForm.resetForm();
         dispatch(setAuthModalOpen(false));
-        toast.success("Sign In Success");
+        toast.success(t("auth.Sign In Success"));
       }
 
       if (error) setErrorMessage(error.message);
@@ -102,7 +102,7 @@ const SignInForm: React.FC<SignInFormProps> = ({
               <div className="flex items-end font-bold">
                 {t("auth.welcome-to")}
                 <Typography color="blue" className="ml-1 font-bold text-lg">
-                  2VDev
+                  {t("header.logo")}
                 </Typography>
               </div>
               <Typography className="text-4xl font-bold">

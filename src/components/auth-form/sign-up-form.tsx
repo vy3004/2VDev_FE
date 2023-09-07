@@ -55,21 +55,21 @@ const SignUpForm: React.FC<SignUpFormProps> = ({
       confirm_password: "",
     },
     validationSchema: Yup.object({
-      name: Yup.string().required("Name is required"),
+      name: Yup.string().required(t("auth.Name is required")),
       email: Yup.string()
         .matches(
           // eslint-disable-next-line no-useless-escape
           /^[\w\.-]+@[a-zA-Z\d\.-]+\.[a-zA-Z]{2,}$/,
-          "Invalid email address"
+          t("auth.Invalid email address")
         )
-        .required("Email is required"),
+        .required(t("auth.Email is required")),
       password: Yup.string()
-        .min(8, "Password minimum 8 characters")
-        .required("Password is required"),
+        .min(8, t("auth.Password minimum 8 characters"))
+        .required(t("auth.Password is required")),
       confirm_password: Yup.string()
-        .oneOf([Yup.ref("password")], "Confirm password not match")
-        .min(8, "Confirm password minimum 8 characters")
-        .required("Confirm password is required"),
+        .oneOf([Yup.ref("password")], t("auth.Confirm password not match"))
+        .min(8, t("auth.Confirm password minimum 8 characters"))
+        .required(t("auth.Confirm password is required")),
     }),
     onSubmit: async (values: SignUpFormValues) => {
       setErrorMessage("");
@@ -82,7 +82,7 @@ const SignUpForm: React.FC<SignUpFormProps> = ({
         authUser();
         signUpForm.resetForm();
         dispatch(setAuthModalOpen(false));
-        toast.success("Sign Up success");
+        toast.success(t("auth.Sign Up Success"));
       }
 
       if (error) setErrorMessage(error.message);
@@ -104,7 +104,7 @@ const SignUpForm: React.FC<SignUpFormProps> = ({
               <div className="flex items-end font-bold">
                 {t("auth.welcome-to")}
                 <Typography color="blue" className="ml-1 font-bold text-lg">
-                  2VDev
+                  {t("header.logo")}
                 </Typography>
               </div>
               <Typography className="text-4xl font-bold">

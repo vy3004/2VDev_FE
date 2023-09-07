@@ -45,9 +45,9 @@ const ForgotPasswordForm: React.FC<ForgotPasswordFormProps> = ({
         .matches(
           // eslint-disable-next-line no-useless-escape
           /^[\w\.-]+@[a-zA-Z\d\.-]+\.[a-zA-Z]{2,}$/,
-          "Invalid email address"
+          t("auth.Invalid email address")
         )
-        .required("Email is required"),
+        .required(t("auth.Email is required")),
     }),
     onSubmit: async (values: ForgotPasswordFormValues) => {
       setErrorMessage("");

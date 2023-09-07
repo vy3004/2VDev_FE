@@ -54,17 +54,17 @@ const Sidebar = () => {
 
   const listDashboard: sidebarItem[] = [
     {
-      label: t("side-bar.overview"),
+      label: t("sidebar.overview"),
       icon: <ChevronRightIcon strokeWidth={3} className="h-3 w-5" />,
       href: "/dashboard/overview",
     },
     {
-      label: t("side-bar.manage-users"),
+      label: t("sidebar.manage-users"),
       icon: <ChevronRightIcon strokeWidth={3} className="h-3 w-5" />,
       href: "/dashboard/manage-users",
     },
     {
-      label: t("side-bar.manage-posts"),
+      label: t("sidebar.manage-posts"),
       icon: <ChevronRightIcon strokeWidth={3} className="h-3 w-5" />,
       href: "/dashboard/manage-posts",
     },
@@ -72,22 +72,22 @@ const Sidebar = () => {
 
   const listQuestions: sidebarItem[] = [
     {
-      label: t("side-bar.new-questions"),
+      label: t("sidebar.new-questions"),
       icon: <ChevronRightIcon strokeWidth={3} className="h-3 w-5" />,
       href: "/new-questions",
     },
     {
-      label: t("side-bar.trending-questions"),
+      label: t("sidebar.trending-questions"),
       icon: <ChevronRightIcon strokeWidth={3} className="h-3 w-5" />,
       href: "/trending-questions",
     },
     {
-      label: t("side-bar.popular-questions"),
+      label: t("sidebar.popular-questions"),
       icon: <ChevronRightIcon strokeWidth={3} className="h-3 w-5" />,
       href: "/popular-questions",
     },
     {
-      label: t("side-bar.hot-questions"),
+      label: t("sidebar.hot-questions"),
       icon: <ChevronRightIcon strokeWidth={3} className="h-3 w-5" />,
       href: "/hot-questions",
     },
@@ -95,22 +95,22 @@ const Sidebar = () => {
 
   const listGuest: sidebarItem[] = [
     {
-      label: t("side-bar.feed"),
+      label: t("sidebar.feed"),
       icon: <NewspaperIcon className="h-5 w-5" />,
       href: "/feed",
     },
     {
-      label: t("side-bar.tags"),
+      label: t("sidebar.tags"),
       icon: <TagIcon className="h-5 w-5" />,
       href: "/tags",
     },
     {
-      label: t("side-bar.communities"),
+      label: t("sidebar.communities"),
       icon: <IdentificationIcon className="h-5 w-5" />,
       href: "/communities",
     },
     {
-      label: t("side-bar.users"),
+      label: t("sidebar.users"),
       icon: <UserGroupIcon className="h-5 w-5" />,
       href: "/users",
     },
@@ -153,7 +153,7 @@ const Sidebar = () => {
                   <PresentationChartBarIcon className="h-5 w-5" />
                 </ListItemPrefix>
                 <Typography className="mr-auto font-normal">
-                  {t("side-bar.dashboard")}
+                  {t("sidebar.dashboard")}
                 </Typography>
               </AccordionHeader>
             </ListItem>
@@ -200,7 +200,7 @@ const Sidebar = () => {
               </ListItemPrefix>
               <Typography className="mr-auto font-normal">
                 {" "}
-                {t("side-bar.questions")}
+                {t("sidebar.questions")}
               </Typography>
             </AccordionHeader>
           </ListItem>

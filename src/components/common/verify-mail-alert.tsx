@@ -1,4 +1,5 @@
 import { toast } from "react-hot-toast";
+import { useTranslation } from "react-i18next";
 
 import { Typography } from "@material-tailwind/react";
 import { EnvelopeOpenIcon } from "@heroicons/react/24/solid";
@@ -6,6 +7,8 @@ import { EnvelopeOpenIcon } from "@heroicons/react/24/solid";
 import authService from "../../services/user-service";
 
 const VerifyMailAlert = () => {
+  const { t } = useTranslation();
+
   const handleResendVerifyEmail = async () => {
     const { response } = await authService.resendVerifyEmail();
     if (response) toast.success(response.data.message);
@@ -18,16 +21,15 @@ const VerifyMailAlert = () => {
       </div>
 
       <Typography className="font-bold">
-        A confirmation mail has been sent to your registered email account, If
-        you have not received the confirmation mail, kindly
+        {t("notification.verify-mail-1")}
         <span
           onClick={handleResendVerifyEmail}
           className="text-blue-500 cursor-pointer"
         >
           {" "}
-          Click here
+          {t("notification.verify-mail-2")}
         </span>{" "}
-        to re-send another confirmation mail.
+        {t("notification.verify-mail-3")}
       </Typography>
     </div>
   );

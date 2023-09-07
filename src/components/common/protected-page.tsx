@@ -1,5 +1,6 @@
 import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
+import { useTranslation } from "react-i18next";
 
 import { UserIcon } from "@heroicons/react/24/solid";
 import { Typography } from "@material-tailwind/react";
@@ -15,6 +16,7 @@ const ProtectedPage: React.FC<{ children: React.ReactNode }> = ({
 }) => {
   const dispatch = useDispatch();
   const { user } = useSelector(selectUser);
+  const { t } = useTranslation();
 
   useEffect(() => {
     dispatch(setAuthModalOpen(!user));
@@ -29,7 +31,7 @@ const ProtectedPage: React.FC<{ children: React.ReactNode }> = ({
         <UserIcon className="h-6 w-6" />
       </div>
       <Typography className="font-bold">
-        You need to sign in to access this page.
+        {t("notification.You need to sign in to access this page.")}
       </Typography>
     </div>
   );

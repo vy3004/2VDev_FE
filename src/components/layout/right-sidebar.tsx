@@ -1,3 +1,5 @@
+import { useTranslation } from "react-i18next";
+
 import {
   ChatBubbleLeftIcon,
   TagIcon,
@@ -18,6 +20,8 @@ import QuestionButton from "../common/question-button";
 import { getLastTwoWords } from "../../utils/string-utils";
 
 const RightSidebar = () => {
+  const { t } = useTranslation();
+
   const tags = [
     "java",
     "css",
@@ -73,7 +77,7 @@ const RightSidebar = () => {
 
   const data = [
     {
-      label: "Popular",
+      label: t("right-sidebar.Popular"),
       value: "popular",
       desc: popular.map((item, key) => (
         <div
@@ -104,7 +108,7 @@ const RightSidebar = () => {
       )),
     },
     {
-      label: "Answers",
+      label: t("right-sidebar.Answers"),
       value: "answers",
       desc: `Because it's about motivating the doers. Because I'm here
       to follow my dreams and inspire other people to follow their dreams, too.`,
@@ -120,7 +124,9 @@ const RightSidebar = () => {
         <div className="relative block rounded-bl-3xl rounded-tr-3xl overflow-hidden p-2 bg-white shadow-md dark:bg-gray-900">
           <span className="absolute inset-x-0 top-0 h-2 bg-gradient-to-l from-black to-blue-300" />
           <div className="h-full flex flex-col items-center justify-center">
-            <Typography className="text-sm text-blue-500">Questions</Typography>
+            <Typography className="text-sm text-blue-500">
+              {t("right-sidebar.Questions")}
+            </Typography>
             <Typography className="font-bold text-2xl dark:text-gray-50">
               73
             </Typography>
@@ -129,7 +135,9 @@ const RightSidebar = () => {
         <div className="relative block rounded-br-3xl rounded-tl-3xl overflow-hidden p-2 bg-white shadow-md dark:bg-gray-900">
           <span className="absolute inset-x-0 top-0 h-2 bg-gradient-to-r from-black to-red-300" />
           <div className="h-full flex flex-col items-center justify-center">
-            <Typography className="text-sm text-red-500">Answers</Typography>
+            <Typography className="text-sm text-red-500">
+              {t("right-sidebar.Answers")}
+            </Typography>
             <Typography className="font-bold text-2xl dark:text-gray-50">
               22
             </Typography>
@@ -139,7 +147,7 @@ const RightSidebar = () => {
           <span className="absolute inset-x-0 bottom-0 h-2 bg-gradient-to-l from-black to-green-300" />
           <div className="h-full flex flex-col items-center justify-center">
             <Typography className="text-sm text-green-500">
-              Best Answers
+              {t("right-sidebar.Best Answers")}
             </Typography>
             <Typography className="font-bold text-2xl dark:text-gray-50">
               15
@@ -149,7 +157,9 @@ const RightSidebar = () => {
         <div className="relative block rounded-bl-3xl rounded-tr-3xl overflow-hidden p-2 bg-white shadow-md dark:bg-gray-900">
           <span className="absolute inset-x-0 bottom-0 h-2 bg-gradient-to-r from-black to-orange-300" />
           <div className="h-full flex flex-col items-center justify-center">
-            <Typography className="text-sm text-orange-500">Users</Typography>
+            <Typography className="text-sm text-orange-500">
+              {t("right-sidebar.Users")}
+            </Typography>
             <Typography className="font-bold text-2xl dark:text-gray-50">
               40
             </Typography>
@@ -160,7 +170,7 @@ const RightSidebar = () => {
       <div className="border-y p-4 dark:border-gray-900 dark:text-gray-50">
         <Typography className="font-bold mb-2 flex items-center gap-2">
           <TagIcon className="w-4 h-4" />
-          Trending Tags
+          {t("right-sidebar.Trending Tags")}
         </Typography>
         <div className="">
           {tags.map((tag, key) => (
@@ -204,7 +214,7 @@ const RightSidebar = () => {
       <div className="border-y p-4 dark:border-gray-900 dark:text-gray-50 dark:bg-gray-700">
         <Typography className="font-bold mb-2 flex items-center gap-2">
           <UsersIcon className="w-4 h-4" />
-          Top Members
+          {t("right-sidebar.Top Users")}
         </Typography>
 
         <div>
