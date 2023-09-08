@@ -43,6 +43,20 @@ interface UpdateMePayLoad {
   cover_photo?: string;
 }
 
+interface UpdateUserPayLoad {
+  username: string;
+  name?: string;
+  date_of_birth?: string;
+  bio?: string;
+  location?: string;
+  website?: string;
+  avatar?: string;
+  cover_photo?: string;
+  role?: number;
+  verify?: number;
+  level?: number;
+}
+
 interface ApiResponse<T> {
   response?: AxiosResponse<T>;
   error?: AxiosError;
@@ -64,6 +78,10 @@ const userEndpoints = {
   getUsers: ({ limit, page }: { limit: number; page: number }) =>
     `/list-users?limit=${limit}&page=${page}`,
   getUser: ({ username }: { username: string }) => `/${username}`,
+
+  // Role admin
+  updateUser: ({ username }: { username: string }) =>
+    `/update-account/${username}`,
 };
 
 const userService = {
@@ -265,6 +283,44 @@ const userService = {
     try {
       const response = await axiosInstance.get(
         userEndpoints.getUser({ username })
+      );
+
+      return { response };
+    } catch (error) {
+      return { error: error as AxiosError };
+    }
+  },
+
+  // Role admin
+  updateUser: async ({
+    name,
+    date_of_birth,
+    bio,
+    location,
+    website,
+    username,
+    avatar,
+    cover_photo,
+    role,
+    verify,
+    level,
+  }: UpdateUserPayLoad): Promise<ApiResponse<any>> => {
+    try {
+      const response = await axiosInstance.patch(
+        userEndpoints.updateUser({ username }),
+        {
+          name,
+          date_of_birth,
+          bio,
+          location,
+          website,
+          username,
+          avatar,
+          cover_photo,
+          role,
+          verify,
+          level,
+        }
       );
 
       return { response };

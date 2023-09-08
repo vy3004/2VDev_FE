@@ -220,7 +220,7 @@ const SignInForm: React.FC<SignInFormProps> = ({
             </div>
 
             <Button
-              onClick={signInForm.submitForm}
+              type="submit"
               className="mt-10"
               variant="gradient"
               fullWidth

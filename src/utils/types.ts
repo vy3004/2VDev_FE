@@ -3,7 +3,7 @@ export interface User {
   username: string;
   name: string;
   email: string;
-  date_of_birth?: Date;
+  date_of_birth?: string;
   verify: number;
   role: number;
   level: number;

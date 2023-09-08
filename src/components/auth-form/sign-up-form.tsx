@@ -129,7 +129,9 @@ const SignUpForm: React.FC<SignUpFormProps> = ({
 
           {/* Form error message start */}
           {errorMessage && (
-            <NotificationForm type="error" message={errorMessage} />
+            <div className="mb-8">
+              <NotificationForm type="error" message={errorMessage} />
+            </div>
           )}
           {/* Form error message end */}
 
