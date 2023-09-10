@@ -44,6 +44,7 @@ interface UpdateMePayLoad {
 }
 
 interface UpdateUserPayLoad {
+  user_id: string;
   username: string;
   name?: string;
   date_of_birth?: string;
@@ -80,8 +81,8 @@ const userEndpoints = {
   getUser: ({ username }: { username: string }) => `/${username}`,
 
   // Role admin
-  updateUser: ({ username }: { username: string }) =>
-    `/update-account/${username}`,
+  updateUser: ({ user_id }: { user_id: string }) =>
+    `/update-account/${user_id}`,
 };
 
 const userService = {
@@ -293,6 +294,7 @@ const userService = {
 
   // Role admin
   updateUser: async ({
+    user_id,
     name,
     date_of_birth,
     bio,
@@ -307,7 +309,7 @@ const userService = {
   }: UpdateUserPayLoad): Promise<ApiResponse<any>> => {
     try {
       const response = await axiosInstance.patch(
-        userEndpoints.updateUser({ username }),
+        userEndpoints.updateUser({ user_id }),
         {
           name,
           date_of_birth,
