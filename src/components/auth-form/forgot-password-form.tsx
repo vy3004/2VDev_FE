@@ -5,7 +5,6 @@ import { useDispatch } from "react-redux";
 import { useTranslation } from "react-i18next";
 import * as Yup from "yup";
 
-import { InformationCircleIcon } from "@heroicons/react/24/solid";
 import {
   Button,
   Card,
@@ -15,6 +14,7 @@ import {
   Spinner,
 } from "@material-tailwind/react";
 import NotificationForm from "./notification-form";
+import ErrorMessageForm from "../common/error-message-form";
 
 import userService from "../../services/user-service";
 import { setAuthModalOpen } from "../../redux/features/auth-modal-slice";
@@ -128,15 +128,12 @@ const ForgotPasswordForm: React.FC<ForgotPasswordFormProps> = ({
             />
             {forgotPasswordForm.touched.email &&
               forgotPasswordForm.errors.email && (
-                <Typography
-                  className="!mt-1 ml-3 flex items-center gap-1 font-normal"
-                  color="red"
-                  variant="small"
-                >
-                  <InformationCircleIcon className="h-4 w-4" />
-                  {forgotPasswordForm.touched.email &&
-                    forgotPasswordForm.errors.email}
-                </Typography>
+                <ErrorMessageForm
+                  message={
+                    forgotPasswordForm.touched.email &&
+                    forgotPasswordForm.errors.email
+                  }
+                />
               )}
             {/* Email input end */}
 

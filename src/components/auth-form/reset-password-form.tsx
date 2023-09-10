@@ -5,11 +5,7 @@ import { useNavigate } from "react-router-dom";
 import { useTranslation } from "react-i18next";
 import * as Yup from "yup";
 
-import {
-  EyeIcon,
-  EyeSlashIcon,
-  InformationCircleIcon,
-} from "@heroicons/react/24/solid";
+import { EyeIcon, EyeSlashIcon } from "@heroicons/react/24/solid";
 import {
   Button,
   Card,
@@ -19,6 +15,7 @@ import {
   Spinner,
 } from "@material-tailwind/react";
 import NotificationForm from "./notification-form";
+import ErrorMessageForm from "../common/error-message-form";
 
 import userService from "../../services/user-service";
 import { setNotification } from "../../redux/features/auth-modal-slice";
@@ -146,15 +143,12 @@ const ResetPasswordForm: React.FC<ResetPasswordFormProps> = ({
             />
             {resetPasswordForm.touched.password &&
               resetPasswordForm.errors.password && (
-                <Typography
-                  className="!mt-1 ml-3 flex items-center gap-1 font-normal"
-                  color="red"
-                  variant="small"
-                >
-                  <InformationCircleIcon className="h-4 w-4" />
-                  {resetPasswordForm.touched.password &&
-                    resetPasswordForm.errors.password}
-                </Typography>
+                <ErrorMessageForm
+                  message={
+                    resetPasswordForm.touched.password &&
+                    resetPasswordForm.errors.password
+                  }
+                />
               )}
             {/* Password input end  */}
 
@@ -183,15 +177,12 @@ const ResetPasswordForm: React.FC<ResetPasswordFormProps> = ({
             />
             {resetPasswordForm.touched.confirm_password &&
               resetPasswordForm.errors.confirm_password && (
-                <Typography
-                  className="!mt-1 ml-3 flex items-center gap-1 font-normal"
-                  color="red"
-                  variant="small"
-                >
-                  <InformationCircleIcon className="h-4 w-4" />
-                  {resetPasswordForm.touched.confirm_password &&
-                    resetPasswordForm.errors.confirm_password}
-                </Typography>
+                <ErrorMessageForm
+                  message={
+                    resetPasswordForm.touched.confirm_password &&
+                    resetPasswordForm.errors.confirm_password
+                  }
+                />
               )}
             {/* Confirm password input end*/}
 

@@ -5,11 +5,7 @@ import { toast } from "react-hot-toast";
 import { useTranslation } from "react-i18next";
 import * as Yup from "yup";
 
-import {
-  EyeIcon,
-  EyeSlashIcon,
-  InformationCircleIcon,
-} from "@heroicons/react/24/solid";
+import { EyeIcon, EyeSlashIcon } from "@heroicons/react/24/solid";
 import {
   Button,
   Card,
@@ -19,6 +15,7 @@ import {
   Spinner,
 } from "@material-tailwind/react";
 import NotificationForm from "./notification-form";
+import ErrorMessageForm from "../common/error-message-form";
 
 import userService from "../../services/user-service";
 import { setAuthModalOpen } from "../../redux/features/auth-modal-slice";
@@ -64,11 +61,11 @@ const SignUpForm: React.FC<SignUpFormProps> = ({
         )
         .required(t("auth.Email is required")),
       password: Yup.string()
-        .min(8, t("auth.Password minimum 8 characters"))
+        .min(6, t("auth.Password minimum 6 characters"))
         .required(t("auth.Password is required")),
       confirm_password: Yup.string()
         .oneOf([Yup.ref("password")], t("auth.Confirm password not match"))
-        .min(8, t("auth.Confirm password minimum 8 characters"))
+        .min(6, t("auth.Confirm password minimum 6 characters"))
         .required(t("auth.Confirm password is required")),
     }),
     onSubmit: async (values: SignUpFormValues) => {
@@ -151,14 +148,9 @@ const SignUpForm: React.FC<SignUpFormProps> = ({
               }
             />
             {signUpForm.touched.name && signUpForm.errors.name && (
-              <Typography
-                className="!mt-1 ml-3 flex items-center gap-1 font-normal"
-                color="red"
-                variant="small"
-              >
-                <InformationCircleIcon className="h-4 w-4" />
-                {signUpForm.touched.name && signUpForm.errors.name}
-              </Typography>
+              <ErrorMessageForm
+                message={signUpForm.touched.name && signUpForm.errors.name}
+              />
             )}
             {/* Name input end */}
 
@@ -177,14 +169,9 @@ const SignUpForm: React.FC<SignUpFormProps> = ({
               }
             />
             {signUpForm.touched.email && signUpForm.errors.email && (
-              <Typography
-                className="!mt-1 ml-3 flex items-center gap-1 font-normal"
-                color="red"
-                variant="small"
-              >
-                <InformationCircleIcon className="h-4 w-4" />
-                {signUpForm.touched.email && signUpForm.errors.email}
-              </Typography>
+              <ErrorMessageForm
+                message={signUpForm.touched.email && signUpForm.errors.email}
+              />
             )}
             {/* Email address input end */}
 
@@ -215,14 +202,11 @@ const SignUpForm: React.FC<SignUpFormProps> = ({
               }
             />
             {signUpForm.touched.password && signUpForm.errors.password && (
-              <Typography
-                className="!mt-1 ml-3 flex items-center gap-1 font-normal"
-                color="red"
-                variant="small"
-              >
-                <InformationCircleIcon className="h-4 w-4" />
-                {signUpForm.touched.password && signUpForm.errors.password}
-              </Typography>
+              <ErrorMessageForm
+                message={
+                  signUpForm.touched.password && signUpForm.errors.password
+                }
+              />
             )}
             {/* Password input end  */}
 
@@ -254,15 +238,12 @@ const SignUpForm: React.FC<SignUpFormProps> = ({
             />
             {signUpForm.touched.confirm_password &&
               signUpForm.errors.confirm_password && (
-                <Typography
-                  className="!mt-1 ml-3 flex items-center gap-1 font-normal"
-                  color="red"
-                  variant="small"
-                >
-                  <InformationCircleIcon className="h-4 w-4" />
-                  {signUpForm.touched.confirm_password &&
-                    signUpForm.errors.confirm_password}
-                </Typography>
+                <ErrorMessageForm
+                  message={
+                    signUpForm.touched.confirm_password &&
+                    signUpForm.errors.confirm_password
+                  }
+                />
               )}
             {/* Confirm password input end*/}
 

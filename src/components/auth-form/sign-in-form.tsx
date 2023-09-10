@@ -6,11 +6,7 @@ import { Link } from "react-router-dom";
 import { useTranslation } from "react-i18next";
 import * as Yup from "yup";
 
-import {
-  EyeIcon,
-  EyeSlashIcon,
-  InformationCircleIcon,
-} from "@heroicons/react/24/solid";
+import { EyeIcon, EyeSlashIcon } from "@heroicons/react/24/solid";
 import {
   Button,
   Card,
@@ -20,6 +16,7 @@ import {
   Spinner,
 } from "@material-tailwind/react";
 import NotificationForm from "./notification-form";
+import ErrorMessageForm from "../common/error-message-form";
 
 import userService from "../../services/user-service";
 import {
@@ -66,7 +63,7 @@ const SignInForm: React.FC<SignInFormProps> = ({
         )
         .required(t("auth.Email is required")),
       password: Yup.string()
-        .min(8, t("auth.Password minimum 8 characters"))
+        .min(6, t("auth.Password minimum 6 characters"))
         .required(t("auth.Password is required")),
     }),
     onSubmit: async (values: SignInFormValues) => {
@@ -158,14 +155,9 @@ const SignInForm: React.FC<SignInFormProps> = ({
               }
             />
             {signInForm.touched.email && signInForm.errors.email && (
-              <Typography
-                className="!mt-1 ml-3 flex items-center gap-1 font-normal"
-                color="red"
-                variant="small"
-              >
-                <InformationCircleIcon className="h-4 w-4" />
-                {signInForm.touched.email && signInForm.errors.email}
-              </Typography>
+              <ErrorMessageForm
+                message={signInForm.touched.email && signInForm.errors.email}
+              />
             )}
             {/* Email input end */}
 
@@ -196,14 +188,11 @@ const SignInForm: React.FC<SignInFormProps> = ({
               }
             />
             {signInForm.touched.password && signInForm.errors.password && (
-              <Typography
-                className="!mt-1 ml-3 flex items-center gap-1 font-normal"
-                color="red"
-                variant="small"
-              >
-                <InformationCircleIcon className="h-4 w-4" />
-                {signInForm.touched.password && signInForm.errors.password}
-              </Typography>
+              <ErrorMessageForm
+                message={
+                  signInForm.touched.password && signInForm.errors.password
+                }
+              />
             )}
             {/* Password input end */}
 
