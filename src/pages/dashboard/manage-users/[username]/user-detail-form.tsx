@@ -3,7 +3,9 @@ import { useNavigate } from "react-router-dom";
 import { useFormik } from "formik";
 import { format } from "date-fns";
 import { toast } from "react-hot-toast";
+import { useTranslation } from "react-i18next";
 import AvatarEdit from "react-avatar-edit";
+import * as Yup from "yup";
 
 import {
   Button,
@@ -19,6 +21,7 @@ import {
 } from "@material-tailwind/react";
 import { GlobeAltIcon, MapPinIcon } from "@heroicons/react/24/solid";
 import NotificationForm from "../../../../components/auth-form/notification-form";
+import ErrorMessageForm from "../../../../components/common/error-message-form";
 
 import userService from "../../../../services/user-service";
 import mediaService from "../../../../services/media-service";
@@ -47,13 +50,13 @@ interface UserDetailFormValues {
 
 const UserDetailForm: React.FC<UserDetailFormProps> = ({ user }) => {
   const navigate = useNavigate();
+  const { t } = useTranslation();
 
   const [avatar, setAvatar] = useState(user.avatar || "/user.svg");
   const [coverPhoto, setCoverPhoto] = useState(
     user.avatar || "/cover-photo.svg"
   );
   const [coverPhotoFile, setCoverPhotoFile] = useState<File>();
-
   const [errorMessage, setErrorMessage] = useState("");
   const [isSubmit, setIsSubmit] = useState(false);
   const [changeAvatar, setChangeAvatar] = useState(false);
@@ -100,11 +103,32 @@ const UserDetailForm: React.FC<UserDetailFormProps> = ({ user }) => {
       website: user.website,
       location: user.location,
     },
+    validationSchema: Yup.object({
+      name: Yup.string().required(t("auth.Name is required")),
+      username: Yup.string()
+        .matches(/^[a-zA-Z0-9-_]{4,12}$/, t("user.username_validate"))
+        .required(t("auth.Username is required")),
+      bio: Yup.string()
+        .required(t("user.Biography is required"))
+        .max(200, t("user.Bio must only contain 1-200 characters")),
+      website: Yup.string()
+        .url("Invalid website link")
+        .required(t("user.Website is required")),
+      location: Yup.string()
+        .required(t("user.Address is required"))
+        .max(200, t("user.Address must only contain 1-200 characters")),
+    }),
     onSubmit: async (values: UserDetailFormValues) => {
       setIsSubmit(true);
       setErrorMessage("");
 
-      let data = { ...values, level: +level, verify: +verify, role: +admin };
+      let data = {
+        ...values,
+        user_id: user._id,
+        level: +level,
+        verify: +verify,
+        role: +admin,
+      };
 
       // If avatar changed then upload avatar and return url
       if (avatar !== user.avatar) {
@@ -128,13 +152,12 @@ const UserDetailForm: React.FC<UserDetailFormProps> = ({ user }) => {
           if (error) setErrorMessage(error.message);
         }
       }
-      console.log("data", data);
 
       const { response, error } = await userService.updateUser(data);
       if (response) {
         console.log("RES", response);
         navigate("/dashboard/manage-users");
-        toast.success("Edit User Success");
+        toast.success(t("user.User editing successful"));
       }
       if (error) setErrorMessage(error.message);
 
@@ -145,19 +168,19 @@ const UserDetailForm: React.FC<UserDetailFormProps> = ({ user }) => {
   return (
     <div>
       <Typography className="font-bold text-2xl">
-        Edit User {user.name}
+        {t("user.Edit User")} {user.name}
       </Typography>
 
       <form onSubmit={userDetailForm.handleSubmit}>
         {/* Edit avatar start */}
         <div className="py-4 space-y-4">
           <div className="flex items-center justify-between">
-            <Typography className="font-bold">Avatar</Typography>
+            <Typography className="font-bold">{t("user.Avatar")}</Typography>
             <Button
               onClick={() => setChangeAvatar(!changeAvatar)}
               variant="outlined"
             >
-              Change
+              {t("user.Change")}
             </Button>
           </div>
           <div className="flex items-center justify-around flex-col sm:flex-row gap-4">
@@ -179,12 +202,14 @@ const UserDetailForm: React.FC<UserDetailFormProps> = ({ user }) => {
 
           {/* Edit cover photo start */}
           <div className="flex items-center justify-between">
-            <Typography className="font-bold">Cover Photo</Typography>
+            <Typography className="font-bold">
+              {t("user.Cover Photo")}
+            </Typography>
             <Button
               onClick={() => setChangeCoverPhoto(!changeCoverPhoto)}
               variant="outlined"
             >
-              Change
+              {t("user.Change")}
             </Button>
           </div>
           {changeCoverPhoto && (
@@ -206,43 +231,93 @@ const UserDetailForm: React.FC<UserDetailFormProps> = ({ user }) => {
           />
           {/* Edit cover photo start */}
 
-          <Typography className="font-bold">Personal Information</Typography>
+          <Typography className="font-bold">
+            {t("user.Personal Information")}
+          </Typography>
           <div className="grid grid-cols-2 gap-4">
-            <Input
-              containerProps={{ className: "col-span-2 sm:col-span-1" }}
-              label="Name"
-              name="name"
-              type="text"
-              size="lg"
-              crossOrigin=""
-              value={userDetailForm.values.name}
-              onChange={userDetailForm.handleChange}
-            />
+            <div>
+              {/* Name input start */}
+              <Input
+                containerProps={{ className: "col-span-2 sm:col-span-1" }}
+                label={t("auth.name")}
+                name="name"
+                type="text"
+                size="lg"
+                crossOrigin=""
+                value={userDetailForm.values.name}
+                onChange={userDetailForm.handleChange}
+                error={
+                  userDetailForm.touched.name &&
+                  userDetailForm.errors.name !== undefined
+                }
+              />
+              {userDetailForm.touched.name && userDetailForm.errors.name && (
+                <ErrorMessageForm
+                  message={
+                    userDetailForm.touched.name && userDetailForm.errors.name
+                  }
+                />
+              )}
+              {/* Name input end */}
+            </div>
 
-            <Input
-              containerProps={{ className: "col-span-2 sm:col-span-1" }}
-              label="User name"
-              name="username"
-              type="text"
-              size="lg"
-              crossOrigin=""
-              value={userDetailForm.values.username}
-              onChange={userDetailForm.handleChange}
-            />
+            <div>
+              {/* Username input start */}
+              <Input
+                containerProps={{ className: "col-span-2 sm:col-span-1" }}
+                label={t("user.Username")}
+                name="username"
+                type="text"
+                size="lg"
+                crossOrigin=""
+                value={userDetailForm.values.username}
+                onChange={userDetailForm.handleChange}
+                error={
+                  userDetailForm.touched.username &&
+                  userDetailForm.errors.username !== undefined
+                }
+              />
+              {userDetailForm.touched.username &&
+                userDetailForm.errors.username && (
+                  <ErrorMessageForm
+                    message={
+                      userDetailForm.touched.username &&
+                      userDetailForm.errors.username
+                    }
+                  />
+                )}
+              {/* Username input end */}
+            </div>
           </div>
 
-          <Textarea
-            size="md"
-            label="Biography"
-            name="bio"
-            value={userDetailForm.values.bio}
-            onChange={userDetailForm.handleChange}
-          />
+          <div>
+            {/* Biography text area start */}
+            <Textarea
+              size="md"
+              label={t("user.Biography")}
+              name="bio"
+              value={userDetailForm.values.bio}
+              onChange={userDetailForm.handleChange}
+              error={
+                userDetailForm.touched.bio &&
+                userDetailForm.errors.bio !== undefined
+              }
+            />
+            {userDetailForm.touched.bio && userDetailForm.errors.bio && (
+              <ErrorMessageForm
+                message={
+                  userDetailForm.touched.bio && userDetailForm.errors.bio
+                }
+              />
+            )}
+            {/* Biography text area end */}
+          </div>
 
           <div className="grid grid-cols-2 gap-4">
+            {/* Date of birth input start */}
             <Input
               containerProps={{ className: "col-span-2 sm:col-span-1" }}
-              label="Date of birth"
+              label={t("user.Date of birth")}
               name="date_of_birth"
               type="date"
               size="lg"
@@ -250,37 +325,72 @@ const UserDetailForm: React.FC<UserDetailFormProps> = ({ user }) => {
               value={userDetailForm.values.date_of_birth}
               onChange={userDetailForm.handleChange}
             />
+            {/* Date of birth input end */}
 
+            <div>
+              {/* Website input start */}
+              <Input
+                containerProps={{ className: "col-span-2 sm:col-span-1" }}
+                label={t("user.Website")}
+                name="website"
+                type="text"
+                size="lg"
+                crossOrigin=""
+                icon={<GlobeAltIcon className="w-4 h-4 text-black" />}
+                value={userDetailForm.values.website}
+                onChange={userDetailForm.handleChange}
+                error={
+                  userDetailForm.touched.website &&
+                  userDetailForm.errors.website !== undefined
+                }
+              />
+              {userDetailForm.touched.website &&
+                userDetailForm.errors.website && (
+                  <ErrorMessageForm
+                    message={
+                      userDetailForm.touched.website &&
+                      userDetailForm.errors.website
+                    }
+                  />
+                )}
+              {/* Website input end */}
+            </div>
+          </div>
+
+          <div>
+            {/* Address input start */}
             <Input
-              containerProps={{ className: "col-span-2 sm:col-span-1" }}
-              label="Website"
-              name="website"
+              label={t("user.Address")}
+              name="location"
               type="text"
               size="lg"
               crossOrigin=""
-              icon={<GlobeAltIcon className="w-4 h-4 text-black" />}
-              value={userDetailForm.values.website}
+              icon={<MapPinIcon className="w-4 h-4 text-black" />}
+              value={userDetailForm.values.location}
               onChange={userDetailForm.handleChange}
+              error={
+                userDetailForm.touched.location &&
+                userDetailForm.errors.location !== undefined
+              }
             />
+            {userDetailForm.touched.location &&
+              userDetailForm.errors.location && (
+                <ErrorMessageForm
+                  message={
+                    userDetailForm.touched.location &&
+                    userDetailForm.errors.location
+                  }
+                />
+              )}
+            {/* Address input end */}
           </div>
-
-          <Input
-            label="Address"
-            name="location"
-            type="text"
-            size="lg"
-            crossOrigin=""
-            icon={<MapPinIcon className="w-4 h-4 text-black" />}
-            value={userDetailForm.values.location}
-            onChange={userDetailForm.handleChange}
-          />
 
           <div className="grid grid-cols-2 gap-4">
             {/* Select level start */}
             <div className="col-span-2 sm:col-span-1">
               <Select
                 name="level"
-                label="Select Level"
+                label={t("user.Select Level")}
                 size="lg"
                 value={userDetailForm.values.level}
                 onChange={userDetailForm.handleChange}
@@ -291,7 +401,7 @@ const UserDetailForm: React.FC<UserDetailFormProps> = ({ user }) => {
                     key={key}
                     onClick={() => setLevel(key)}
                   >
-                    {item}
+                    {t(`user.${item}`)}
                   </Option>
                 ))}
               </Select>
@@ -309,7 +419,7 @@ const UserDetailForm: React.FC<UserDetailFormProps> = ({ user }) => {
                     crossOrigin={""}
                   />
                   <Typography className="font-medium select-none">
-                    Admin
+                    {t("user.Admin")}
                   </Typography>
                 </ListItem>
                 {/* Role checkbox end */}
@@ -323,7 +433,7 @@ const UserDetailForm: React.FC<UserDetailFormProps> = ({ user }) => {
                     crossOrigin={""}
                   />
                   <Typography className="font-medium select-none">
-                    Email Verify
+                    {t("user.Email Verify")}
                   </Typography>
                 </ListItem>
                 {/* Verify checkbox start */}
@@ -345,10 +455,14 @@ const UserDetailForm: React.FC<UserDetailFormProps> = ({ user }) => {
             variant="outlined"
             color="red"
           >
-            Cancel
+            {t("user.Cancel")}
           </Button>
           <Button type="submit" variant="gradient" disabled={isSubmit}>
-            {isSubmit ? <Spinner className="h-4 w-4 m-auto" /> : "Submit"}
+            {isSubmit ? (
+              <Spinner className="h-4 w-4 m-auto" />
+            ) : (
+              t("user.Submit")
+            )}
           </Button>
         </div>
       </form>
