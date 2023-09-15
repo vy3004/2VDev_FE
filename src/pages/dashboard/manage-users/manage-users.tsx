@@ -29,6 +29,7 @@ import {
 } from "@material-tailwind/react";
 
 import Loading from "../../../components/common/loading";
+import LevelChip from "../../../components/common/level-chip";
 
 import userService from "../../../services/user-service";
 
@@ -202,32 +203,7 @@ const ManageUsers = () => {
                     </td>
                     <td className={classes}>
                       <div className="w-max">
-                        <Chip
-                          variant="ghost"
-                          size="sm"
-                          value={
-                            level === 0
-                              ? "Bronze"
-                              : level === 1
-                              ? "Silver"
-                              : level === 2
-                              ? "Gold"
-                              : level === 3
-                              ? "Platinum"
-                              : "Diamond"
-                          }
-                          color={
-                            level === 0
-                              ? "brown"
-                              : level === 1
-                              ? "gray"
-                              : level === 2
-                              ? "yellow"
-                              : level === 3
-                              ? "cyan"
-                              : "blue"
-                          }
-                        />
+                        <LevelChip level={level} />
                       </div>
                     </td>
                     <td className={classes}>

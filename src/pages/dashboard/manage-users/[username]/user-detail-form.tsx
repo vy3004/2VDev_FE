@@ -4,6 +4,7 @@ import { useFormik } from "formik";
 import { format } from "date-fns";
 import { toast } from "react-hot-toast";
 import { useTranslation } from "react-i18next";
+import { useSelector } from "react-redux";
 import AvatarEdit from "react-avatar-edit";
 import * as Yup from "yup";
 
@@ -29,6 +30,7 @@ import mediaService from "../../../../services/media-service";
 import { base64ToFile, fileToBase64 } from "../../../../utils/file-utils";
 import { User } from "../../../../utils/types";
 import { USER_LEVELS } from "../../../../utils/constant";
+import { selectApp } from "../../../../redux/features/app-state-slice";
 
 interface UserDetailFormProps {
   user: User;
@@ -51,6 +53,8 @@ interface UserDetailFormValues {
 const UserDetailForm: React.FC<UserDetailFormProps> = ({ user }) => {
   const navigate = useNavigate();
   const { t } = useTranslation();
+  const { themeMode } = useSelector(selectApp);
+  console.log(themeMode);
 
   const [avatar, setAvatar] = useState(user.avatar || "/user.svg");
   const [coverPhoto, setCoverPhoto] = useState(
@@ -107,7 +111,7 @@ const UserDetailForm: React.FC<UserDetailFormProps> = ({ user }) => {
       name: Yup.string().required(t("auth.Name is required")),
       username: Yup.string()
         .matches(/^[a-zA-Z0-9-_]{4,12}$/, t("user.username_validate"))
-        .required(t("auth.Username is required")),
+        .required(t("user.Username is required")),
       bio: Yup.string()
         .required(t("user.Biography is required"))
         .max(200, t("user.Bio must only contain 1-200 characters")),
@@ -166,7 +170,7 @@ const UserDetailForm: React.FC<UserDetailFormProps> = ({ user }) => {
   });
 
   return (
-    <div>
+    <div className="p-4 rounded-lg dark:bg-gray-700 dark:text-gray-50">
       <Typography className="font-bold text-2xl">
         {t("user.Edit User")} {user.name}
       </Typography>
@@ -178,14 +182,14 @@ const UserDetailForm: React.FC<UserDetailFormProps> = ({ user }) => {
             <Typography className="font-bold">{t("user.Avatar")}</Typography>
             <Button
               onClick={() => setChangeAvatar(!changeAvatar)}
-              variant="outlined"
+              variant="gradient"
             >
               {t("user.Change")}
             </Button>
           </div>
           <div className="flex items-center justify-around flex-col sm:flex-row gap-4">
             <img
-              className="border-4 border-black rounded-full w-20 h-20 sm:w-32 sm:h-32 p-0.5"
+              className="border-4 border-black rounded-full w-20 h-20 sm:w-32 sm:h-32 p-0.5 dark:border-gray-50"
               src={avatar}
               alt="avatar"
             />
@@ -207,7 +211,7 @@ const UserDetailForm: React.FC<UserDetailFormProps> = ({ user }) => {
             </Typography>
             <Button
               onClick={() => setChangeCoverPhoto(!changeCoverPhoto)}
-              variant="outlined"
+              variant="gradient"
             >
               {t("user.Change")}
             </Button>
@@ -219,6 +223,7 @@ const UserDetailForm: React.FC<UserDetailFormProps> = ({ user }) => {
               name="cover_photo"
               type="file"
               size="lg"
+              color={themeMode ? "white" : "black"}
               crossOrigin=""
               onChange={covertToBase64}
             />
@@ -243,6 +248,7 @@ const UserDetailForm: React.FC<UserDetailFormProps> = ({ user }) => {
                 name="name"
                 type="text"
                 size="lg"
+                color={themeMode ? "white" : "black"}
                 crossOrigin=""
                 value={userDetailForm.values.name}
                 onChange={userDetailForm.handleChange}
@@ -269,6 +275,7 @@ const UserDetailForm: React.FC<UserDetailFormProps> = ({ user }) => {
                 name="username"
                 type="text"
                 size="lg"
+                color={themeMode ? "white" : "black"}
                 crossOrigin=""
                 value={userDetailForm.values.username}
                 onChange={userDetailForm.handleChange}
@@ -293,9 +300,11 @@ const UserDetailForm: React.FC<UserDetailFormProps> = ({ user }) => {
           <div>
             {/* Biography text area start */}
             <Textarea
-              size="md"
+              className="dark:text-gray-50"
+              labelProps={{ className: "dark:!text-gray-50" }}
               label={t("user.Biography")}
               name="bio"
+              size="md"
               value={userDetailForm.values.bio}
               onChange={userDetailForm.handleChange}
               error={
@@ -316,27 +325,29 @@ const UserDetailForm: React.FC<UserDetailFormProps> = ({ user }) => {
           <div className="grid grid-cols-2 gap-4">
             {/* Date of birth input start */}
             <Input
-              containerProps={{ className: "col-span-2 sm:col-span-1" }}
               label={t("user.Date of birth")}
               name="date_of_birth"
               type="date"
               size="lg"
+              color={themeMode ? "white" : "black"}
               crossOrigin=""
               value={userDetailForm.values.date_of_birth}
               onChange={userDetailForm.handleChange}
             />
             {/* Date of birth input end */}
 
-            <div>
+            <div className="col-span-2 sm:col-span-1">
               {/* Website input start */}
               <Input
-                containerProps={{ className: "col-span-2 sm:col-span-1" }}
                 label={t("user.Website")}
                 name="website"
                 type="text"
                 size="lg"
+                color={themeMode ? "white" : "black"}
                 crossOrigin=""
-                icon={<GlobeAltIcon className="w-4 h-4 text-black" />}
+                icon={
+                  <GlobeAltIcon className="w-4 h-4 text-black dark:text-gray-50" />
+                }
                 value={userDetailForm.values.website}
                 onChange={userDetailForm.handleChange}
                 error={
@@ -364,8 +375,11 @@ const UserDetailForm: React.FC<UserDetailFormProps> = ({ user }) => {
               name="location"
               type="text"
               size="lg"
+              color={themeMode ? "white" : "black"}
               crossOrigin=""
-              icon={<MapPinIcon className="w-4 h-4 text-black" />}
+              icon={
+                <MapPinIcon className="w-4 h-4 text-black dark:text-gray-50" />
+              }
               value={userDetailForm.values.location}
               onChange={userDetailForm.handleChange}
               error={
@@ -392,6 +406,7 @@ const UserDetailForm: React.FC<UserDetailFormProps> = ({ user }) => {
                 name="level"
                 label={t("user.Select Level")}
                 size="lg"
+                color="red"
                 value={userDetailForm.values.level}
                 onChange={userDetailForm.handleChange}
               >

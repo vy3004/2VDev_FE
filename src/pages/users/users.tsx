@@ -10,6 +10,7 @@ import {
 import { ArrowLeftIcon, ArrowRightIcon } from "@heroicons/react/24/outline";
 
 import Loading from "../../components/common/loading";
+import LevelChip from "../../components/common/level-chip";
 
 import userService from "../../services/user-service";
 import { selectUser } from "../../redux/features/user-slice";
@@ -61,7 +62,7 @@ const Users = () => {
           {isLoading && <Loading />}
 
           {users &&
-            users.map(({ name, avatar, username }, key) => (
+            users.map(({ name, avatar, username, level }, key) => (
               <div
                 className="flex flex-col items-center border hover:border-black rounded-lg py-6 space-y-4 col-span-6 sm:col-span-3 lg:col-span-2"
                 key={key}
@@ -81,9 +82,7 @@ const Users = () => {
                     }
                   />
                   <Typography className="font-bold">{name}</Typography>
-                  <Typography className="w-fit border border-black rounded-full px-2 py-1 font-semibold text-xs">
-                    Beginner
-                  </Typography>
+                  <LevelChip level={level} />
                 </a>
                 {currentUser?.username !== username && <Button>Follow</Button>}
               </div>
