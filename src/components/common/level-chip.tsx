@@ -1,3 +1,4 @@
+import { useTranslation } from "react-i18next";
 import { Chip } from "@material-tailwind/react";
 
 interface LevelChipPops {
@@ -5,20 +6,23 @@ interface LevelChipPops {
 }
 
 const LevelChip: React.FC<LevelChipPops> = ({ level }) => {
+  const { t } = useTranslation();
+
   return (
     <Chip
+      className="normal-case"
       variant="ghost"
       size="sm"
       value={
         level === 0
-          ? "Bronze"
+          ? t("user.Bronze")
           : level === 1
-          ? "Silver"
+          ? t("user.Silver")
           : level === 2
-          ? "Gold"
+          ? t("user.Gold")
           : level === 3
-          ? "Platinum"
-          : "Diamond"
+          ? t("user.Platinum")
+          : t("user.Diamond")
       }
       color={
         level === 0

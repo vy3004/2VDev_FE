@@ -194,7 +194,7 @@ const ManageUsers = () => {
 
                           <Typography
                             variant="small"
-                            className="font-normal opacity-70 text-gray-50"
+                            className="font-normal opacity-70 dark:text-gray-50"
                           >
                             {email}
                           </Typography>

@@ -18,6 +18,7 @@ import NotFoundPage from "../pages/not-found-page/not-found-page";
 import ManageUsers from "../pages/dashboard/manage-users/manage-users";
 import ManagePosts from "../pages/dashboard/manage-posts/manage-posts";
 import UserDetailPage from "../pages/dashboard/manage-users/[username]/user-detail-page";
+import Questions from "../pages/questions/questions";
 
 interface Route {
   path: string;
@@ -59,6 +60,14 @@ const routes: Route[] = [
       <AdminPage>
         <ManagePosts />
       </AdminPage>
+    ),
+  },
+  {
+    path: "/questions/ask",
+    element: (
+      <ProtectedPage>
+        <Questions />
+      </ProtectedPage>
     ),
   },
   {

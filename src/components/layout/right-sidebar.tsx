@@ -16,6 +16,7 @@ import {
   Avatar,
 } from "@material-tailwind/react";
 import QuestionButton from "../common/question-button";
+import TagList from "../common/tag-list";
 
 import { getLastTwoWords } from "../../utils/string-utils";
 
@@ -172,17 +173,8 @@ const RightSidebar = () => {
           <TagIcon className="w-4 h-4" />
           {t("right-sidebar.Trending Tags")}
         </Typography>
-        <div className="">
-          {tags.map((tag, key) => (
-            <Button
-              key={key}
-              className="normal-case px-2 py-1 mr-1 mb-1 dark:bg-gray-50"
-              variant="outlined"
-            >
-              {tag}
-            </Button>
-          ))}
-        </div>
+
+        <TagList tags={tags} />
       </div>
 
       <div className="">

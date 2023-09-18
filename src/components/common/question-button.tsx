@@ -10,9 +10,9 @@ const QuestionButton = () => {
 
   return (
     <Button
-      onClick={() => navigate("ask-answer")}
+      onClick={() => navigate("/questions/ask")}
       size="sm"
-      className="flex items-center gap-2 text-lg normal-case"
+      className="flex items-center gap-2 text-sm md:text-lg normal-case"
     >
       <QuestionMarkCircleIcon className="w-6 h-6" />
       {t("right-sidebar.Ask Question")}
