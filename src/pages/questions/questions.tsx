@@ -64,7 +64,7 @@ const Questions = () => {
       // let data = { ...values, hashtags: selected };
       console.log("CHECK_DATA", values);
 
-      const { response, error } = await postService.postQuestion(values);
+      const { response, error } = await postService.post(values);
       if (response) {
         console.log("RES", response);
         toast.success("Your question has been posted");

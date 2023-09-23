@@ -42,7 +42,7 @@ const bookmarkService = {
     post_id,
   }: unmarkPostPayload): Promise<ApiResponse<any>> => {
     try {
-      const response = await axiosInstance.post(
+      const response = await axiosInstance.delete(
         bookmarkEndpoints.unmarkPost({ post_id })
       );
 

@@ -1,10 +1,20 @@
 import { ChatBubbleLeftIcon, EyeIcon } from "@heroicons/react/24/solid";
-import { Avatar, Button, Typography } from "@material-tailwind/react";
+import {
+  Avatar,
+  Button,
+  IconButton,
+  Tooltip,
+  Typography,
+} from "@material-tailwind/react";
 
 import LevelChip from "../../components/common/level-chip";
 import TagList from "../../components/common/tag-list";
+import { BookmarkIcon, BookmarkSlashIcon } from "@heroicons/react/24/outline";
+import { useState } from "react";
 
 const Home = () => {
+  const [bookmark, setBookmark] = useState(false);
+
   const tags = [
     "java",
     "css",
@@ -38,39 +48,65 @@ const Home = () => {
           />
 
           <div className="w-16 flex flex-col justify-center items-center gap-1">
-            <Typography className="cursor-pointer text-2xl hover:text-blue-500">
-              ▲
-            </Typography>
+            <Tooltip
+              className="w-36"
+              placement="right"
+              content="This question shows research effort; it is useful and clear"
+            >
+              <Typography className="cursor-pointer text-2xl hover:text-blue-500">
+                ▲
+              </Typography>
+            </Tooltip>
             <Typography className="font-bold">100</Typography>
-            <Typography className="cursor-pointer text-2xl hover:text-blue-500">
-              ▼
-            </Typography>
+            <Tooltip
+              className="w-36"
+              placement="right"
+              content="This question does not show any research effort; it is unclear or not useful"
+            >
+              <Typography className="cursor-pointer text-2xl hover:text-blue-500">
+                ▼
+              </Typography>
+            </Tooltip>
           </div>
         </div>
 
         <div className="space-y-2">
-          <div className="flex items-center gap-4">
-            <Typography
-              as="a"
-              href="#"
-              className="font-bold text-blue-500 hover:text-gray-900"
+          <div className="flex items-center justify-between">
+            <div className="flex items-center gap-4">
+              <Typography
+                as="a"
+                href="#"
+                className="font-bold text-blue-500 hover:text-gray-900"
+              >
+                Kha Vy
+              </Typography>
+              <LevelChip level={4} />
+              <Typography className="text-sm text-gray-600">
+                Asked:{" "}
+                <span className="text-blue-500 hover:text-gray-900">
+                  30/04/2001
+                </span>
+              </Typography>
+              <Typography className="text-sm text-gray-600">
+                In:{" "}
+                <span className="text-blue-500 hover:text-gray-900">
+                  Language
+                </span>
+              </Typography>
+            </div>
+            <Tooltip
+              content={bookmark ? "Unmark the post" : "Bookmark the post"}
             >
-              Kha Vy
-            </Typography>
-            <LevelChip level={4} />
-            <Typography className="text-sm text-gray-600">
-              Asked:{" "}
-              <span className="text-blue-500 hover:text-gray-900">
-                30/04/2001
-              </span>
-            </Typography>
-            <Typography className="text-sm text-gray-600">
-              In:{" "}
-              <span className="text-blue-500 hover:text-gray-900">
-                Language
-              </span>
-            </Typography>
+              <IconButton variant="text" onClick={() => setBookmark(!bookmark)}>
+                {bookmark ? (
+                  <BookmarkSlashIcon className="w-5 h-5" />
+                ) : (
+                  <BookmarkIcon className="w-5 h-5" />
+                )}
+              </IconButton>
+            </Tooltip>
           </div>
+
           <div className="space-y-4">
             <Typography
               as="a"
