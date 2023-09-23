@@ -14,24 +14,24 @@ const LevelChip: React.FC<LevelChipPops> = ({ level }) => {
       variant="ghost"
       size="sm"
       value={
-        level === 0
+        level < 50
           ? t("user.Bronze")
-          : level === 1
+          : level < 200
           ? t("user.Silver")
-          : level === 2
+          : level < 1000
           ? t("user.Gold")
-          : level === 3
+          : level < 10000
           ? t("user.Platinum")
           : t("user.Diamond")
       }
       color={
-        level === 0
+        level < 50
           ? "brown"
-          : level === 1
+          : level < 200
           ? "gray"
-          : level === 2
+          : level < 1000
           ? "yellow"
-          : level === 3
+          : level < 10000
           ? "cyan"
           : "blue"
       }
