@@ -28,7 +28,7 @@ interface PostQuestionFormValues {
   type: number;
 }
 
-const Questions = () => {
+const Posts = () => {
   const { user } = useSelector(selectUser);
 
   const [images, setImages] = useState();
@@ -207,4 +207,4 @@ const Questions = () => {
   );
 };
 
-export default Questions;
+export default Posts;
