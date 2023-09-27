@@ -3,9 +3,9 @@ import axiosInstance from "../configs/axios-config";
 
 interface PostPayLoad {
   user_id: string;
-  title: string;
+  title: string | null;
   content: string;
-  hashtags: string[];
+  hashtags?: string[];
   medias?: string[];
   parent_id: string | null;
   type: number;

@@ -1,24 +1,10 @@
 import { createSlice } from "@reduxjs/toolkit";
 import type { PayloadAction } from "@reduxjs/toolkit";
 import type { RootState } from "../store";
+import { User } from "../../utils/types";
 
 interface UserState {
-  user: {
-    _id?: string;
-    name?: string;
-    email?: string;
-    date_of_birth?: Date;
-    verify?: number;
-    role?: number;
-    level?: number;
-    point?: number;
-    bio?: string;
-    location?: string;
-    website?: string;
-    username?: string;
-    avatar?: string;
-    cover_photo?: string;
-  } | null;
+  user: User | null;
 }
 
 const initialState: UserState = {

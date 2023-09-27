@@ -1,4 +1,4 @@
-import { MediaType, QuestionType, ResolvedType } from "./constant";
+import { MediaType, PostType, ResolvedType } from "./constant";
 
 export interface User {
   _id: string;
@@ -34,7 +34,7 @@ export interface Post {
   title: string;
   content: string;
   medias: Media[];
-  type: QuestionType;
+  type: PostType;
   hashtags: Tag[];
   resolved?: ResolvedType;
   votes_count: number;

@@ -93,7 +93,14 @@ const MainLayout = () => {
         const { response } = await authService.verifyEmail();
 
         if (response) {
-          dispatch(setUser({ ...user, verify: 1 }));
+          dispatch(
+            setUser({
+              ...user!,
+              verify: 1,
+              _id: user?._id || "",
+              username: user?.username || "",
+            })
+          );
           navigate("/");
         }
       } catch (error) {

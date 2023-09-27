@@ -16,7 +16,7 @@ export enum MediaType {
   Video,
 }
 
-export enum QuestionType {
+export enum PostType {
   Post,
   RePost,
   Comment,
