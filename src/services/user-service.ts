@@ -58,6 +58,14 @@ interface UpdateUserPayLoad {
   level?: number;
 }
 
+interface FollowPayLoad {
+  followed_user_id: string;
+}
+
+interface UnfollowPayLoad {
+  user_id: string;
+}
+
 interface ApiResponse<T> {
   response?: AxiosResponse<T>;
   error?: AxiosError;
@@ -79,7 +87,8 @@ const userEndpoints = {
   getUsers: ({ limit, page }: { limit: number; page: number }) =>
     `/list-users?limit=${limit}&page=${page}`,
   getUser: ({ username }: { username: string }) => `/${username}`,
-
+  follow: "/follow",
+  unfollow: ({ user_id }: { user_id: string }) => `/follow/${user_id}`,
   // Role admin
   updateUser: ({ user_id }: { user_id: string }) =>
     `/update-account/${user_id}`,
@@ -284,6 +293,30 @@ const userService = {
     try {
       const response = await axiosInstance.get(
         userEndpoints.getUser({ username })
+      );
+
+      return { response };
+    } catch (error) {
+      return { error: error as AxiosError };
+    }
+  },
+  follow: async ({
+    followed_user_id,
+  }: FollowPayLoad): Promise<ApiResponse<any>> => {
+    try {
+      const response = await axiosInstance.post(userEndpoints.follow, {
+        followed_user_id,
+      });
+
+      return { response };
+    } catch (error) {
+      return { error: error as AxiosError };
+    }
+  },
+  unfollow: async ({ user_id }: UnfollowPayLoad): Promise<ApiResponse<any>> => {
+    try {
+      const response = await axiosInstance.delete(
+        userEndpoints.unfollow({ user_id })
       );
 
       return { response };

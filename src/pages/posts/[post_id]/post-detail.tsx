@@ -35,6 +35,7 @@ import Comment from "../components/comment";
 import CommentForm from "../components/comment-form";
 
 import voteService from "../../../services/vote-service";
+import userService from "../../../services/user-service";
 import { selectUser } from "../../../redux/features/user-slice";
 import {
   formatTimeDistanceToNow,
@@ -54,35 +55,70 @@ const PostDetail: React.FC<PostDetailProps> = ({ post, comments }) => {
 
   const [vote, setVote] = useState(false);
   const [bookmark, setBookmark] = useState(false);
+  const [follow, setFollow] = useState(false);
   const [showFormAnswer, setShowFormAnswer] = useState(false);
 
-  const handleVote = async () => {
+  const votePost = async (postId: string, type: boolean) => {
     try {
-      if (post._id) {
-        if (!vote) {
-          const { response } = await voteService.votePost({
-            post_id: post._id,
-          });
+      if (!type) {
+        const { response } = await voteService.votePost({
+          post_id: postId,
+        });
 
-          if (response) {
-            toast.success(response.data.message);
-            setVote(true);
-          }
-        } else {
-          const { response } = await voteService.removeVotePost({
-            post_id: post._id,
-          });
+        if (response) {
+          toast.success(response.data.message);
+        }
+      } else {
+        const { response } = await voteService.removeVotePost({
+          post_id: postId,
+        });
 
-          if (response) {
-            toast.success(response.data.message);
-            setVote(false);
-          }
+        if (response) {
+          toast.success(response.data.message);
         }
       }
     } catch (error) {
       console.log(error);
     }
   };
+
+  const handleVote = (postId: string, type: boolean) => {
+    votePost(postId, type);
+    setVote(!type);
+  };
+
+  const followUser = async (otherUserId: string, type: boolean) => {
+    try {
+      if (!type) {
+        const { response } = await userService.follow({
+          followed_user_id: otherUserId,
+        });
+
+        if (response) {
+          toast.success(response.data.message);
+          setFollow(true);
+        }
+      } else {
+        const { response } = await userService.unfollow({
+          user_id: otherUserId,
+        });
+
+        if (response) {
+          toast.success(response.data.message);
+          setFollow(false);
+        }
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  const handleFollow = (otherUserId: string, type: boolean) => {
+    followUser(otherUserId, type);
+    setFollow(!type);
+  };
+
+  const handleReport = {};
 
   return post && user ? (
     <div className="space-y-4">
@@ -120,6 +156,7 @@ const PostDetail: React.FC<PostDetailProps> = ({ post, comments }) => {
             </div>
             {/* Info user end */}
 
+            {/* Post menu start */}
             <Menu>
               <MenuHandler>
                 <IconButton variant="text" className="rounded-full">
@@ -143,9 +180,9 @@ const PostDetail: React.FC<PostDetailProps> = ({ post, comments }) => {
                 </MenuItem>
                 <MenuItem
                   className="flex items-center gap-2"
-                  onClick={() => setBookmark(!bookmark)}
+                  onClick={() => handleFollow(post.user_detail[0]._id, follow)}
                 >
-                  {bookmark ? (
+                  {follow ? (
                     <>
                       <UserMinusIcon className="w-5 h-5" /> Unfollow{" "}
                       {post.user_detail[0].name}
@@ -162,6 +199,7 @@ const PostDetail: React.FC<PostDetailProps> = ({ post, comments }) => {
                 </MenuItem>
               </MenuList>
             </Menu>
+            {/* Post menu end */}
           </div>
 
           <div className="space-y-4">
@@ -209,7 +247,7 @@ const PostDetail: React.FC<PostDetailProps> = ({ post, comments }) => {
 
             <div className="flex items-center justify-center gap-4">
               <Button
-                onClick={handleVote}
+                onClick={() => handleVote(post._id, vote)}
                 variant="text"
                 fullWidth
                 className={`flex items-center justify-center gap-2 normal-case text-base ${
@@ -256,7 +294,14 @@ const PostDetail: React.FC<PostDetailProps> = ({ post, comments }) => {
             {/* Comments start */}
             {comments &&
               comments.map((item) => (
-                <Comment key={item._id} comment={item} user_id={user._id} />
+                <Comment
+                  key={item._id}
+                  comment={item}
+                  user_id={user._id}
+                  votePost={votePost}
+                  followUser={followUser}
+                  handleReport={() => handleReport}
+                />
               ))}
             {/* Comments end */}
           </div>

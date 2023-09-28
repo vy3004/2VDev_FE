@@ -31,15 +31,26 @@ import { PostType } from "../../../utils/constant";
 interface CommentProps {
   comment: Post;
   user_id: string;
+  votePost: (postId: string, type: boolean) => void;
+  followUser: (otherUserId: string, type: boolean) => void;
+  handleReport: () => void;
 }
 
-const Comment: React.FC<CommentProps> = ({ comment, user_id }) => {
+const Comment: React.FC<CommentProps> = ({
+  comment,
+  user_id,
+  votePost,
+  followUser,
+  handleReport,
+}) => {
   const { i18n } = useTranslation();
 
   const [children, setChildren] = useState<Post[]>();
   const [loading, setLoading] = useState(false);
   const [showReplies, setShowReplies] = useState(false);
   const [showCommentForm, setShowCommentForm] = useState(false);
+  const [vote, setVote] = useState(false);
+  const [follow, setFollow] = useState(false);
 
   const getReplies = async (show: boolean) => {
     setLoading(true);
@@ -59,6 +70,16 @@ const Comment: React.FC<CommentProps> = ({ comment, user_id }) => {
       }
     }
     setLoading(false);
+  };
+
+  const handleVote = (postId: string, type: boolean) => {
+    votePost(postId, type);
+    setVote(!type);
+  };
+
+  const handleFollow = (otherUserId: string, type: boolean) => {
+    followUser(otherUserId, type);
+    setFollow(!type);
   };
 
   return (
@@ -91,6 +112,7 @@ const Comment: React.FC<CommentProps> = ({ comment, user_id }) => {
             </div>
 
             <Button
+              onClick={() => handleFollow(comment.user_detail[0]._id, follow)}
               variant="text"
               className="p-2 flex items-center justify-center gap-2 normal-case text-xs"
             >
@@ -113,6 +135,7 @@ const Comment: React.FC<CommentProps> = ({ comment, user_id }) => {
 
         <div className="flex items-center gap-4">
           <Button
+            onClick={() => handleVote(comment._id, vote)}
             variant="text"
             className="p-2 flex items-center justify-center gap-2 normal-case text-xs"
           >
@@ -173,7 +196,14 @@ const Comment: React.FC<CommentProps> = ({ comment, user_id }) => {
         {showReplies &&
           children &&
           children.map((reply) => (
-            <Comment key={reply._id} comment={reply} user_id={user_id} />
+            <Comment
+              key={reply._id}
+              comment={reply}
+              user_id={user_id}
+              votePost={votePost}
+              followUser={followUser}
+              handleReport={handleReport}
+            />
           ))}
         {/* Comment children end */}
       </div>
