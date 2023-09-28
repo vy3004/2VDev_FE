@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { useTranslation } from "react-i18next";
 import toast from "react-hot-toast";
 
@@ -44,6 +44,10 @@ import {
 import { Post } from "../../../utils/types";
 import { PostType } from "../../../utils/constant";
 import bookmarkService from "../../../services/bookmark-service";
+import {
+  selectReportModal,
+  setReportModal,
+} from "../../../redux/features/report-modal-slice";
 
 interface PostDetailProps {
   post: Post;
@@ -53,6 +57,7 @@ interface PostDetailProps {
 const PostDetail: React.FC<PostDetailProps> = ({ post, comments }) => {
   const { i18n } = useTranslation();
   const { user } = useSelector(selectUser);
+  const dispatch = useDispatch();
 
   const [vote, setVote] = useState(false);
   const [bookmark, setBookmark] = useState(false);
@@ -222,7 +227,18 @@ const PostDetail: React.FC<PostDetailProps> = ({ post, comments }) => {
                     </>
                   )}
                 </MenuItem>
-                <MenuItem className="flex items-center gap-2">
+                <MenuItem
+                  className="flex items-center gap-2"
+                  onClick={() =>
+                    dispatch(
+                      setReportModal({
+                        reportModalOpen: true,
+                        post_id: post._id,
+                        reason: "",
+                      })
+                    )
+                  }
+                >
                   <ExclamationTriangleIcon className="w-5 h-5" /> Report
                 </MenuItem>
               </MenuList>

@@ -15,6 +15,7 @@ import BreadcrumbsCustom from "../common/breadcrumbs";
 import AnswerQuestion from "../common/answer-question";
 import AuthModal from "../modals/auth-modal";
 import EditMyProfileModal from "../modals/edit-my-profile-modal";
+import ReportModal from "../modals/report-modal";
 
 import authService from "../../services/user-service";
 import { selectUser, setUser } from "../../redux/features/user-slice";
@@ -132,6 +133,7 @@ const MainLayout = () => {
       {/* Modal */}
       <AuthModal />
       <EditMyProfileModal />
+      <ReportModal />
       {/* Modal */}
 
       <Header />
