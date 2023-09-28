@@ -43,6 +43,7 @@ import {
 } from "../../../utils/string-utils";
 import { Post } from "../../../utils/types";
 import { PostType } from "../../../utils/constant";
+import bookmarkService from "../../../services/bookmark-service";
 
 interface PostDetailProps {
   post: Post;
@@ -96,7 +97,6 @@ const PostDetail: React.FC<PostDetailProps> = ({ post, comments }) => {
 
         if (response) {
           toast.success(response.data.message);
-          setFollow(true);
         }
       } else {
         const { response } = await userService.unfollow({
@@ -105,7 +105,6 @@ const PostDetail: React.FC<PostDetailProps> = ({ post, comments }) => {
 
         if (response) {
           toast.success(response.data.message);
-          setFollow(false);
         }
       }
     } catch (error) {
@@ -116,6 +115,35 @@ const PostDetail: React.FC<PostDetailProps> = ({ post, comments }) => {
   const handleFollow = (otherUserId: string, type: boolean) => {
     followUser(otherUserId, type);
     setFollow(!type);
+  };
+
+  const bookmarkPost = async (postId: string, type: boolean) => {
+    try {
+      if (!type) {
+        const { response } = await bookmarkService.bookmarkPost({
+          post_id: postId,
+        });
+
+        if (response) {
+          toast.success(response.data.message);
+        }
+      } else {
+        const { response } = await bookmarkService.unmarkPost({
+          post_id: postId,
+        });
+
+        if (response) {
+          toast.success(response.data.message);
+        }
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  const handleBookmark = (postId: string, type: boolean) => {
+    bookmarkPost(postId, type);
+    setBookmark(!type);
   };
 
   const handleReport = {};
@@ -166,7 +194,7 @@ const PostDetail: React.FC<PostDetailProps> = ({ post, comments }) => {
               <MenuList>
                 <MenuItem
                   className="flex items-center gap-2"
-                  onClick={() => setBookmark(!bookmark)}
+                  onClick={() => handleBookmark(post._id, bookmark)}
                 >
                   {bookmark ? (
                     <>
