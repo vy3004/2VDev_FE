@@ -49,7 +49,8 @@ const Comment: React.FC<CommentProps> = ({
   const [loading, setLoading] = useState(false);
   const [showReplies, setShowReplies] = useState(false);
   const [showCommentForm, setShowCommentForm] = useState(false);
-  const [vote, setVote] = useState(false);
+  const [vote, setVote] = useState(comment.is_voted);
+  const [votesCount, setVotesCount] = useState(comment.votes_count);
   const [follow, setFollow] = useState(false);
 
   const getReplies = async (show: boolean) => {
@@ -75,6 +76,7 @@ const Comment: React.FC<CommentProps> = ({
   const handleVote = (postId: string, type: boolean) => {
     votePost(postId, type);
     setVote(!type);
+    setVotesCount((prevCount) => (type ? prevCount - 1 : prevCount + 1));
   };
 
   const handleFollow = (otherUserId: string, type: boolean) => {
@@ -85,7 +87,7 @@ const Comment: React.FC<CommentProps> = ({
   return (
     <div className="flex gap-4">
       <Avatar
-        src={comment.user_detail[0].avatar}
+        src={comment.user_detail.avatar}
         size="sm"
         alt="avatar"
         withBorder={true}
@@ -99,20 +101,20 @@ const Comment: React.FC<CommentProps> = ({
               href="#"
               className="font-bold text-sm text-blue-500 hover:text-gray-900"
             >
-              {comment.user_detail[0].name}
+              {comment.user_detail.name}
             </Typography>
 
-            <LevelChip level={comment.user_detail[0].point} />
+            <LevelChip level={comment.user_detail.point} />
 
             <div className="text-orange-500 flex gap-1">
               <StarIcon className="w-4 h-4" />
               <Typography className="text-sm font-semibold">
-                {comment.user_detail[0].point} points
+                {comment.user_detail.point} points
               </Typography>
             </div>
 
             <Button
-              onClick={() => handleFollow(comment.user_detail[0]._id, follow)}
+              onClick={() => handleFollow(comment.user_detail._id, follow)}
               variant="text"
               className="p-2 flex items-center justify-center gap-2 normal-case text-xs"
             >
@@ -137,10 +139,12 @@ const Comment: React.FC<CommentProps> = ({
           <Button
             onClick={() => handleVote(comment._id, vote)}
             variant="text"
-            className="p-2 flex items-center justify-center gap-2 normal-case text-xs"
+            className={`p-2 flex items-center justify-center gap-2 normal-case text-xs ${
+              vote ? "text-blue-500" : "text-gray-900 dark:text-gray-50"
+            }`}
           >
             <HandThumbUpIcon className="w-4 h-4" />
-            {comment.votes_count > 0 && comment.votes_count} Like
+            {votesCount > 0 && votesCount} Like
           </Button>
 
           <Button

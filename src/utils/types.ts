@@ -30,7 +30,7 @@ export interface Tag {
 export interface Post {
   _id: string;
   parent_id: null | string;
-  user_detail: User[];
+  user_detail: User;
   title: string;
   content: string;
   medias: Media[];
@@ -46,6 +46,8 @@ export interface Post {
   guest_views?: number;
   user_views?: number;
   reply_comment?: Post[];
+  is_voted: boolean;
+  is_reported: boolean;
   created_at: string;
   updated_at: string;
 }

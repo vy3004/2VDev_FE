@@ -10,7 +10,7 @@ const QuestionButton = () => {
 
   return (
     <Button
-      onClick={() => navigate("/questions/ask")}
+      onClick={() => navigate("/posts/ask")}
       size="sm"
       className="flex items-center gap-2 text-sm md:text-lg normal-case"
     >

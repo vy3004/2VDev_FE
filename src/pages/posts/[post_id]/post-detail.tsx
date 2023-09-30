@@ -44,10 +44,7 @@ import {
 import { Post } from "../../../utils/types";
 import { PostType } from "../../../utils/constant";
 import bookmarkService from "../../../services/bookmark-service";
-import {
-  selectReportModal,
-  setReportModal,
-} from "../../../redux/features/report-modal-slice";
+import { setReportModal } from "../../../redux/features/report-modal-slice";
 
 interface PostDetailProps {
   post: Post;
@@ -59,7 +56,8 @@ const PostDetail: React.FC<PostDetailProps> = ({ post, comments }) => {
   const { user } = useSelector(selectUser);
   const dispatch = useDispatch();
 
-  const [vote, setVote] = useState(false);
+  const [vote, setVote] = useState(post.is_voted);
+  const [votesCount, setVotesCount] = useState(post.votes_count);
   const [bookmark, setBookmark] = useState(false);
   const [follow, setFollow] = useState(false);
   const [showFormAnswer, setShowFormAnswer] = useState(false);
@@ -91,6 +89,7 @@ const PostDetail: React.FC<PostDetailProps> = ({ post, comments }) => {
   const handleVote = (postId: string, type: boolean) => {
     votePost(postId, type);
     setVote(!type);
+    setVotesCount((prevCount) => (type ? prevCount - 1 : prevCount + 1));
   };
 
   const followUser = async (otherUserId: string, type: boolean) => {
@@ -161,7 +160,7 @@ const PostDetail: React.FC<PostDetailProps> = ({ post, comments }) => {
             {/* Info user start */}
             <div className="flex items-center gap-4">
               <Avatar
-                src={post.user_detail[0].avatar}
+                src={post.user_detail.avatar}
                 size="lg"
                 alt="avatar"
                 withBorder={true}
@@ -174,15 +173,15 @@ const PostDetail: React.FC<PostDetailProps> = ({ post, comments }) => {
                     href="#"
                     className="font-bold text-blue-500 hover:text-gray-900"
                   >
-                    {post.user_detail[0].name}
+                    {post.user_detail.name}
                   </Typography>
-                  <LevelChip level={post.user_detail[0].point} />
+                  <LevelChip level={post.user_detail.point} />
                 </div>
 
                 <div className="text-orange-500 flex gap-1">
                   <StarIcon className="w-4 h-4" />
                   <Typography className="text-sm font-semibold">
-                    {post.user_detail[0].point} points
+                    {post.user_detail.point} points
                   </Typography>
                 </div>
               </div>
@@ -213,17 +212,17 @@ const PostDetail: React.FC<PostDetailProps> = ({ post, comments }) => {
                 </MenuItem>
                 <MenuItem
                   className="flex items-center gap-2"
-                  onClick={() => handleFollow(post.user_detail[0]._id, follow)}
+                  onClick={() => handleFollow(post.user_detail._id, follow)}
                 >
                   {follow ? (
                     <>
                       <UserMinusIcon className="w-5 h-5" /> Unfollow{" "}
-                      {post.user_detail[0].name}
+                      {post.user_detail.name}
                     </>
                   ) : (
                     <>
                       <UserPlusIcon className="w-5 h-5" /> Follow{" "}
-                      {post.user_detail[0].name}
+                      {post.user_detail.name}
                     </>
                   )}
                 </MenuItem>
@@ -299,7 +298,7 @@ const PostDetail: React.FC<PostDetailProps> = ({ post, comments }) => {
                 }`}
               >
                 <HandThumbUpIcon className="w-5 h-5" />
-                {post.votes_count > 0 && post.votes_count} Like
+                {votesCount > 0 && votesCount} Like
               </Button>
 
               <Button
