@@ -6,7 +6,6 @@ interface ReportModalState {
   reportModal: {
     reportModalOpen: boolean;
     post_id: string;
-    reason: string;
   };
 }
 
@@ -14,7 +13,6 @@ const initialState: ReportModalState = {
   reportModal: {
     reportModalOpen: false,
     post_id: "",
-    reason: "",
   },
 };
 

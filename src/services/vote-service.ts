@@ -2,11 +2,11 @@ import { AxiosResponse, AxiosError } from "axios";
 import axiosInstance from "../configs/axios-config";
 import { apiEndPoints } from "../utils/api-endpoints";
 
-interface votePostPayload {
+interface VotePostPayload {
   post_id: string;
 }
 
-interface removeVotePostPayload {
+interface RemoveVotePostPayload {
   post_id: string;
 }
 
@@ -22,7 +22,7 @@ const voteEndpoints = {
 };
 
 const voteService = {
-  votePost: async ({ post_id }: votePostPayload): Promise<ApiResponse<any>> => {
+  votePost: async ({ post_id }: VotePostPayload): Promise<ApiResponse<any>> => {
     try {
       const response = await axiosInstance.post(voteEndpoints.votePost, {
         post_id,
@@ -36,7 +36,7 @@ const voteService = {
 
   removeVotePost: async ({
     post_id,
-  }: removeVotePostPayload): Promise<ApiResponse<any>> => {
+  }: RemoveVotePostPayload): Promise<ApiResponse<any>> => {
     try {
       const response = await axiosInstance.delete(
         voteEndpoints.removeVotePost({ post_id })

@@ -2,11 +2,11 @@ import { AxiosResponse, AxiosError } from "axios";
 import axiosInstance from "../configs/axios-config";
 import { apiEndPoints } from "../utils/api-endpoints";
 
-interface bookmarkPostPayload {
+interface BookmarkPostPayload {
   post_id: string;
 }
 
-interface unmarkPostPayload {
+interface UnmarkPostPayload {
   post_id: string;
 }
 
@@ -24,7 +24,7 @@ const bookmarkEndpoints = {
 const bookmarkService = {
   bookmarkPost: async ({
     post_id,
-  }: bookmarkPostPayload): Promise<ApiResponse<any>> => {
+  }: BookmarkPostPayload): Promise<ApiResponse<any>> => {
     try {
       const response = await axiosInstance.post(
         bookmarkEndpoints.bookmarkPost,
@@ -41,7 +41,7 @@ const bookmarkService = {
 
   unmarkPost: async ({
     post_id,
-  }: unmarkPostPayload): Promise<ApiResponse<any>> => {
+  }: UnmarkPostPayload): Promise<ApiResponse<any>> => {
     try {
       const response = await axiosInstance.delete(
         bookmarkEndpoints.unmarkPost({ post_id })

@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { useTranslation } from "react-i18next";
+import { useDispatch } from "react-redux";
 
 import {
   Avatar,
@@ -27,6 +28,7 @@ import {
 } from "../../../utils/string-utils";
 import { Post } from "../../../utils/types";
 import { PostType } from "../../../utils/constant";
+import { setReportModal } from "../../../redux/features/report-modal-slice";
 
 interface CommentProps {
   comment: Post;
@@ -44,6 +46,7 @@ const Comment: React.FC<CommentProps> = ({
   handleReport,
 }) => {
   const { i18n } = useTranslation();
+  const dispatch = useDispatch();
 
   const [children, setChildren] = useState<Post[]>();
   const [loading, setLoading] = useState(false);
@@ -156,13 +159,23 @@ const Comment: React.FC<CommentProps> = ({
             Reply
           </Button>
 
-          <Button
-            variant="text"
-            className="p-2 flex items-center justify-center gap-2 normal-case text-xs"
-          >
-            <ExclamationTriangleIcon className="w-4 h-4" />
-            Report
-          </Button>
+          {!comment.is_reported && (
+            <Button
+              onClick={() =>
+                dispatch(
+                  setReportModal({
+                    reportModalOpen: true,
+                    post_id: comment._id,
+                  })
+                )
+              }
+              variant="text"
+              className="p-2 flex items-center justify-center gap-2 normal-case text-xs"
+            >
+              <ExclamationTriangleIcon className="w-4 h-4" />
+              Report
+            </Button>
+          )}
         </div>
 
         {/* Comment form start */}

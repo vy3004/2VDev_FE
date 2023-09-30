@@ -55,6 +55,7 @@ const PostDetail: React.FC<PostDetailProps> = ({ post, comments }) => {
   const { i18n } = useTranslation();
   const { user } = useSelector(selectUser);
   const dispatch = useDispatch();
+  console.log("POST", post);
 
   const [vote, setVote] = useState(post.is_voted);
   const [votesCount, setVotesCount] = useState(post.votes_count);
@@ -226,20 +227,21 @@ const PostDetail: React.FC<PostDetailProps> = ({ post, comments }) => {
                     </>
                   )}
                 </MenuItem>
-                <MenuItem
-                  className="flex items-center gap-2"
-                  onClick={() =>
-                    dispatch(
-                      setReportModal({
-                        reportModalOpen: true,
-                        post_id: post._id,
-                        reason: "",
-                      })
-                    )
-                  }
-                >
-                  <ExclamationTriangleIcon className="w-5 h-5" /> Report
-                </MenuItem>
+                {!post.is_reported && (
+                  <MenuItem
+                    className="flex items-center gap-2"
+                    onClick={() =>
+                      dispatch(
+                        setReportModal({
+                          reportModalOpen: true,
+                          post_id: post._id,
+                        })
+                      )
+                    }
+                  >
+                    <ExclamationTriangleIcon className="w-5 h-5" /> Report
+                  </MenuItem>
+                )}
               </MenuList>
             </Menu>
             {/* Post menu end */}

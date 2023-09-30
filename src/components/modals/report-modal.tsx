@@ -1,6 +1,8 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { useParams } from "react-router-dom";
+import { useFormik } from "formik";
+import toast from "react-hot-toast";
+import * as Yup from "yup";
 
 import {
   Dialog,
@@ -8,7 +10,6 @@ import {
   DialogBody,
   IconButton,
   Textarea,
-  DialogFooter,
   Button,
   Spinner,
 } from "@material-tailwind/react";
@@ -18,6 +19,12 @@ import {
   selectReportModal,
   setReportModal,
 } from "../../redux/features/report-modal-slice";
+import reportPostService from "../../services/report-service";
+import ErrorMessageForm from "../common/error-message-form";
+
+interface ReportFormValues {
+  reason: string;
+}
 
 const ReportModal = () => {
   const { reportModal } = useSelector(selectReportModal);
@@ -26,9 +33,33 @@ const ReportModal = () => {
   const [isSubmit, setIsSubmit] = useState(false);
 
   const handleClose = () =>
-    dispatch(
-      setReportModal({ reportModalOpen: false, post_id: "", reason: "" })
-    );
+    dispatch(setReportModal({ reportModalOpen: false, post_id: "" }));
+
+  const reportForm = useFormik<ReportFormValues>({
+    initialValues: {
+      reason: "",
+    },
+    validationSchema: Yup.object({
+      reason: Yup.string().required("Reason is required"),
+    }),
+    onSubmit: async (values: ReportFormValues) => {
+      setIsSubmit(true);
+
+      const { response, error } = await reportPostService.reportPost({
+        ...values,
+        post_id: reportModal.post_id,
+      });
+
+      if (response) {
+        reportForm.resetForm();
+        dispatch(setReportModal({ reportModalOpen: false, post_id: "" }));
+        toast.success(response.data.message);
+      }
+
+      if (error) toast.error(error.message);
+      setIsSubmit(false);
+    },
+  });
 
   return (
     <>
@@ -53,9 +84,24 @@ const ReportModal = () => {
           </IconButton>
         </DialogHeader>
         <DialogBody className="border-t">
-          <form>
-            <Textarea label="Reason" />
+          <form onSubmit={reportForm.handleSubmit}>
+            <Textarea
+              label="Reason"
+              name="reason"
+              value={reportForm.values.reason}
+              onChange={reportForm.handleChange}
+              error={
+                reportForm.touched.reason &&
+                reportForm.errors.reason !== undefined
+              }
+            />
+            {reportForm.touched.reason && reportForm.errors.reason && (
+              <ErrorMessageForm
+                message={reportForm.touched.reason && reportForm.errors.reason}
+              />
+            )}
             <Button
+              className="mt-4"
               type="submit"
               variant="gradient"
               fullWidth
