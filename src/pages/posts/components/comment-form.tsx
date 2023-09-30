@@ -2,8 +2,10 @@ import React, { useState } from "react";
 import toast from "react-hot-toast";
 import ReactQuill from "react-quill";
 import { useFormik } from "formik";
+import * as Yup from "yup";
 
 import { Spinner, Button } from "@material-tailwind/react";
+import ErrorMessageForm from "../../../components/common/error-message-form";
 
 import postService from "../../../services/post-service";
 import { PostType } from "../../../utils/constant";
@@ -36,6 +38,12 @@ const CommentForm: React.FC<CommentFormProps> = ({
       medias: [],
       hashtags: [],
     },
+    validationSchema: Yup.object({
+      content: Yup.string()
+        .required("Content is required")
+        .min(20, "Content contains at least 20 characters")
+        .max(5000, "Content must only contain 5000 characters"),
+    }),
 
     onSubmit: async (values: CommentFormProps) => {
       setIsSubmit(true);
@@ -60,6 +68,11 @@ const CommentForm: React.FC<CommentFormProps> = ({
         theme="snow"
         placeholder="Write something..."
       />
+      {commentForm.touched.content && commentForm.errors.content && (
+        <ErrorMessageForm
+          message={commentForm.touched.content && commentForm.errors.content}
+        />
+      )}
       <div className="flex justify-end">
         <Button
           onClick={commentForm.submitForm}
