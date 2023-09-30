@@ -1,5 +1,6 @@
 import { AxiosResponse, AxiosError } from "axios";
 import axiosInstance from "../configs/axios-config";
+import { apiEndPoints } from "../utils/api-endpoints";
 
 interface votePostPayload {
   post_id: string;
@@ -15,9 +16,9 @@ interface ApiResponse<T> {
 }
 
 const voteEndpoints = {
-  votePost: "/votes",
+  votePost: `${apiEndPoints.votes}`,
   removeVotePost: ({ post_id }: { post_id: string }) =>
-    `/votes/posts/${post_id}`,
+    `${apiEndPoints.votes}/posts/${post_id}`,
 };
 
 const voteService = {

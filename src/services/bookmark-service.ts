@@ -1,5 +1,6 @@
 import { AxiosResponse, AxiosError } from "axios";
 import axiosInstance from "../configs/axios-config";
+import { apiEndPoints } from "../utils/api-endpoints";
 
 interface bookmarkPostPayload {
   post_id: string;
@@ -15,9 +16,9 @@ interface ApiResponse<T> {
 }
 
 const bookmarkEndpoints = {
-  bookmarkPost: "/bookmarks",
+  bookmarkPost: `${apiEndPoints.bookmarks}`,
   unmarkPost: ({ post_id }: { post_id: string }) =>
-    `/bookmarks/posts/${post_id}`,
+    `${apiEndPoints.bookmarks}/posts/${post_id}`,
 };
 
 const bookmarkService = {

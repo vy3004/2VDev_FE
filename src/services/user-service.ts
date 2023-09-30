@@ -1,6 +1,7 @@
 import queryString from "query-string";
 import { AxiosResponse, AxiosError } from "axios";
 import axiosInstance from "../configs/axios-config";
+import { apiEndPoints } from "../utils/api-endpoints";
 
 interface LoginPayload {
   email: string;
@@ -72,26 +73,28 @@ interface ApiResponse<T> {
 }
 
 const userEndpoints = {
-  login: "/login",
-  register: "/register",
-  logout: "/logout",
-  refreshToken: "/refresh-token",
-  verifyEmail: "/verify-email",
-  resendVerifyEmail: "/resend-verify-email",
-  forgotPassword: "/forgot-password",
-  verifyForgotPassword: "/verify-forgot-password",
-  resetPassword: "/reset-password",
+  login: `${apiEndPoints.users}/login`,
+  register: `${apiEndPoints.users}/register`,
+  logout: `${apiEndPoints.users}/logout`,
+  refreshToken: `${apiEndPoints.users}/refresh-token`,
+  verifyEmail: `${apiEndPoints.users}/verify-email`,
+  resendVerifyEmail: `${apiEndPoints.users}/resend-verify-email`,
+  forgotPassword: `${apiEndPoints.users}/forgot-password`,
+  verifyForgotPassword: `${apiEndPoints.users}/verify-forgot-password`,
+  resetPassword: `${apiEndPoints.users}/reset-password`,
 
-  getMe: "/me",
-  updateMe: "/me",
+  getMe: `${apiEndPoints.users}/me`,
+  updateMe: `${apiEndPoints.users}/me`,
   getUsers: ({ limit, page }: { limit: number; page: number }) =>
-    `/list-users?limit=${limit}&page=${page}`,
-  getUser: ({ username }: { username: string }) => `/${username}`,
-  follow: "/follow",
-  unfollow: ({ user_id }: { user_id: string }) => `/follow/${user_id}`,
+    `${apiEndPoints.users}/list-users?limit=${limit}&page=${page}`,
+  getUser: ({ username }: { username: string }) =>
+    `${apiEndPoints.users}/${username}`,
+  follow: `${apiEndPoints.users}/follow`,
+  unfollow: ({ user_id }: { user_id: string }) =>
+    `${apiEndPoints.users}/follow/${user_id}`,
   // Role admin
   updateUser: ({ user_id }: { user_id: string }) =>
-    `/update-account/${user_id}`,
+    `${apiEndPoints.users}/update-account/${user_id}`,
 };
 
 const userService = {

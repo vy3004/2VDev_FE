@@ -1,5 +1,6 @@
 import { AxiosResponse, AxiosError } from "axios";
 import axiosInstance from "../configs/axios-config";
+import { apiEndPoints } from "../utils/api-endpoints";
 
 interface PostPayLoad {
   user_id: string;
@@ -27,8 +28,9 @@ interface ApiResponse<T> {
 }
 
 const postEndpoints = {
-  post: "/posts",
-  getPost: ({ post_id }: { post_id: string }) => `/posts/${post_id}`,
+  post: `${apiEndPoints.posts}`,
+  getPost: ({ post_id }: { post_id: string }) =>
+    `${apiEndPoints.posts}/${post_id}`,
   getComments: ({
     post_id,
     limit,
@@ -37,7 +39,8 @@ const postEndpoints = {
     post_id: string;
     limit: number;
     page: number;
-  }) => `/posts/${post_id}/children/?limit=${limit}&page=${page}&post_type=2`,
+  }) =>
+    `${apiEndPoints.posts}/${post_id}/children/?limit=${limit}&page=${page}&post_type=2`,
 };
 
 const postService = {

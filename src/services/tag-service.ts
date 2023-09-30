@@ -1,5 +1,6 @@
 import { AxiosResponse, AxiosError } from "axios";
 import axiosInstance from "../configs/axios-config";
+import { apiEndPoints } from "../utils/api-endpoints";
 
 interface ApiResponse<T> {
   response?: AxiosResponse<T>;
@@ -7,7 +8,7 @@ interface ApiResponse<T> {
 }
 
 const tagEndpoints = {
-  getTags: "/hashtags/get",
+  getTags: `${apiEndPoints.hashtags}/get`,
 };
 
 const tagService = {

@@ -1,5 +1,6 @@
 import { AxiosResponse, AxiosError } from "axios";
 import axiosFile from "../configs/axios-config-file";
+import { apiEndPoints } from "../utils/api-endpoints";
 
 interface ApiResponse<T> {
   response?: AxiosResponse<T>;
@@ -7,7 +8,7 @@ interface ApiResponse<T> {
 }
 
 const mediaEndpoints = {
-  uploadImage: "/medias/upload-image",
+  uploadImage: `${apiEndPoints.medias}/upload-image`,
 };
 
 const mediaService = {
