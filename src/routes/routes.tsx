@@ -93,7 +93,11 @@ const routes: Route[] = [
   },
   {
     path: "/users",
-    element: <Users />,
+    element: (
+      <ProtectedPage>
+        <Users />
+      </ProtectedPage>
+    ),
   },
   {
     path: "/message",

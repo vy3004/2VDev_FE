@@ -1,20 +1,26 @@
 import { useState, useEffect } from "react";
 import { useSelector } from "react-redux";
-
-import { Avatar, Typography, Button } from "@material-tailwind/react";
+import { useLocation } from "react-router-dom";
 
 import Loading from "../../components/common/loading";
-import LevelChip from "../../components/common/level-chip";
 import Pagination from "../../components/common/pagination";
+import UserCard from "./components/user-card";
 
 import userService from "../../services/user-service";
 import { selectUser } from "../../redux/features/user-slice";
+import NotFoundAlert from "../../components/common/not-found-alert";
 
 const Users = () => {
   const currentUser = useSelector(selectUser).user;
+  const location = useLocation();
+  const queryParams = new URLSearchParams(location.search);
+  const pageQueryParam = queryParams.get("page");
+  const limitQueryParam = queryParams.get("limit");
+  const limit = limitQueryParam ? parseInt(limitQueryParam) : 6;
+  const [page, setPage] = useState(
+    pageQueryParam ? parseInt(pageQueryParam) : 1
+  );
   const [users, setUsers] = useState([]);
-
-  const [page, setPage] = useState(1);
   const [totalPage, setTotalPage] = useState(1);
   const [isLoading, setIsLoading] = useState(false);
 
@@ -35,7 +41,7 @@ const Users = () => {
       setIsLoading(true);
 
       const { response } = await userService.getUsers({
-        limit: 6,
+        limit: limit,
         page: page,
       });
 
@@ -48,40 +54,46 @@ const Users = () => {
     };
 
     getUsers();
-  }, [page]);
+
+    // Update URL according to params
+    queryParams.set("limit", limit.toString());
+    queryParams.set("page", page.toString());
+    window.history.replaceState(
+      {},
+      "",
+      `${location.pathname}?${queryParams.toString()}`
+    );
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [page, limit]);
 
   return (
     <div>
       <div className="mt-4 space-y-8">
-        <div className="relative grid grid-cols-6 gap-6">
-          {isLoading && <Loading />}
-
-          {users &&
-            users.map(({ name, avatar, username, level }, key) => (
-              <div
-                className="flex flex-col items-center border hover:border-black rounded-lg py-6 space-y-4 col-span-6 sm:col-span-3 lg:col-span-2"
-                key={key}
-              >
-                <a
-                  href={`/profile/${username}`}
-                  className="flex flex-col items-center space-y-1 text-center hover:opacity-80"
-                >
-                  <Avatar
-                    variant="circular"
-                    size="xl"
-                    alt="tania andrew"
-                    className="border border-gray-900 p-0.5"
-                    src={
-                      avatar ||
-                      "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTYmkp9a2rrD1Sskb9HLt5mDaTt4QaIs8CcBg&usqp=CAU"
-                    }
+        <div className="">
+          {isLoading ? (
+            <div className="relative h-80">
+              <Loading />
+            </div>
+          ) : users.length > 0 ? (
+            <div className="grid grid-cols-6 gap-6">
+              {users.map(
+                ({ _id, name, avatar, username, point, is_followed }) => (
+                  <UserCard
+                    key={_id}
+                    current_username={currentUser?.username}
+                    user_id={_id}
+                    username={username}
+                    name={name}
+                    avatar={avatar}
+                    point={point}
+                    is_followed={is_followed}
                   />
-                  <Typography className="font-bold">{name}</Typography>
-                  <LevelChip level={level} />
-                </a>
-                {currentUser?.username !== username && <Button>Follow</Button>}
-              </div>
-            ))}
+                )
+              )}
+            </div>
+          ) : (
+            <NotFoundAlert message="Users not found!" />
+          )}
         </div>
 
         <Pagination page={page} totalPage={totalPage} next={next} prev={prev} />
