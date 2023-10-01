@@ -35,7 +35,6 @@ interface CommentProps {
   user_id: string;
   votePost: (postId: string, type: boolean) => void;
   followUser: (otherUserId: string, type: boolean) => void;
-  handleReport: () => void;
 }
 
 const Comment: React.FC<CommentProps> = ({
@@ -43,7 +42,6 @@ const Comment: React.FC<CommentProps> = ({
   user_id,
   votePost,
   followUser,
-  handleReport,
 }) => {
   const { i18n } = useTranslation();
   const dispatch = useDispatch();
@@ -219,7 +217,6 @@ const Comment: React.FC<CommentProps> = ({
               user_id={user_id}
               votePost={votePost}
               followUser={followUser}
-              handleReport={handleReport}
             />
           ))}
         {/* Comment children end */}

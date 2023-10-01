@@ -1,16 +1,11 @@
 import { useState, useEffect } from "react";
 import { useSelector } from "react-redux";
 
-import {
-  Avatar,
-  Typography,
-  Button,
-  IconButton,
-} from "@material-tailwind/react";
-import { ArrowLeftIcon, ArrowRightIcon } from "@heroicons/react/24/outline";
+import { Avatar, Typography, Button } from "@material-tailwind/react";
 
 import Loading from "../../components/common/loading";
 import LevelChip from "../../components/common/level-chip";
+import Pagination from "../../components/common/pagination";
 
 import userService from "../../services/user-service";
 import { selectUser } from "../../redux/features/user-slice";
@@ -89,28 +84,7 @@ const Users = () => {
             ))}
         </div>
 
-        <div className="flex items-center justify-end gap-4">
-          <IconButton
-            size="sm"
-            variant="outlined"
-            onClick={prev}
-            disabled={page === 1}
-          >
-            <ArrowLeftIcon strokeWidth={2} className="h-4 w-4" />
-          </IconButton>
-          <Typography color="gray" className="font-normal">
-            Page <strong className="text-gray-900">{page}</strong> of{" "}
-            <strong className="text-gray-900">{totalPage}</strong>
-          </Typography>
-          <IconButton
-            size="sm"
-            variant="outlined"
-            onClick={next}
-            disabled={page === totalPage}
-          >
-            <ArrowRightIcon strokeWidth={2} className="h-4 w-4" />
-          </IconButton>
-        </div>
+        <Pagination page={page} totalPage={totalPage} next={next} prev={prev} />
       </div>
     </div>
   );

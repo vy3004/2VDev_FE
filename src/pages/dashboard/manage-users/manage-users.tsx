@@ -7,8 +7,6 @@ import {
   ChevronUpDownIcon,
 } from "@heroicons/react/24/outline";
 import {
-  ArrowLeftIcon,
-  ArrowRightIcon,
   CheckCircleIcon,
   PencilIcon,
   XCircleIcon,
@@ -30,6 +28,7 @@ import {
 
 import Loading from "../../../components/common/loading";
 import LevelChip from "../../../components/common/level-chip";
+import Pagination from "../../../components/common/pagination";
 
 import userService from "../../../services/user-service";
 
@@ -257,28 +256,8 @@ const ManageUsers = () => {
         </table>
         {/* Table end */}
       </CardBody>
-      <CardFooter className="flex items-center justify-end gap-4 border-t border-blue-gray-50 p-4">
-        <IconButton
-          className="dark:text-gray-50 dark:border-gray-50 dark:bg-gray-900"
-          size="sm"
-          variant="outlined"
-          onClick={prev}
-          disabled={page === 1}
-        >
-          <ArrowLeftIcon strokeWidth={2} className="h-4 w-4" />
-        </IconButton>
-        <Typography className="font-normal dark:text-gray-50">
-          Page <strong>{page}</strong> of <strong>{totalPage}</strong>
-        </Typography>
-        <IconButton
-          className="dark:text-gray-50 dark:border-gray-50 dark:bg-gray-900"
-          size="sm"
-          variant="outlined"
-          onClick={next}
-          disabled={page === totalPage}
-        >
-          <ArrowRightIcon strokeWidth={2} className="h-4 w-4" />
-        </IconButton>
+      <CardFooter className="border-t border-blue-gray-50 p-4">
+        <Pagination page={page} totalPage={totalPage} next={next} prev={prev} />
       </CardFooter>
     </Card>
   );

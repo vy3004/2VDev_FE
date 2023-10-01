@@ -151,8 +151,6 @@ const PostDetail: React.FC<PostDetailProps> = ({ post, comments }) => {
     setBookmark(!type);
   };
 
-  const handleReport = {};
-
   return post && user ? (
     <div className="space-y-4">
       <div className="border rounded-lg p-4">
@@ -345,7 +343,6 @@ const PostDetail: React.FC<PostDetailProps> = ({ post, comments }) => {
                   user_id={user._id}
                   votePost={votePost}
                   followUser={followUser}
-                  handleReport={() => handleReport}
                 />
               ))}
             {/* Comments end */}
