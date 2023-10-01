@@ -6,7 +6,6 @@ import AdminPage from "../components/common/admin-page";
 import Home from "../pages/home/home";
 import About from "../pages/about/about";
 import Contact from "../pages/contact/contact";
-import Feed from "../pages/feed/feed";
 import Tags from "../pages/tags/tags";
 import Communities from "../pages/communities/communities";
 import Users from "../pages/users/users";
@@ -18,8 +17,8 @@ import NotFoundPage from "../pages/not-found-page/not-found-page";
 import ManageUsers from "../pages/dashboard/manage-users/manage-users";
 import ManagePosts from "../pages/dashboard/manage-posts/manage-posts";
 import UserDetailPage from "../pages/dashboard/manage-users/[username]/user-detail-page";
-import Posts from "../pages/posts/posts";
-import PostDetailPage from "../pages/posts/[post_id]/post-detail-page";
+import PostForm from "../components/post/post-form";
+import PostDetail from "../pages/home/[post_id]/post-detail";
 
 interface Route {
   path: string;
@@ -29,7 +28,27 @@ interface Route {
 const routes: Route[] = [
   {
     path: "/",
-    element: <Home />,
+    element: (
+      <ProtectedPage>
+        <Home />
+      </ProtectedPage>
+    ),
+  },
+  {
+    path: "/post",
+    element: (
+      <ProtectedPage>
+        <PostForm />
+      </ProtectedPage>
+    ),
+  },
+  {
+    path: "/:post_id",
+    element: (
+      <ProtectedPage>
+        <PostDetail />
+      </ProtectedPage>
+    ),
   },
   {
     path: "/about",
@@ -62,26 +81,6 @@ const routes: Route[] = [
         <ManagePosts />
       </AdminPage>
     ),
-  },
-  {
-    path: "/posts/ask",
-    element: (
-      <ProtectedPage>
-        <Posts />
-      </ProtectedPage>
-    ),
-  },
-  {
-    path: "/posts/:post_id",
-    element: (
-      <ProtectedPage>
-        <PostDetailPage />
-      </ProtectedPage>
-    ),
-  },
-  {
-    path: "/feed",
-    element: <Feed />,
   },
   {
     path: "/tags",

@@ -19,8 +19,6 @@ import {
   PresentationChartBarIcon,
   UserCircleIcon,
   Cog6ToothIcon,
-  BookOpenIcon,
-  HomeIcon,
   NewspaperIcon,
   TagIcon,
   IdentificationIcon,
@@ -46,7 +44,7 @@ const Sidebar = () => {
   const { user } = useSelector(selectUser);
   const { appState } = useSelector(selectApp);
 
-  const [open, setOpen] = useState(0);
+  const [open, setOpen] = useState(1);
 
   const handleOpen = (value: number) => {
     setOpen(open === value ? 0 : value);
@@ -70,35 +68,35 @@ const Sidebar = () => {
     },
   ];
 
-  const listQuestions: sidebarItem[] = [
+  const listHome: sidebarItem[] = [
     {
-      label: t("sidebar.new-questions"),
+      label: t("sidebar.new"),
       icon: <ChevronRightIcon strokeWidth={3} className="h-3 w-5" />,
-      href: "/new-questions",
+      href: "/?filter=new",
     },
     {
-      label: t("sidebar.trending-questions"),
+      label: t("sidebar.followed"),
       icon: <ChevronRightIcon strokeWidth={3} className="h-3 w-5" />,
-      href: "/trending-questions",
+      href: "/?filter=follow",
     },
     {
-      label: t("sidebar.popular-questions"),
+      label: t("sidebar.trending"),
       icon: <ChevronRightIcon strokeWidth={3} className="h-3 w-5" />,
-      href: "/popular-questions",
+      href: "/?filter=trend",
     },
     {
-      label: t("sidebar.hot-questions"),
+      label: t("sidebar.popular"),
       icon: <ChevronRightIcon strokeWidth={3} className="h-3 w-5" />,
-      href: "/hot-questions",
+      href: "/?filter=popular",
+    },
+    {
+      label: t("sidebar.hot"),
+      icon: <ChevronRightIcon strokeWidth={3} className="h-3 w-5" />,
+      href: "/?filter=hot",
     },
   ];
 
   const listGuest: sidebarItem[] = [
-    {
-      label: t("sidebar.feed"),
-      icon: <NewspaperIcon className="h-5 w-5" />,
-      href: "/feed",
-    },
     {
       label: t("sidebar.tags"),
       icon: <TagIcon className="h-5 w-5" />,
@@ -119,34 +117,68 @@ const Sidebar = () => {
   return (
     <Card className="shadow-none h-[calc(100%-77px)] overflow-hidden hover:overflow-y-scroll bg-transparent">
       <List className="min-w-full my-4 dark:text-gray-50">
-        <ListItem
-          className={`${
-            appState === "/" && "dark:bg-gray-50 dark:text-gray-900"
-          }`}
-          selected={appState === "/"}
-          onClick={() => navigate("/")}
+        {/* Feed start */}
+        <Accordion
+          open={open === 1}
+          icon={
+            <ChevronDownIcon
+              strokeWidth={2.5}
+              className={`mx-auto h-4 w-4 transition-transform ${
+                open === 1 ? "rotate-180" : ""
+              }`}
+            />
+          }
         >
-          <ListItemPrefix>
-            <HomeIcon className="h-5 w-5" />
-          </ListItemPrefix>
-          {t("header.home")}
-        </ListItem>
+          <ListItem className="p-0" selected={open === 1}>
+            <AccordionHeader
+              onClick={() => handleOpen(1)}
+              className="border-b-0 p-3 dark:text-gray-50"
+            >
+              <ListItemPrefix>
+                <NewspaperIcon className="h-5 w-5" />
+              </ListItemPrefix>
+              <Typography className="mr-auto font-normal">
+                {" "}
+                {t("sidebar.news-feed")}
+              </Typography>
+            </AccordionHeader>
+          </ListItem>
+          <AccordionBody className="py-1">
+            <List className="p-0">
+              {listHome.map(({ label, icon, href }, key) => (
+                <ListItem
+                  className={`${
+                    appState === href && "dark:bg-gray-50 dark:text-gray-900"
+                  }`}
+                  selected={appState === href}
+                  onClick={() => navigate(href)}
+                  key={key}
+                >
+                  <ListItemPrefix>{icon}</ListItemPrefix>
+                  {label}
+                </ListItem>
+              ))}
+            </List>
+          </AccordionBody>
+        </Accordion>
+        {/* Feed end */}
+
         {/* Admin dashboard start */}
         {user?.role === 1 && (
           <Accordion
-            open={open === 1}
+            open={open === 2}
             icon={
               <ChevronDownIcon
                 strokeWidth={2.5}
                 className={`mx-auto h-4 w-4 transition-transform ${
-                  open === 1 ? "rotate-180" : ""
+                  open === 2 ? "rotate-180" : ""
                 }`}
               />
             }
           >
-            <ListItem className="p-0" selected={open === 1}>
+            <ListItem className="p-0" selected={open === 2}>
               <AccordionHeader
-                onClick={() => handleOpen(1)}
+                onClick={() => handleOpen(2)}
                 className="border-b-0 p-3 dark:text-gray-50"
               >
                 <ListItemPrefix>
@@ -177,52 +209,6 @@ const Sidebar = () => {
           </Accordion>
         )}
         {/* Admin dashboard end */}
-
-        {/* Questions start */}
-        <Accordion
-          open={open === 2}
-          icon={
-            <ChevronDownIcon
-              strokeWidth={2.5}
-              className={`mx-auto h-4 w-4 transition-transform ${
-                open === 2 ? "rotate-180" : ""
-              }`}
-            />
-          }
-        >
-          <ListItem className="p-0" selected={open === 2}>
-            <AccordionHeader
-              onClick={() => handleOpen(2)}
-              className="border-b-0 p-3 dark:text-gray-50"
-            >
-              <ListItemPrefix>
-                <BookOpenIcon className="h-5 w-5" />
-              </ListItemPrefix>
-              <Typography className="mr-auto font-normal">
-                {" "}
-                {t("sidebar.questions")}
-              </Typography>
-            </AccordionHeader>
-          </ListItem>
-          <AccordionBody className="py-1">
-            <List className="p-0">
-              {listQuestions.map(({ label, icon, href }, key) => (
-                <ListItem
-                  className={`${
-                    appState === href && "dark:bg-gray-50 dark:text-gray-900"
-                  }`}
-                  selected={appState === href}
-                  onClick={() => navigate(href)}
-                  key={key}
-                >
-                  <ListItemPrefix>{icon}</ListItemPrefix>
-                  {label}
-                </ListItem>
-              ))}
-            </List>
-          </AccordionBody>
-        </Accordion>
-        {/* Questions end */}
 
         {/* Guest items start */}
         {listGuest.map(({ label, icon, href }, key) => (

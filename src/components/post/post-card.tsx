@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useTranslation } from "react-i18next";
+import { useNavigate } from "react-router-dom";
 import toast from "react-hot-toast";
 
 import {
@@ -27,34 +28,32 @@ import {
   ShareIcon,
 } from "@heroicons/react/24/outline";
 import { EllipsisHorizontalIcon, StarIcon } from "@heroicons/react/24/solid";
+import LevelChip from "../common/level-chip";
+import NotFoundAlert from "../common/not-found-alert";
+import TagButton from "../common/tag-button";
+import CommentForm from "./comment-form";
+import Comment from "./comment";
 
-import LevelChip from "../../../components/common/level-chip";
-import NotFoundAlert from "../../../components/common/not-found-alert";
-import TagButton from "../../../components/common/tag-button";
-import Comment from "../components/comment";
-import CommentForm from "../components/comment-form";
+import voteService from "../../services/vote-service";
+import bookmarkService from "../../services/bookmark-service";
+import userService from "../../services/user-service";
+import { selectUser } from "../../redux/features/user-slice";
+import { setReportModal } from "../../redux/features/report-modal-slice";
+import { Post } from "../../utils/types";
+import { PostType } from "../../utils/constant";
+import { formatTime, formatTimeDistanceToNow } from "../../utils/string-utils";
 
-import voteService from "../../../services/vote-service";
-import userService from "../../../services/user-service";
-import { selectUser } from "../../../redux/features/user-slice";
-import {
-  formatTimeDistanceToNow,
-  formatTime,
-} from "../../../utils/string-utils";
-import { Post } from "../../../utils/types";
-import { PostType } from "../../../utils/constant";
-import bookmarkService from "../../../services/bookmark-service";
-import { setReportModal } from "../../../redux/features/report-modal-slice";
-
-interface PostDetailProps {
+interface PostCardProps {
   post: Post;
   comments?: Post[];
+  is_detail: boolean;
 }
 
-const PostDetail: React.FC<PostDetailProps> = ({ post, comments }) => {
+const PostCard: React.FC<PostCardProps> = ({ post, comments, is_detail }) => {
   const { i18n } = useTranslation();
   const { user } = useSelector(selectUser);
   const dispatch = useDispatch();
+  const navigate = useNavigate();
   console.log("POST", post);
 
   const [vote, setVote] = useState(post.is_voted);
@@ -149,6 +148,10 @@ const PostDetail: React.FC<PostDetailProps> = ({ post, comments }) => {
   const handleBookmark = (postId: string, type: boolean) => {
     bookmarkPost(postId, type);
     setBookmark(!type);
+  };
+
+  const handleComment = () => {
+    is_detail ? setShowFormAnswer(!showFormAnswer) : navigate(`/${post._id}`);
   };
 
   return post && user ? (
@@ -302,7 +305,7 @@ const PostDetail: React.FC<PostDetailProps> = ({ post, comments }) => {
               </Button>
 
               <Button
-                onClick={() => setShowFormAnswer(!showFormAnswer)}
+                onClick={handleComment}
                 variant="text"
                 fullWidth
                 className="flex items-center justify-center gap-2 normal-case text-base"
@@ -320,32 +323,33 @@ const PostDetail: React.FC<PostDetailProps> = ({ post, comments }) => {
                 {post.repost_count > 0 && post.repost_count} Repost
               </Button>
             </div>
-
-            <hr />
-
-            {/* Comment form start */}
-            {showFormAnswer && (
-              <CommentForm
-                user_id={user._id}
-                parent_id={post._id}
-                type={PostType.Comment}
-                content=""
-              />
+            {is_detail && (
+              <div className="space-y-4">
+                <hr />
+                {/* Comment form start */}
+                {showFormAnswer && (
+                  <CommentForm
+                    user_id={user._id}
+                    parent_id={post._id}
+                    type={PostType.Comment}
+                    content=""
+                  />
+                )}
+                {/* Comment form end */}
+                {/* Comments start */}
+                {comments &&
+                  comments.map((item) => (
+                    <Comment
+                      key={item._id}
+                      comment={item}
+                      user_id={user._id}
+                      votePost={votePost}
+                      followUser={followUser}
+                    />
+                  ))}
+                {/* Comments end */}
+              </div>
             )}
-            {/* Comment form end */}
-
-            {/* Comments start */}
-            {comments &&
-              comments.map((item) => (
-                <Comment
-                  key={item._id}
-                  comment={item}
-                  user_id={user._id}
-                  votePost={votePost}
-                  followUser={followUser}
-                />
-              ))}
-            {/* Comments end */}
           </div>
         </div>
       </div>
@@ -355,4 +359,4 @@ const PostDetail: React.FC<PostDetailProps> = ({ post, comments }) => {
   );
 };
 
-export default PostDetail;
+export default PostCard;

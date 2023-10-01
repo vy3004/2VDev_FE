@@ -5,10 +5,10 @@ import { useFormik } from "formik";
 import * as Yup from "yup";
 
 import { Spinner, Button } from "@material-tailwind/react";
-import ErrorMessageForm from "../../../components/common/error-message-form";
+import ErrorMessageForm from "../common/error-message-form";
 
-import postService from "../../../services/post-service";
-import { PostType } from "../../../utils/constant";
+import postService from "../../services/post-service";
+import { PostType } from "../../utils/constant";
 
 interface CommentFormProps {
   user_id: string;

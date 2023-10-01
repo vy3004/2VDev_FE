@@ -69,32 +69,30 @@ const Users = () => {
   return (
     <div>
       <div className="mt-4 space-y-8">
-        <div className="">
-          {isLoading ? (
-            <div className="relative h-80">
-              <Loading />
-            </div>
-          ) : users.length > 0 ? (
-            <div className="grid grid-cols-6 gap-6">
-              {users.map(
-                ({ _id, name, avatar, username, point, is_followed }) => (
-                  <UserCard
-                    key={_id}
-                    current_username={currentUser?.username}
-                    user_id={_id}
-                    username={username}
-                    name={name}
-                    avatar={avatar}
-                    point={point}
-                    is_followed={is_followed}
-                  />
-                )
-              )}
-            </div>
-          ) : (
-            <NotFoundAlert message="Users not found!" />
-          )}
-        </div>
+        {isLoading ? (
+          <div className="relative h-80">
+            <Loading />
+          </div>
+        ) : users.length > 0 ? (
+          <div className="grid grid-cols-6 gap-6">
+            {users.map(
+              ({ _id, name, avatar, username, point, is_followed }) => (
+                <UserCard
+                  key={_id}
+                  current_username={currentUser?.username}
+                  user_id={_id}
+                  username={username}
+                  name={name}
+                  avatar={avatar}
+                  point={point}
+                  is_followed={is_followed}
+                />
+              )
+            )}
+          </div>
+        ) : (
+          <NotFoundAlert message="Users not found!" />
+        )}
 
         <Pagination page={page} totalPage={totalPage} next={next} prev={prev} />
       </div>

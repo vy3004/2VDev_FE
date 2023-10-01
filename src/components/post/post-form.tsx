@@ -6,7 +6,7 @@ import {
   Spinner,
   Typography,
 } from "@material-tailwind/react";
-import ErrorMessageForm from "../../components/common/error-message-form";
+import ErrorMessageForm from "../common/error-message-form";
 import { PencilIcon } from "@heroicons/react/24/outline";
 import { TagsInput } from "react-tag-input-component";
 import { fileToBase64 } from "../../utils/file-utils";
@@ -17,8 +17,9 @@ import ReactQuill from "react-quill";
 import "react-quill/dist/quill.snow.css";
 import postService from "../../services/post-service";
 import toast from "react-hot-toast";
+import { useNavigate } from "react-router-dom";
 
-interface PostQuestionFormValues {
+interface PostFormValues {
   user_id: string;
   title: string;
   content: string;
@@ -28,8 +29,9 @@ interface PostQuestionFormValues {
   type: number;
 }
 
-const Posts = () => {
+const PostForm = () => {
   const { user } = useSelector(selectUser);
+  const navigate = useNavigate();
 
   const [images, setImages] = useState();
   const [isSubmit, setIsSubmit] = useState(false);
@@ -48,7 +50,7 @@ const Posts = () => {
     }
   };
 
-  const postQuestionForm = useFormik<PostQuestionFormValues>({
+  const postQuestionForm = useFormik<PostFormValues>({
     initialValues: {
       user_id: user?._id || "",
       title: "",
@@ -59,7 +61,7 @@ const Posts = () => {
       parent_id: null,
     },
 
-    onSubmit: async (values: PostQuestionFormValues) => {
+    onSubmit: async (values: PostFormValues) => {
       setIsSubmit(true);
       // let data = { ...values, hashtags: selected };
       console.log("CHECK_DATA", values);
@@ -68,6 +70,7 @@ const Posts = () => {
       if (response) {
         console.log("RES", response);
         toast.success("Your question has been posted");
+        navigate("/");
       }
       if (error) console.log(error.message);
 
@@ -207,4 +210,4 @@ const Posts = () => {
   );
 };
 
-export default Posts;
+export default PostForm;

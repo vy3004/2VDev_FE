@@ -17,18 +17,14 @@ import {
   ChatBubbleLeftIcon,
 } from "@heroicons/react/24/outline";
 import { ArrowUturnLeftIcon, StarIcon } from "@heroicons/react/24/solid";
-
-import LevelChip from "../../../components/common/level-chip";
+import LevelChip from "../common/level-chip";
 import CommentForm from "./comment-form";
 
-import postService from "../../../services/post-service";
-import {
-  formatTimeDistanceToNow,
-  formatTime,
-} from "../../../utils/string-utils";
-import { Post } from "../../../utils/types";
-import { PostType } from "../../../utils/constant";
-import { setReportModal } from "../../../redux/features/report-modal-slice";
+import postService from "../../services/post-service";
+import { Post } from "../../utils/types";
+import { PostType } from "../../utils/constant";
+import { formatTime, formatTimeDistanceToNow } from "../../utils/string-utils";
+import { setReportModal } from "../../redux/features/report-modal-slice";
 
 interface CommentProps {
   comment: Post;

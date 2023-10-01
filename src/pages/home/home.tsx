@@ -1,153 +1,89 @@
-import { ChatBubbleLeftIcon, EyeIcon } from "@heroicons/react/24/solid";
-import {
-  Avatar,
-  Button,
-  IconButton,
-  Tooltip,
-  Typography,
-} from "@material-tailwind/react";
+import { useEffect, useState } from "react";
+import { useLocation } from "react-router-dom";
 
-import LevelChip from "../../components/common/level-chip";
-import TagList from "../../components/common/tag-list";
-import { BookmarkIcon, BookmarkSlashIcon } from "@heroicons/react/24/outline";
-import { useState } from "react";
+import Loading from "../../components/common/loading";
+import NotFoundAlert from "../../components/common/not-found-alert";
+import Pagination from "../../components/common/pagination";
+import PostCard from "../../components/post/post-card";
+
+import postService from "../../services/post-service";
+import { Post } from "../../utils/types";
 
 const Home = () => {
-  const [bookmark, setBookmark] = useState(false);
+  const location = useLocation();
+  const queryParams = new URLSearchParams(location.search);
+  const pageQueryParam = queryParams.get("page");
+  const limitQueryParam = queryParams.get("limit");
+  const limit = limitQueryParam ? parseInt(limitQueryParam) : 10;
+  const [page, setPage] = useState(
+    pageQueryParam ? parseInt(pageQueryParam) : 1
+  );
+  const [posts, setPosts] = useState<Post[]>();
+  const [totalPage, setTotalPage] = useState(1);
+  const [isLoading, setIsLoading] = useState(false);
 
-  const tags = [
-    "java",
-    "css",
-    "html",
-    "javascript",
-    "typescript",
-    "react",
-    "nodejs",
-    "java",
-    "css",
-    "html",
-    "javascript",
-    "typescript",
-    "react",
-    "nodejs",
-    "typescript",
-    "react",
-    "nodejs",
-  ];
+  const next = () => {
+    if (page === totalPage) return;
+
+    setPage(page + 1);
+  };
+
+  const prev = () => {
+    if (page === 1) return;
+
+    setPage(page - 1);
+  };
+
+  useEffect(() => {
+    const getNewsFeed = async () => {
+      setIsLoading(true);
+
+      const { response } = await postService.getNewsFeedNew({
+        limit: limit,
+        page: page,
+        post_type: 0,
+      });
+
+      if (response) {
+        console.log(response);
+        setTotalPage(response?.data.result.total_page);
+        setPosts(response?.data.result.posts);
+      }
+
+      setIsLoading(false);
+    };
+
+    getNewsFeed();
+
+    // Update URL according to params
+    queryParams.set("limit", limit.toString());
+    queryParams.set("page", page.toString());
+    window.history.replaceState(
+      {},
+      "",
+      `${location.pathname}?${queryParams.toString()}`
+    );
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [page, limit]);
 
   return (
-    <div className="h-screen w-full dark:bg-gray-700">
-      <div className="border rounded-lg flex gap-2 p-4">
-        <div className="space-y-8 flex flex-col items-center">
-          <Avatar
-            src="/logo.png"
-            size="lg"
-            alt="avatar"
-            withBorder={true}
-            className="p-0.5"
-          />
-
-          <div className="w-16 flex flex-col justify-center items-center gap-1">
-            <Tooltip
-              className="w-36"
-              placement="right"
-              content="This question shows research effort; it is useful and clear"
-            >
-              <Typography className="cursor-pointer text-2xl hover:text-blue-500">
-                ▲
-              </Typography>
-            </Tooltip>
-            <Typography className="font-bold">100</Typography>
-            <Tooltip
-              className="w-36"
-              placement="right"
-              content="This question does not show any research effort; it is unclear or not useful"
-            >
-              <Typography className="cursor-pointer text-2xl hover:text-blue-500">
-                ▼
-              </Typography>
-            </Tooltip>
+    <div>
+      <div className="mt-4 space-y-8">
+        {isLoading ? (
+          <div className="relative h-80">
+            <Loading />
           </div>
-        </div>
-
-        <div className="space-y-2">
-          <div className="flex items-center justify-between">
-            <div className="flex items-center gap-4">
-              <Typography
-                as="a"
-                href="#"
-                className="font-bold text-blue-500 hover:text-gray-900"
-              >
-                Kha Vy
-              </Typography>
-              <LevelChip level={4} />
-              <Typography className="text-sm text-gray-600">
-                Asked:{" "}
-                <span className="text-blue-500 hover:text-gray-900">
-                  30/04/2001
-                </span>
-              </Typography>
-              <Typography className="text-sm text-gray-600">
-                In:{" "}
-                <span className="text-blue-500 hover:text-gray-900">
-                  Language
-                </span>
-              </Typography>
-            </div>
-            <Tooltip
-              content={bookmark ? "Unmark the post" : "Bookmark the post"}
-            >
-              <IconButton variant="text" onClick={() => setBookmark(!bookmark)}>
-                {bookmark ? (
-                  <BookmarkSlashIcon className="w-5 h-5" />
-                ) : (
-                  <BookmarkIcon className="w-5 h-5" />
-                )}
-              </IconButton>
-            </Tooltip>
+        ) : posts && posts.length > 0 ? (
+          <div className="">
+            {posts.map((post) => (
+              <PostCard key={post._id} post={post} is_detail={false} />
+            ))}
           </div>
+        ) : (
+          <NotFoundAlert message="Posts not found!" />
+        )}
 
-          <div className="space-y-4">
-            <Typography
-              as="a"
-              href="#"
-              className="font-bold text-lg text-gary-900 hover:text-blue-500"
-            >
-              Material Tailwind is an easy to use components library for
-              Tailwind CSS and Material Design?
-            </Typography>
-
-            <Typography>
-              Material Tailwind is an easy to use components library for
-              Tailwind CSS and Material Design. It provides a simple way to
-              customize your components, you can change the colors, fonts,
-              breakpoints and everything you need.
-            </Typography>
-
-            <TagList tags={tags} />
-
-            <div className="flex items-center justify-between p-4 bg-gray-300">
-              <div className="flex gap-4">
-                <Button
-                  variant="outlined"
-                  size="sm"
-                  className="bg-white flex items-center gap-2 normal-case text-base"
-                >
-                  <ChatBubbleLeftIcon className="w-4 h-4" /> 8 Answers
-                </Button>
-
-                <Button
-                  variant="outlined"
-                  size="sm"
-                  className="bg-white flex items-center gap-2 normal-case text-base"
-                >
-                  <EyeIcon className="w-4 h-4" /> 18 Views
-                </Button>
-              </div>
-              <Button>Answer</Button>
-            </div>
-          </div>
-        </div>
+        <Pagination page={page} totalPage={totalPage} next={next} prev={prev} />
       </div>
     </div>
   );

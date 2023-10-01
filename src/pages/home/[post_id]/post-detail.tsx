@@ -4,12 +4,13 @@ import { useParams } from "react-router-dom";
 import Loading from "../../../components/common/loading";
 import NotFoundAlert from "../../../components/common/not-found-alert";
 import Pagination from "../../../components/common/pagination";
-import PostDetail from "./post-detail";
+import PostCard from "../../../components/post/post-card";
 
 import postService from "../../../services/post-service";
 import { Post } from "../../../utils/types";
+import { Typography } from "@material-tailwind/react";
 
-const PostDetailPage = () => {
+const PostDetail = () => {
   const { post_id } = useParams();
 
   const [post, setPost] = useState<Post>();
@@ -71,7 +72,10 @@ const PostDetailPage = () => {
     </div>
   ) : post ? (
     <div className="space-y-4">
-      <PostDetail post={post} comments={comments} />
+      <Typography className="font-bold text-lg pl-4">
+        Post Information
+      </Typography>
+      <PostCard post={post} comments={comments} is_detail={true} />
       <Pagination page={page} totalPage={totalPage} next={next} prev={prev} />
     </div>
   ) : (
@@ -79,4 +83,4 @@ const PostDetailPage = () => {
   );
 };
 
-export default PostDetailPage;
+export default PostDetail;
