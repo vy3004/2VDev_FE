@@ -1,7 +1,6 @@
 import { AxiosResponse, AxiosError } from "axios";
 import axiosInstance from "../configs/axios-config";
 import { apiEndPoints } from "../utils/api-endpoints";
-import { PostType } from "../utils/constant";
 
 interface PostPayLoad {
   user_id: string;
@@ -24,7 +23,7 @@ interface GetCommentsPayLoad {
 }
 
 interface GetNewsFeedPayLoad {
-  post_type: PostType;
+  type: string;
   limit: number;
   page: number;
 }
@@ -48,26 +47,16 @@ const postEndpoints = {
     page: number;
   }) =>
     `${apiEndPoints.posts}/${post_id}/children/?limit=${limit}&page=${page}&post_type=2`,
-  getNewsFeedNew: ({
-    post_type,
+  getNewsFeed: ({
+    type,
     limit,
     page,
   }: {
-    post_type: PostType;
+    type: string;
     limit: number;
     page: number;
   }) =>
-    `${apiEndPoints.posts}/newfeeds/new?limit=${limit}&page=${page}&post_type=${post_type}`,
-  getNewsFeedFollow: ({
-    post_type,
-    limit,
-    page,
-  }: {
-    post_type: PostType;
-    limit: number;
-    page: number;
-  }) =>
-    `${apiEndPoints.posts}/newfeeds/follow?limit=${limit}&page=${page}&post_type=${post_type}`,
+    `${apiEndPoints.posts}/newfeeds?limit=${limit}&page=${page}&type=${type}`,
 };
 
 const postService = {
@@ -122,29 +111,14 @@ const postService = {
       return { error: error as AxiosError };
     }
   },
-  getNewsFeedNew: async ({
-    post_type,
+  getNewsFeed: async ({
+    type,
     limit,
     page,
   }: GetNewsFeedPayLoad): Promise<ApiResponse<any>> => {
     try {
       const response = await axiosInstance.get(
-        postEndpoints.getNewsFeedNew({ post_type, limit, page })
-      );
-
-      return { response };
-    } catch (error) {
-      return { error: error as AxiosError };
-    }
-  },
-  getNewsFeedFollow: async ({
-    post_type,
-    limit,
-    page,
-  }: GetNewsFeedPayLoad): Promise<ApiResponse<any>> => {
-    try {
-      const response = await axiosInstance.get(
-        postEndpoints.getNewsFeedFollow({ post_type, limit, page })
+        postEndpoints.getNewsFeed({ type, limit, page })
       );
 
       return { response };

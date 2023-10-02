@@ -67,6 +67,12 @@ interface UnfollowPayLoad {
   user_id: string;
 }
 
+interface GetFollowersPayLoad {
+  user_id: string;
+  limit: number;
+  page: number;
+}
+
 interface ApiResponse<T> {
   response?: AxiosResponse<T>;
   error?: AxiosError;
@@ -89,6 +95,10 @@ const userEndpoints = {
     `${apiEndPoints.users}/list-users?limit=${limit}&page=${page}`,
   getUser: ({ username }: { username: string }) =>
     `${apiEndPoints.users}/${username}`,
+  getFollowing: ({ limit, page }: { limit: number; page: number }) =>
+    `${apiEndPoints.users}/followers/list-users-following?limit=${limit}&page=${page}`,
+  getFollower: ({ limit, page }: { limit: number; page: number }) =>
+    `${apiEndPoints.users}/followers/list-users-follower?limit=${limit}&page=${page}`,
   follow: `${apiEndPoints.users}/follow`,
   unfollow: ({ user_id }: { user_id: string }) =>
     `${apiEndPoints.users}/follow/${user_id}`,
@@ -285,6 +295,38 @@ const userService = {
     try {
       const response = await axiosInstance.get(
         userEndpoints.getUsers({ limit, page })
+      );
+
+      return { response };
+    } catch (error) {
+      return { error: error as AxiosError };
+    }
+  },
+  getFollowing: async ({
+    user_id,
+    limit,
+    page,
+  }: GetFollowersPayLoad): Promise<ApiResponse<any>> => {
+    try {
+      const response = await axiosInstance.get(
+        userEndpoints.getFollowing({ limit, page }),
+        { data: { user_id } }
+      );
+
+      return { response };
+    } catch (error) {
+      return { error: error as AxiosError };
+    }
+  },
+  getFollower: async ({
+    user_id,
+    limit,
+    page,
+  }: GetFollowersPayLoad): Promise<ApiResponse<any>> => {
+    try {
+      const response = await axiosInstance.get(
+        userEndpoints.getFollower({ limit, page }),
+        { data: { user_id } }
       );
 
       return { response };

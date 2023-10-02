@@ -72,27 +72,27 @@ const Sidebar = () => {
     {
       label: t("sidebar.new"),
       icon: <ChevronRightIcon strokeWidth={3} className="h-3 w-5" />,
-      href: "/?filter=new",
+      href: "/?type=new",
     },
     {
       label: t("sidebar.followed"),
       icon: <ChevronRightIcon strokeWidth={3} className="h-3 w-5" />,
-      href: "/?filter=follow",
+      href: "/?type=follow",
     },
     {
       label: t("sidebar.trending"),
       icon: <ChevronRightIcon strokeWidth={3} className="h-3 w-5" />,
-      href: "/?filter=trend",
+      href: "/?type=trend",
     },
     {
       label: t("sidebar.popular"),
       icon: <ChevronRightIcon strokeWidth={3} className="h-3 w-5" />,
-      href: "/?filter=popular",
+      href: "/?type=popular",
     },
     {
       label: t("sidebar.hot"),
       icon: <ChevronRightIcon strokeWidth={3} className="h-3 w-5" />,
-      href: "/?filter=hot",
+      href: "/?type=hot",
     },
   ];
 
@@ -151,7 +151,7 @@ const Sidebar = () => {
                     appState === href && "dark:bg-gray-50 dark:text-gray-900"
                   }`}
                   selected={appState === href}
-                  onClick={() => navigate(href)}
+                  onClick={() => (window.location.href = href)}
                   key={key}
                 >
                   <ListItemPrefix>{icon}</ListItemPrefix>

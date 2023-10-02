@@ -1,6 +1,6 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 
 import {
   Avatar,
@@ -15,6 +15,7 @@ import {
   UserPlusIcon,
   HandThumbUpIcon,
   ChatBubbleLeftIcon,
+  UserMinusIcon,
 } from "@heroicons/react/24/outline";
 import { ArrowUturnLeftIcon, StarIcon } from "@heroicons/react/24/solid";
 import LevelChip from "../common/level-chip";
@@ -24,7 +25,10 @@ import postService from "../../services/post-service";
 import { Post } from "../../utils/types";
 import { PostType } from "../../utils/constant";
 import { formatTime, formatTimeDistanceToNow } from "../../utils/string-utils";
-import { setReportModal } from "../../redux/features/report-modal-slice";
+import {
+  selectReportModal,
+  setReportModal,
+} from "../../redux/features/report-modal-slice";
 
 interface CommentProps {
   comment: Post;
@@ -40,6 +44,7 @@ const Comment: React.FC<CommentProps> = ({
   followUser,
 }) => {
   const { i18n } = useTranslation();
+  const { reportModal } = useSelector(selectReportModal);
   const dispatch = useDispatch();
 
   const [children, setChildren] = useState<Post[]>();
@@ -49,6 +54,12 @@ const Comment: React.FC<CommentProps> = ({
   const [vote, setVote] = useState(comment.is_voted);
   const [votesCount, setVotesCount] = useState(comment.votes_count);
   const [follow, setFollow] = useState(false);
+  const [report, setReport] = useState(comment.is_reported);
+
+  useEffect(() => {
+    if (reportModal.isReported && reportModal.postId === comment._id)
+      setReport(true);
+  }, [reportModal, comment._id]);
 
   const getReplies = async (show: boolean) => {
     setLoading(true);
@@ -81,6 +92,16 @@ const Comment: React.FC<CommentProps> = ({
     setFollow(!type);
   };
 
+  const handleReport = () => {
+    dispatch(
+      setReportModal({
+        reportModalOpen: true,
+        postId: comment._id,
+        isReported: false,
+      })
+    );
+  };
+
   return (
     <div className="flex gap-4">
       <Avatar
@@ -110,19 +131,24 @@ const Comment: React.FC<CommentProps> = ({
               </Typography>
             </div>
 
-            <Button
-              onClick={() => handleFollow(comment.user_detail._id, follow)}
-              variant="text"
-              className="p-2 flex items-center justify-center gap-2 normal-case text-xs"
-            >
-              <UserPlusIcon className="w-4 h-4" />
-              Follow
-            </Button>
+            {user_id !== comment.user_detail._id && (
+              <Button
+                onClick={() => handleFollow(comment.user_detail._id, follow)}
+                variant="text"
+                className="p-2 flex items-center justify-center gap-2 normal-case text-xs"
+              >
+                {follow ? (
+                  <UserMinusIcon className="w-4 h-4" />
+                ) : (
+                  <UserPlusIcon className="w-4 h-4" />
+                )}
+              </Button>
+            )}
           </div>
 
           <Tooltip content={formatTime(comment.created_at, i18n.language)}>
             <Typography className="text-sm text-gray-600 hover:text-blue-500 cursor-pointer flex items-center gap-1">
-              <ClockIcon className="w-4 h-4" />
+              <ClockIcon className="w-4 h-4 mb-1" />
               {formatTimeDistanceToNow(comment.created_at, i18n.language)}
             </Typography>
           </Tooltip>
@@ -153,16 +179,9 @@ const Comment: React.FC<CommentProps> = ({
             Reply
           </Button>
 
-          {!comment.is_reported && (
+          {!report && (
             <Button
-              onClick={() =>
-                dispatch(
-                  setReportModal({
-                    reportModalOpen: true,
-                    post_id: comment._id,
-                  })
-                )
-              }
+              onClick={handleReport}
               variant="text"
               className="p-2 flex items-center justify-center gap-2 normal-case text-xs"
             >

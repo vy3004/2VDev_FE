@@ -72,9 +72,12 @@ const PostDetail = () => {
     </div>
   ) : post ? (
     <div className="space-y-4">
-      <Typography className="font-bold text-lg pl-4">
-        Post Information
-      </Typography>
+      <div>
+        <Typography variant="h5">Post Detail</Typography>
+        <Typography className="mt-1 font-normal">
+          See detail information of the post
+        </Typography>
+      </div>
       <PostCard post={post} comments={comments} is_detail={true} />
       <Pagination page={page} totalPage={totalPage} next={next} prev={prev} />
     </div>

@@ -5,14 +5,16 @@ import type { RootState } from "../store";
 interface ReportModalState {
   reportModal: {
     reportModalOpen: boolean;
-    post_id: string;
+    postId: string;
+    isReported: boolean;
   };
 }
 
 const initialState: ReportModalState = {
   reportModal: {
     reportModalOpen: false,
-    post_id: "",
+    postId: "",
+    isReported: false,
   },
 };
 

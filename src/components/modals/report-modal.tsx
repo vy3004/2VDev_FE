@@ -33,7 +33,9 @@ const ReportModal = () => {
   const [isSubmit, setIsSubmit] = useState(false);
 
   const handleClose = () =>
-    dispatch(setReportModal({ reportModalOpen: false, post_id: "" }));
+    dispatch(
+      setReportModal({ reportModalOpen: false, postId: "", isReported: false })
+    );
 
   const reportForm = useFormik<ReportFormValues>({
     initialValues: {
@@ -47,12 +49,19 @@ const ReportModal = () => {
 
       const { response, error } = await reportPostService.reportPost({
         ...values,
-        post_id: reportModal.post_id,
+        post_id: reportModal.postId,
       });
 
       if (response) {
         reportForm.resetForm();
-        dispatch(setReportModal({ reportModalOpen: false, post_id: "" }));
+        dispatch(
+          setReportModal({
+            reportModalOpen: false,
+            postId: reportModal.postId,
+            isReported: true,
+          })
+        );
+
         toast.success(response.data.message);
       }
 

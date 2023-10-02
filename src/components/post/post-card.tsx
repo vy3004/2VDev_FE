@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useTranslation } from "react-i18next";
 import { useNavigate } from "react-router-dom";
@@ -38,7 +38,10 @@ import voteService from "../../services/vote-service";
 import bookmarkService from "../../services/bookmark-service";
 import userService from "../../services/user-service";
 import { selectUser } from "../../redux/features/user-slice";
-import { setReportModal } from "../../redux/features/report-modal-slice";
+import {
+  selectReportModal,
+  setReportModal,
+} from "../../redux/features/report-modal-slice";
 import { Post } from "../../utils/types";
 import { PostType } from "../../utils/constant";
 import { formatTime, formatTimeDistanceToNow } from "../../utils/string-utils";
@@ -52,6 +55,7 @@ interface PostCardProps {
 const PostCard: React.FC<PostCardProps> = ({ post, comments, is_detail }) => {
   const { i18n } = useTranslation();
   const { user } = useSelector(selectUser);
+  const { reportModal } = useSelector(selectReportModal);
   const dispatch = useDispatch();
   const navigate = useNavigate();
   console.log("POST", post);
@@ -60,7 +64,13 @@ const PostCard: React.FC<PostCardProps> = ({ post, comments, is_detail }) => {
   const [votesCount, setVotesCount] = useState(post.votes_count);
   const [bookmark, setBookmark] = useState(false);
   const [follow, setFollow] = useState(false);
+  const [report, setReport] = useState(post.is_reported);
   const [showFormAnswer, setShowFormAnswer] = useState(false);
+
+  useEffect(() => {
+    if (reportModal.isReported && reportModal.postId === post._id)
+      setReport(true);
+  }, [reportModal, post._id]);
 
   const votePost = async (postId: string, type: boolean) => {
     try {
@@ -150,6 +160,16 @@ const PostCard: React.FC<PostCardProps> = ({ post, comments, is_detail }) => {
     setBookmark(!type);
   };
 
+  const handleReport = () => {
+    dispatch(
+      setReportModal({
+        reportModalOpen: true,
+        postId: post._id,
+        isReported: false,
+      })
+    );
+  };
+
   const handleComment = () => {
     is_detail ? setShowFormAnswer(!showFormAnswer) : navigate(`/${post._id}`);
   };
@@ -191,7 +211,7 @@ const PostCard: React.FC<PostCardProps> = ({ post, comments, is_detail }) => {
             {/* Info user end */}
 
             {/* Post menu start */}
-            <Menu>
+            <Menu placement="bottom-end">
               <MenuHandler>
                 <IconButton variant="text" className="rounded-full">
                   <EllipsisHorizontalIcon className="w-8 h-8" />
@@ -212,33 +232,30 @@ const PostCard: React.FC<PostCardProps> = ({ post, comments, is_detail }) => {
                     </>
                   )}
                 </MenuItem>
-                <MenuItem
-                  className="flex items-center gap-2"
-                  onClick={() => handleFollow(post.user_detail._id, follow)}
-                >
-                  {follow ? (
-                    <>
-                      <UserMinusIcon className="w-5 h-5" /> Unfollow{" "}
-                      {post.user_detail.name}
-                    </>
-                  ) : (
-                    <>
-                      <UserPlusIcon className="w-5 h-5" /> Follow{" "}
-                      {post.user_detail.name}
-                    </>
-                  )}
-                </MenuItem>
-                {!post.is_reported && (
+
+                {user._id !== post.user_detail._id && (
                   <MenuItem
                     className="flex items-center gap-2"
-                    onClick={() =>
-                      dispatch(
-                        setReportModal({
-                          reportModalOpen: true,
-                          post_id: post._id,
-                        })
-                      )
-                    }
+                    onClick={() => handleFollow(post.user_detail._id, follow)}
+                  >
+                    {follow ? (
+                      <>
+                        <UserMinusIcon className="w-5 h-5" /> Unfollow{" "}
+                        {post.user_detail.name}
+                      </>
+                    ) : (
+                      <>
+                        <UserPlusIcon className="w-5 h-5" /> Follow{" "}
+                        {post.user_detail.name}
+                      </>
+                    )}
+                  </MenuItem>
+                )}
+
+                {!report && (
+                  <MenuItem
+                    className="flex items-center gap-2"
+                    onClick={handleReport}
                   >
                     <ExclamationTriangleIcon className="w-5 h-5" /> Report
                   </MenuItem>
