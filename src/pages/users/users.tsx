@@ -73,7 +73,7 @@ const Users = () => {
     });
 
     if (response) {
-      setTotalPage(response.data.result.totalPage);
+      setTotalPage(response.data.totalPage);
       setUsers(response.data.result);
       console.log("Following", response);
     }
@@ -91,7 +91,7 @@ const Users = () => {
     });
 
     if (response) {
-      setTotalPage(response.data.result.totalPage);
+      setTotalPage(response.data.totalPage);
       setUsers(response.data.result);
       console.log("Follower", response);
     }
@@ -121,68 +121,72 @@ const Users = () => {
 
   return (
     <div>
-      <div className="mt-4 space-y-8">
-        {isLoading ? (
-          <div className="relative h-80">
-            <Loading />
+      {isLoading ? (
+        <div className="relative h-80">
+          <Loading />
+        </div>
+      ) : (
+        <div className="space-y-4">
+          {/* Header start */}
+          <div className="flex items-end justify-between">
+            <div>
+              <Typography variant="h5">All Users</Typography>
+              <Typography className="mt-1 font-normal">
+                See information about all all users
+              </Typography>
+            </div>
+
+            <Menu placement="bottom-end">
+              <MenuHandler>
+                <IconButton className="mr-5 mb-1" size="sm" variant="outlined">
+                  <AdjustmentsHorizontalIcon className="w-6 h-6 transition-transform hover:rotate-180" />
+                </IconButton>
+              </MenuHandler>
+              <MenuList className="min-w-10">
+                {USERS_TYPE.map((type) => (
+                  <MenuItem
+                    className="capitalize"
+                    onClick={() => setFilter(type)}
+                  >
+                    {type}
+                  </MenuItem>
+                ))}
+              </MenuList>
+            </Menu>
           </div>
-        ) : users.length > 0 ? (
-          <div>
-            {/* Header start */}
-            <div className="flex items-end justify-between">
-              <div>
-                <Typography variant="h5">All Users</Typography>
-                <Typography className="mt-1 font-normal">
-                  See information about all all users
-                </Typography>
+          {/* Header end */}
+
+          {users.length > 0 ? (
+            <div className="space-y-4">
+              <div className="grid grid-cols-6 gap-6 mt-4">
+                {users.map(
+                  ({ _id, name, avatar, username, point, is_followed }) => (
+                    <UserCard
+                      key={_id}
+                      current_username={currentUser?.username}
+                      user_id={_id}
+                      username={username}
+                      name={name}
+                      avatar={avatar}
+                      point={point}
+                      is_followed={is_followed}
+                    />
+                  )
+                )}
               </div>
 
-              <Menu placement="bottom-end">
-                <MenuHandler>
-                  <IconButton
-                    className="mr-5 mb-1"
-                    size="sm"
-                    variant="outlined"
-                  >
-                    <AdjustmentsHorizontalIcon className="w-6 h-6 transition-transform hover:rotate-180" />
-                  </IconButton>
-                </MenuHandler>
-                <MenuList className="min-w-10">
-                  {USERS_TYPE.map((type) => (
-                    <MenuItem
-                      className="capitalize"
-                      onClick={() => setFilter(type)}
-                    >
-                      {type}
-                    </MenuItem>
-                  ))}
-                </MenuList>
-              </Menu>
+              <Pagination
+                page={page}
+                totalPage={totalPage}
+                next={next}
+                prev={prev}
+              />
             </div>
-            {/* Header end */}
-            <div className="grid grid-cols-6 gap-6 mt-4">
-              {users.map(
-                ({ _id, name, avatar, username, point, is_followed }) => (
-                  <UserCard
-                    key={_id}
-                    current_username={currentUser?.username}
-                    user_id={_id}
-                    username={username}
-                    name={name}
-                    avatar={avatar}
-                    point={point}
-                    is_followed={is_followed}
-                  />
-                )
-              )}
-            </div>
-          </div>
-        ) : (
-          <NotFoundAlert message="Users not found!" />
-        )}
-
-        <Pagination page={page} totalPage={totalPage} next={next} prev={prev} />
-      </div>
+          ) : (
+            <NotFoundAlert message="Users not found!" isBack={false} />
+          )}
+        </div>
+      )}
     </div>
   );
 };

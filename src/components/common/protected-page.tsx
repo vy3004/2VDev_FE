@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useTranslation } from "react-i18next";
 
@@ -18,20 +18,10 @@ const ProtectedPage: React.FC<{ children: React.ReactNode }> = ({
   const { user } = useSelector(selectUser);
   const { t } = useTranslation();
 
-  const [isUserLoaded, setIsUserLoaded] = useState(false);
-
   useEffect(() => {
-    if (user) {
-      setIsUserLoaded(true);
-    }
-  }, [user]);
-
-  useEffect(() => {
-    if (isUserLoaded) {
-      dispatch(setAuthModalOpen(!user));
-      dispatch(setAuthModalName("signIn"));
-    }
-  }, [isUserLoaded, user, dispatch]);
+    dispatch(setAuthModalOpen(!user));
+    dispatch(setAuthModalName("signIn"));
+  }, [user, dispatch]);
 
   return user ? (
     <>{children}</>

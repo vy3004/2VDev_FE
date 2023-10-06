@@ -1,56 +1,80 @@
 import { useState } from "react";
+import { useNavigate } from "react-router-dom";
+import { useFormik } from "formik";
+import { useSelector } from "react-redux";
+import { useTranslation } from "react-i18next";
+import toast from "react-hot-toast";
+import ReactQuill from "react-quill";
+import "react-quill/dist/quill.snow.css";
+import * as Yup from "yup";
+
 import {
   Alert,
   Button,
+  IconButton,
   Input,
   Spinner,
   Typography,
 } from "@material-tailwind/react";
-import ErrorMessageForm from "../common/error-message-form";
 import { PencilIcon } from "@heroicons/react/24/outline";
+import { XMarkIcon } from "@heroicons/react/24/solid";
 import { TagsInput } from "react-tag-input-component";
-import { fileToBase64 } from "../../utils/file-utils";
-import { useFormik } from "formik";
-import { selectUser } from "../../redux/features/user-slice";
-import { useSelector } from "react-redux";
-import ReactQuill from "react-quill";
-import "react-quill/dist/quill.snow.css";
+import ErrorMessageForm from "../common/error-message-form";
+
 import postService from "../../services/post-service";
-import toast from "react-hot-toast";
-import { useNavigate } from "react-router-dom";
+import mediaService from "../../services/media-service";
+import { selectUser } from "../../redux/features/user-slice";
 
 interface PostFormValues {
   user_id: string;
   title: string;
   content: string;
   hashtags: string[];
-  medias?: string[];
+  medias: string[];
   parent_id: string | null;
   type: number;
 }
 
 const PostForm = () => {
   const { user } = useSelector(selectUser);
+  const { t } = useTranslation();
   const navigate = useNavigate();
 
-  const [images, setImages] = useState();
   const [isSubmit, setIsSubmit] = useState(false);
+  const [images, setImages] = useState<File[]>([]);
 
-  const covertToBase64 = (e: any) => {
-    const file = e.target.files[0];
+  const handleImageUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const files = e.target.files;
 
-    if (file) {
-      fileToBase64(file)
-        .then((base64String) => {
-          // setCoverPhoto(base64String);
-        })
-        .catch((error) => {
-          console.error(error);
-        });
+    if (files) {
+      const validImages = Array.from(files).filter((file) =>
+        file.type.startsWith("image/")
+      );
+
+      const duplicateFiles = validImages.filter((file) =>
+        images.some((image) => image.name === file.name)
+      );
+
+      if (validImages.length === 0) {
+        toast.error("Select images only");
+      } else if (duplicateFiles.length > 0) {
+        toast.error("Images do not repeat");
+      } else {
+        setImages((prevImages) => [...prevImages, ...validImages]);
+      }
     }
   };
 
-  const postQuestionForm = useFormik<PostFormValues>({
+  const handleImageDelete = (index: number) => {
+    setImages((prevImages) => {
+      const updatedImages = [...prevImages];
+      updatedImages.splice(index, 1);
+
+      return updatedImages;
+    });
+  };
+
+  const postForm = useFormik<PostFormValues>({
     initialValues: {
       user_id: user?._id || "",
       title: "",
@@ -61,10 +85,38 @@ const PostForm = () => {
       parent_id: null,
     },
 
+    validationSchema: Yup.object({
+      title: Yup.string()
+        .required("Title is required")
+        .min(10, "Title contains at least 10 characters")
+        .max(255, "Title must only contain 255 characters"),
+      content: Yup.string()
+        .required("Content is required")
+        .min(220, "Content contains at least 220 characters")
+        .max(5000, "Content must only contain 5000 characters"),
+      hashtags: Yup.array().test(
+        "nonEmpty",
+        "Tag(s) is required",
+        (value) => value && value.length > 0
+      ),
+    }),
+
     onSubmit: async (values: PostFormValues) => {
       setIsSubmit(true);
-      // let data = { ...values, hashtags: selected };
-      console.log("CHECK_DATA", values);
+
+      let data = { ...values };
+
+      await Promise.all(
+        images.map(async (image) => {
+          const { response, error } = await mediaService.uploadImage(image);
+          if (response) {
+            data.medias.push(response.data.result[0].url);
+          }
+          if (error) {
+            toast.error(error.message);
+          }
+        })
+      );
 
       const { response, error } = await postService.post(values);
       if (response) {
@@ -72,14 +124,14 @@ const PostForm = () => {
         toast.success("Your question has been posted");
         navigate("/");
       }
-      if (error) console.log(error.message);
+      if (error) toast.error(error.message);
 
       setIsSubmit(false);
     },
   });
 
   return (
-    <form onSubmit={postQuestionForm.handleSubmit} className="space-y-4">
+    <form onSubmit={postForm.handleSubmit} className="space-y-4">
       <Typography className="font-bold text-2xl">
         Ask a public question
       </Typography>
@@ -122,6 +174,7 @@ const PostForm = () => {
         </div>
       </Alert>
 
+      {/* Title input start */}
       <div className="border border-black rounded-lg p-4">
         <Typography className="font-medium">Title</Typography>
         <Typography className="mb-2 text-sm">
@@ -129,8 +182,8 @@ const PostForm = () => {
         </Typography>
         <Input
           name="title"
-          value={postQuestionForm.values.title}
-          onChange={postQuestionForm.handleChange}
+          value={postForm.values.title}
+          onChange={postForm.handleChange}
           type="text"
           placeholder="e.g. Is there an R function for finding the index of an element in a vector?"
           className="!border !border-gray-300 text-gray-900 ring-1 ring-transparent focus:!border-blue-600 focus:!border-t-blue-600 focus:ring-blue-600"
@@ -139,25 +192,38 @@ const PostForm = () => {
           }}
           crossOrigin={""}
         />
-        {/* <ErrorMessageForm message="test" /> */}
+        {postForm.touched.title && postForm.errors.title && (
+          <ErrorMessageForm
+            message={postForm.touched.title && postForm.errors.title}
+          />
+        )}
       </div>
+      {/* Title input end */}
 
+      {/* Tags input start */}
       <div className="border border-black rounded-lg p-4">
-        <Typography className="font-medium">Tags</Typography>
+        <Typography className="font-medium">Tag(s)</Typography>
         <Typography className="mb-2 text-sm">
-          Add up to 5 tags to describe what your question is about.
+          Add at least 1 tag to describe the content of your question.
         </Typography>
         <TagsInput
           name="hashtags"
-          value={postQuestionForm.values.hashtags}
-          onChange={(hashtags) =>
-            postQuestionForm.setFieldValue("hashtags", hashtags)
-          }
+          value={postForm.values.hashtags}
+          onChange={(hashtags) => postForm.setFieldValue("hashtags", hashtags)}
           classNames={{ tag: "tag-cls", input: "bg-white" }}
           placeHolder="e.g. (javascript + Enter)"
         />
+        {postForm.touched.hashtags && postForm.errors.hashtags && (
+          <ErrorMessageForm
+            message={
+              postForm.touched.hashtags && postForm.errors.hashtags.toString()
+            }
+          />
+        )}
       </div>
+      {/* Tags input end */}
 
+      {/* Content input start */}
       <div className="border border-black rounded-lg p-4">
         <Typography className="font-medium">Content</Typography>
         <Typography className="mb-2 text-sm">
@@ -165,37 +231,59 @@ const PostForm = () => {
           results. Minimum 220 characters.
         </Typography>
         <ReactQuill
-          value={postQuestionForm.values.content}
-          onChange={(value) => postQuestionForm.setFieldValue("content", value)}
+          value={postForm.values.content}
+          onChange={(value) => postForm.setFieldValue("content", value)}
           theme="snow"
           placeholder="Write something..."
         />
+        {postForm.touched.content && postForm.errors.content && (
+          <ErrorMessageForm
+            message={postForm.touched.content && postForm.errors.content}
+          />
+        )}
       </div>
+      {/* Content input end */}
 
-      {/* <div className="border border-black rounded-lg p-4">
-        <Typography className="font-medium">Images</Typography>
+      {/* Images start */}
+      <div className="border border-black rounded-lg p-4">
+        <Typography className="font-medium">Image(s)</Typography>
         <Typography className="mb-2 text-sm">
-          Add a descriptive images for your question (optional).
+          Add a descriptive image(s) for your question (optional).
         </Typography>
         <Input
           type="file"
           multiple
+          onChange={handleImageUpload}
           className="!border !border-gray-300 text-gray-900 ring-1 ring-transparent focus:!border-blue-600 focus:!border-t-blue-600 focus:ring-blue-600"
           labelProps={{
             className: "hidden",
           }}
-          onChange={covertToBase64}
           crossOrigin={""}
         />
-        <img
-          className="h-60 w-full border rounded-lg object-cover object-center"
-          alt="images"
-          src={images}
-        />
-      </div> */}
+        <div className="mt-2 space-y-2">
+          {images.map((image, index) => (
+            <div className="relative w-fit" key={index}>
+              <img
+                className="rounded-lg"
+                src={URL.createObjectURL(image)}
+                alt="uploaded"
+              />
+              <IconButton
+                size="sm"
+                color="red"
+                onClick={() => handleImageDelete(index)}
+                className="!absolute rounded-full z-10 top-2 right-2"
+              >
+                <XMarkIcon className="w-4 h-4" />
+              </IconButton>
+            </div>
+          ))}
+        </div>
+      </div>
+      {/* Images end */}
 
       <Button
-        onClick={postQuestionForm.submitForm}
+        onClick={postForm.submitForm}
         variant="gradient"
         fullWidth
         disabled={isSubmit}

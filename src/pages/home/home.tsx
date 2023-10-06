@@ -58,9 +58,8 @@ const Home = () => {
       });
 
       if (response) {
-        console.log(response);
-        setTotalPage(response?.data.result.total_page);
-        setPosts(response?.data.result.posts);
+        setTotalPage(response.data.result.total_page);
+        setPosts(response.data.result.posts);
       }
 
       setIsLoading(false);
@@ -98,8 +97,12 @@ const Home = () => {
             </IconButton>
           </MenuHandler>
           <MenuList className="min-w-10">
-            {POSTS_TYPE.map((type) => (
-              <MenuItem className="capitalize" onClick={() => setType(type)}>
+            {POSTS_TYPE.map((type, key) => (
+              <MenuItem
+                key={key}
+                className="capitalize"
+                onClick={() => setType(type)}
+              >
                 {type}
               </MenuItem>
             ))}
@@ -118,11 +121,16 @@ const Home = () => {
             {posts.map((post) => (
               <PostCard key={post._id} post={post} is_detail={false} />
             ))}
+            <Pagination
+              page={page}
+              totalPage={totalPage}
+              next={next}
+              prev={prev}
+            />
           </div>
         ) : (
           <NotFoundAlert message="Posts not found!" />
         )}
-        <Pagination page={page} totalPage={totalPage} next={next} prev={prev} />
       </div>
     </div>
   );
