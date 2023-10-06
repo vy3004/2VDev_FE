@@ -33,7 +33,7 @@ export interface Post {
   user_detail: User;
   title: string;
   content: string;
-  medias: Media[];
+  medias: string[];
   type: PostType;
   hashtags: Tag[];
   resolved?: ResolvedType;

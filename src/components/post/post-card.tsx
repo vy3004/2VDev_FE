@@ -299,6 +299,20 @@ const PostCard: React.FC<PostCardProps> = ({ post, comments, is_detail }) => {
           />
           {/* Content end */}
 
+          {/* Medias start */}
+          {is_detail
+            ? post.medias.map((media, key) => (
+                <img className="rounded-lg" src={media} key={key} alt="img" />
+              ))
+            : post.medias[0] && (
+                <img
+                  className="rounded-lg w-full"
+                  src={post.medias[0]}
+                  alt="img"
+                />
+              )}
+          {/* Medias end */}
+
           {/* Tag list start */}
           {post.hashtags.map((tag) => (
             <TagButton key={tag._id} id={tag._id} name={tag.name} />
@@ -341,17 +355,20 @@ const PostCard: React.FC<PostCardProps> = ({ post, comments, is_detail }) => {
           </div>
           {is_detail && (
             <div className="space-y-4">
-              <hr />
               {/* Comment form start */}
               {showFormAnswer && (
-                <CommentForm
-                  user_id={user._id}
-                  parent_id={post._id}
-                  type={PostType.Comment}
-                  content=""
-                />
+                <>
+                  <hr />
+                  <CommentForm
+                    user_id={user._id}
+                    parent_id={post._id}
+                    type={PostType.Comment}
+                    content=""
+                  />
+                </>
               )}
               {/* Comment form end */}
+
               {/* Comments start */}
               {comments &&
                 comments.map((item) => (
