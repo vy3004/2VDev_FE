@@ -16,6 +16,8 @@ import {
   HandThumbUpIcon,
   ChatBubbleLeftIcon,
   UserMinusIcon,
+  PencilSquareIcon,
+  TrashIcon,
 } from "@heroicons/react/24/outline";
 import { ArrowUturnLeftIcon, StarIcon } from "@heroicons/react/24/solid";
 import LevelChip from "../common/level-chip";
@@ -29,6 +31,7 @@ import {
   selectReportModal,
   setReportModal,
 } from "../../redux/features/report-modal-slice";
+import { setConfirmModal } from "../../redux/features/confirm-modal-slice";
 
 interface CommentProps {
   comment: Post;
@@ -48,7 +51,7 @@ const Comment: React.FC<CommentProps> = ({
   const dispatch = useDispatch();
 
   const [children, setChildren] = useState<Post[]>();
-  const [loading, setLoading] = useState(false);
+  const [loadingReplies, setLoadingReplies] = useState(false);
   const [showReplies, setShowReplies] = useState(false);
   const [showCommentForm, setShowCommentForm] = useState(false);
   const [vote, setVote] = useState(comment.is_voted);
@@ -62,7 +65,7 @@ const Comment: React.FC<CommentProps> = ({
   }, [reportModal, comment._id]);
 
   const getReplies = async (show: boolean) => {
-    setLoading(true);
+    setLoadingReplies(true);
     setShowReplies(show);
 
     if (show) {
@@ -78,7 +81,7 @@ const Comment: React.FC<CommentProps> = ({
         }
       }
     }
-    setLoading(false);
+    setLoadingReplies(false);
   };
 
   const handleVote = (postId: string, type: boolean) => {
@@ -98,6 +101,16 @@ const Comment: React.FC<CommentProps> = ({
         reportModalOpen: true,
         postId: comment._id,
         isReported: false,
+      })
+    );
+  };
+
+  const handleDelete = () => {
+    dispatch(
+      setConfirmModal({
+        confirmModalOpen: true,
+        type: 1,
+        postId: comment._id,
       })
     );
   };
@@ -179,7 +192,7 @@ const Comment: React.FC<CommentProps> = ({
             Reply
           </Button>
 
-          {!report && (
+          {comment.user_detail._id !== user_id && !report && (
             <Button
               onClick={handleReport}
               variant="text"
@@ -187,6 +200,28 @@ const Comment: React.FC<CommentProps> = ({
             >
               <ExclamationTriangleIcon className="w-4 h-4" />
               Report
+            </Button>
+          )}
+
+          {comment.user_detail._id === user_id && (
+            <Button
+              onClick={handleReport}
+              variant="text"
+              className="p-2 flex items-center justify-center gap-2 normal-case text-xs"
+            >
+              <PencilSquareIcon className="w-4 h-4" />
+              Edit
+            </Button>
+          )}
+
+          {comment.user_detail._id === user_id && (
+            <Button
+              onClick={handleDelete}
+              variant="text"
+              className="p-2 flex items-center justify-center gap-2 normal-case text-xs"
+            >
+              <TrashIcon className="w-4 h-4" />
+              Delete
             </Button>
           )}
         </div>
@@ -208,8 +243,9 @@ const Comment: React.FC<CommentProps> = ({
             onClick={() => getReplies(!showReplies)}
             className="py-1 px-2 flex items-center gap-1 normal-case"
             variant="text"
+            disabled={loadingReplies}
           >
-            {loading ? (
+            {loadingReplies ? (
               <Spinner className="h-4 w-4 m-auto" />
             ) : (
               <ArrowUturnLeftIcon

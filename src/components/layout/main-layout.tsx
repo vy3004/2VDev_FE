@@ -16,6 +16,7 @@ import AnswerQuestion from "../common/answer-question";
 import AuthModal from "../modals/auth-modal";
 import EditMyProfileModal from "../modals/edit-my-profile-modal";
 import ReportModal from "../modals/report-modal";
+import ConfirmModal from "../modals/confirm-modal";
 
 import authService from "../../services/user-service";
 import { selectUser, setUser } from "../../redux/features/user-slice";
@@ -134,6 +135,7 @@ const MainLayout = () => {
       <AuthModal />
       <EditMyProfileModal />
       <ReportModal />
+      <ConfirmModal />
       {/* Modal */}
 
       <Header />

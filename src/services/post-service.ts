@@ -28,6 +28,14 @@ interface GetNewsFeedPayLoad {
   page: number;
 }
 
+interface EditPostPayLoad {
+  post_id: string;
+}
+
+interface DeletePostPayLoad {
+  post_id: string;
+}
+
 interface ApiResponse<T> {
   response?: AxiosResponse<T>;
   error?: AxiosError;
@@ -57,6 +65,10 @@ const postEndpoints = {
     page: number;
   }) =>
     `${apiEndPoints.posts}/newfeeds?limit=${limit}&page=${page}&type=${type}`,
+  editPost: ({ post_id }: { post_id: string }) =>
+    `${apiEndPoints.posts}/${post_id}`,
+  deletePost: ({ post_id }: { post_id: string }) =>
+    `${apiEndPoints.posts}/${post_id}`,
 };
 
 const postService = {
@@ -119,6 +131,30 @@ const postService = {
     try {
       const response = await axiosInstance.get(
         postEndpoints.getNewsFeed({ type, limit, page })
+      );
+
+      return { response };
+    } catch (error) {
+      return { error: error as AxiosError };
+    }
+  },
+  editPost: async ({ post_id }: EditPostPayLoad): Promise<ApiResponse<any>> => {
+    try {
+      const response = await axiosInstance.patch(
+        postEndpoints.editPost({ post_id })
+      );
+
+      return { response };
+    } catch (error) {
+      return { error: error as AxiosError };
+    }
+  },
+  deletePost: async ({
+    post_id,
+  }: DeletePostPayLoad): Promise<ApiResponse<any>> => {
+    try {
+      const response = await axiosInstance.delete(
+        postEndpoints.deletePost({ post_id })
       );
 
       return { response };

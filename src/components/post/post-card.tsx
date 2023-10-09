@@ -26,6 +26,8 @@ import {
   HandThumbUpIcon,
   ChatBubbleLeftIcon,
   ShareIcon,
+  PencilSquareIcon,
+  TrashIcon,
 } from "@heroicons/react/24/outline";
 import { EllipsisHorizontalIcon, StarIcon } from "@heroicons/react/24/solid";
 import LevelChip from "../common/level-chip";
@@ -42,6 +44,7 @@ import {
   selectReportModal,
   setReportModal,
 } from "../../redux/features/report-modal-slice";
+import { setConfirmModal } from "../../redux/features/confirm-modal-slice";
 import { Post } from "../../utils/types";
 import { PostType } from "../../utils/constant";
 import { formatTime, formatTimeDistanceToNow } from "../../utils/string-utils";
@@ -174,6 +177,16 @@ const PostCard: React.FC<PostCardProps> = ({ post, comments, is_detail }) => {
     is_detail ? setShowFormAnswer(!showFormAnswer) : navigate(`/${post._id}`);
   };
 
+  const handleDelete = () => {
+    dispatch(
+      setConfirmModal({
+        confirmModalOpen: true,
+        type: 0,
+        postId: post._id,
+      })
+    );
+  };
+
   return post && user ? (
     <div className="border rounded-lg shadow-md p-4">
       <div className="space-y-2">
@@ -251,12 +264,30 @@ const PostCard: React.FC<PostCardProps> = ({ post, comments, is_detail }) => {
                 </MenuItem>
               )}
 
-              {!report && (
+              {user._id !== post.user_detail._id && !report && (
                 <MenuItem
                   className="flex items-center gap-2"
                   onClick={handleReport}
                 >
                   <ExclamationTriangleIcon className="w-5 h-5" /> Report
+                </MenuItem>
+              )}
+
+              {user._id === post.user_detail._id && (
+                <MenuItem
+                  className="flex items-center gap-2"
+                  onClick={() => handleFollow(post.user_detail._id, follow)}
+                >
+                  <PencilSquareIcon className="w-5 h-5" /> Edit
+                </MenuItem>
+              )}
+
+              {user._id === post.user_detail._id && (
+                <MenuItem
+                  className="flex items-center gap-2"
+                  onClick={handleDelete}
+                >
+                  <TrashIcon className="w-5 h-5" /> Delete
                 </MenuItem>
               )}
             </MenuList>
@@ -282,7 +313,7 @@ const PostCard: React.FC<PostCardProps> = ({ post, comments, is_detail }) => {
 
             <Typography
               as="a"
-              href="#"
+              href={`${post._id}`}
               className="font-bold text-lg text-gary-900 hover:text-blue-500"
             >
               {post.title}

@@ -1,6 +1,5 @@
 import React, { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { toast } from "react-hot-toast";
 import { useNavigate } from "react-router-dom";
 import { useTranslation } from "react-i18next";
 
@@ -20,9 +19,8 @@ import {
   Typography,
 } from "@material-tailwind/react";
 
-import authService from "../../services/user-service";
-import { selectUser, setUser } from "../../redux/features/user-slice";
-
+import { selectUser } from "../../redux/features/user-slice";
+import { setConfirmModal } from "../../redux/features/confirm-modal-slice";
 import { getLastTwoWords } from "../../utils/string-utils";
 
 interface profileMenuItem {
@@ -43,11 +41,13 @@ const ProfileMenu = () => {
   const closeMenu = () => setIsMenuOpen(false);
 
   const handleLogout = async () => {
-    const { response } = await authService.logout();
-    if (response) {
-      dispatch(setUser(null));
-      toast.success("Sign Out Success");
-    }
+    dispatch(
+      setConfirmModal({
+        confirmModalOpen: true,
+        type: 2,
+        postId: "",
+      })
+    );
   };
 
   const profileMenuItems: profileMenuItem[] = [

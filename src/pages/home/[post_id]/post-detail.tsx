@@ -73,13 +73,15 @@ const PostDetail = () => {
   ) : post ? (
     <div className="space-y-4">
       <div>
-        <Typography variant="h5">Post Detail</Typography>
+        <Typography variant="h5">{post.user_detail.name}'s Post</Typography>
         <Typography className="mt-1 font-normal">
           See detail information of the post
         </Typography>
       </div>
       <PostCard post={post} comments={comments} is_detail={true} />
-      <Pagination page={page} totalPage={totalPage} next={next} prev={prev} />
+      {totalPage > 0 && (
+        <Pagination page={page} totalPage={totalPage} next={next} prev={prev} />
+      )}
     </div>
   ) : (
     <NotFoundAlert message="Post not found!" />
