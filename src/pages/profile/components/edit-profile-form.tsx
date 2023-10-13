@@ -93,7 +93,7 @@ const EditProfileForm: React.FC<EditProfileFormProps> = ({ user }) => {
       // If avatar changed then upload avatar and return url
       if (avatar !== user.avatar) {
         const { response, error } = await mediaService.uploadImage(
-          base64ToFile(avatar)
+          base64ToFile(avatar, user.username)
         );
         if (response) data = { ...data, avatar: response.data.result[0].url };
 

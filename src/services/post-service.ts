@@ -30,6 +30,10 @@ interface GetNewsFeedPayLoad {
 
 interface EditPostPayLoad {
   post_id: string;
+  title: string;
+  content: string;
+  hashtags: string[];
+  medias: string[];
 }
 
 interface DeletePostPayLoad {
@@ -138,10 +142,22 @@ const postService = {
       return { error: error as AxiosError };
     }
   },
-  editPost: async ({ post_id }: EditPostPayLoad): Promise<ApiResponse<any>> => {
+  editPost: async ({
+    post_id,
+    title,
+    content,
+    hashtags,
+    medias,
+  }: EditPostPayLoad): Promise<ApiResponse<any>> => {
     try {
       const response = await axiosInstance.patch(
-        postEndpoints.editPost({ post_id })
+        postEndpoints.editPost({ post_id }),
+        {
+          title,
+          content,
+          hashtags,
+          medias,
+        }
       );
 
       return { response };

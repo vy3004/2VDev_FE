@@ -17,8 +17,8 @@ import NotFoundPage from "../pages/not-found-page/not-found-page";
 import ManageUsers from "../pages/dashboard/manage-users/manage-users";
 import ManagePosts from "../pages/dashboard/manage-posts/manage-posts";
 import UserDetailPage from "../pages/dashboard/manage-users/[username]/user-detail-page";
-import PostForm from "../components/post/post-form";
 import PostDetail from "../pages/home/[post_id]/post-detail";
+import PostPage from "../pages/home/post/post";
 
 interface Route {
   path: string;
@@ -38,7 +38,7 @@ const routes: Route[] = [
     path: "/post",
     element: (
       <ProtectedPage>
-        <PostForm />
+        <PostPage />
       </ProtectedPage>
     ),
   },

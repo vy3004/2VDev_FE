@@ -1,4 +1,4 @@
-export const base64ToFile = (base64: string): File => {
+export const base64ToFile = (base64: string, fileName: string): File => {
   const arr = base64.split(",");
   const mimeTypeMatch = arr[0].match(/:(.*?);/);
   const mimeType = mimeTypeMatch ? mimeTypeMatch[1] : "";
@@ -10,7 +10,7 @@ export const base64ToFile = (base64: string): File => {
     u8arr[n] = bstr.charCodeAt(n);
   }
 
-  return new File([u8arr], "image.png", { type: mimeType });
+  return new File([u8arr], `${fileName}.png`, { type: mimeType });
 };
 
 export const fileToBase64 = (

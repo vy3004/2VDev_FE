@@ -1,16 +1,14 @@
-import { useNavigate } from "react-router-dom";
 import { useTranslation } from "react-i18next";
 
 import { QuestionMarkCircleIcon } from "@heroicons/react/24/solid";
 import { Button } from "@material-tailwind/react";
 
 const QuestionButton = () => {
-  const navigate = useNavigate();
   const { t } = useTranslation();
 
   return (
     <Button
-      onClick={() => navigate("/post")}
+      onClick={() => (window.location.href = "/post")}
       size="sm"
       className="flex items-center gap-2 text-sm md:text-lg normal-case"
     >

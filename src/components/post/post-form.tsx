@@ -2,7 +2,6 @@ import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useFormik } from "formik";
 import { useSelector } from "react-redux";
-import { useTranslation } from "react-i18next";
 import toast from "react-hot-toast";
 import ReactQuill from "react-quill";
 import "react-quill/dist/quill.snow.css";
@@ -24,6 +23,12 @@ import ErrorMessageForm from "../common/error-message-form";
 import postService from "../../services/post-service";
 import mediaService from "../../services/media-service";
 import { selectUser } from "../../redux/features/user-slice";
+import { Post } from "../../utils/types";
+import { base64ToFile, fileToBase64 } from "../../utils/file-utils";
+
+interface PostFormProps {
+  initialData: Post | null;
+}
 
 interface PostFormValues {
   user_id: string;
@@ -35,15 +40,14 @@ interface PostFormValues {
   type: number;
 }
 
-const PostForm = () => {
+const PostForm: React.FC<PostFormProps> = ({ initialData }) => {
   const { user } = useSelector(selectUser);
-  const { t } = useTranslation();
   const navigate = useNavigate();
 
   const [isSubmit, setIsSubmit] = useState(false);
-  const [images, setImages] = useState<File[]>([]);
+  const [images, setImages] = useState(initialData?.medias || []);
 
-  const handleImageUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
+  const convertToBase64 = async (e: React.ChangeEvent<HTMLInputElement>) => {
     const files = e.target.files;
 
     if (files) {
@@ -51,16 +55,18 @@ const PostForm = () => {
         file.type.startsWith("image/")
       );
 
-      const duplicateFiles = validImages.filter((file) =>
-        images.some((image) => image.name === file.name)
-      );
-
       if (validImages.length === 0) {
         toast.error("Select images only");
-      } else if (duplicateFiles.length > 0) {
-        toast.error("Images do not repeat");
       } else {
-        setImages((prevImages) => [...prevImages, ...validImages]);
+        const base64Strings = await Promise.all(
+          validImages.map((file) => fileToBase64(file))
+        );
+
+        const filteredBase64Strings = base64Strings.filter(
+          (base64) => base64 !== null
+        ) as string[];
+
+        setImages((prevImages) => [...prevImages, ...filteredBase64Strings]);
       }
     }
   };
@@ -69,21 +75,37 @@ const PostForm = () => {
     setImages((prevImages) => {
       const updatedImages = [...prevImages];
       updatedImages.splice(index, 1);
-
       return updatedImages;
     });
   };
 
+  const filterArrayImages = (images: string[], availableImages: string[]) => {
+    let tempArr = [...availableImages];
+    availableImages = availableImages.filter((item) => images.includes(item));
+    images = images.filter((item) => !tempArr.includes(item));
+    return { images, availableImages };
+  };
+
   const postForm = useFormik<PostFormValues>({
-    initialValues: {
-      user_id: user?._id || "",
-      title: "",
-      content: "",
-      hashtags: [],
-      medias: [],
-      type: 0,
-      parent_id: null,
-    },
+    initialValues: initialData
+      ? {
+          user_id: initialData.user_detail._id,
+          title: initialData.title,
+          content: initialData.content,
+          hashtags: initialData.hashtags.map((hashtag) => hashtag.name),
+          medias: initialData.medias,
+          type: 0,
+          parent_id: null,
+        }
+      : {
+          user_id: user?._id || "",
+          title: "",
+          content: "",
+          hashtags: [],
+          medias: [],
+          type: 0,
+          parent_id: null,
+        },
 
     validationSchema: Yup.object({
       title: Yup.string()
@@ -106,25 +128,46 @@ const PostForm = () => {
 
       let data = { ...values };
 
-      await Promise.all(
-        images.map(async (image) => {
-          const { response, error } = await mediaService.uploadImage(image);
-          if (response) {
-            data.medias.push(response.data.result[0].url);
-          }
-          if (error) {
-            toast.error(error.message);
-          }
-        })
+      const result = filterArrayImages(images, data.medias);
+
+      const files = result.images.map((base64, index) =>
+        base64ToFile(base64, `file-${index}`)
       );
 
-      const { response, error } = await postService.post(values);
-      if (response) {
-        console.log("RES", response);
-        toast.success("Your question has been posted");
-        navigate("/");
+      data.medias = result.availableImages;
+
+      if (files.length > 0) {
+        await Promise.all(
+          files.map(async (image) => {
+            const { response, error } = await mediaService.uploadImage(image);
+            if (response) {
+              data.medias.push(response.data.result[0].url);
+            }
+            if (error) {
+              toast.error(error.message);
+            }
+          })
+        );
       }
-      if (error) toast.error(error.message);
+
+      if (initialData) {
+        const { response, error } = await postService.editPost({
+          ...data,
+          post_id: initialData._id,
+        });
+        if (response) {
+          toast.success("You have successfully edited the post");
+          navigate(-1);
+        }
+        if (error) toast.error(error.message);
+      } else {
+        const { response, error } = await postService.post(data);
+        if (response) {
+          toast.success("Your question has been posted");
+          navigate("/");
+        }
+        if (error) toast.error(error.message);
+      }
 
       setIsSubmit(false);
     },
@@ -253,7 +296,7 @@ const PostForm = () => {
         <Input
           type="file"
           multiple
-          onChange={handleImageUpload}
+          onChange={convertToBase64}
           className="!border !border-gray-300 text-gray-900 ring-1 ring-transparent focus:!border-blue-600 focus:!border-t-blue-600 focus:ring-blue-600"
           labelProps={{
             className: "hidden",
@@ -263,16 +306,12 @@ const PostForm = () => {
         <div className="mt-2 space-y-2">
           {images.map((image, index) => (
             <div className="relative w-fit" key={index}>
-              <img
-                className="rounded-lg"
-                src={URL.createObjectURL(image)}
-                alt="uploaded"
-              />
+              <img className="rounded-lg" src={image} alt="uploaded" />
               <IconButton
                 size="sm"
                 color="red"
                 onClick={() => handleImageDelete(index)}
-                className="!absolute rounded-full z-10 top-2 right-2"
+                className="!absolute rounded-full z-[2] top-2 right-2"
               >
                 <XMarkIcon className="w-4 h-4" />
               </IconButton>

@@ -276,7 +276,7 @@ const PostCard: React.FC<PostCardProps> = ({ post, comments, is_detail }) => {
               {user._id === post.user_detail._id && (
                 <MenuItem
                   className="flex items-center gap-2"
-                  onClick={() => handleFollow(post.user_detail._id, follow)}
+                  onClick={() => navigate(`/post?post_id=${post._id}`)}
                 >
                   <PencilSquareIcon className="w-5 h-5" /> Edit
                 </MenuItem>
