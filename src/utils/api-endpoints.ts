@@ -7,4 +7,5 @@ export const apiEndPoints = {
   bookmarks: "/bookmarks",
   votes: "/votes",
   reports: "/reports",
+  search: "/search",
 };
