@@ -234,6 +234,7 @@ const PostForm: React.FC<PostFormProps> = ({ initialData }) => {
             className: "hidden",
           }}
           crossOrigin={""}
+          autoFocus
         />
         {postForm.touched.title && postForm.errors.title && (
           <ErrorMessageForm

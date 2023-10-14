@@ -53,7 +53,7 @@ const Header = () => {
             <NavList />
           </div>
 
-          <div className="flex items-center space-x-2 xl:space-x-6">
+          <div className="w-auto flex items-center space-x-2 xl:space-x-6">
             <div className="hidden lg:flex">
               <SearchInput />
             </div>
@@ -63,13 +63,13 @@ const Header = () => {
               <div className="flex items-center space-x-2">
                 <IconButton
                   variant="text"
-                  className="hidden xl:flex dark:text-gray-50"
+                  className="hidden lg:flex dark:text-gray-50"
                 >
                   <ChatBubbleBottomCenterTextIcon className="h-5 w-5" />
                 </IconButton>
                 <IconButton
                   variant="text"
-                  className="hidden xl:flex dark:text-gray-50"
+                  className="hidden lg:flex dark:text-gray-50"
                 >
                   <BellIcon className="h-5 w-5" />
                 </IconButton>

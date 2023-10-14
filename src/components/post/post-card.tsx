@@ -336,11 +336,9 @@ const PostCard: React.FC<PostCardProps> = ({ post, comments, is_detail }) => {
                 <img className="rounded-lg" src={media} key={key} alt="img" />
               ))
             : post.medias[0] && (
-                <img
-                  className="rounded-lg w-full"
-                  src={post.medias[0]}
-                  alt="img"
-                />
+                <div className="flex justify-center">
+                  <img className="rounded-lg" src={post.medias[0]} alt="img" />
+                </div>
               )}
           {/* Medias end */}
 
