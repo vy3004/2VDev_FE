@@ -95,10 +95,26 @@ const userEndpoints = {
     `${apiEndPoints.users}/list-users?limit=${limit}&page=${page}`,
   getUser: ({ username }: { username: string }) =>
     `${apiEndPoints.users}/${username}`,
-  getFollowing: ({ limit, page }: { limit: number; page: number }) =>
-    `${apiEndPoints.users}/followers/list-users-following?limit=${limit}&page=${page}`,
-  getFollower: ({ limit, page }: { limit: number; page: number }) =>
-    `${apiEndPoints.users}/followers/list-users-follower?limit=${limit}&page=${page}`,
+  getFollowing: ({
+    user_id,
+    limit,
+    page,
+  }: {
+    user_id: string;
+    limit: number;
+    page: number;
+  }) =>
+    `${apiEndPoints.users}/followers/list-users-following/${user_id}?limit=${limit}&page=${page}`,
+  getFollower: ({
+    user_id,
+    limit,
+    page,
+  }: {
+    user_id: string;
+    limit: number;
+    page: number;
+  }) =>
+    `${apiEndPoints.users}/followers/list-users-follower/${user_id}?limit=${limit}&page=${page}`,
   follow: `${apiEndPoints.users}/follow`,
   unfollow: ({ user_id }: { user_id: string }) =>
     `${apiEndPoints.users}/follow/${user_id}`,
@@ -309,8 +325,7 @@ const userService = {
   }: GetFollowersPayLoad): Promise<ApiResponse<any>> => {
     try {
       const response = await axiosInstance.get(
-        userEndpoints.getFollowing({ limit, page }),
-        { data: { user_id } }
+        userEndpoints.getFollowing({ user_id, limit, page })
       );
 
       return { response };
@@ -325,8 +340,7 @@ const userService = {
   }: GetFollowersPayLoad): Promise<ApiResponse<any>> => {
     try {
       const response = await axiosInstance.get(
-        userEndpoints.getFollower({ limit, page }),
-        { data: { user_id } }
+        userEndpoints.getFollower({ user_id, limit, page })
       );
 
       return { response };

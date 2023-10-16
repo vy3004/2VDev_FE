@@ -117,6 +117,8 @@ const SearchInput = () => {
 
   const onClick = (post_id: string) => {
     navigate(`/${post_id}`);
+    setSearchValue("");
+    setPosts([]);
     dispatch(setIsSearch(!isSearch));
   };
 
