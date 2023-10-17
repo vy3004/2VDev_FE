@@ -11,6 +11,7 @@ import postService from "../../services/post-service";
 import { PostType } from "../../utils/constant";
 
 interface CommentFormProps {
+  post_id: string;
   user_id: string;
   parent_id: string;
   type: PostType;
@@ -20,6 +21,7 @@ interface CommentFormProps {
 }
 
 const CommentForm: React.FC<CommentFormProps> = ({
+  post_id,
   user_id,
   parent_id,
   type,
@@ -31,6 +33,7 @@ const CommentForm: React.FC<CommentFormProps> = ({
 
   const commentForm = useFormik<CommentFormProps>({
     initialValues: {
+      post_id: post_id,
       user_id: user_id,
       parent_id: parent_id,
       type: type,
@@ -47,14 +50,26 @@ const CommentForm: React.FC<CommentFormProps> = ({
 
     onSubmit: async (values: CommentFormProps) => {
       setIsSubmit(true);
-      let data = { ...values, title: null };
+      let data = { ...values };
 
-      const { response, error } = await postService.post(data);
-      if (response) {
-        toast.success("Your comment has been posted");
-        window.location.reload();
+      if (post_id) {
+        const { response, error } = await postService.editPost(data);
+        if (response) {
+          toast.success("Your comment has been updated");
+          window.location.reload();
+        }
+        if (error) toast.error(error.message);
+      } else {
+        const { response, error } = await postService.post({
+          ...data,
+          title: null,
+        });
+        if (response) {
+          toast.success("Your comment has been posted");
+          window.location.reload();
+        }
+        if (error) toast.error(error.message);
       }
-      if (error) toast.error(error.message);
 
       setIsSubmit(false);
     },
@@ -80,7 +95,13 @@ const CommentForm: React.FC<CommentFormProps> = ({
           variant="gradient"
           disabled={isSubmit}
         >
-          {isSubmit ? <Spinner className="h-4 w-4 m-auto" /> : "Comment"}
+          {isSubmit ? (
+            <Spinner className="h-4 w-4 m-auto" />
+          ) : post_id ? (
+            "Edit"
+          ) : (
+            "Comment"
+          )}
         </Button>
       </div>
     </form>

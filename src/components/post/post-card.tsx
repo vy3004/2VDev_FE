@@ -389,6 +389,7 @@ const PostCard: React.FC<PostCardProps> = ({ post, comments, is_detail }) => {
                 <>
                   <hr />
                   <CommentForm
+                    post_id=""
                     user_id={user._id}
                     parent_id={post._id}
                     type={PostType.Comment}

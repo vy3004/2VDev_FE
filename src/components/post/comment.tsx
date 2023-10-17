@@ -58,6 +58,7 @@ const Comment: React.FC<CommentProps> = ({
   const [votesCount, setVotesCount] = useState(comment.votes_count);
   const [follow, setFollow] = useState(false);
   const [report, setReport] = useState(comment.is_reported);
+  const [showEditCommentForm, setShowEditCommentForm] = useState(false);
 
   useEffect(() => {
     if (reportModal.isReported && reportModal.postId === comment._id)
@@ -167,9 +168,20 @@ const Comment: React.FC<CommentProps> = ({
           </Tooltip>
         </div>
 
-        {/* Comment content start */}
-        <div dangerouslySetInnerHTML={{ __html: comment.content }} />
-        {/* Comment content end */}
+        {showEditCommentForm ? (
+          // Edit comment form
+          <CommentForm
+            post_id={comment._id}
+            user_id={user_id}
+            parent_id={comment._id}
+            type={PostType.Comment}
+            content={comment.content}
+            medias={comment.medias}
+          />
+        ) : (
+          // Content comment
+          <div dangerouslySetInnerHTML={{ __html: comment.content }} />
+        )}
 
         <div className="flex items-center gap-4">
           <Button
@@ -205,7 +217,7 @@ const Comment: React.FC<CommentProps> = ({
 
           {comment.user_detail._id === user_id && (
             <Button
-              onClick={handleReport}
+              onClick={() => setShowEditCommentForm(!showEditCommentForm)}
               variant="text"
               className="p-2 flex items-center justify-center gap-2 normal-case text-xs"
             >
@@ -229,6 +241,7 @@ const Comment: React.FC<CommentProps> = ({
         {/* Comment form start */}
         {showCommentForm && (
           <CommentForm
+            post_id=""
             user_id={user_id}
             parent_id={comment._id}
             type={PostType.Comment}

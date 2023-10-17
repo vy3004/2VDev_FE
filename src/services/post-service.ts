@@ -30,10 +30,10 @@ interface GetNewsFeedPayLoad {
 
 interface EditPostPayLoad {
   post_id: string;
-  title: string;
+  title?: string | null;
   content: string;
-  hashtags: string[];
-  medias: string[];
+  hashtags?: string[];
+  medias?: string[];
 }
 
 interface DeletePostPayLoad {
