@@ -333,11 +333,22 @@ const PostCard: React.FC<PostCardProps> = ({ post, comments, is_detail }) => {
           {/* Medias start */}
           {is_detail
             ? post.medias.map((media, key) => (
-                <img className="rounded-lg" src={media} key={key} alt="img" />
+                <img
+                  className="rounded-lg"
+                  src={media}
+                  key={key}
+                  alt="img"
+                  loading="lazy"
+                />
               ))
             : post.medias[0] && (
                 <div className="flex justify-center">
-                  <img className="rounded-lg" src={post.medias[0]} alt="img" />
+                  <img
+                    className="rounded-lg"
+                    src={post.medias[0]}
+                    alt="img"
+                    loading="lazy"
+                  />
                 </div>
               )}
           {/* Medias end */}

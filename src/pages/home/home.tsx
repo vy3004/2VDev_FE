@@ -12,8 +12,8 @@ import {
 import { AdjustmentsHorizontalIcon } from "@heroicons/react/24/outline";
 import Loading from "../../components/common/loading";
 import NotFoundAlert from "../../components/common/not-found-alert";
-import Pagination from "../../components/common/pagination";
 import PostCard from "../../components/post/post-card";
+import InfiniteScroll from "react-infinite-scroll-component";
 
 import postService from "../../services/post-service";
 import { Post } from "../../utils/types";
@@ -21,63 +21,45 @@ import { POSTS_TYPE } from "../../utils/constant";
 
 const Home = () => {
   const location = useLocation();
-
   const queryParams = new URLSearchParams(location.search);
   const typeQueryParam = queryParams.get("type");
-  const limitQueryParam = queryParams.get("limit");
-  const pageQueryParam = queryParams.get("page");
-  const limit = limitQueryParam ? parseInt(limitQueryParam) : 10;
-  const [page, setPage] = useState(
-    pageQueryParam ? parseInt(pageQueryParam) : 1
-  );
+
   const [type, setType] = useState(typeQueryParam ? typeQueryParam : "new");
-  const [posts, setPosts] = useState<Post[]>();
-  const [totalPage, setTotalPage] = useState(1);
-  const [isLoading, setIsLoading] = useState(false);
+  const [page, setPage] = useState(1);
+  const [posts, setPosts] = useState<Post[]>([]);
+  const [hasMore, setHasMore] = useState(true);
 
-  const next = () => {
-    if (page === totalPage) return;
+  const getNewsFeed = async () => {
+    const { response } = await postService.getNewsFeed({
+      limit: 10,
+      page: page,
+      type: type,
+    });
 
-    setPage(page + 1);
-  };
-
-  const prev = () => {
-    if (page === 1) return;
-
-    setPage(page - 1);
+    if (response) {
+      const newData = response.data.result.posts;
+      setPosts((prevData) => [...prevData, ...newData]);
+      setHasMore(newData.length > 0);
+      setPage((prevPage) => prevPage + 1);
+    }
   };
 
   useEffect(() => {
-    const getNewsFeed = async () => {
-      setIsLoading(true);
-
-      const { response } = await postService.getNewsFeed({
-        limit: limit,
-        page: page,
-        type: type,
-      });
-
-      if (response) {
-        setTotalPage(response.data.result.total_page);
-        setPosts(response.data.result.posts);
-      }
-
-      setIsLoading(false);
-    };
-
     getNewsFeed();
-
-    // Update URL according to params
-    queryParams.set("type", type);
-    queryParams.set("limit", limit.toString());
-    queryParams.set("page", page.toString());
+    queryParams.set("type", type.toString());
     window.history.replaceState(
       {},
       "",
       `${location.pathname}?${queryParams.toString()}`
     );
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [limit, page, type]);
+  }, [type]);
+
+  const handleChangeType = (type: string) => {
+    setType(type);
+    setPage(1);
+    setPosts([]);
+  };
 
   return (
     <div>
@@ -101,7 +83,7 @@ const Home = () => {
               <MenuItem
                 key={key}
                 className="capitalize"
-                onClick={() => setType(type)}
+                onClick={() => handleChangeType(type)}
               >
                 {type}
               </MenuItem>
@@ -111,27 +93,27 @@ const Home = () => {
       </div>
       {/* Header end */}
 
-      <div className="mt-4 space-y-8">
-        {isLoading ? (
+      {/* List posts start */}
+      <InfiniteScroll
+        dataLength={posts.length}
+        next={getNewsFeed}
+        hasMore={hasMore}
+        loader={
           <div className="relative h-80">
             <Loading />
           </div>
-        ) : posts && posts.length > 0 ? (
-          <div className="space-y-4">
-            {posts.map((post) => (
-              <PostCard key={post._id} post={post} is_detail={false} />
-            ))}
-            <Pagination
-              page={page}
-              totalPage={totalPage}
-              next={next}
-              prev={prev}
-            />
-          </div>
-        ) : (
-          <NotFoundAlert message="Posts not found!" />
-        )}
-      </div>
+        }
+        endMessage={
+          <NotFoundAlert message="No more posts to load!" isBack={false} />
+        }
+      >
+        <div className="py-4 space-y-4">
+          {posts.map((post) => (
+            <PostCard key={post._id} post={post} is_detail={false} />
+          ))}
+        </div>
+      </InfiniteScroll>
+      {/* List posts end */}
     </div>
   );
 };
