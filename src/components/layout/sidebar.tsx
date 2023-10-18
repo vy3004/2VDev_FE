@@ -115,8 +115,8 @@ const Sidebar = () => {
   ];
 
   return (
-    <Card className="shadow-none h-[calc(100%-77px)] overflow-hidden hover:overflow-y-scroll bg-transparent">
-      <List className="min-w-full my-4 dark:text-gray-50">
+    <Card className="shadow-none w-full h-full overflow-hidden overflow-y-scroll bg-transparent">
+      <List className="my-4 dark:text-gray-50">
         {/* Feed start */}
         <Accordion
           open={open === 1}
@@ -275,6 +275,10 @@ const Sidebar = () => {
         )}
         {/* User items start */}
       </List>
+      <hr />
+      <footer className="p-6">
+        <Typography className="">&copy; 2023 2VDev</Typography>
+      </footer>
     </Card>
   );
 };

@@ -9,7 +9,12 @@ import {
   SpeedDialContent,
   Tooltip,
 } from "@material-tailwind/react";
-import { PlusIcon, SunIcon, MoonIcon } from "@heroicons/react/24/outline";
+import {
+  PlusIcon,
+  SunIcon,
+  MoonIcon,
+  ArrowUpIcon,
+} from "@heroicons/react/24/outline";
 
 import { selectApp, setThemeMode } from "../../redux/features/app-state-slice";
 
@@ -21,6 +26,31 @@ const SpeedDialCustom = () => {
   const [language, setLanguage] = useState(
     localStorage.getItem("language") || "en"
   );
+  const [backToTop, setBackToTop] = useState(false);
+
+  const handleScroll = () => {
+    if (
+      document.body.scrollTop > 20 ||
+      document.documentElement.scrollTop > 20
+    ) {
+      setBackToTop(true);
+    } else {
+      setBackToTop(false);
+    }
+  };
+
+  const handleBackToTop = () => {
+    document.documentElement.style.scrollBehavior = "smooth";
+    document.body.scrollTop = 0;
+    document.documentElement.scrollTop = 0;
+  };
+
+  useEffect(() => {
+    window.addEventListener("scroll", handleScroll);
+    return () => {
+      window.removeEventListener("scroll", handleScroll);
+    };
+  }, []);
 
   useEffect(() => {
     if (themeMode) {
@@ -51,9 +81,14 @@ const SpeedDialCustom = () => {
         <SpeedDialHandler>
           <IconButton
             size="lg"
+            onClick={handleBackToTop}
             className="rounded-full bg-black text-white dark:bg-white dark:text-black dark:border"
           >
-            <PlusIcon className="h-5 w-5 transition-transform group-hover:rotate-45" />
+            {backToTop ? (
+              <ArrowUpIcon className="h-5 w-5" />
+            ) : (
+              <PlusIcon className="h-5 w-5 transition-transform group-hover:rotate-45" />
+            )}
           </IconButton>
         </SpeedDialHandler>
         <SpeedDialContent>

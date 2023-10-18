@@ -3,7 +3,6 @@ import { useDispatch, useSelector } from "react-redux";
 import { Outlet, useNavigate, useSearchParams } from "react-router-dom";
 import jwtDecode from "jwt-decode";
 
-import Footer from "./footer";
 import Header from "./header";
 import Sidebar from "./sidebar";
 import RightSidebar from "./right-sidebar";
@@ -144,15 +143,15 @@ const MainLayout = () => {
 
       {/* Page Content */}
       <Container>
-        <div className="grid grid-cols-10">
+        <div className="grid grid-cols-12">
           {/* Left sidebar */}
-          <div className="h-screen sticky top-[73px] hidden xl:flex xl:col-span-2">
+          <div className="h-[calc(100vh-78px)] sticky top-[78px] hidden xl:flex xl:col-span-2">
             <Sidebar />
           </div>
           {/* Left sidebar */}
 
           {/* Main content */}
-          <div className="col-span-10 lg:col-span-7 xl:col-span-6 border-x dark:border-gray-900">
+          <div className="col-span-12 lg:col-span-8 xl:col-span-7 border-x dark:border-gray-900">
             <GlobalLoading
               children={
                 <div className="px-4 pb-4 space-y-4">
@@ -167,8 +166,8 @@ const MainLayout = () => {
           {/* Main content */}
 
           {/* Right sidebar */}
-          <div className="lg:h-screen lg:sticky lg:top-[73px] col-span-10 lg:col-span-3 xl:col-span-2 border-x dark:border-gray-900">
-            <div className="lg:overflow-hidden lg:hover:overflow-y-scroll w-full h-[calc(100%-77px)]">
+          <div className="lg:h-[calc(100vh-78px)] lg:sticky lg:top-[78px] col-span-12 lg:col-span-4 xl:col-span-3 border-x dark:border-gray-900">
+            <div className="lg:overflow-hidden lg:overflow-y-scroll w-full h-full">
               <RightSidebar />
             </div>
           </div>
@@ -176,8 +175,6 @@ const MainLayout = () => {
         </div>
       </Container>
       {/* Page Content */}
-
-      <Footer />
     </div>
   );
 };
