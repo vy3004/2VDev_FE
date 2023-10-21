@@ -324,10 +324,21 @@ const PostCard: React.FC<PostCardProps> = ({ post, comments, is_detail }) => {
           <hr />
 
           {/* Content start */}
-          <div
-            className="p-2 rounded-lg bg-gray-50"
-            dangerouslySetInnerHTML={{ __html: post.content }}
-          />
+          <div className="p-2 rounded-lg bg-gray-50">
+            <div
+              className={`break-words ${!is_detail && "line-clamp-3"}`}
+              dangerouslySetInnerHTML={{ __html: post.content }}
+            />
+            {!is_detail && (
+              <Typography
+                as="a"
+                href={`${post._id}`}
+                className="w-fit font-bold text-sm hover:underline"
+              >
+                See more
+              </Typography>
+            )}
+          </div>
           {/* Content end */}
 
           {/* Medias start */}

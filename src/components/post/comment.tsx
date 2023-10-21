@@ -125,7 +125,7 @@ const Comment: React.FC<CommentProps> = ({
         withBorder={true}
         className="p-0.5"
       />
-      <div className="space-y-2 border rounded-lg w-full p-2">
+      <div className="space-y-2 border rounded-lg w-full min-w-0 p-2">
         <div className="flex items-center justify-between">
           <div className="flex items-center gap-4">
             <Typography
@@ -180,7 +180,10 @@ const Comment: React.FC<CommentProps> = ({
           />
         ) : (
           // Content comment
-          <div dangerouslySetInnerHTML={{ __html: comment.content }} />
+          <div
+            className="break-words"
+            dangerouslySetInnerHTML={{ __html: comment.content }}
+          />
         )}
 
         <div className="flex items-center gap-4">
