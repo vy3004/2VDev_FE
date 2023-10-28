@@ -1,5 +1,7 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import { useEffect, useState } from "react";
 import { useLocation } from "react-router-dom";
+import { useTranslation } from "react-i18next";
 
 import {
   IconButton,
@@ -18,13 +20,17 @@ import InfiniteScroll from "react-infinite-scroll-component";
 import postService from "../../services/post-service";
 import { Post } from "../../utils/types";
 import { POSTS_TYPE } from "../../utils/constant";
+import { getSortPostsLabel, getTypePostsLabel } from "../../utils/string-utils";
 
 const Home = () => {
+  const { t } = useTranslation();
   const location = useLocation();
   const queryParams = new URLSearchParams(location.search);
   const typeQueryParam = queryParams.get("type");
+  const sortQueryParam = queryParams.get("sort_field");
 
-  const [type, setType] = useState(typeQueryParam ? typeQueryParam : "new");
+  const [type, setType] = useState(typeQueryParam || "new");
+  const [sortField, setSortField] = useState(sortQueryParam || "created_at");
   const [page, setPage] = useState(1);
   const [posts, setPosts] = useState<Post[]>([]);
   const [hasMore, setHasMore] = useState(true);
@@ -34,31 +40,47 @@ const Home = () => {
       limit: 10,
       page: page,
       type: type,
+      sort_field: sortField,
+      sort_value: -1,
     });
 
     if (response) {
       const newData = response.data.result.posts;
-      setPosts((prevData) => [...prevData, ...newData]);
+      if (newData.length > 0) {
+        setPosts((prevData) => [...prevData, ...newData]);
+        setPage((prevPage) => prevPage + 1);
+      }
       setHasMore(newData.length > 0);
-      setPage((prevPage) => prevPage + 1);
     }
   };
 
   useEffect(() => {
-    getNewsFeed();
-    queryParams.set("type", type.toString());
-    window.history.replaceState(
-      {},
-      "",
-      `${location.pathname}?${queryParams.toString()}`
-    );
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [type]);
+    const newType = queryParams.get("type");
+    const newSort = queryParams.get("sort_field");
+    if (newType !== null && newSort !== null) {
+      if (newType !== type || newSort !== sortField) {
+        setPage(1);
+        setPosts([]);
+        setType(newType);
+        setSortField(newSort);
+      }
+    }
+  }, [window.location.search]);
 
-  const handleChangeType = (type: string) => {
-    setType(type);
-    setPage(1);
-    setPosts([]);
+  useEffect(() => {
+    getNewsFeed();
+  }, [type, sortField]);
+
+  const handleChangeType = (typePost: string) => {
+    if (typePost !== type) {
+      queryParams.set("type", typePost.toString());
+      window.history.replaceState(
+        {},
+        "",
+        `${location.pathname}?${queryParams.toString()}`
+      );
+      window.dispatchEvent(new Event("popstate"));
+    }
   };
 
   return (
@@ -66,13 +88,26 @@ const Home = () => {
       {/* Header start */}
       <div className="flex items-end justify-between">
         <div>
-          <Typography variant="h5">New Posts</Typography>
+          <Typography variant="h5">
+            {t(`home.${getSortPostsLabel(sortField)} posts`)}
+          </Typography>
           <Typography className="mt-1 font-normal">
-            See information about all new posts
+            {t(
+              `home.see information about ${getTypePostsLabel(
+                type
+              )} ${getSortPostsLabel(sortField)} posts`
+            )}
           </Typography>
         </div>
 
-        <Menu placement="bottom-end">
+        <Menu
+          placement="bottom-end"
+          allowHover
+          animate={{
+            mount: { y: 0 },
+            unmount: { y: 25 },
+          }}
+        >
           <MenuHandler>
             <IconButton className="mr-5 mb-1" size="sm" variant="outlined">
               <AdjustmentsHorizontalIcon className="w-6 h-6 transition-transform hover:rotate-180" />
@@ -83,9 +118,9 @@ const Home = () => {
               <MenuItem
                 key={key}
                 className="capitalize"
-                onClick={() => handleChangeType(type)}
+                onClick={() => handleChangeType(type.value)}
               >
-                {type}
+                {t(`home.${type.label}`)}
               </MenuItem>
             ))}
           </MenuList>
@@ -108,8 +143,8 @@ const Home = () => {
         }
       >
         <div className="py-4 space-y-4">
-          {posts.map((post) => (
-            <PostCard key={post._id} post={post} is_detail={false} />
+          {posts.map((post, index) => (
+            <PostCard key={post._id + index} post={post} is_detail={false} />
           ))}
         </div>
       </InfiniteScroll>

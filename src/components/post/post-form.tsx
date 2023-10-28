@@ -331,7 +331,7 @@ const PostForm: React.FC<PostFormProps> = ({ initialData }) => {
         {isSubmit ? (
           <Spinner className="h-4 w-4 m-auto" />
         ) : (
-          "Post your question"
+          `${initialData ? "Edit" : "Post"} your question`
         )}
       </Button>
     </form>

@@ -61,7 +61,7 @@ const PostCard: React.FC<PostCardProps> = ({ post, comments, is_detail }) => {
   const { reportModal } = useSelector(selectReportModal);
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  console.log("POST", post);
+  // console.log("POST", post);
 
   const [vote, setVote] = useState(post.is_voted);
   const [votesCount, setVotesCount] = useState(post.votes_count);
@@ -202,11 +202,7 @@ const PostCard: React.FC<PostCardProps> = ({ post, comments, is_detail }) => {
             />
             <div>
               <div className="flex items-center gap-4">
-                <Typography
-                  as="a"
-                  href="#"
-                  className="font-bold text-blue-500 hover:text-gray-900"
-                >
+                <Typography className="font-bold text-blue-500 cursor-pointer hover:text-gray-900">
                   {post.user_detail.name}
                 </Typography>
                 <LevelChip level={post.user_detail.point} />
@@ -312,9 +308,8 @@ const PostCard: React.FC<PostCardProps> = ({ post, comments, is_detail }) => {
             </div>
 
             <Typography
-              as="a"
-              href={`${post._id}`}
-              className="font-bold text-lg text-gary-900 hover:text-blue-500"
+              onClick={() => navigate(`/${post._id}`)}
+              className="font-bold text-lg text-gary-900 cursor-pointer hover:text-blue-500"
             >
               {post.title}
             </Typography>
@@ -331,9 +326,8 @@ const PostCard: React.FC<PostCardProps> = ({ post, comments, is_detail }) => {
             />
             {!is_detail && (
               <Typography
-                as="a"
-                href={`${post._id}`}
-                className="w-fit font-bold text-sm hover:underline"
+                onClick={() => navigate(`/${post._id}`)}
+                className="w-fit font-bold text-sm cursor-pointer hover:underline"
               >
                 See more
               </Typography>

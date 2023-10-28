@@ -1,6 +1,34 @@
 export const USER_LEVELS = ["Bronze", "Silver", "Gold", "Platinum", "Diamond"];
 
-export const POSTS_TYPE = ["new", "follow", "trending", "popular", "hot"];
+export const POSTS_TYPE = [
+  {
+    label: "all",
+    value: "new",
+  },
+  {
+    label: "followed",
+    value: "follow",
+  },
+];
+
+export const POSTS_SORT = [
+  {
+    label: "newest",
+    value: "created_at",
+  },
+  {
+    label: "most views",
+    value: "views_count",
+  },
+  {
+    label: "most votes",
+    value: "votes_count",
+  },
+  {
+    label: "most interactions",
+    value: "comment_count",
+  },
+];
 
 export const USERS_TYPE = ["all", "follower", "following"];
 

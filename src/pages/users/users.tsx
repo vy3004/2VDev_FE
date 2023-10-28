@@ -33,9 +33,7 @@ const Users = () => {
   const filterQueryParam = queryParams.get("filter");
   const pageQueryParam = queryParams.get("page");
   const limitQueryParam = queryParams.get("limit");
-  const [filter, setFilter] = useState(
-    filterQueryParam ? filterQueryParam : "all"
-  );
+  const [filter, setFilter] = useState(filterQueryParam || "all");
   const [page, setPage] = useState(
     pageQueryParam ? parseInt(pageQueryParam) : 1
   );
@@ -221,7 +219,14 @@ const Users = () => {
               onChange={handleChange}
             />
 
-            <Menu placement="bottom-end">
+            <Menu
+              placement="bottom-end"
+              allowHover
+              animate={{
+                mount: { y: 0 },
+                unmount: { y: 25 },
+              }}
+            >
               <MenuHandler>
                 <IconButton className="w-20 h-20" variant="outlined">
                   <AdjustmentsHorizontalIcon className="w-6 h-6 transition-transform hover:rotate-180" />

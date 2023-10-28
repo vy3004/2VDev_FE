@@ -26,6 +26,8 @@ interface GetNewsFeedPayLoad {
   type: string;
   limit: number;
   page: number;
+  sort_field: string;
+  sort_value: number;
 }
 
 interface EditPostPayLoad {
@@ -63,12 +65,16 @@ const postEndpoints = {
     type,
     limit,
     page,
+    sort_field,
+    sort_value,
   }: {
     type: string;
     limit: number;
     page: number;
+    sort_field: string;
+    sort_value: number;
   }) =>
-    `${apiEndPoints.posts}/newfeeds?limit=${limit}&page=${page}&type=${type}`,
+    `${apiEndPoints.posts}/newfeeds?limit=${limit}&page=${page}&type=${type}&sort_field=${sort_field}&sort_value=${sort_value}`,
   editPost: ({ post_id }: { post_id: string }) =>
     `${apiEndPoints.posts}/${post_id}`,
   deletePost: ({ post_id }: { post_id: string }) =>
@@ -131,10 +137,12 @@ const postService = {
     type,
     limit,
     page,
+    sort_field,
+    sort_value,
   }: GetNewsFeedPayLoad): Promise<ApiResponse<any>> => {
     try {
       const response = await axiosInstance.get(
-        postEndpoints.getNewsFeed({ type, limit, page })
+        postEndpoints.getNewsFeed({ type, limit, page, sort_field, sort_value })
       );
 
       return { response };

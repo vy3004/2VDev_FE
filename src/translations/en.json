@@ -80,11 +80,10 @@
     "manage-users": "Manage users",
     "manage-posts": "Manage posts",
     "news-feed": "News Feed",
-    "new": "New",
-    "followed": "Followed",
-    "trending": "Trending",
-    "popular": "Popular",
-    "hot": "Hot",
+    "newest": "Newest",
+    "most views": "Most views",
+    "most votes": "Most votes",
+    "most interactions": "Most interactions",
     "tags": "Tags",
     "communities": "Communities",
     "users": "Users"
@@ -108,5 +107,21 @@
     "verify-mail-1": "A confirmation mail has been sent to your registered email account, If you have not received the confirmation mail, kindly",
     "verify-mail-2": "Click here",
     "verify-mail-3": "to resend another confirmation mail."
+  },
+  "home": {
+    "all": "All",
+    "followed": "Followed",
+    "newest posts": "Newest posts",
+    "most views posts": "Most views posts",
+    "most votes posts": "Most votes posts",
+    "most interactions posts": "Most interactions posts",
+    "see information about all newest posts": "See information about all newest posts",
+    "see information about all most views posts": "See information about all most views posts",
+    "see information about all most votes posts": "See information about all most votes posts",
+    "see information about all most interactions posts": "See information about all most interactions posts",
+    "see information about followed newest posts": "See information about followed newest posts",
+    "see information about followed most views posts": "See information about followed most views posts",
+    "see information about followed most votes posts": "See information about followed most votes posts",
+    "see information about followed most interactions posts": "See information about followed most interactions posts"
   }
 }

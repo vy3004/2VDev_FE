@@ -1,6 +1,8 @@
 import { parseISO, formatDistanceToNow, format } from "date-fns";
 import { enUS, vi } from "date-fns/locale";
 
+import { POSTS_SORT, POSTS_TYPE } from "./constant";
+
 export const getLastTwoWords = (str: string): string => {
   const words = str.split(" ");
   const lastTwoWords = words.slice(-2).join(" ");
@@ -40,4 +42,14 @@ export const formatTime = (time: string, language: string): string => {
   });
 
   return formattedTime;
+};
+
+export const getSortPostsLabel = (value: string) => {
+  const sortItem = POSTS_SORT.find((item) => item.value === value);
+  return sortItem ? sortItem.label : "";
+};
+
+export const getTypePostsLabel = (value: string) => {
+  const sortItem = POSTS_TYPE.find((item) => item.value === value);
+  return sortItem ? sortItem.label : "";
 };

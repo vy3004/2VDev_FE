@@ -78,12 +78,11 @@
     "overview": "Tổng quan",
     "manage-users": "Quản lý người dùng",
     "manage-posts": "Quản lý bài viết",
-    "questions": "Câu hỏi",
-    "new-questions": "Câu hỏi mới",
-    "trending-questions": "Câu hỏi xu hướng",
-    "popular-questions": "Câu hỏi phổ biến",
-    "hot-questions": "Câu hỏi hot",
-    "feed": "Bảng tin",
+    "news-feed": "Bài viết",
+    "newest": "Mới nhất",
+    "most views": "Nhiều lượt xem nhất",
+    "most votes": "Nhiều lượt đánh giá nhất",
+    "most interactions": "Nhiều tương tác nhất",
     "tags": "Từ khóa",
     "communities": "Cộng đồng",
     "users": "Danh sách người dùng"
@@ -107,5 +106,21 @@
     "verify-mail-1": "Thư xác nhận đã được gửi đến tài khoản email đã đăng ký của bạn. Nếu bạn chưa nhận được thư xác nhận, vui lòng",
     "verify-mail-2": "Nhấn vào đây",
     "verify-mail-3": "để gửi lại một thư xác nhận khác."
+  },
+  "home": {
+    "all": "Tất cả",
+    "followed": "Người dùng đã theo dõi",
+    "newest posts": "Bài viết mới nhất",
+    "most views posts": "Bài viết được xem nhiều nhất",
+    "most votes posts": "Bài viết được bình chọn nhiều nhất",
+    "most interactions posts": "Bài viết có nhiều tương tác nhất",
+    "see information about all newest posts": "Xem thông tin về tất cả các bài viết mới nhất",
+    "see information about all most views posts": "Xem thông tin về tất cả các bài viết có nhiều lượt xem nhất",
+    "see information about all most votes posts": "Xem thông tin về tất cả các bài viết  có nhiều bình chọn nhất",
+    "see information about all most interactions posts": "Xem thông tin về tất cả các bài viết có nhiều tương tác nhất",
+    "see information about followed newest posts": "Xem thông tin về các bài viết được theo dõi mới nhất",
+    "see information about followed most views posts": "Xem thông tin về các bài viết được theo dõi có nhiều lượt xem nhất",
+    "see information about followed most votes posts": "Xem thông tin về các bài viết được theo dõi có nhiều bình chọn nhất",
+    "see information about followed most interactions posts": "Xem thông tin về các bài viết được theo dõi có nhiều tương tác nhất"
   }
 }

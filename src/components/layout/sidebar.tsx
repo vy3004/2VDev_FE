@@ -30,6 +30,7 @@ import { ChevronRightIcon, ChevronDownIcon } from "@heroicons/react/24/outline";
 
 import { selectUser } from "../../redux/features/user-slice";
 import { selectApp } from "../../redux/features/app-state-slice";
+import { POSTS_SORT } from "../../utils/constant";
 
 interface sidebarItem {
   label: string;
@@ -40,7 +41,6 @@ interface sidebarItem {
 const Sidebar = () => {
   const navigate = useNavigate();
   const { t } = useTranslation();
-
   const { user } = useSelector(selectUser);
   const { appState } = useSelector(selectApp);
 
@@ -68,33 +68,11 @@ const Sidebar = () => {
     },
   ];
 
-  const listHome: sidebarItem[] = [
-    {
-      label: t("sidebar.new"),
-      icon: <ChevronRightIcon strokeWidth={3} className="h-3 w-5" />,
-      href: "/?type=new",
-    },
-    {
-      label: t("sidebar.followed"),
-      icon: <ChevronRightIcon strokeWidth={3} className="h-3 w-5" />,
-      href: "/?type=follow",
-    },
-    {
-      label: t("sidebar.trending"),
-      icon: <ChevronRightIcon strokeWidth={3} className="h-3 w-5" />,
-      href: "/?type=trend",
-    },
-    {
-      label: t("sidebar.popular"),
-      icon: <ChevronRightIcon strokeWidth={3} className="h-3 w-5" />,
-      href: "/?type=popular",
-    },
-    {
-      label: t("sidebar.hot"),
-      icon: <ChevronRightIcon strokeWidth={3} className="h-3 w-5" />,
-      href: "/?type=hot",
-    },
-  ];
+  const listHome: sidebarItem[] = POSTS_SORT.map((item) => ({
+    label: t(`sidebar.${item.label}`),
+    icon: <ChevronRightIcon strokeWidth={3} className="h-3 w-5" />,
+    href: `/?type=new&sort_field=${item.value}`,
+  }));
 
   const listGuest: sidebarItem[] = [
     {
@@ -151,7 +129,7 @@ const Sidebar = () => {
                     appState === href && "dark:bg-gray-50 dark:text-gray-900"
                   }`}
                   selected={appState === href}
-                  onClick={() => (window.location.href = href)}
+                  onClick={() => navigate(href)}
                   key={key}
                 >
                   <ListItemPrefix>{icon}</ListItemPrefix>
