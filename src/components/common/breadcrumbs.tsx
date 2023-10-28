@@ -1,10 +1,13 @@
-import { Breadcrumbs } from "@material-tailwind/react";
+import { useNavigate } from "react-router-dom";
+
+import { Breadcrumbs, Typography } from "@material-tailwind/react";
 import { HomeIcon } from "@heroicons/react/24/solid";
 
 import { splitPath } from "../../utils/string-utils";
 
 const BreadcrumbsCustom = () => {
   const items = splitPath(window.location.pathname);
+  const navigate = useNavigate();
 
   return (
     <Breadcrumbs
@@ -12,17 +15,17 @@ const BreadcrumbsCustom = () => {
       fullWidth
       className="dark:bg-gray-700"
     >
-      <a className="dark:text-gray-50" href="/">
+      <Typography className="dark:text-gray-50" onClick={() => navigate("/")}>
         <HomeIcon className="w-4 h-4" />
-      </a>
+      </Typography>
       {items.map((item, key) => (
-        <a
+        <Typography
           key={key}
-          href={item.path}
+          onClick={() => navigate(item.path)}
           className="last:opacity-50 dark:text-gray-50"
         >
           {item.label}
-        </a>
+        </Typography>
       ))}
     </Breadcrumbs>
   );
