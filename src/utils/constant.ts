@@ -30,6 +30,21 @@ export const POSTS_SORT = [
   },
 ];
 
+export const COMMENTS_SORT = [
+  {
+    label: "newest",
+    value: "created_at",
+  },
+  {
+    label: "most votes",
+    value: "votes_count",
+  },
+  {
+    label: "most relies",
+    value: "comment_count",
+  },
+];
+
 export const USERS_TYPE = ["all", "follower", "following"];
 
 export const USERS_HEADER_PAGE = [

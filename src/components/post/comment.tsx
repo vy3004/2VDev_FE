@@ -75,6 +75,8 @@ const Comment: React.FC<CommentProps> = ({
           post_id: comment._id,
           limit: 20,
           page: 1,
+          sort_field: "created_at",
+          sort_value: -1,
         });
 
         if (response) {

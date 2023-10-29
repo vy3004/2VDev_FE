@@ -20,6 +20,8 @@ interface GetCommentsPayLoad {
   post_id: string;
   limit: number;
   page: number;
+  sort_field: string;
+  sort_value: number;
 }
 
 interface GetNewsFeedPayLoad {
@@ -55,12 +57,16 @@ const postEndpoints = {
     post_id,
     limit,
     page,
+    sort_field,
+    sort_value,
   }: {
     post_id: string;
     limit: number;
     page: number;
+    sort_field: string;
+    sort_value: number;
   }) =>
-    `${apiEndPoints.posts}/${post_id}/children/?limit=${limit}&page=${page}&post_type=2`,
+    `${apiEndPoints.posts}/${post_id}/children/?limit=${limit}&page=${page}&post_type=2&sort_field=${sort_field}&sort_value=${sort_value}`,
   getNewsFeed: ({
     type,
     limit,
@@ -122,10 +128,18 @@ const postService = {
     post_id,
     limit,
     page,
+    sort_field,
+    sort_value,
   }: GetCommentsPayLoad): Promise<ApiResponse<any>> => {
     try {
       const response = await axiosInstance.get(
-        postEndpoints.getComments({ post_id, limit, page })
+        postEndpoints.getComments({
+          post_id,
+          limit,
+          page,
+          sort_field,
+          sort_value,
+        })
       );
 
       return { response };

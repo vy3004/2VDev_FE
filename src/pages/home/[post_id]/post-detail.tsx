@@ -3,7 +3,6 @@ import { useParams } from "react-router-dom";
 
 import Loading from "../../../components/common/loading";
 import NotFoundAlert from "../../../components/common/not-found-alert";
-import Pagination from "../../../components/common/pagination";
 import PostCard from "../../../components/post/post-card";
 
 import postService from "../../../services/post-service";
@@ -14,22 +13,7 @@ const PostDetail = () => {
   const { post_id } = useParams();
 
   const [post, setPost] = useState<Post>();
-  const [comments, setComments] = useState<Post[]>();
   const [loading, setLoading] = useState(false);
-  const [page, setPage] = useState(1);
-  const [totalPage, setTotalPage] = useState(1);
-
-  const next = () => {
-    if (page === totalPage) return;
-
-    setPage(page + 1);
-  };
-
-  const prev = () => {
-    if (page === 1) return;
-
-    setPage(page - 1);
-  };
 
   useEffect(() => {
     const getPost = async () => {
@@ -44,18 +28,6 @@ const PostDetail = () => {
           if (postData.response) {
             setPost(postData.response.data.result);
           }
-
-          const commentsData = await postService.getComments({
-            post_id: post_id,
-            limit: 5,
-            page: page,
-          });
-
-          if (commentsData.response) {
-            let data = [...commentsData.response.data.result.post_children];
-            setTotalPage(commentsData.response.data.result.total_page);
-            setComments(data);
-          }
         }
       } catch (error) {
         console.log(error);
@@ -64,7 +36,7 @@ const PostDetail = () => {
       }
     };
     getPost();
-  }, [post_id, page]);
+  }, [post_id]);
 
   return loading ? (
     <div className="relative h-96">
@@ -78,10 +50,7 @@ const PostDetail = () => {
           See detail information of the post
         </Typography>
       </div>
-      <PostCard post={post} comments={comments} is_detail={true} />
-      {totalPage > 0 && (
-        <Pagination page={page} totalPage={totalPage} next={next} prev={prev} />
-      )}
+      <PostCard post={post} is_detail={true} />
     </div>
   ) : (
     <NotFoundAlert message="Post not found!" />

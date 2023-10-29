@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useTranslation } from "react-i18next";
@@ -12,6 +13,7 @@ import {
   MenuHandler,
   MenuItem,
   MenuList,
+  Spinner,
   Tooltip,
   Typography,
 } from "@material-tailwind/react";
@@ -29,33 +31,40 @@ import {
   PencilSquareIcon,
   TrashIcon,
 } from "@heroicons/react/24/outline";
-import { EllipsisHorizontalIcon, StarIcon } from "@heroicons/react/24/solid";
+import {
+  EllipsisHorizontalIcon,
+  PlusCircleIcon,
+  StarIcon,
+} from "@heroicons/react/24/solid";
 import LevelChip from "../common/level-chip";
 import NotFoundAlert from "../common/not-found-alert";
 import TagButton from "../common/tag-button";
+import MenuFilter from "../common/menu-filter";
 import CommentForm from "./comment-form";
 import Comment from "./comment";
 
 import voteService from "../../services/vote-service";
 import bookmarkService from "../../services/bookmark-service";
 import userService from "../../services/user-service";
+import postService from "../../services/post-service";
+
 import { selectUser } from "../../redux/features/user-slice";
 import {
   selectReportModal,
   setReportModal,
 } from "../../redux/features/report-modal-slice";
 import { setConfirmModal } from "../../redux/features/confirm-modal-slice";
+
 import { Post } from "../../utils/types";
-import { PostType } from "../../utils/constant";
+import { COMMENTS_SORT, PostType } from "../../utils/constant";
 import { formatTime, formatTimeDistanceToNow } from "../../utils/string-utils";
 
 interface PostCardProps {
   post: Post;
-  comments?: Post[];
   is_detail: boolean;
 }
 
-const PostCard: React.FC<PostCardProps> = ({ post, comments, is_detail }) => {
+const PostCard: React.FC<PostCardProps> = ({ post, is_detail }) => {
   const { i18n } = useTranslation();
   const { user } = useSelector(selectUser);
   const { reportModal } = useSelector(selectReportModal);
@@ -69,11 +78,30 @@ const PostCard: React.FC<PostCardProps> = ({ post, comments, is_detail }) => {
   const [follow, setFollow] = useState(false);
   const [report, setReport] = useState(post.is_reported);
   const [showFormAnswer, setShowFormAnswer] = useState(false);
+  const [comments, setComments] = useState<Post[]>([]);
+  const [sortField, setSortField] = useState("created_at");
+  const [page, setPage] = useState(1);
+  const [totalPage, setTotalPage] = useState(1);
+  const [isLoading, setIsLoading] = useState(false);
 
   useEffect(() => {
     if (reportModal.isReported && reportModal.postId === post._id)
       setReport(true);
   }, [reportModal, post._id]);
+
+  useEffect(() => {
+    if (is_detail) {
+      if (page > 1) {
+        getComments();
+      }
+    }
+  }, [page]);
+
+  useEffect(() => {
+    if (is_detail) {
+      getComments();
+    }
+  }, [sortField]);
 
   const votePost = async (postId: string, type: boolean) => {
     try {
@@ -185,6 +213,46 @@ const PostCard: React.FC<PostCardProps> = ({ post, comments, is_detail }) => {
         postId: post._id,
       })
     );
+  };
+
+  const getComments = async () => {
+    setIsLoading(true);
+
+    const { response } = await postService.getComments({
+      post_id: post._id,
+      limit: 20,
+      page: page,
+      sort_field: sortField,
+      sort_value: -1,
+    });
+
+    if (response) {
+      setTotalPage(response.data.result.total_page);
+
+      if (comments.length > 0) {
+        const existingComments = [...comments];
+        const newComments = response.data.result.post_children;
+        setComments([...existingComments, ...newComments]);
+      } else {
+        setComments(response.data.result.post_children);
+      }
+    }
+
+    setIsLoading(false);
+  };
+
+  const handleCommentsLoadMore = () => {
+    if (page < totalPage) {
+      setPage(page + 1);
+    }
+  };
+
+  const handleChangeSort = (sort: string) => {
+    if (sort !== sortField) {
+      setSortField(sort);
+      setPage(1);
+      setComments([]);
+    }
   };
 
   return post && user ? (
@@ -415,6 +483,15 @@ const PostCard: React.FC<PostCardProps> = ({ post, comments, is_detail }) => {
               )}
               {/* Comment form end */}
 
+              {/* Comments menu start */}
+              <div className="flex justify-end">
+                <MenuFilter
+                  content={COMMENTS_SORT}
+                  handleChange={handleChangeSort}
+                />
+              </div>
+              {/* Comments menu end */}
+
               {/* Comments start */}
               {comments &&
                 comments.map((item) => (
@@ -427,6 +504,34 @@ const PostCard: React.FC<PostCardProps> = ({ post, comments, is_detail }) => {
                   />
                 ))}
               {/* Comments end */}
+
+              {/* Load more comments start */}
+              {page < totalPage && (
+                <>
+                  <hr />
+
+                  <div className="flex items-center justify-between">
+                    <Button
+                      className="!overflow-visible normal-case flex items-center justify-center gap-1"
+                      size="sm"
+                      variant="text"
+                      onClick={handleCommentsLoadMore}
+                    >
+                      {isLoading ? (
+                        <Spinner className="w-5 h-5" />
+                      ) : (
+                        <PlusCircleIcon className="w-5 h-5" />
+                      )}
+                      Load more
+                    </Button>
+
+                    <Typography>
+                      {comments.length} of {post.comment_count}
+                    </Typography>
+                  </div>
+                </>
+              )}
+              {/* Load more comments end */}
             </div>
           )}
         </div>

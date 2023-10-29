@@ -3,15 +3,7 @@ import { useEffect, useState } from "react";
 import { useLocation } from "react-router-dom";
 import { useTranslation } from "react-i18next";
 
-import {
-  IconButton,
-  Menu,
-  MenuHandler,
-  MenuItem,
-  MenuList,
-  Typography,
-} from "@material-tailwind/react";
-import { AdjustmentsHorizontalIcon } from "@heroicons/react/24/outline";
+import { Typography } from "@material-tailwind/react";
 import Loading from "../../components/common/loading";
 import NotFoundAlert from "../../components/common/not-found-alert";
 import PostCard from "../../components/post/post-card";
@@ -21,6 +13,7 @@ import postService from "../../services/post-service";
 import { Post } from "../../utils/types";
 import { POSTS_TYPE } from "../../utils/constant";
 import { getSortPostsLabel, getTypePostsLabel } from "../../utils/string-utils";
+import MenuFilter from "../../components/common/menu-filter";
 
 const Home = () => {
   const { t } = useTranslation();
@@ -100,31 +93,7 @@ const Home = () => {
           </Typography>
         </div>
 
-        <Menu
-          placement="bottom-end"
-          allowHover
-          animate={{
-            mount: { y: 0 },
-            unmount: { y: 25 },
-          }}
-        >
-          <MenuHandler>
-            <IconButton className="mr-5 mb-1" size="sm" variant="outlined">
-              <AdjustmentsHorizontalIcon className="w-6 h-6 transition-transform hover:rotate-180" />
-            </IconButton>
-          </MenuHandler>
-          <MenuList className="min-w-10">
-            {POSTS_TYPE.map((type, key) => (
-              <MenuItem
-                key={key}
-                className="capitalize"
-                onClick={() => handleChangeType(type.value)}
-              >
-                {t(`home.${type.label}`)}
-              </MenuItem>
-            ))}
-          </MenuList>
-        </Menu>
+        <MenuFilter content={POSTS_TYPE} handleChange={handleChangeType} />
       </div>
       {/* Header end */}
 

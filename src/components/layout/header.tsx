@@ -1,5 +1,6 @@
 import { useDispatch, useSelector } from "react-redux";
 import { useTranslation } from "react-i18next";
+import { useNavigate } from "react-router-dom";
 
 import { Typography, IconButton, Button } from "@material-tailwind/react";
 import {
@@ -24,6 +25,7 @@ const Header = () => {
   const { t } = useTranslation();
 
   const dispatch = useDispatch();
+  const navigate = useNavigate();
 
   const handleOpenSignInModal = () => {
     dispatch(setAuthModalName("signIn"));
@@ -43,8 +45,7 @@ const Header = () => {
             <MobileSidebar />
 
             <Typography
-              as="a"
-              href="/"
+              onClick={() => navigate("/?type=new&sort_field=created_at")}
               className="sm:mr-4 ml-3 cursor-pointer py-1.5 pr-4 font-bold border-r-2 border-r-black dark:border-r-gray-50"
             >
               2VDev

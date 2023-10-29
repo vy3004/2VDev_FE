@@ -17,7 +17,7 @@ const NavList = () => {
     {
       label: t("header.home"),
       icon: HomeIcon,
-      href: "/",
+      href: "/?type=new&sort_field=created_at",
     },
     {
       label: t("header.about-us"),
@@ -39,7 +39,7 @@ const NavList = () => {
           key={key}
           size="sm"
           className={`flex items-center gap-2 rounded-full border border-gray-900 shadow-none normal-case text-sm ${
-            appState === href
+            appState === href.split("?")[0]
               ? "bg-gray-900 text-gray-50 dark:bg-gray-50 dark:text-gray-900"
               : "bg-white text-gray-900 dark:bg-gray-900 dark:text-gray-50"
           }`}
