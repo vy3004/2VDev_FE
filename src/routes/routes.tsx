@@ -6,19 +6,20 @@ import AdminPage from "../components/common/admin-page";
 import Home from "../pages/home/home";
 import About from "../pages/about/about";
 import Contact from "../pages/contact/contact";
-import Tags from "../pages/tags/tags";
-import Communities from "../pages/communities/communities";
+import PostPage from "../pages/home/post/post";
+import PostDetail from "../pages/home/[post_id]/post-detail";
+import ManagePosts from "../pages/dashboard/manage-posts/manage-posts";
 import Users from "../pages/users/users";
-import Settings from "../pages/settings/settings";
+import ManageUsers from "../pages/dashboard/manage-users/manage-users";
+import UserDetailPage from "../pages/dashboard/manage-users/[username]/user-detail-page";
+import Profile from "../pages/profile/profile";
+import Tags from "../pages/tags/tags";
+import TagDetail from "../pages/tags/[tag_id]/tag_detail";
+import Communities from "../pages/communities/communities";
 import Message from "../pages/message/message";
 import Notification from "../pages/notification/notification";
-import Profile from "../pages/profile/profile";
+import Settings from "../pages/settings/settings";
 import NotFoundPage from "../pages/not-found-page/not-found-page";
-import ManageUsers from "../pages/dashboard/manage-users/manage-users";
-import ManagePosts from "../pages/dashboard/manage-posts/manage-posts";
-import UserDetailPage from "../pages/dashboard/manage-users/[username]/user-detail-page";
-import PostDetail from "../pages/home/[post_id]/post-detail";
-import PostPage from "../pages/home/post/post";
 
 interface Route {
   path: string;
@@ -85,6 +86,10 @@ const routes: Route[] = [
   {
     path: "/tags",
     element: <Tags />,
+  },
+  {
+    path: "/tags/:tag_id",
+    element: <TagDetail />,
   },
   {
     path: "/communities",

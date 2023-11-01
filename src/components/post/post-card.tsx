@@ -8,6 +8,7 @@ import toast from "react-hot-toast";
 import {
   Avatar,
   Button,
+  Chip,
   IconButton,
   Menu,
   MenuHandler,
@@ -70,7 +71,7 @@ const PostCard: React.FC<PostCardProps> = ({ post, is_detail }) => {
   const { reportModal } = useSelector(selectReportModal);
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  // console.log("POST", post);
+  console.log("POST", post);
 
   const [vote, setVote] = useState(post.is_voted);
   const [votesCount, setVotesCount] = useState(post.votes_count);
@@ -83,6 +84,7 @@ const PostCard: React.FC<PostCardProps> = ({ post, is_detail }) => {
   const [page, setPage] = useState(1);
   const [totalPage, setTotalPage] = useState(1);
   const [isLoading, setIsLoading] = useState(false);
+  const [detailPinComment, setDetailPinComment] = useState<Post>();
 
   useEffect(() => {
     if (reportModal.isReported && reportModal.postId === post._id)
@@ -102,6 +104,12 @@ const PostCard: React.FC<PostCardProps> = ({ post, is_detail }) => {
       getComments();
     }
   }, [sortField]);
+
+  useEffect(() => {
+    if (is_detail && post.resolved_id) {
+      getPinComment();
+    }
+  }, []);
 
   const votePost = async (postId: string, type: boolean) => {
     try {
@@ -220,7 +228,7 @@ const PostCard: React.FC<PostCardProps> = ({ post, is_detail }) => {
 
     const { response } = await postService.getComments({
       post_id: post._id,
-      limit: 20,
+      limit: 10,
       page: page,
       sort_field: sortField,
       sort_value: -1,
@@ -231,10 +239,24 @@ const PostCard: React.FC<PostCardProps> = ({ post, is_detail }) => {
 
       if (comments.length > 0) {
         const existingComments = [...comments];
-        const newComments = response.data.result.post_children;
-        setComments([...existingComments, ...newComments]);
+        const resComments = response.data.result.post_children;
+        let newComments = [...existingComments, ...resComments];
+        if (post.resolved_id) {
+          newComments = filterRemovePinComment(
+            [...newComments],
+            post.resolved_id
+          );
+        }
+        setComments(newComments);
       } else {
-        setComments(response.data.result.post_children);
+        let newComments = response.data.result.post_children;
+        if (post.resolved_id) {
+          newComments = filterRemovePinComment(
+            [...newComments],
+            post.resolved_id
+          );
+        }
+        setComments(newComments);
       }
     }
 
@@ -252,6 +274,39 @@ const PostCard: React.FC<PostCardProps> = ({ post, is_detail }) => {
       setSortField(sort);
       setPage(1);
       setComments([]);
+    }
+  };
+
+  const filterRemovePinComment = (comments: Post[], resolved_id: string) => {
+    return comments.filter((comment) => {
+      return comment._id !== resolved_id;
+    });
+  };
+
+  const getPinComment = async () => {
+    if (post.resolved_id) {
+      const { response } = await postService.getPost({
+        post_id: post.resolved_id,
+      });
+
+      if (response) {
+        setDetailPinComment(response.data.result);
+      }
+    }
+  };
+
+  const pinComment = async (commentId: string) => {
+    try {
+      const { response } = await postService.pinComment({
+        post_id: post._id,
+        resolved_id: commentId,
+      });
+      if (response) {
+        window.location.reload();
+        toast.success(response.data.message);
+      }
+    } catch (error) {
+      console.log(error);
     }
   };
 
@@ -361,18 +416,25 @@ const PostCard: React.FC<PostCardProps> = ({ post, is_detail }) => {
 
         <div className="space-y-4">
           {/* Post title start */}
-          <div>
-            <div className="flex items-center justify-end gap-4">
-              <Tooltip content={formatTime(post.created_at, i18n.language)}>
+          <div className="space-y-2">
+            <div className="flex items-center justify-between">
+              {post.resolved_id ? (
+                <Chip value="Resolved" color="yellow" />
+              ) : (
+                <div></div>
+              )}
+              <div className="flex items-center justify-end gap-4">
+                <Tooltip content={formatTime(post.created_at, i18n.language)}>
+                  <Typography className="text-sm text-gray-600 hover:text-blue-500 cursor-pointer flex items-center gap-1">
+                    <ClockIcon className="w-4 h-4" />
+                    {formatTimeDistanceToNow(post.created_at, i18n.language)}
+                  </Typography>
+                </Tooltip>
                 <Typography className="text-sm text-gray-600 hover:text-blue-500 cursor-pointer flex items-center gap-1">
-                  <ClockIcon className="w-4 h-4" />
-                  {formatTimeDistanceToNow(post.created_at, i18n.language)}
+                  <EyeIcon className="w-4 h-4" />
+                  {post.views_count} views
                 </Typography>
-              </Tooltip>
-              <Typography className="text-sm text-gray-600 hover:text-blue-500 cursor-pointer flex items-center gap-1">
-                <EyeIcon className="w-4 h-4" />
-                {post.views_count} views
-              </Typography>
+              </div>
             </div>
 
             <Typography
@@ -454,7 +516,7 @@ const PostCard: React.FC<PostCardProps> = ({ post, is_detail }) => {
               className="flex items-center justify-center gap-2 normal-case text-base"
             >
               <ChatBubbleLeftIcon className="w-5 h-5" />
-              {post.comment_count > 0 && post.comment_count} Comment
+              {post.comments_count > 0 && post.comments_count} Comment
             </Button>
 
             <Button
@@ -483,26 +545,47 @@ const PostCard: React.FC<PostCardProps> = ({ post, is_detail }) => {
               )}
               {/* Comment form end */}
 
-              {/* Comments menu start */}
-              <div className="flex justify-end">
-                <MenuFilter
-                  content={COMMENTS_SORT}
-                  handleChange={handleChangeSort}
-                />
-              </div>
-              {/* Comments menu end */}
-
               {/* Comments start */}
-              {comments &&
-                comments.map((item) => (
-                  <Comment
-                    key={item._id}
-                    comment={item}
-                    user_id={user._id}
-                    votePost={votePost}
-                    followUser={followUser}
-                  />
-                ))}
+              {post.comments_count > 0 && (
+                <div className="space-y-4">
+                  {/* Comments menu start */}
+                  <div className="flex justify-end">
+                    <MenuFilter
+                      content={COMMENTS_SORT}
+                      handleChange={handleChangeSort}
+                    />
+                  </div>
+
+                  {/* Pin comment start */}
+                  {detailPinComment && (
+                    <Comment
+                      comment={detailPinComment}
+                      userId={user._id}
+                      postUserId={post.user_detail._id}
+                      isPinComment={true}
+                      votePost={votePost}
+                      followUser={followUser}
+                      pinComment={pinComment}
+                    />
+                  )}
+                  {/* Pin comment end */}
+
+                  {comments.length > 0 &&
+                    comments.map((item) => (
+                      <Comment
+                        key={item._id}
+                        comment={item}
+                        userId={user._id}
+                        postUserId={post.user_detail._id}
+                        isPinComment={false}
+                        votePost={votePost}
+                        followUser={followUser}
+                        pinComment={pinComment}
+                      />
+                    ))}
+                  {/* Comments menu end */}
+                </div>
+              )}
               {/* Comments end */}
 
               {/* Load more comments start */}
@@ -526,7 +609,7 @@ const PostCard: React.FC<PostCardProps> = ({ post, is_detail }) => {
                     </Button>
 
                     <Typography>
-                      {comments.length} of {post.comment_count}
+                      {comments.length} of {post.comments_count}
                     </Typography>
                   </div>
                 </>

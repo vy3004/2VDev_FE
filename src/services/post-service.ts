@@ -32,12 +32,25 @@ interface GetNewsFeedPayLoad {
   sort_value: number;
 }
 
+interface GetPostsByHashtagPayLoad {
+  hashtag_id: string;
+  limit: number;
+  page: number;
+  sort_field: string;
+  sort_value: number;
+}
+
 interface EditPostPayLoad {
   post_id: string;
   title?: string | null;
   content: string;
   hashtags?: string[];
   medias?: string[];
+}
+
+interface PinCommentPayLoad {
+  post_id: string;
+  resolved_id: string;
 }
 
 interface DeletePostPayLoad {
@@ -81,8 +94,25 @@ const postEndpoints = {
     sort_value: number;
   }) =>
     `${apiEndPoints.posts}/newfeeds?limit=${limit}&page=${page}&type=${type}&sort_field=${sort_field}&sort_value=${sort_value}`,
+  getPostsByHashtag: ({
+    hashtag_id,
+    limit,
+    page,
+    sort_field,
+    sort_value,
+  }: {
+    hashtag_id: string;
+    limit: number;
+    page: number;
+    sort_field: string;
+    sort_value: number;
+  }) =>
+    `${apiEndPoints.posts}/hashtags/${hashtag_id}?limit=${limit}&page=${page}&sort_field=${sort_field}&sort_value=${sort_value}`,
+
   editPost: ({ post_id }: { post_id: string }) =>
     `${apiEndPoints.posts}/${post_id}`,
+  pinComment: ({ post_id }: { post_id: string }) =>
+    `${apiEndPoints.posts}/resolve/${post_id}`,
   deletePost: ({ post_id }: { post_id: string }) =>
     `${apiEndPoints.posts}/${post_id}`,
 };
@@ -164,6 +194,29 @@ const postService = {
       return { error: error as AxiosError };
     }
   },
+  getPostsByHashtag: async ({
+    hashtag_id,
+    limit,
+    page,
+    sort_field,
+    sort_value,
+  }: GetPostsByHashtagPayLoad): Promise<ApiResponse<any>> => {
+    try {
+      const response = await axiosInstance.get(
+        postEndpoints.getPostsByHashtag({
+          hashtag_id,
+          limit,
+          page,
+          sort_field,
+          sort_value,
+        })
+      );
+
+      return { response };
+    } catch (error) {
+      return { error: error as AxiosError };
+    }
+  },
   editPost: async ({
     post_id,
     title,
@@ -180,6 +233,21 @@ const postService = {
           hashtags,
           medias,
         }
+      );
+
+      return { response };
+    } catch (error) {
+      return { error: error as AxiosError };
+    }
+  },
+  pinComment: async ({
+    post_id,
+    resolved_id,
+  }: PinCommentPayLoad): Promise<ApiResponse<any>> => {
+    try {
+      const response = await axiosInstance.patch(
+        postEndpoints.pinComment({ post_id }),
+        { resolved_id }
       );
 
       return { response };

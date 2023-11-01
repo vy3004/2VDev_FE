@@ -3,7 +3,7 @@ export const USER_LEVELS = ["Bronze", "Silver", "Gold", "Platinum", "Diamond"];
 export const POSTS_TYPE = [
   {
     label: "all",
-    value: "new",
+    value: "all",
   },
   {
     label: "followed",
@@ -85,9 +85,4 @@ export enum PostType {
   Post,
   RePost,
   Comment,
-}
-
-export enum ResolvedType {
-  unResolved,
-  Resolved,
 }

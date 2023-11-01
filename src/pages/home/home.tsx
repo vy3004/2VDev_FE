@@ -22,7 +22,7 @@ const Home = () => {
   const typeQueryParam = queryParams.get("type");
   const sortQueryParam = queryParams.get("sort_field");
 
-  const [type, setType] = useState(typeQueryParam || "new");
+  const [type, setType] = useState(typeQueryParam || "all");
   const [sortField, setSortField] = useState(sortQueryParam || "created_at");
   const [page, setPage] = useState(1);
   const [posts, setPosts] = useState<Post[]>([]);

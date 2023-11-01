@@ -45,7 +45,7 @@ const Header = () => {
             <MobileSidebar />
 
             <Typography
-              onClick={() => navigate("/?type=new&sort_field=created_at")}
+              onClick={() => navigate("/?type=all&sort_field=created_at")}
               className="sm:mr-4 ml-3 cursor-pointer py-1.5 pr-4 font-bold border-r-2 border-r-black dark:border-r-gray-50"
             >
               2VDev

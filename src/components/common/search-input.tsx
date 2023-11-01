@@ -201,7 +201,7 @@ const SearchInput = () => {
                         <HandThumbUpIcon className="w-4 h-4" />
                         {post.votes_count}
                         <ChatBubbleLeftRightIcon className="w-4 h-4" />
-                        {post.comment_count}
+                        {post.comments_count}
                         <EyeIcon className="w-4 h-4" />
                         {post.views_count}
                       </Typography>

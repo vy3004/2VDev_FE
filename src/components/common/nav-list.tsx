@@ -17,7 +17,7 @@ const NavList = () => {
     {
       label: t("header.home"),
       icon: HomeIcon,
-      href: "/?type=new&sort_field=created_at",
+      href: "/?type=all&sort_field=created_at",
     },
     {
       label: t("header.about-us"),

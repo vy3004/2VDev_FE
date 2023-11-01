@@ -71,7 +71,7 @@ const Sidebar = () => {
   const listHome: sidebarItem[] = POSTS_SORT.map((item) => ({
     label: t(`sidebar.${item.label}`),
     icon: <ChevronRightIcon strokeWidth={3} className="h-3 w-5" />,
-    href: `/?type=new&sort_field=${item.value}`,
+    href: `/?type=all&sort_field=${item.value}`,
   }));
 
   const listGuest: sidebarItem[] = [

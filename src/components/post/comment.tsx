@@ -19,7 +19,12 @@ import {
   PencilSquareIcon,
   TrashIcon,
 } from "@heroicons/react/24/outline";
-import { ArrowUturnLeftIcon, StarIcon } from "@heroicons/react/24/solid";
+import {
+  ArrowUturnLeftIcon,
+  EyeDropperIcon,
+  PaintBrushIcon,
+  StarIcon,
+} from "@heroicons/react/24/solid";
 import LevelChip from "../common/level-chip";
 import CommentForm from "./comment-form";
 
@@ -35,16 +40,22 @@ import { setConfirmModal } from "../../redux/features/confirm-modal-slice";
 
 interface CommentProps {
   comment: Post;
-  user_id: string;
+  userId: string;
+  postUserId: string;
+  isPinComment: boolean;
   votePost: (postId: string, type: boolean) => void;
   followUser: (otherUserId: string, type: boolean) => void;
+  pinComment: (commentId: string) => Promise<void>;
 }
 
 const Comment: React.FC<CommentProps> = ({
   comment,
-  user_id,
+  userId,
+  postUserId,
+  isPinComment,
   votePost,
   followUser,
+  pinComment,
 }) => {
   const { i18n } = useTranslation();
   const { reportModal } = useSelector(selectReportModal);
@@ -112,10 +123,14 @@ const Comment: React.FC<CommentProps> = ({
     dispatch(
       setConfirmModal({
         confirmModalOpen: true,
-        type: 1,
         postId: comment._id,
+        type: 1,
       })
     );
+  };
+
+  const handlePinComment = () => {
+    pinComment(comment._id);
   };
 
   return (
@@ -127,7 +142,22 @@ const Comment: React.FC<CommentProps> = ({
         withBorder={true}
         className="p-0.5"
       />
-      <div className="space-y-2 border rounded-lg w-full min-w-0 p-2">
+      <div
+        className={`space-y-2 border rounded-lg w-full min-w-0 p-2 ${
+          isPinComment && "border-blue-500 bg-blue-50"
+        }`}
+      >
+        <div className="flex items-center justify-between">
+          {postUserId === comment.user_detail._id ? (
+            <div className="flex items-center gap-1 text-gray-600">
+              <PaintBrushIcon className="w-4 h-4" />
+              <Typography className="text-xs font-semibold">Author</Typography>
+            </div>
+          ) : (
+            <div></div>
+          )}
+          {isPinComment && <EyeDropperIcon className="w-4 h-4 text-blue-500" />}
+        </div>
         <div className="flex items-center justify-between">
           <div className="flex items-center gap-4">
             <Typography
@@ -147,7 +177,7 @@ const Comment: React.FC<CommentProps> = ({
               </Typography>
             </div>
 
-            {user_id !== comment.user_detail._id && (
+            {userId !== comment.user_detail._id && (
               <Button
                 onClick={() => handleFollow(comment.user_detail._id, follow)}
                 variant="text"
@@ -174,7 +204,7 @@ const Comment: React.FC<CommentProps> = ({
           // Edit comment form
           <CommentForm
             post_id={comment._id}
-            user_id={user_id}
+            user_id={userId}
             parent_id={comment._id}
             type={PostType.Comment}
             content={comment.content}
@@ -209,7 +239,7 @@ const Comment: React.FC<CommentProps> = ({
             Reply
           </Button>
 
-          {comment.user_detail._id !== user_id && !report && (
+          {comment.user_detail._id !== userId && !report && (
             <Button
               onClick={handleReport}
               variant="text"
@@ -220,7 +250,7 @@ const Comment: React.FC<CommentProps> = ({
             </Button>
           )}
 
-          {comment.user_detail._id === user_id && (
+          {comment.user_detail._id === userId && (
             <Button
               onClick={() => setShowEditCommentForm(!showEditCommentForm)}
               variant="text"
@@ -231,7 +261,7 @@ const Comment: React.FC<CommentProps> = ({
             </Button>
           )}
 
-          {comment.user_detail._id === user_id && (
+          {comment.user_detail._id === userId && (
             <Button
               onClick={handleDelete}
               variant="text"
@@ -241,13 +271,24 @@ const Comment: React.FC<CommentProps> = ({
               Delete
             </Button>
           )}
+
+          {postUserId === userId && !isPinComment && (
+            <Button
+              onClick={handlePinComment}
+              variant="text"
+              className="p-2 flex items-center justify-center gap-2 normal-case text-xs"
+            >
+              <EyeDropperIcon className="w-4 h-4" />
+              Pin
+            </Button>
+          )}
         </div>
 
         {/* Comment form start */}
         {showCommentForm && (
           <CommentForm
             post_id=""
-            user_id={user_id}
+            user_id={userId}
             parent_id={comment._id}
             type={PostType.Comment}
             content=""
@@ -256,7 +297,7 @@ const Comment: React.FC<CommentProps> = ({
         {/* Comment form end */}
 
         {/* Button show reply start */}
-        {comment.comment_count > 0 && (
+        {comment.comments_count > 0 && (
           <Button
             onClick={() => getReplies(!showReplies)}
             className="py-1 px-2 flex items-center gap-1 normal-case"
@@ -270,8 +311,8 @@ const Comment: React.FC<CommentProps> = ({
                 className={`w-3 h-3 ${!showReplies && "rotate-180"}`}
               />
             )}{" "}
-            {comment.comment_count > 0 && comment.comment_count}{" "}
-            {comment.comment_count === 1 ? "Reply" : "Replies"}
+            {comment.comments_count > 0 && comment.comments_count}{" "}
+            {comment.comments_count === 1 ? "Reply" : "Replies"}
           </Button>
         )}
         {/* Button show reply end */}
@@ -283,9 +324,12 @@ const Comment: React.FC<CommentProps> = ({
             <Comment
               key={reply._id}
               comment={reply}
-              user_id={user_id}
+              userId={userId}
+              postUserId={comment.user_detail._id}
+              isPinComment={isPinComment}
               votePost={votePost}
               followUser={followUser}
+              pinComment={pinComment}
             />
           ))}
         {/* Comment children end */}
