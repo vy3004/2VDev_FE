@@ -35,10 +35,10 @@ const TagDetail = () => {
         if (newData.length > 0) {
           setPosts((prevData) => [...prevData, ...newData]);
           setPage((prevPage) => prevPage + 1);
+          setTagName(response.data.result.hashtag_name);
+          setPostsCount(response.data.result.posts_count);
         }
         setHasMore(newData.length > 0);
-        setTagName(response.data.result.hashtag_name);
-        setPostsCount(response.data.result.posts_count);
       }
     }
   };
