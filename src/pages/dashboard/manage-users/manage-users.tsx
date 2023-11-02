@@ -68,6 +68,8 @@ const ManageUsers = () => {
       const { response } = await userService.getUsers({
         limit: 5,
         page: page,
+        sort_field: "created_at",
+        sort_value: -1,
       });
 
       if (response) {

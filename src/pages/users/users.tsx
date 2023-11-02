@@ -2,19 +2,8 @@ import { useState, useEffect } from "react";
 import { useSelector } from "react-redux";
 import { useLocation } from "react-router-dom";
 
-import {
-  AdjustmentsHorizontalIcon,
-  MagnifyingGlassIcon,
-} from "@heroicons/react/24/solid";
-import {
-  Typography,
-  Menu,
-  MenuHandler,
-  IconButton,
-  MenuList,
-  MenuItem,
-  Input,
-} from "@material-tailwind/react";
+import { MagnifyingGlassIcon } from "@heroicons/react/24/solid";
+import { Typography, Input } from "@material-tailwind/react";
 import Loading from "../../components/common/loading";
 import Pagination from "../../components/common/pagination";
 import NotFoundAlert from "../../components/common/not-found-alert";
@@ -25,11 +14,13 @@ import { selectUser } from "../../redux/features/user-slice";
 import { USERS_HEADER_PAGE, USERS_TYPE } from "../../utils/constant";
 import { debounce } from "lodash";
 import searchService from "../../services/search-service";
+import MenuFilter from "../../components/common/menu-filter";
 
 const Users = () => {
   const currentUser = useSelector(selectUser).user;
   const location = useLocation();
   const queryParams = new URLSearchParams(location.search);
+  const idQueryParam = queryParams.get("id");
   const filterQueryParam = queryParams.get("filter");
   const pageQueryParam = queryParams.get("page");
   const limitQueryParam = queryParams.get("limit");
@@ -94,12 +85,14 @@ const Users = () => {
     setPage(page - 1);
   };
 
-  const getUsers = async () => {
+  const getUsers = async (sort_field: string) => {
     setIsLoading(true);
 
     const { response } = await userService.getUsers({
       limit: limit,
       page: page,
+      sort_field: sort_field,
+      sort_value: -1,
     });
 
     if (response) {
@@ -125,7 +118,7 @@ const Users = () => {
       const { response } = await userService.getFollowing({
         limit: limit,
         page: page,
-        user_id: currentUser._id,
+        user_id: idQueryParam || currentUser._id,
       });
 
       if (response) {
@@ -152,7 +145,7 @@ const Users = () => {
       const { response } = await userService.getFollower({
         limit: limit,
         page: page,
-        user_id: currentUser._id,
+        user_id: idQueryParam || currentUser._id,
       });
 
       if (response) {
@@ -173,10 +166,10 @@ const Users = () => {
   };
 
   useEffect(() => {
-    if (filter === "all" && searchValue === "") getUsers();
-
+    if (filter === "all" && searchValue === "") getUsers("created_at");
+    if (filter === "point" && searchValue === "") getUsers("point");
+    if (filter === "followers" && searchValue === "") getUsers("followers");
     if (filter === "following" && searchValue === "") getFollowing();
-
     if (filter === "follower" && searchValue === "") getFollower();
 
     // Update URL according to params
@@ -219,31 +212,7 @@ const Users = () => {
               onChange={handleChange}
             />
 
-            <Menu
-              placement="bottom-end"
-              allowHover
-              animate={{
-                mount: { y: 0 },
-                unmount: { y: 25 },
-              }}
-            >
-              <MenuHandler>
-                <IconButton className="w-20 h-20" variant="outlined">
-                  <AdjustmentsHorizontalIcon className="w-6 h-6 transition-transform hover:rotate-180" />
-                </IconButton>
-              </MenuHandler>
-              <MenuList className="min-w-10">
-                {USERS_TYPE.map((type) => (
-                  <MenuItem
-                    key={type}
-                    className="capitalize"
-                    onClick={() => setFilter(type)}
-                  >
-                    {type}
-                  </MenuItem>
-                ))}
-              </MenuList>
-            </Menu>
+            <MenuFilter content={USERS_TYPE} handleChange={setFilter} />
           </div>
         </div>
         {/* Header end */}

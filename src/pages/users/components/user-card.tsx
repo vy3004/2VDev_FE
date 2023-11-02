@@ -1,9 +1,12 @@
-import { Avatar, Button, Typography } from "@material-tailwind/react";
-import LevelChip from "../../../components/common/level-chip";
 import { useState } from "react";
-import userService from "../../../services/user-service";
+import { useNavigate } from "react-router-dom";
 import toast from "react-hot-toast";
+
+import { Avatar, Button, Typography } from "@material-tailwind/react";
 import { UserMinusIcon, UserPlusIcon } from "@heroicons/react/24/solid";
+import LevelChip from "../../../components/common/level-chip";
+
+import userService from "../../../services/user-service";
 
 interface UserCardProps {
   current_username?: string;
@@ -24,6 +27,7 @@ const UserCard: React.FC<UserCardProps> = ({
   point,
   is_followed,
 }) => {
+  const navigate = useNavigate();
   const [follow, setFollow] = useState(is_followed);
 
   const handleFollowUser = async (otherUserId: string, type: boolean) => {
@@ -57,8 +61,8 @@ const UserCard: React.FC<UserCardProps> = ({
       className="flex flex-col items-center border hover:border-black rounded-lg py-6 space-y-4 col-span-6 sm:col-span-3 lg:col-span-2"
       key={user_id}
     >
-      <a
-        href={`/profile/${username}`}
+      <div
+        onClick={() => navigate(`/profile/${username}`)}
         className="flex flex-col items-center space-y-1 text-center hover:opacity-80"
       >
         <Avatar
@@ -73,7 +77,7 @@ const UserCard: React.FC<UserCardProps> = ({
         />
         <Typography className="font-bold">{name}</Typography>
         <LevelChip level={point} />
-      </a>
+      </div>
       {current_username !== username && (
         <Button
           className="flex items-center gap-2 normal-case rounded-full px-3 py-2"

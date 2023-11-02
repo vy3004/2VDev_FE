@@ -1,4 +1,5 @@
 import { format } from "date-fns";
+import { useNavigate } from "react-router-dom";
 
 import { Button, Typography } from "@material-tailwind/react";
 import {
@@ -19,6 +20,8 @@ interface AboutMeProps {
 }
 
 const AboutMe: React.FC<AboutMeProps> = ({ user }) => {
+  const navigate = useNavigate();
+
   const statsItems = [
     {
       label: "Questions",
@@ -46,10 +49,12 @@ const AboutMe: React.FC<AboutMeProps> = ({ user }) => {
     {
       label: "Followers",
       users: user.followers,
+      href: `/users?id=${user._id}&filter=follower&limit=6&page=1`,
     },
     {
       label: "Following",
       users: user.following,
+      href: `/users?id=${user._id}&filter=following&limit=6&page=1`,
     },
   ];
 
@@ -108,6 +113,7 @@ const AboutMe: React.FC<AboutMeProps> = ({ user }) => {
           <Button
             key={key}
             variant="outlined"
+            onClick={() => navigate(item.href)}
             className="normal-case w-full space-y-2 col-span-2 sm:col-span-1 dark:text-gray-50 dark:border-gray-50"
           >
             <div className="flex items-center justify-center gap-2">

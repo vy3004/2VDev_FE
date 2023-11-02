@@ -14,8 +14,6 @@ import {
   Input,
   List,
   ListItem,
-  Option,
-  Select,
   Spinner,
   Textarea,
   Typography,
@@ -29,7 +27,6 @@ import mediaService from "../../../../services/media-service";
 
 import { base64ToFile, fileToBase64 } from "../../../../utils/file-utils";
 import { User } from "../../../../utils/types";
-import { USER_LEVELS } from "../../../../utils/constant";
 import { selectApp } from "../../../../redux/features/app-state-slice";
 
 interface UserDetailFormProps {
@@ -40,7 +37,6 @@ interface UserDetailFormValues {
   name: string;
   verify: number;
   role: number;
-  level: string;
   date_of_birth?: string;
   bio?: string;
   location?: string;
@@ -65,7 +61,6 @@ const UserDetailForm: React.FC<UserDetailFormProps> = ({ user }) => {
   const [isSubmit, setIsSubmit] = useState(false);
   const [changeAvatar, setChangeAvatar] = useState(false);
   const [changeCoverPhoto, setChangeCoverPhoto] = useState(false);
-  const [level, setLevel] = useState(user.level);
   const [verify, setVerify] = useState(user.verify === 1);
   const [admin, setAdmin] = useState(user.role === 1);
 
@@ -99,7 +94,6 @@ const UserDetailForm: React.FC<UserDetailFormProps> = ({ user }) => {
       username: user.username,
       verify: user.verify,
       role: user.role,
-      level: level.toString(),
       avatar: user.avatar,
       cover_photo: coverPhoto,
       bio: user.bio,
@@ -129,7 +123,6 @@ const UserDetailForm: React.FC<UserDetailFormProps> = ({ user }) => {
       let data = {
         ...values,
         user_id: user._id,
-        level: +level,
         verify: +verify,
         role: +admin,
       };
@@ -400,29 +393,6 @@ const UserDetailForm: React.FC<UserDetailFormProps> = ({ user }) => {
           </div>
 
           <div className="grid grid-cols-2 gap-4">
-            {/* Select level start */}
-            <div className="col-span-2 sm:col-span-1">
-              <Select
-                name="level"
-                label={t("user.Select Level")}
-                size="lg"
-                color="red"
-                value={userDetailForm.values.level}
-                onChange={userDetailForm.handleChange}
-              >
-                {USER_LEVELS.map((item, key) => (
-                  <Option
-                    value={key.toString()}
-                    key={key}
-                    onClick={() => setLevel(key)}
-                  >
-                    {t(`user.${item}`)}
-                  </Option>
-                ))}
-              </Select>
-            </div>
-            {/* Select level end */}
-
             <div className="col-span-2 sm:col-span-1">
               <List className="flex-row gap-4 p-0">
                 {/* Role checkbox start */}

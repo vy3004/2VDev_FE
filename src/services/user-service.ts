@@ -27,6 +27,8 @@ interface ResetPasswordPayload {
 interface GetUsersPayload {
   limit: number;
   page: number;
+  sort_field: string;
+  sort_value: number;
 }
 
 interface GetUserPayload {
@@ -92,8 +94,18 @@ const userEndpoints = {
   getMe: `${apiEndPoints.users}/me`,
   getData: `${apiEndPoints.users}/data`,
   updateMe: `${apiEndPoints.users}/me`,
-  getUsers: ({ limit, page }: { limit: number; page: number }) =>
-    `${apiEndPoints.users}/list-users?limit=${limit}&page=${page}`,
+  getUsers: ({
+    limit,
+    page,
+    sort_field,
+    sort_value,
+  }: {
+    limit: number;
+    page: number;
+    sort_field: string;
+    sort_value: number;
+  }) =>
+    `${apiEndPoints.users}/list-users?limit=${limit}&page=${page}&sort_field=${sort_field}&sort_value=${sort_value}`,
   getUser: ({ username }: { username: string }) =>
     `${apiEndPoints.users}/${username}`,
   getFollowing: ({
@@ -317,10 +329,12 @@ const userService = {
   getUsers: async ({
     limit,
     page,
+    sort_field,
+    sort_value,
   }: GetUsersPayload): Promise<ApiResponse<any>> => {
     try {
       const response = await axiosInstance.get(
-        userEndpoints.getUsers({ limit, page })
+        userEndpoints.getUsers({ limit, page, sort_field, sort_value })
       );
 
       return { response };

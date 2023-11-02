@@ -45,21 +45,52 @@ export const COMMENTS_SORT = [
   },
 ];
 
-export const USERS_TYPE = ["all", "follower", "following"];
+export const USERS_TYPE = [
+  {
+    label: "all",
+    value: "all",
+  },
+  {
+    label: "most points",
+    value: "point",
+  },
+  {
+    label: "most followed",
+    value: "followers",
+  },
+  {
+    label: "follower",
+    value: "follower",
+  },
+  {
+    label: "following",
+    value: "following",
+  },
+];
 
 export const USERS_HEADER_PAGE = [
   {
-    type: USERS_TYPE[0],
+    type: USERS_TYPE[0].value,
     title: "All Users",
     desc: "See information about all users",
   },
   {
-    type: USERS_TYPE[1],
+    type: USERS_TYPE[1].value,
+    title: "Most Points Users",
+    desc: "See information about users with the most points",
+  },
+  {
+    type: USERS_TYPE[2].value,
+    title: "Most Followed Users",
+    desc: "See information about most followed users",
+  },
+  {
+    type: USERS_TYPE[3].value,
     title: "All Followers",
     desc: "See information about all followers",
   },
   {
-    type: USERS_TYPE[2],
+    type: USERS_TYPE[4].value,
     title: "All Following",
     desc: "See information about all the users you're following",
   },

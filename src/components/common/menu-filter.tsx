@@ -28,7 +28,7 @@ const MenuFilter: React.FC<MenuFilterProps> = ({ content, handleChange }) => {
       }}
     >
       <MenuHandler>
-        <IconButton className="mr-5 mb-1" size="sm" variant="outlined">
+        <IconButton className="mr-5 w-20 h-20" variant="outlined">
           <AdjustmentsHorizontalIcon className="w-6 h-6 transition-transform hover:rotate-180" />
         </IconButton>
       </MenuHandler>
