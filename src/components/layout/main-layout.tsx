@@ -17,7 +17,7 @@ import EditMyProfileModal from "../modals/edit-my-profile-modal";
 import ReportModal from "../modals/report-modal";
 import ConfirmModal from "../modals/confirm-modal";
 
-import authService from "../../services/user-service";
+import userService from "../../services/user-service";
 import { selectUser, setUser } from "../../redux/features/user-slice";
 import { setIsLoading } from "../../redux/features/global-loading";
 import SpeedDialCustom from "../common/speed-dial";
@@ -42,7 +42,7 @@ const MainLayout = () => {
           const tokenTimeout = 15; // 15 minutes in seconds
 
           if (decodedToken.exp - currentTime < tokenTimeout) {
-            const { response } = await authService.refreshToken();
+            const { response } = await userService.refreshToken();
 
             localStorage.setItem(
               "access_token",
@@ -72,7 +72,7 @@ const MainLayout = () => {
     const authUser = async () => {
       try {
         dispatch(setIsLoading(true));
-        const { response } = await authService.getInfo();
+        const { response } = await userService.getInfo();
         if (response) {
           dispatch(setUser(response.data.result));
         }
@@ -91,7 +91,7 @@ const MainLayout = () => {
     const verifyEmail = async () => {
       try {
         dispatch(setIsLoading(true));
-        const { response } = await authService.verifyEmail();
+        const { response } = await userService.verifyEmail();
 
         if (response) {
           dispatch(

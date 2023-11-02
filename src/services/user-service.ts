@@ -90,6 +90,7 @@ const userEndpoints = {
   resetPassword: `${apiEndPoints.users}/reset-password`,
 
   getMe: `${apiEndPoints.users}/me`,
+  getData: `${apiEndPoints.users}/data`,
   updateMe: `${apiEndPoints.users}/me`,
   getUsers: ({ limit, page }: { limit: number; page: number }) =>
     `${apiEndPoints.users}/list-users?limit=${limit}&page=${page}`,
@@ -196,6 +197,15 @@ const userService = {
   getInfo: async (): Promise<ApiResponse<any>> => {
     try {
       const response = await axiosInstance.get(userEndpoints.getMe);
+
+      return { response };
+    } catch (error) {
+      return { error: error as AxiosError };
+    }
+  },
+  getData: async (): Promise<ApiResponse<any>> => {
+    try {
+      const response = await axiosInstance.get(userEndpoints.getData);
 
       return { response };
     } catch (error) {

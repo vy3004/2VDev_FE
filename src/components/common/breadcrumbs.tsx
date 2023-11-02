@@ -15,7 +15,10 @@ const BreadcrumbsCustom = () => {
       fullWidth
       className="dark:bg-gray-700"
     >
-      <Typography className="dark:text-gray-50" onClick={() => navigate("/")}>
+      <Typography
+        className="dark:text-gray-50"
+        onClick={() => navigate("/?type=all&sort_field=created_at")}
+      >
         <HomeIcon className="w-4 h-4" />
       </Typography>
       {items.map((item, key) => (

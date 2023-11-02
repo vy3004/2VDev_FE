@@ -2,18 +2,18 @@
 import { useEffect, useState } from "react";
 import { useLocation } from "react-router-dom";
 import { useTranslation } from "react-i18next";
+import InfiniteScroll from "react-infinite-scroll-component";
 
 import { Typography } from "@material-tailwind/react";
 import Loading from "../../components/common/loading";
 import NotFoundAlert from "../../components/common/not-found-alert";
 import PostCard from "../../components/post/post-card";
-import InfiniteScroll from "react-infinite-scroll-component";
+import MenuFilter from "../../components/common/menu-filter";
 
 import postService from "../../services/post-service";
 import { Post } from "../../utils/types";
-import { POSTS_TYPE } from "../../utils/constant";
-import { getSortPostsLabel, getTypePostsLabel } from "../../utils/string-utils";
-import MenuFilter from "../../components/common/menu-filter";
+import { POSTS_SORT, POSTS_TYPE } from "../../utils/constant";
+import { getLabelByValue } from "../../utils/string-utils";
 
 const Home = () => {
   const { t } = useTranslation();
@@ -82,13 +82,14 @@ const Home = () => {
       <div className="flex items-end justify-between">
         <div>
           <Typography variant="h5">
-            {t(`home.${getSortPostsLabel(sortField)} posts`)}
+            {t(`home.${getLabelByValue(sortField, POSTS_SORT)} posts`)}
           </Typography>
           <Typography className="mt-1 font-normal">
             {t(
-              `home.see information about ${getTypePostsLabel(
-                type
-              )} ${getSortPostsLabel(sortField)} posts`
+              `home.see information about ${getLabelByValue(
+                type,
+                POSTS_TYPE
+              )} ${getLabelByValue(sortField, POSTS_SORT)} posts`
             )}
           </Typography>
         </div>

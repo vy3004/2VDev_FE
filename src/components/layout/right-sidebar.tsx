@@ -19,6 +19,7 @@ import QuestionButton from "../common/question-button";
 import TagList from "../common/tag-list";
 
 import { getLastTwoWords } from "../../utils/string-utils";
+import Statistics from "../common/statistics";
 
 const RightSidebar = () => {
   const { t } = useTranslation();
@@ -117,55 +118,13 @@ const RightSidebar = () => {
   ];
 
   return (
-    <div className="">
+    <div>
       <div className="hidden border-y lg:flex lg:justify-center py-4 dark:border-gray-900 dark:bg-gray-700">
         <QuestionButton />
       </div>
-      <div className="grid grid-cols-2 gap-2 p-4 bg-gray-50 dark:bg-gray-800">
-        <div className="relative block rounded-bl-3xl rounded-tr-3xl overflow-hidden p-2 bg-white shadow-md dark:bg-gray-900">
-          <span className="absolute inset-x-0 top-0 h-2 bg-gradient-to-l from-black to-blue-300" />
-          <div className="h-full flex flex-col items-center justify-center">
-            <Typography className="text-sm text-blue-500">
-              {t("right-sidebar.Questions")}
-            </Typography>
-            <Typography className="font-bold text-2xl dark:text-gray-50">
-              73
-            </Typography>
-          </div>
-        </div>
-        <div className="relative block rounded-br-3xl rounded-tl-3xl overflow-hidden p-2 bg-white shadow-md dark:bg-gray-900">
-          <span className="absolute inset-x-0 top-0 h-2 bg-gradient-to-r from-black to-red-300" />
-          <div className="h-full flex flex-col items-center justify-center">
-            <Typography className="text-sm text-red-500">
-              {t("right-sidebar.Answers")}
-            </Typography>
-            <Typography className="font-bold text-2xl dark:text-gray-50">
-              22
-            </Typography>
-          </div>
-        </div>
-        <div className="relative block rounded-br-3xl rounded-tl-3xl overflow-hidden p-2 bg-white shadow-md dark:bg-gray-900">
-          <span className="absolute inset-x-0 bottom-0 h-2 bg-gradient-to-l from-black to-green-300" />
-          <div className="h-full flex flex-col items-center justify-center">
-            <Typography className="text-sm text-green-500">
-              {t("right-sidebar.Best Answers")}
-            </Typography>
-            <Typography className="font-bold text-2xl dark:text-gray-50">
-              15
-            </Typography>
-          </div>
-        </div>
-        <div className="relative block rounded-bl-3xl rounded-tr-3xl overflow-hidden p-2 bg-white shadow-md dark:bg-gray-900">
-          <span className="absolute inset-x-0 bottom-0 h-2 bg-gradient-to-r from-black to-orange-300" />
-          <div className="h-full flex flex-col items-center justify-center">
-            <Typography className="text-sm text-orange-500">
-              {t("right-sidebar.Users")}
-            </Typography>
-            <Typography className="font-bold text-2xl dark:text-gray-50">
-              40
-            </Typography>
-          </div>
-        </div>
+
+      <div className="bg-gray-50 dark:bg-gray-800">
+        <Statistics />
       </div>
 
       <div className="border-y p-4 dark:border-gray-900 dark:text-gray-50">
@@ -173,7 +132,6 @@ const RightSidebar = () => {
           <TagIcon className="w-4 h-4" />
           {t("right-sidebar.Trending Tags")}
         </Typography>
-
         <TagList tags={tags} />
       </div>
 

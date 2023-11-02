@@ -71,7 +71,7 @@ const PostCard: React.FC<PostCardProps> = ({ post, is_detail }) => {
   const { reportModal } = useSelector(selectReportModal);
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  console.log("POST", post);
+  // console.log("POST", post);
 
   const [vote, setVote] = useState(post.is_voted);
   const [votesCount, setVotesCount] = useState(post.votes_count);
@@ -80,7 +80,7 @@ const PostCard: React.FC<PostCardProps> = ({ post, is_detail }) => {
   const [report, setReport] = useState(post.is_reported);
   const [showFormAnswer, setShowFormAnswer] = useState(false);
   const [comments, setComments] = useState<Post[]>([]);
-  const [sortField, setSortField] = useState("created_at");
+  const [sortField, setSortField] = useState("votes_count");
   const [page, setPage] = useState(1);
   const [totalPage, setTotalPage] = useState(1);
   const [isLoading, setIsLoading] = useState(false);
