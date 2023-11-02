@@ -1,6 +1,8 @@
 import { useTranslation } from "react-i18next";
 import { Chip } from "@material-tailwind/react";
 
+import { getLevelByPoint } from "../../utils/string-utils";
+
 interface LevelChipPops {
   level: number;
 }
@@ -13,17 +15,7 @@ const LevelChip: React.FC<LevelChipPops> = ({ level }) => {
       className="normal-case"
       variant="ghost"
       size="sm"
-      value={
-        level < 50
-          ? t("user.Bronze")
-          : level < 200
-          ? t("user.Silver")
-          : level < 1000
-          ? t("user.Gold")
-          : level < 10000
-          ? t("user.Platinum")
-          : t("user.Diamond")
-      }
+      value={t(`user.${getLevelByPoint(level)}`)}
       color={
         level < 50
           ? "brown"

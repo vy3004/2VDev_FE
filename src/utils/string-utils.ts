@@ -52,3 +52,17 @@ export const getLabelByValue = (
   const sortItem = array.find((item) => item.value === value);
   return sortItem ? sortItem.label : "";
 };
+
+export const getLevelByPoint = (point: number): string => {
+  if (point < 50) {
+    return "Bronze";
+  } else if (point < 200) {
+    return "Silver";
+  } else if (point < 1000) {
+    return "Gold";
+  } else if (point < 10000) {
+    return "Platinum";
+  } else {
+    return "Diamond";
+  }
+};

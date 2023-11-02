@@ -1,8 +1,7 @@
 import { format } from "date-fns";
 
-import { Avatar, Button, Typography } from "@material-tailwind/react";
+import { Button, Typography } from "@material-tailwind/react";
 import {
-  AcademicCapIcon,
   CakeIcon,
   ChatBubbleLeftRightIcon,
   GlobeAltIcon,
@@ -10,9 +9,11 @@ import {
   StarIcon,
   BookOpenIcon,
   UserGroupIcon,
+  TrophyIcon,
 } from "@heroicons/react/24/solid";
-
 import StatsButton from "./stats-button";
+
+import { getLevelByPoint } from "../../../utils/string-utils";
 interface AboutMeProps {
   user: any;
 }
@@ -21,22 +22,22 @@ const AboutMe: React.FC<AboutMeProps> = ({ user }) => {
   const statsItems = [
     {
       label: "Questions",
-      stats: "10",
+      stats: user.questions,
       icon: <BookOpenIcon className="w-8 h-8 text-blue-500" />,
     },
     {
       label: "Answers",
-      stats: "10",
+      stats: user.answers,
       icon: <ChatBubbleLeftRightIcon className="w-8 h-8 text-red-500" />,
     },
     {
-      label: "Best Questions",
-      stats: "10",
-      icon: <AcademicCapIcon className="w-8 h-8 text-green-500" />,
+      label: "Level",
+      stats: getLevelByPoint(user.point),
+      icon: <TrophyIcon className="w-8 h-8 text-green-500" />,
     },
     {
       label: "Points",
-      stats: "10",
+      stats: user.point,
       icon: <StarIcon className="w-8 h-8 text-orange-500" />,
     },
   ];
@@ -44,11 +45,11 @@ const AboutMe: React.FC<AboutMeProps> = ({ user }) => {
   const followItems = [
     {
       label: "Followers",
-      users: "10",
+      users: user.followers,
     },
     {
       label: "Following",
-      users: "10",
+      users: user.following,
     },
   ];
 
@@ -109,32 +110,12 @@ const AboutMe: React.FC<AboutMeProps> = ({ user }) => {
             variant="outlined"
             className="normal-case w-full space-y-2 col-span-2 sm:col-span-1 dark:text-gray-50 dark:border-gray-50"
           >
-            <div className="flex items-center gap-1">
+            <div className="flex items-center justify-center gap-2">
               <UserGroupIcon className="w-8 h-8" />
 
               <Typography className="text-xl font-semibold">
-                {item.label}
+                {item.users} User{item.users > 1 && "s"} {item.label}
               </Typography>
-            </div>
-            <div className="flex items-center -space-x-4">
-              <Avatar
-                variant="circular"
-                alt="user 1"
-                className="border-2 border-white hover:z-10 focus:z-10"
-                src="https://images.unsplash.com/photo-1633332755192-727a05c4013d?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1480&q=80"
-              />
-              <Avatar
-                variant="circular"
-                alt="user 2"
-                className="border-2 border-white hover:z-10 focus:z-10"
-                src="https://images.unsplash.com/photo-1580489944761-15a19d654956?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1061&q=80"
-              />
-              <Avatar
-                variant="circular"
-                alt="user 3"
-                className="border-2 border-white hover:z-10 focus:z-10"
-                src="https://images.unsplash.com/photo-1544005313-94ddf0286df2?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1288&q=80"
-              />
             </div>
           </Button>
         ))}
