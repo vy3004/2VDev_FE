@@ -22,7 +22,6 @@ const Tags = () => {
       const { response } = await tagService.getTags();
 
       if (response) {
-        console.log(response.data.data);
         setTags(response.data.data);
       }
 

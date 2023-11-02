@@ -16,33 +16,13 @@ import {
   Avatar,
 } from "@material-tailwind/react";
 import QuestionButton from "../common/question-button";
-import TagList from "../common/tag-list";
+import Statistics from "../common/statistics";
+import TagsTrending from "../common/tags-trending";
 
 import { getLastTwoWords } from "../../utils/string-utils";
-import Statistics from "../common/statistics";
 
 const RightSidebar = () => {
   const { t } = useTranslation();
-
-  const tags = [
-    "java",
-    "css",
-    "html",
-    "javascript",
-    "typescript",
-    "react",
-    "nodejs",
-    "java",
-    "css",
-    "html",
-    "javascript",
-    "typescript",
-    "react",
-    "nodejs",
-    "typescript",
-    "react",
-    "nodejs",
-  ];
 
   const popular = [
     {
@@ -132,10 +112,10 @@ const RightSidebar = () => {
           <TagIcon className="w-4 h-4" />
           {t("right-sidebar.Trending Tags")}
         </Typography>
-        <TagList tags={tags} />
+        <TagsTrending />
       </div>
 
-      <div className="">
+      <div>
         <Tabs value="popular" className="">
           <TabsHeader className="bg-gray-100 p-4 rounded-none">
             {data.map(({ label, value }) => (

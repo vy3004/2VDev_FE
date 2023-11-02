@@ -16,7 +16,6 @@ const AnimatedNumber: React.FC<AnimatedNumberProps> = ({
   const [currentNumber, setCurrentNumber] = useState(0);
 
   useEffect(() => {
-    console.log("RUN");
     const startTime = performance.now();
 
     const updateNumber = (currentTime: number) => {

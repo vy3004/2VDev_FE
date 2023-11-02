@@ -20,7 +20,6 @@ const TagDetail = () => {
   const [postsCount, setPostsCount] = useState(0);
 
   const getPosts = async () => {
-    console.log("getPosts");
     if (tag_id) {
       const { response } = await postService.getPostsByHashtag({
         hashtag_id: tag_id,
