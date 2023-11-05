@@ -152,7 +152,7 @@ const PostCard: React.FC<PostCardProps> = ({ post, is_detail }) => {
           toast.success(response.data.message);
         }
       } else {
-        const { response } = await userService.unfollow({
+        const { response } = await userService.unFollow({
           user_id: otherUserId,
         });
 
@@ -321,11 +321,17 @@ const PostCard: React.FC<PostCardProps> = ({ post, is_detail }) => {
               size="lg"
               alt="avatar"
               withBorder={true}
-              className="p-0.5"
+              className="p-0.5 cursor-pointer"
+              onClick={() => navigate(`/profile/${post.user_detail.username}`)}
             />
             <div>
               <div className="flex items-center gap-4">
-                <Typography className="font-bold text-blue-500 cursor-pointer hover:text-gray-900">
+                <Typography
+                  onClick={() =>
+                    navigate(`/profile/${post.user_detail.username}`)
+                  }
+                  className="font-bold text-blue-500 cursor-pointer hover:text-gray-900"
+                >
                   {post.user_detail.name}
                 </Typography>
                 <LevelChip level={post.user_detail.point} />
