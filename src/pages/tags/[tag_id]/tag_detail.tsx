@@ -19,12 +19,12 @@ const TagDetail = () => {
   const [tagName, setTagName] = useState("");
   const [postsCount, setPostsCount] = useState(0);
 
-  const getPosts = async () => {
+  const getPosts = async (currentPosts: Post[], currentPage: number) => {
     if (tag_id) {
       const { response } = await postService.getPostsByHashtag({
         hashtag_id: tag_id,
         limit: 10,
-        page: page,
+        page: currentPage,
         sort_field: "created_at",
         sort_value: -1,
       });
@@ -32,8 +32,8 @@ const TagDetail = () => {
       if (response) {
         const newData = response.data.result.posts;
         if (newData.length > 0) {
-          setPosts((prevData) => [...prevData, ...newData]);
-          setPage((prevPage) => prevPage + 1);
+          setPosts([...currentPosts, ...newData]);
+          setPage(currentPage + 1);
           setTagName(response.data.result.hashtag_name);
           setPostsCount(response.data.result.posts_count);
         }
@@ -43,7 +43,7 @@ const TagDetail = () => {
   };
 
   useEffect(() => {
-    getPosts();
+    getPosts([], 1);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [tag_id]);
 
@@ -63,7 +63,7 @@ const TagDetail = () => {
       {/* List posts start */}
       <InfiniteScroll
         dataLength={posts.length}
-        next={getPosts}
+        next={() => getPosts(posts, page)}
         hasMore={hasMore}
         loader={
           <div className="relative h-80">
