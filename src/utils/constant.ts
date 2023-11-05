@@ -1,3 +1,5 @@
+export const STATISTICS_DURATION = 500;
+
 export const USER_LEVELS = ["Bronze", "Silver", "Gold", "Platinum", "Diamond"];
 
 export const POSTS_TYPE = [

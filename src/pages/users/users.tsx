@@ -1,20 +1,21 @@
 import { useState, useEffect } from "react";
 import { useSelector } from "react-redux";
 import { useLocation } from "react-router-dom";
+import { debounce } from "lodash";
 
 import { MagnifyingGlassIcon } from "@heroicons/react/24/solid";
 import { Typography, Input } from "@material-tailwind/react";
 import Loading from "../../components/common/loading";
 import Pagination from "../../components/common/pagination";
 import NotFoundAlert from "../../components/common/not-found-alert";
+import MenuFilter from "../../components/common/menu-filter";
 import UserCard from "./components/user-card";
 
 import userService from "../../services/user-service";
+import searchService from "../../services/search-service";
 import { selectUser } from "../../redux/features/user-slice";
 import { USERS_HEADER_PAGE, USERS_TYPE } from "../../utils/constant";
-import { debounce } from "lodash";
-import searchService from "../../services/search-service";
-import MenuFilter from "../../components/common/menu-filter";
+import { UserCardType } from "../../utils/types";
 
 const Users = () => {
   const currentUser = useSelector(selectUser).user;
@@ -29,7 +30,7 @@ const Users = () => {
     pageQueryParam ? parseInt(pageQueryParam) : 1
   );
   const limit = limitQueryParam ? parseInt(limitQueryParam) : 6;
-  const [users, setUsers] = useState([]);
+  const [users, setUsers] = useState<UserCardType[]>([]);
   const [totalPage, setTotalPage] = useState(1);
   const [isLoading, setIsLoading] = useState(false);
   const [searchValue, setSearchValue] = useState("");
@@ -49,14 +50,18 @@ const Users = () => {
     if (response) {
       setTotalPage(response.data.result.totalPage);
       setPage(1);
-      const userData = response.data.result.list_users.map((item: any) => ({
-        _id: item._id,
-        name: item.name,
-        username: item.username,
-        avatar: item.avatar,
-        point: item.point,
-        is_followed: item.is_followed,
-      }));
+      const userData = response.data.result.list_users.map(
+        (item: UserCardType) => ({
+          _id: item._id,
+          name: item.name,
+          username: item.username,
+          avatar: item.avatar,
+          point: item.point,
+          is_followed: item.is_followed,
+          followers: item.followers,
+          following: item.following,
+        })
+      );
       setUsers(userData);
     }
 
@@ -97,14 +102,18 @@ const Users = () => {
 
     if (response) {
       setTotalPage(response.data.result.totalPage);
-      const userData = response.data.result.list_users.map((item: any) => ({
-        _id: item._id,
-        name: item.name,
-        username: item.username,
-        avatar: item.avatar,
-        point: item.point,
-        is_followed: item.is_followed,
-      }));
+      const userData = response.data.result.list_users.map(
+        (item: UserCardType) => ({
+          _id: item._id,
+          name: item.name,
+          username: item.username,
+          avatar: item.avatar,
+          point: item.point,
+          is_followed: item.is_followed,
+          followers: item.followers,
+          following: item.following,
+        })
+      );
       setUsers(userData);
     }
 
@@ -165,6 +174,8 @@ const Users = () => {
     setIsLoading(false);
   };
 
+  console.log("USerS", users);
+
   useEffect(() => {
     if (filter === "all" && searchValue === "") getUsers("created_at");
     if (filter === "point" && searchValue === "") getUsers("point");
@@ -224,20 +235,13 @@ const Users = () => {
         ) : users && users.length > 0 ? (
           <div className="space-y-4">
             <div className="grid grid-cols-6 gap-6 mt-4">
-              {users.map(
-                ({ _id, name, avatar, username, point, is_followed }) => (
-                  <UserCard
-                    key={_id}
-                    current_username={currentUser?.username}
-                    user_id={_id}
-                    username={username}
-                    name={name}
-                    avatar={avatar}
-                    point={point}
-                    is_followed={is_followed}
-                  />
-                )
-              )}
+              {users.map((user) => (
+                <UserCard
+                  key={user._id}
+                  current_username={currentUser?.username}
+                  user_detail={user}
+                />
+              ))}
             </div>
 
             <Pagination

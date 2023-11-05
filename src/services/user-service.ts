@@ -65,7 +65,7 @@ interface FollowPayLoad {
   followed_user_id: string;
 }
 
-interface UnfollowPayLoad {
+interface UnFollowPayLoad {
   user_id: string;
 }
 
@@ -129,7 +129,7 @@ const userEndpoints = {
   }) =>
     `${apiEndPoints.users}/followers/list-users-follower/${user_id}?limit=${limit}&page=${page}`,
   follow: `${apiEndPoints.users}/follow`,
-  unfollow: ({ user_id }: { user_id: string }) =>
+  unFollow: ({ user_id }: { user_id: string }) =>
     `${apiEndPoints.users}/follow/${user_id}`,
   // Role admin
   updateUser: ({ user_id }: { user_id: string }) =>
@@ -396,10 +396,10 @@ const userService = {
       return { error: error as AxiosError };
     }
   },
-  unfollow: async ({ user_id }: UnfollowPayLoad): Promise<ApiResponse<any>> => {
+  unFollow: async ({ user_id }: UnFollowPayLoad): Promise<ApiResponse<any>> => {
     try {
       const response = await axiosInstance.delete(
-        userEndpoints.unfollow({ user_id })
+        userEndpoints.unFollow({ user_id })
       );
 
       return { response };

@@ -5,10 +5,9 @@ import { Typography } from "@material-tailwind/react";
 import AnimatedNumber from "./animate-number";
 
 import userService from "../../services/user-service";
+import { STATISTICS_DURATION } from "../../utils/constant";
 
 const Statistics = () => {
-  const duration = 3000;
-
   const [data, setData] = useState({
     questions: 0,
     bestAnswers: 0,
@@ -39,7 +38,10 @@ const Statistics = () => {
           <Typography className="text-sm text-blue-500">
             {t("right-sidebar.Questions")}
           </Typography>
-          <AnimatedNumber finalNumber={data.questions} duration={duration} />
+          <AnimatedNumber
+            finalNumber={data.questions}
+            duration={STATISTICS_DURATION}
+          />
         </div>
       </div>
       <div className="relative block rounded-br-3xl rounded-tl-3xl overflow-hidden p-2 bg-white shadow-md dark:bg-gray-900">
@@ -48,7 +50,10 @@ const Statistics = () => {
           <Typography className="text-sm text-red-500">
             {t("right-sidebar.Answers")}
           </Typography>
-          <AnimatedNumber finalNumber={data.answers} duration={duration} />
+          <AnimatedNumber
+            finalNumber={data.answers}
+            duration={STATISTICS_DURATION}
+          />
         </div>
       </div>
       <div className="relative block rounded-br-3xl rounded-tl-3xl overflow-hidden p-2 bg-white shadow-md dark:bg-gray-900">
@@ -57,7 +62,10 @@ const Statistics = () => {
           <Typography className="text-sm text-green-500">
             {t("right-sidebar.Best Answers")}
           </Typography>
-          <AnimatedNumber finalNumber={data.bestAnswers} duration={duration} />
+          <AnimatedNumber
+            finalNumber={data.bestAnswers}
+            duration={STATISTICS_DURATION}
+          />
         </div>
       </div>
       <div className="relative block rounded-bl-3xl rounded-tr-3xl overflow-hidden p-2 bg-white shadow-md dark:bg-gray-900">
@@ -66,7 +74,10 @@ const Statistics = () => {
           <Typography className="text-sm text-orange-500">
             {t("right-sidebar.Users")}
           </Typography>
-          <AnimatedNumber finalNumber={data.users} duration={duration} />
+          <AnimatedNumber
+            finalNumber={data.users}
+            duration={STATISTICS_DURATION}
+          />
         </div>
       </div>
     </div>

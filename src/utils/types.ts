@@ -52,3 +52,14 @@ export interface Post {
   created_at: string;
   updated_at: string;
 }
+
+export interface UserCardType {
+  _id: string;
+  name: string;
+  username: string;
+  avatar: string;
+  point: number;
+  is_followed: boolean;
+  followers?: number;
+  following?: number;
+}

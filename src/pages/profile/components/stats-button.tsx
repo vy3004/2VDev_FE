@@ -1,4 +1,4 @@
-import { Button, Typography } from "@material-tailwind/react";
+import { Button } from "@material-tailwind/react";
 
 interface StatsButtonProps {
   label: string;
@@ -12,13 +12,13 @@ const StatsButton: React.FC<StatsButtonProps> = ({ label, stats, icon }) => {
       variant="outlined"
       className="normal-case w-full sm:space-y-2 sm:p-2 dark:text-gray-50 dark:border-gray-50"
     >
-      <div className="flex items-center gap-2">
-        {icon}
-        <Typography className="text-xl font-semibold">{stats}</Typography>
+      <div className="flex items-center gap-4">
+        <div>{icon}</div>
+        <div className="text-left font-semibold">
+          <p className="text-base">{label}</p>
+          <p className="text-lg">{stats}</p>
+        </div>
       </div>
-      <Typography className="text-center sm:text-lg font-semibold">
-        {label}
-      </Typography>
     </Button>
   );
 };
