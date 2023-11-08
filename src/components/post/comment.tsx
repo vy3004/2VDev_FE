@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
+import { useNavigate } from "react-router-dom";
 
 import {
   Avatar,
@@ -60,6 +61,7 @@ const Comment: React.FC<CommentProps> = ({
   const { i18n } = useTranslation();
   const { reportModal } = useSelector(selectReportModal);
   const dispatch = useDispatch();
+  const navigate = useNavigate();
 
   const [children, setChildren] = useState<Post[]>();
   const [loadingReplies, setLoadingReplies] = useState(false);
@@ -161,9 +163,10 @@ const Comment: React.FC<CommentProps> = ({
         <div className="flex items-center justify-between">
           <div className="flex items-center gap-4">
             <Typography
-              as="a"
-              href="#"
-              className="font-bold text-sm text-blue-500 hover:text-gray-900"
+              onClick={() =>
+                navigate(`/profile/${comment.user_detail.username}`)
+              }
+              className="font-bold text-sm text-blue-500 hover:text-gray-900 cursor-pointer"
             >
               {comment.user_detail.name}
             </Typography>

@@ -73,8 +73,8 @@ const ManageUsers = () => {
       });
 
       if (response) {
-        setTotalPage(response?.data.result.totalPage);
-        setUsers(response?.data.result.list_users);
+        setTotalPage(response.data.result.totalPage);
+        setUsers(response.data.result.list_users);
       }
 
       setIsLoading(false);

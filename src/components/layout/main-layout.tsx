@@ -44,10 +44,12 @@ const MainLayout = () => {
           if (decodedToken.exp - currentTime < tokenTimeout) {
             const { response } = await userService.refreshToken();
 
-            localStorage.setItem(
-              "access_token",
-              response?.data.result.access_token
-            );
+            if (response) {
+              localStorage.setItem(
+                "access_token",
+                response.data.result.access_token
+              );
+            }
           }
         } catch (error) {
           // Error occurred while decoding or refreshing token

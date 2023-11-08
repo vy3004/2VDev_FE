@@ -1,6 +1,7 @@
 import { AxiosResponse, AxiosError } from "axios";
 import axiosInstance from "../configs/axios-config";
 import { apiEndPoints } from "../utils/api-endpoints";
+import { PostType } from "../utils/constant";
 
 interface PostPayLoad {
   user_id: string;
@@ -38,6 +39,13 @@ interface GetPostsByHashtagPayLoad {
   page: number;
   sort_field: string;
   sort_value: number;
+}
+
+interface GetPostsByUserPayLoad {
+  user_id: string;
+  limit: number;
+  page: number;
+  type: PostType;
 }
 
 interface EditPostPayLoad {
@@ -108,6 +116,18 @@ const postEndpoints = {
     sort_value: number;
   }) =>
     `${apiEndPoints.posts}/hashtags/${hashtag_id}?limit=${limit}&page=${page}&sort_field=${sort_field}&sort_value=${sort_value}`,
+  getPostsByUser: ({
+    user_id,
+    limit,
+    page,
+    type,
+  }: {
+    user_id: string;
+    limit: number;
+    page: number;
+    type: PostType;
+  }) =>
+    `${apiEndPoints.posts}/userposts/${user_id}?limit=${limit}&page=${page}&type=${type}`,
 
   editPost: ({ post_id }: { post_id: string }) =>
     `${apiEndPoints.posts}/${post_id}`,
@@ -209,6 +229,27 @@ const postService = {
           page,
           sort_field,
           sort_value,
+        })
+      );
+
+      return { response };
+    } catch (error) {
+      return { error: error as AxiosError };
+    }
+  },
+  getPostsByUser: async ({
+    user_id,
+    limit,
+    page,
+    type,
+  }: GetPostsByUserPayLoad): Promise<ApiResponse<any>> => {
+    try {
+      const response = await axiosInstance.get(
+        postEndpoints.getPostsByUser({
+          user_id,
+          limit,
+          page,
+          type,
         })
       );
 

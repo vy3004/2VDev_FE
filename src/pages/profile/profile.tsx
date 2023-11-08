@@ -4,10 +4,6 @@ import { useParams } from "react-router-dom";
 
 import {
   Avatar,
-  Menu,
-  MenuHandler,
-  MenuList,
-  MenuItem,
   Tab,
   TabPanel,
   Tabs,
@@ -18,102 +14,111 @@ import {
 } from "@material-tailwind/react";
 import { PencilSquareIcon } from "@heroicons/react/24/solid";
 import AboutMe from "./components/about-me";
+import PostsTab from "./components/posts-tab";
+import Loading from "../../components/common/loading";
+import NotFoundAlert from "../../components/common/not-found-alert";
 
 import userService from "../../services/user-service";
 import { selectUser } from "../../redux/features/user-slice";
 import { setEditMyProfileModalOpen } from "../../redux/features/edit-my-profile-modal-slice";
+import { PostType } from "../../utils/constant";
+import { User } from "../../utils/types";
 
 const Profile = () => {
   const { username } = useParams();
   const dispatch = useDispatch();
   const currentUser = useSelector(selectUser).user;
+  const queryParams = new URLSearchParams(window.location.search);
+  const tabParam = queryParams.get("tab");
 
-  const [userProfile, setUserProfile] = useState(currentUser);
+  const [userProfile, setUserProfile] = useState<User>();
+  const [activeTab, setActiveTab] = useState<string>(tabParam || "about");
+  const [isLoading, setIsLoading] = useState(false);
+
+  const handleTabChange = (value: string) => {
+    setActiveTab(value);
+    queryParams.set("tab", value);
+    window.history.pushState(
+      {},
+      "",
+      `${window.location.pathname}?${queryParams.toString()}`
+    );
+  };
+
+  const getUserProfile = async () => {
+    setIsLoading(true);
+    if (username) {
+      const { response } = await userService.getUser({
+        username,
+      });
+
+      if (response) {
+        setUserProfile(response.data.result);
+      }
+    }
+    setIsLoading(false);
+  };
 
   useEffect(() => {
-    const getUser = async () => {
-      if (username) {
-        const { response } = await userService.getUser({
-          username,
-        });
+    if (tabParam) {
+      setActiveTab(tabParam);
+    }
+  }, [tabParam]);
 
-        if (response) {
-          setUserProfile(response.data.result);
-        }
-      }
-    };
-
-    getUser();
+  useEffect(() => {
+    getUserProfile();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [username, dispatch]);
 
-  const data = [
+  const tabs = [
     {
       label: "About",
       value: "about",
       content: <AboutMe user={userProfile} />,
     },
     {
-      label: "Questions",
-      value: "questions",
-      content: `Because it's about motivating the doers. Because I'm here
-      to follow my dreams and inspire other people to follow their dreams, too.`,
+      label: "My Posts",
+      value: "my-posts",
+      content:
+        userProfile?._id && activeTab === "my-posts" ? (
+          <PostsTab user_id={userProfile._id} postType={PostType.Post} />
+        ) : null,
     },
-
     {
-      label: "Answers",
-      value: "answers",
-      content: `We're not always in the position that we want to be at.
-      We're constantly growing. We're constantly making mistakes. We're
-      constantly trying to express ourselves and actualize our dreams.`,
+      label: "My Comments",
+      value: "my-comments",
+      content:
+        userProfile?._id && activeTab === "my-comments" ? (
+          <PostsTab user_id={userProfile._id} postType={PostType.Comment} />
+        ) : null,
     },
-
     {
-      label: "Best Answers",
-      value: "best-answers",
-      content: `Because it's about motivating the doers. Because I'm here
-      to follow my dreams and inspire other people to follow their dreams, too.`,
-    },
-
-    {
-      label: (
-        <Menu
-          allowHover
-          animate={{
-            mount: { y: 0 },
-            unmount: { y: 25 },
-          }}
-        >
-          <MenuHandler>
-            <div>More</div>
-          </MenuHandler>
-
-          <MenuList>
-            <MenuItem>Menu Item 1</MenuItem>
-            <MenuItem>Menu Item 2</MenuItem>
-            <MenuItem>Menu Item 3</MenuItem>
-          </MenuList>
-        </Menu>
-      ),
-      value: "more",
-      content: `We're not always in the position that we want to be at.
-      We're constantly growing. We're constantly making mistakes. We're
-      constantly trying to express ourselves and actualize our dreams.`,
+      label: "My Reposts",
+      value: "my-reposts",
+      content:
+        userProfile?._id && activeTab === "my-reposts" ? (
+          <PostsTab user_id={userProfile._id} postType={PostType.RePost} />
+        ) : null,
     },
   ];
 
-  return (
+  return isLoading ? (
+    <div className="relative h-80">
+      <Loading />
+    </div>
+  ) : userProfile ? (
     <div className="dark:text-gray-50">
       <div className="relative">
         <img
           className="h-60 w-full border rounded-lg object-cover object-center"
-          src={userProfile?.cover_photo || "/cover-photo.svg"}
+          src={userProfile.cover_photo || "/cover-photo.svg"}
           alt="cover"
         />
 
         <div className="absolute -bottom-14 sm:-bottom-24 left-10 flex items-center gap-2">
           <Avatar
             src={
-              userProfile?.avatar ||
+              userProfile.avatar ||
               "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTYmkp9a2rrD1Sskb9HLt5mDaTt4QaIs8CcBg&usqp=CAU"
             }
             alt="avatar"
@@ -122,16 +127,16 @@ const Profile = () => {
           />
           <div>
             <Typography className="font-bold text-xl sm:text-2xl mt-8">
-              {userProfile?.name}
+              {userProfile.name}
             </Typography>
             <Typography className="text-xs sm:text-sm">
-              {userProfile?.email}
+              {userProfile.email}
             </Typography>
           </div>
         </div>
 
         {/* Edit button my profile start */}
-        {userProfile?.username === currentUser?.username && (
+        {userProfile.username === currentUser?.username && (
           <Button
             onClick={() => dispatch(setEditMyProfileModalOpen(true))}
             variant="outlined"
@@ -145,10 +150,14 @@ const Profile = () => {
         {/* Edit button my profile end */}
       </div>
 
-      <Tabs className="mt-32" value="about">
+      <Tabs className="mt-32" value={activeTab}>
         <TabsHeader className="z-0">
-          {data.map(({ label, value }) => (
-            <Tab key={value} value={value}>
+          {tabs.map(({ label, value }) => (
+            <Tab
+              key={value}
+              value={value}
+              onClick={() => handleTabChange(value)}
+            >
               {label}
             </Tab>
           ))}
@@ -160,7 +169,7 @@ const Profile = () => {
             unmount: { y: 250 },
           }}
         >
-          {data.map(({ value, content }) => (
+          {tabs.map(({ value, content }) => (
             <TabPanel className="px-0" key={value} value={value}>
               {content}
             </TabPanel>
@@ -168,6 +177,8 @@ const Profile = () => {
         </TabsBody>
       </Tabs>
     </div>
+  ) : (
+    <NotFoundAlert message="User not found" />
   );
 };
 

@@ -2,17 +2,14 @@
 import { useEffect, useState } from "react";
 import { useLocation } from "react-router-dom";
 import { useTranslation } from "react-i18next";
-import InfiniteScroll from "react-infinite-scroll-component";
 
 import { Typography } from "@material-tailwind/react";
-import Loading from "../../components/common/loading";
-import NotFoundAlert from "../../components/common/not-found-alert";
-import PostCard from "../../components/post/post-card";
 import MenuFilter from "../../components/common/menu-filter";
+import PostsList from "../../components/post/posts-list";
 
 import postService from "../../services/post-service";
 import { Post } from "../../utils/types";
-import { POSTS_SORT, POSTS_TYPE } from "../../utils/constant";
+import { POSTS_SORT, POSTS_TYPE, PostType } from "../../utils/constant";
 import { getLabelByValue } from "../../utils/string-utils";
 
 const Home = () => {
@@ -99,25 +96,12 @@ const Home = () => {
       {/* Header end */}
 
       {/* List posts start */}
-      <InfiniteScroll
-        dataLength={posts.length}
-        next={getNewsFeed}
+      <PostsList
+        posts={posts}
+        postType={PostType.Post}
+        getPosts={getNewsFeed}
         hasMore={hasMore}
-        loader={
-          <div className="relative h-80">
-            <Loading />
-          </div>
-        }
-        endMessage={
-          <NotFoundAlert message="No more posts to load!" isBack={false} />
-        }
-      >
-        <div className="py-4 space-y-4">
-          {posts.map((post, index) => (
-            <PostCard key={post._id + index} post={post} is_detail={false} />
-          ))}
-        </div>
-      </InfiniteScroll>
+      />
       {/* List posts end */}
     </div>
   );
