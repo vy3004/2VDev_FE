@@ -4,7 +4,6 @@ import { apiEndPoints } from "../utils/api-endpoints";
 import { PostType } from "../utils/constant";
 
 interface PostPayLoad {
-  user_id: string;
   title: string | null;
   content: string;
   hashtags?: string[];
@@ -72,6 +71,7 @@ interface ApiResponse<T> {
 
 const postEndpoints = {
   post: `${apiEndPoints.posts}`,
+  postOpenAI: `${apiEndPoints.posts}/gpt`,
   getPost: ({ post_id }: { post_id: string }) =>
     `${apiEndPoints.posts}/${post_id}`,
   getComments: ({
@@ -139,7 +139,6 @@ const postEndpoints = {
 
 const postService = {
   post: async ({
-    user_id,
     title,
     content,
     hashtags,
@@ -149,7 +148,29 @@ const postService = {
   }: PostPayLoad): Promise<ApiResponse<any>> => {
     try {
       const response = await axiosInstance.post(postEndpoints.post, {
-        user_id,
+        title,
+        content,
+        hashtags,
+        medias,
+        parent_id,
+        type,
+      });
+
+      return { response };
+    } catch (error) {
+      return { error: error as AxiosError };
+    }
+  },
+  postOpenAI: async ({
+    title,
+    content,
+    hashtags,
+    medias,
+    parent_id,
+    type,
+  }: PostPayLoad): Promise<ApiResponse<any>> => {
+    try {
+      const response = await axiosInstance.post(postEndpoints.postOpenAI, {
         title,
         content,
         hashtags,

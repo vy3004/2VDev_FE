@@ -1,6 +1,5 @@
 import {
   Cog6ToothIcon,
-  CogIcon,
   FaceSmileIcon,
   PhoneIcon,
   PhotoIcon,

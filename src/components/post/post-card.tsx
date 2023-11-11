@@ -41,6 +41,7 @@ import LevelChip from "../common/level-chip";
 import NotFoundAlert from "../common/not-found-alert";
 import TagButton from "../common/tag-button";
 import MenuFilter from "../common/menu-filter";
+import TypingComment from "../common/typing-comment";
 import CommentForm from "./comment-form";
 import Comment from "./comment";
 
@@ -48,6 +49,7 @@ import voteService from "../../services/vote-service";
 import bookmarkService from "../../services/bookmark-service";
 import userService from "../../services/user-service";
 import postService from "../../services/post-service";
+import openaiService from "../../services/openai -service";
 
 import { selectUser } from "../../redux/features/user-slice";
 import {
@@ -100,7 +102,7 @@ const PostCard: React.FC<PostCardProps> = ({ post, is_detail }) => {
   }, [page]);
 
   useEffect(() => {
-    if (is_detail) {
+    if (is_detail && post.comments_count > 0) {
       getComments();
     }
   }, [sortField]);
@@ -108,6 +110,12 @@ const PostCard: React.FC<PostCardProps> = ({ post, is_detail }) => {
   useEffect(() => {
     if (is_detail && post.resolved_id) {
       getPinComment();
+    }
+  }, []);
+
+  useEffect(() => {
+    if (is_detail && post.comments_count === 0) {
+      getOpenAIComment();
     }
   }, []);
 
@@ -304,6 +312,41 @@ const PostCard: React.FC<PostCardProps> = ({ post, is_detail }) => {
       if (response) {
         window.location.reload();
         toast.success(response.data.message);
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  const getOpenAIComment = async () => {
+    setIsLoading(true);
+    try {
+      const { response } = await openaiService.chatCompletions({
+        content: post.content,
+      });
+      if (response && response.trim() !== "") {
+        postOpenAIComment(response);
+      }
+    } catch (error) {
+      console.log(error);
+    }
+    setIsLoading(false);
+  };
+
+  const postOpenAIComment = async (content: string) => {
+    try {
+      const data = {
+        post_id: "",
+        parent_id: post._id,
+        title: null,
+        content: content,
+        type: PostType.Comment,
+        hashtags: [],
+      };
+      const { response } = await postService.postOpenAI(data);
+      if (response) {
+        window.location.reload();
+        toast.success("OpenAI has commented on your post");
       }
     } catch (error) {
       console.log(error);
@@ -542,7 +585,7 @@ const PostCard: React.FC<PostCardProps> = ({ post, is_detail }) => {
                   <hr />
                   <CommentForm
                     post_id=""
-                    user_id={user._id}
+                    // user_id={user._id}
                     parent_id={post._id}
                     type={PostType.Comment}
                     content=""
@@ -550,6 +593,9 @@ const PostCard: React.FC<PostCardProps> = ({ post, is_detail }) => {
                 </>
               )}
               {/* Comment form end */}
+
+              {/* OpenAI is typing comments */}
+              {isLoading && <TypingComment />}
 
               {/* Comments start */}
               {post.comments_count > 0 && (
@@ -570,7 +616,6 @@ const PostCard: React.FC<PostCardProps> = ({ post, is_detail }) => {
                       postUserId={post.user_detail._id}
                       isPinComment={true}
                       votePost={votePost}
-                      followUser={followUser}
                       pinComment={pinComment}
                     />
                   )}
@@ -585,7 +630,6 @@ const PostCard: React.FC<PostCardProps> = ({ post, is_detail }) => {
                         postUserId={post.user_detail._id}
                         isPinComment={false}
                         votePost={votePost}
-                        followUser={followUser}
                         pinComment={pinComment}
                       />
                     ))}

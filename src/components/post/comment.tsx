@@ -13,10 +13,8 @@ import {
 import {
   ClockIcon,
   ExclamationTriangleIcon,
-  UserPlusIcon,
   HandThumbUpIcon,
   ChatBubbleLeftIcon,
-  UserMinusIcon,
   PencilSquareIcon,
   TrashIcon,
 } from "@heroicons/react/24/outline";
@@ -45,7 +43,6 @@ interface CommentProps {
   postUserId: string;
   isPinComment: boolean;
   votePost: (postId: string, type: boolean) => void;
-  followUser: (otherUserId: string, type: boolean) => void;
   pinComment: (commentId: string) => Promise<void>;
 }
 
@@ -55,7 +52,6 @@ const Comment: React.FC<CommentProps> = ({
   postUserId,
   isPinComment,
   votePost,
-  followUser,
   pinComment,
 }) => {
   const { i18n } = useTranslation();
@@ -69,7 +65,6 @@ const Comment: React.FC<CommentProps> = ({
   const [showCommentForm, setShowCommentForm] = useState(false);
   const [vote, setVote] = useState(comment.is_voted);
   const [votesCount, setVotesCount] = useState(comment.votes_count);
-  const [follow, setFollow] = useState(false);
   const [report, setReport] = useState(comment.is_reported);
   const [showEditCommentForm, setShowEditCommentForm] = useState(false);
 
@@ -104,11 +99,6 @@ const Comment: React.FC<CommentProps> = ({
     votePost(postId, type);
     setVote(!type);
     setVotesCount((prevCount) => (type ? prevCount - 1 : prevCount + 1));
-  };
-
-  const handleFollow = (otherUserId: string, type: boolean) => {
-    followUser(otherUserId, type);
-    setFollow(!type);
   };
 
   const handleReport = () => {
@@ -179,20 +169,6 @@ const Comment: React.FC<CommentProps> = ({
                 {comment.user_detail.point} points
               </Typography>
             </div>
-
-            {userId !== comment.user_detail._id && (
-              <Button
-                onClick={() => handleFollow(comment.user_detail._id, follow)}
-                variant="text"
-                className="p-2 flex items-center justify-center gap-2 normal-case text-xs"
-              >
-                {follow ? (
-                  <UserMinusIcon className="w-4 h-4" />
-                ) : (
-                  <UserPlusIcon className="w-4 h-4" />
-                )}
-              </Button>
-            )}
           </div>
 
           <Tooltip content={formatTime(comment.created_at, i18n.language)}>
@@ -207,7 +183,6 @@ const Comment: React.FC<CommentProps> = ({
           // Edit comment form
           <CommentForm
             post_id={comment._id}
-            user_id={userId}
             parent_id={comment._id}
             type={PostType.Comment}
             content={comment.content}
@@ -264,7 +239,7 @@ const Comment: React.FC<CommentProps> = ({
             </Button>
           )}
 
-          {comment.user_detail._id === userId && (
+          {comment.user_detail._id === userId && !isPinComment && (
             <Button
               onClick={handleDelete}
               variant="text"
@@ -291,7 +266,6 @@ const Comment: React.FC<CommentProps> = ({
         {showCommentForm && (
           <CommentForm
             post_id=""
-            user_id={userId}
             parent_id={comment._id}
             type={PostType.Comment}
             content=""
@@ -331,7 +305,6 @@ const Comment: React.FC<CommentProps> = ({
               postUserId={comment.user_detail._id}
               isPinComment={isPinComment}
               votePost={votePost}
-              followUser={followUser}
               pinComment={pinComment}
             />
           ))}

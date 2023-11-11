@@ -1,7 +1,6 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useFormik } from "formik";
-import { useSelector } from "react-redux";
 import toast from "react-hot-toast";
 import ReactQuill from "react-quill";
 import "react-quill/dist/quill.snow.css";
@@ -22,7 +21,6 @@ import ErrorMessageForm from "../common/error-message-form";
 
 import postService from "../../services/post-service";
 import mediaService from "../../services/media-service";
-import { selectUser } from "../../redux/features/user-slice";
 import { Post } from "../../utils/types";
 import { base64ToFile, fileToBase64 } from "../../utils/file-utils";
 
@@ -31,7 +29,6 @@ interface PostFormProps {
 }
 
 interface PostFormValues {
-  user_id: string;
   title: string;
   content: string;
   hashtags: string[];
@@ -41,7 +38,6 @@ interface PostFormValues {
 }
 
 const PostForm: React.FC<PostFormProps> = ({ initialData }) => {
-  const { user } = useSelector(selectUser);
   const navigate = useNavigate();
 
   const [isSubmit, setIsSubmit] = useState(false);
@@ -89,7 +85,6 @@ const PostForm: React.FC<PostFormProps> = ({ initialData }) => {
   const postForm = useFormik<PostFormValues>({
     initialValues: initialData
       ? {
-          user_id: initialData.user_detail._id,
           title: initialData.title,
           content: initialData.content,
           hashtags: initialData.hashtags.map((hashtag) => hashtag.name),
@@ -98,7 +93,6 @@ const PostForm: React.FC<PostFormProps> = ({ initialData }) => {
           parent_id: null,
         }
       : {
-          user_id: user?._id || "",
           title: "",
           content: "",
           hashtags: [],

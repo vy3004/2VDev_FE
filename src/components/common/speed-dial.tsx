@@ -82,7 +82,9 @@ const SpeedDialCustom = () => {
           <IconButton
             size="lg"
             onClick={handleBackToTop}
-            className="rounded-full bg-black text-white dark:bg-white dark:text-black dark:border"
+            className={`rounded-full bg-black text-white dark:bg-white dark:text-black dark:border ${
+              backToTop && "animate-bounce"
+            }`}
           >
             {backToTop ? (
               <ArrowUpIcon className="h-5 w-5" />

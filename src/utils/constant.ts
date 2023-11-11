@@ -28,7 +28,7 @@ export const POSTS_SORT = [
   },
   {
     label: "most interactions",
-    value: "comment_count",
+    value: "comments_count",
   },
 ];
 
@@ -43,7 +43,7 @@ export const COMMENTS_SORT = [
   },
   {
     label: "most relies",
-    value: "comment_count",
+    value: "comments_count",
   },
 ];
 

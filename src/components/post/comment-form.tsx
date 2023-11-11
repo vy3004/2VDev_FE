@@ -12,7 +12,6 @@ import { PostType } from "../../utils/constant";
 
 interface CommentFormProps {
   post_id: string;
-  user_id: string;
   parent_id: string;
   type: PostType;
   content: string;
@@ -22,7 +21,6 @@ interface CommentFormProps {
 
 const CommentForm: React.FC<CommentFormProps> = ({
   post_id,
-  user_id,
   parent_id,
   type,
   content,
@@ -34,7 +32,7 @@ const CommentForm: React.FC<CommentFormProps> = ({
   const commentForm = useFormik<CommentFormProps>({
     initialValues: {
       post_id: post_id,
-      user_id: user_id,
+      // user_id: user_id,
       parent_id: parent_id,
       type: type,
       content: content,

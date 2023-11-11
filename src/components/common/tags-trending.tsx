@@ -37,7 +37,7 @@ const TagsTrending = () => {
           <TagButton key={_id} id={_id} name={name} />
         ))
       ) : (
-        <NotFoundAlert message="No tags found" />
+        <NotFoundAlert message="No tags found" isBack={false} />
       )}
     </div>
   );
