@@ -15,6 +15,7 @@ import AnswerQuestion from "../common/answer-question";
 import AuthModal from "../modals/auth-modal";
 import EditMyProfileModal from "../modals/edit-my-profile-modal";
 import ReportModal from "../modals/report-modal";
+import RepostModal from "../modals/repost-modal";
 import ConfirmModal from "../modals/confirm-modal";
 
 import userService from "../../services/user-service";
@@ -136,6 +137,7 @@ const MainLayout = () => {
       <AuthModal />
       <EditMyProfileModal />
       <ReportModal />
+      <RepostModal />
       <ConfirmModal />
       {/* Modal */}
 

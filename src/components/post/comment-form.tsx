@@ -32,7 +32,6 @@ const CommentForm: React.FC<CommentFormProps> = ({
   const commentForm = useFormik<CommentFormProps>({
     initialValues: {
       post_id: post_id,
-      // user_id: user_id,
       parent_id: parent_id,
       type: type,
       content: content,

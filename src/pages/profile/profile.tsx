@@ -82,7 +82,9 @@ const Profile = () => {
       content:
         userProfile?._id && activeTab === "my-posts" ? (
           <PostsTab user_id={userProfile._id} postType={PostType.Post} />
-        ) : null,
+        ) : (
+          <></>
+        ),
     },
     {
       label: "My Comments",
@@ -90,7 +92,9 @@ const Profile = () => {
       content:
         userProfile?._id && activeTab === "my-comments" ? (
           <PostsTab user_id={userProfile._id} postType={PostType.Comment} />
-        ) : null,
+        ) : (
+          <></>
+        ),
     },
     {
       label: "My Reposts",
@@ -98,7 +102,9 @@ const Profile = () => {
       content:
         userProfile?._id && activeTab === "my-reposts" ? (
           <PostsTab user_id={userProfile._id} postType={PostType.RePost} />
-        ) : null,
+        ) : (
+          <></>
+        ),
     },
   ];
 

@@ -1,3 +1,5 @@
+import PostCard from "./post-card";
+
 import { Post } from "../../utils/types";
 
 interface RepostCardProps {
@@ -5,7 +7,7 @@ interface RepostCardProps {
 }
 
 const RepostCard: React.FC<RepostCardProps> = ({ repost }) => {
-  return <div>RepostCard</div>;
+  return <PostCard post={repost} is_detail={false} />;
 };
 
 export default RepostCard;

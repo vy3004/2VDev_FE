@@ -6,7 +6,6 @@ import { useNavigate } from "react-router-dom";
 import toast from "react-hot-toast";
 
 import {
-  Avatar,
   Button,
   Chip,
   IconButton,
@@ -35,15 +34,14 @@ import {
 import {
   EllipsisHorizontalIcon,
   PlusCircleIcon,
-  StarIcon,
 } from "@heroicons/react/24/solid";
-import LevelChip from "../common/level-chip";
 import NotFoundAlert from "../common/not-found-alert";
 import TagButton from "../common/tag-button";
 import MenuFilter from "../common/menu-filter";
-import TypingComment from "../common/typing-comment";
+import TypingComment from "./typing-comment";
 import CommentForm from "./comment-form";
 import Comment from "./comment";
+import PostInfoUser from "./post-info-user";
 
 import voteService from "../../services/vote-service";
 import bookmarkService from "../../services/bookmark-service";
@@ -57,6 +55,7 @@ import {
   setReportModal,
 } from "../../redux/features/report-modal-slice";
 import { setConfirmModal } from "../../redux/features/confirm-modal-slice";
+import { setRepostModal } from "../../redux/features/repost-modal-slice";
 
 import { Post } from "../../utils/types";
 import { COMMENTS_SORT, PostType } from "../../utils/constant";
@@ -87,6 +86,7 @@ const PostCard: React.FC<PostCardProps> = ({ post, is_detail }) => {
   const [totalPage, setTotalPage] = useState(1);
   const [isLoading, setIsLoading] = useState(false);
   const [detailPinComment, setDetailPinComment] = useState<Post>();
+  const [repost, setRepost] = useState<Post>();
 
   useEffect(() => {
     if (reportModal.isReported && reportModal.postId === post._id)
@@ -118,6 +118,28 @@ const PostCard: React.FC<PostCardProps> = ({ post, is_detail }) => {
       getOpenAIComment();
     }
   }, []);
+
+  useEffect(() => {
+    if (post.type === PostType.RePost && post.parent_id) {
+      getPost();
+    }
+  }, []);
+
+  const getPost = async () => {
+    try {
+      if (post.parent_id) {
+        const { response } = await postService.getPost({
+          post_id: post.parent_id,
+        });
+
+        if (response) {
+          setRepost(response.data.result);
+        }
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  };
 
   const votePost = async (postId: string, type: boolean) => {
     try {
@@ -213,6 +235,15 @@ const PostCard: React.FC<PostCardProps> = ({ post, is_detail }) => {
         reportModalOpen: true,
         postId: post._id,
         isReported: false,
+      })
+    );
+  };
+
+  const handleRepost = () => {
+    dispatch(
+      setRepostModal({
+        repostModalOpen: true,
+        post: post,
       })
     );
   };
@@ -358,36 +389,7 @@ const PostCard: React.FC<PostCardProps> = ({ post, is_detail }) => {
       <div className="space-y-2">
         <div className="flex justify-between">
           {/* Info user start */}
-          <div className="flex items-center gap-4">
-            <Avatar
-              src={post.user_detail.avatar}
-              size="lg"
-              alt="avatar"
-              withBorder={true}
-              className="p-0.5 cursor-pointer"
-              onClick={() => navigate(`/profile/${post.user_detail.username}`)}
-            />
-            <div>
-              <div className="flex items-center gap-4">
-                <Typography
-                  onClick={() =>
-                    navigate(`/profile/${post.user_detail.username}`)
-                  }
-                  className="font-bold text-blue-500 cursor-pointer hover:text-gray-900"
-                >
-                  {post.user_detail.name}
-                </Typography>
-                <LevelChip level={post.user_detail.point} />
-              </div>
-
-              <div className="text-orange-500 flex gap-1">
-                <StarIcon className="w-4 h-4" />
-                <Typography className="text-sm font-semibold">
-                  {post.user_detail.point} points
-                </Typography>
-              </div>
-            </div>
-          </div>
+          <PostInfoUser user_detail={post.user_detail} />
           {/* Info user end */}
 
           {/* Post menu start */}
@@ -486,12 +488,14 @@ const PostCard: React.FC<PostCardProps> = ({ post, is_detail }) => {
               </div>
             </div>
 
-            <Typography
-              onClick={() => navigate(`/${post._id}`)}
-              className="font-bold text-lg text-gary-900 cursor-pointer hover:text-blue-500"
-            >
-              {post.title}
-            </Typography>
+            {post.title && (
+              <Typography
+                onClick={() => navigate(`/${post._id}`)}
+                className="font-bold text-lg text-gary-900 cursor-pointer hover:text-blue-500"
+              >
+                {post.title}
+              </Typography>
+            )}
           </div>
           {/* Post title end */}
 
@@ -515,7 +519,7 @@ const PostCard: React.FC<PostCardProps> = ({ post, is_detail }) => {
           {/* Content end */}
 
           {/* Medias start */}
-          {is_detail
+          {post.medias && post.medias.length > 0 && is_detail
             ? post.medias.map((media, key) => (
                 <img
                   className="rounded-lg"
@@ -525,7 +529,8 @@ const PostCard: React.FC<PostCardProps> = ({ post, is_detail }) => {
                   loading="lazy"
                 />
               ))
-            : post.medias[0] && (
+            : post.medias &&
+              post.medias[0] && (
                 <div className="flex justify-center">
                   <img
                     className="rounded-lg"
@@ -536,6 +541,12 @@ const PostCard: React.FC<PostCardProps> = ({ post, is_detail }) => {
                 </div>
               )}
           {/* Medias end */}
+
+          {/* Repost start */}
+          {post.type === PostType.RePost && repost && (
+            <PostCard post={repost} is_detail={false} />
+          )}
+          {/* Repost end */}
 
           {/* Tag list start */}
           {post.hashtags.map((tag) => (
@@ -569,6 +580,7 @@ const PostCard: React.FC<PostCardProps> = ({ post, is_detail }) => {
             </Button>
 
             <Button
+              onClick={handleRepost}
               variant="text"
               fullWidth
               className="flex items-center justify-center gap-2 normal-case text-base"
@@ -585,7 +597,6 @@ const PostCard: React.FC<PostCardProps> = ({ post, is_detail }) => {
                   <hr />
                   <CommentForm
                     post_id=""
-                    // user_id={user._id}
                     parent_id={post._id}
                     type={PostType.Comment}
                     content=""

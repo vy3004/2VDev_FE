@@ -14,13 +14,13 @@ import {
   Spinner,
 } from "@material-tailwind/react";
 import { XMarkIcon } from "@heroicons/react/24/solid";
+import ErrorMessageForm from "../common/error-message-form";
 
+import reportPostService from "../../services/report-service";
 import {
   selectReportModal,
   setReportModal,
 } from "../../redux/features/report-modal-slice";
-import reportPostService from "../../services/report-service";
-import ErrorMessageForm from "../common/error-message-form";
 
 interface ReportFormValues {
   reason: string;

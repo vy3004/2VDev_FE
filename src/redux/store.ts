@@ -7,6 +7,7 @@ import appStateSlice from "./features/app-state-slice";
 import globalLoading from "./features/global-loading";
 import editMyProfileModalSlice from "./features/edit-my-profile-modal-slice";
 import reportModalSlice from "./features/report-modal-slice";
+import repostModalSlice from "./features/repost-modal-slice";
 import confirmModalSlice from "./features/confirm-modal-slice";
 
 const store = configureStore({
@@ -14,6 +15,7 @@ const store = configureStore({
     authModal: authModalSlice,
     editMyProfileModal: editMyProfileModalSlice,
     reportModal: reportModalSlice,
+    repostModal: repostModalSlice,
     confirmModal: confirmModalSlice,
     user: userSlice,
     appState: appStateSlice,
