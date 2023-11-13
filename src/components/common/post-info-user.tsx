@@ -1,13 +1,11 @@
 import { useNavigate } from "react-router-dom";
 
 import { Avatar, Typography } from "@material-tailwind/react";
-import LevelChip from "../common/level-chip";
-import UserPoint from "../common/user-point";
-
-import { User } from "../../utils/types";
+import LevelChip from "./level-chip";
+import UserPoint from "./user-point";
 
 interface PostInfoUserProps {
-  user_detail: User;
+  user_detail: any;
 }
 
 const PostInfoUser: React.FC<PostInfoUserProps> = ({ user_detail }) => {

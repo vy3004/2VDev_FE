@@ -18,6 +18,7 @@ import {
 import QuestionButton from "../common/question-button";
 import Statistics from "../common/statistics";
 import TagsTrending from "../common/tags-trending";
+import TopUsers from "../common/top-users";
 
 import { getLastTwoWords } from "../../utils/string-utils";
 
@@ -147,36 +148,7 @@ const RightSidebar = () => {
           {t("right-sidebar.Top Users")}
         </Typography>
 
-        <div>
-          <div className="rounded-lg p-2 bg-white shadow-md dark:bg-gray-900">
-            <div className="flex gap-2">
-              <Avatar
-                className="p-0.5 border border-black dark:border-gray-50"
-                size="md"
-                variant="circular"
-                src="https://images.unsplash.com/photo-1633332755192-727a05c4013d?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1480&q=80"
-                alt="avatar"
-              />
-              <div>
-                <Typography className="font-bold">
-                  {getLastTwoWords("Tran Nguyen Kha Vy")}
-                </Typography>
-                <Typography className="border border-black rounded-full w-fit px-2 text-xs font-bold">
-                  Beginner
-                </Typography>
-
-                <div className="mt-2 flex gap-1">
-                  <Typography as="a" href="#" className="text-xs">
-                    5 Questions
-                  </Typography>
-                  <Typography as="a" href="#" className="text-xs">
-                    800 Points
-                  </Typography>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
+        <TopUsers />
       </div>
     </div>
   );

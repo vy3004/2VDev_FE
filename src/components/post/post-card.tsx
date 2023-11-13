@@ -36,10 +36,10 @@ import {
 import NotFoundAlert from "../common/not-found-alert";
 import TagButton from "../common/tag-button";
 import MenuFilter from "../common/menu-filter";
+import PostInfoUser from "../common/post-info-user";
 import TypingComment from "./typing-comment";
 import CommentForm from "./comment-form";
 import Comment from "./comment";
-import PostInfoUser from "./post-info-user";
 
 import voteService from "../../services/vote-service";
 import bookmarkService from "../../services/bookmark-service";
