@@ -4,7 +4,6 @@ import Loading from "../common/loading";
 import NotFoundAlert from "../common/not-found-alert";
 import PostCard from "./post-card";
 import CommentCard from "./comment-card";
-import RepostCard from "./repost-card";
 
 import { Post } from "../../utils/types";
 import { PostType } from "../../utils/constant";
@@ -18,10 +17,10 @@ interface PostsListProps {
 
 const postCardMap = {
   [PostType.Post]: (post: Post, index: number) => (
-    <PostCard key={post._id + index} post={post} is_detail={false} />
+    <PostCard key={post._id + index} post={post} isDetail={false} />
   ),
   [PostType.RePost]: (post: Post, index: number) => (
-    <RepostCard key={post._id + index} repost={post} />
+    <PostCard key={post._id + index} post={post} isDetail={false} />
   ),
   [PostType.Comment]: (post: Post, index: number) => (
     <CommentCard key={post._id + index} comment={post} />

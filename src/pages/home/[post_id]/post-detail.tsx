@@ -1,13 +1,14 @@
 import { useState, useEffect } from "react";
 import { useParams } from "react-router-dom";
 
+import { Typography } from "@material-tailwind/react";
 import Loading from "../../../components/common/loading";
 import NotFoundAlert from "../../../components/common/not-found-alert";
 import PostCard from "../../../components/post/post-card";
 
 import postService from "../../../services/post-service";
 import { Post } from "../../../utils/types";
-import { Typography } from "@material-tailwind/react";
+import { PostType } from "../../../utils/constant";
 
 const PostDetail = () => {
   const { post_id } = useParams();
@@ -45,12 +46,16 @@ const PostDetail = () => {
   ) : post ? (
     <div className="space-y-4">
       <div>
-        <Typography variant="h5">{post.user_detail.name}'s Post</Typography>
+        <Typography variant="h5">
+          {post.user_detail.name}'s{" "}
+          {post.type === PostType.Post ? "Post" : "Repost"}
+        </Typography>
         <Typography className="mt-1 font-normal">
-          See detail information of the post
+          See detail information of the{" "}
+          {post.type === PostType.Post ? "post" : "repost"}
         </Typography>
       </div>
-      <PostCard post={post} is_detail={true} />
+      <PostCard post={post} isDetail={true} />
     </div>
   ) : (
     <NotFoundAlert message="Post not found!" />

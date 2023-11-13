@@ -63,10 +63,11 @@ import { formatTime, formatTimeDistanceToNow } from "../../utils/string-utils";
 
 interface PostCardProps {
   post: Post;
-  is_detail: boolean;
+  isDetail: boolean;
+  isRepost?: boolean;
 }
 
-const PostCard: React.FC<PostCardProps> = ({ post, is_detail }) => {
+const PostCard: React.FC<PostCardProps> = ({ post, isDetail, isRepost }) => {
   const { i18n } = useTranslation();
   const { user } = useSelector(selectUser);
   const { reportModal } = useSelector(selectReportModal);
@@ -94,7 +95,7 @@ const PostCard: React.FC<PostCardProps> = ({ post, is_detail }) => {
   }, [reportModal, post._id]);
 
   useEffect(() => {
-    if (is_detail) {
+    if (isDetail) {
       if (page > 1) {
         getComments();
       }
@@ -102,19 +103,19 @@ const PostCard: React.FC<PostCardProps> = ({ post, is_detail }) => {
   }, [page]);
 
   useEffect(() => {
-    if (is_detail && post.comments_count > 0) {
+    if (isDetail && post.comments_count > 0) {
       getComments();
     }
   }, [sortField]);
 
   useEffect(() => {
-    if (is_detail && post.resolved_id) {
+    if (isDetail && post.resolved_id) {
       getPinComment();
     }
   }, []);
 
   useEffect(() => {
-    if (is_detail && post.comments_count === 0) {
+    if (isDetail && post.comments_count === 0 && post.type === PostType.Post) {
       getOpenAIComment();
     }
   }, []);
@@ -249,7 +250,7 @@ const PostCard: React.FC<PostCardProps> = ({ post, is_detail }) => {
   };
 
   const handleComment = () => {
-    is_detail ? setShowFormAnswer(!showFormAnswer) : navigate(`/${post._id}`);
+    isDetail ? setShowFormAnswer(!showFormAnswer) : navigate(`/${post._id}`);
   };
 
   const handleDelete = () => {
@@ -385,7 +386,7 @@ const PostCard: React.FC<PostCardProps> = ({ post, is_detail }) => {
   };
 
   return post && user ? (
-    <div className="border rounded-lg shadow-md p-4">
+    <div className={`border rounded-lg p-4 ${!isRepost && "shadow-md"}`}>
       <div className="space-y-2">
         <div className="flex justify-between">
           {/* Info user start */}
@@ -504,10 +505,10 @@ const PostCard: React.FC<PostCardProps> = ({ post, is_detail }) => {
           {/* Content start */}
           <div className="p-2 rounded-lg bg-gray-50">
             <div
-              className={`break-words ${!is_detail && "line-clamp-3"}`}
+              className={`break-words ${!isDetail && "line-clamp-3"}`}
               dangerouslySetInnerHTML={{ __html: post.content }}
             />
-            {!is_detail && (
+            {!isDetail && (
               <Typography
                 onClick={() => navigate(`/${post._id}`)}
                 className="w-fit font-bold text-sm cursor-pointer hover:underline"
@@ -519,7 +520,7 @@ const PostCard: React.FC<PostCardProps> = ({ post, is_detail }) => {
           {/* Content end */}
 
           {/* Medias start */}
-          {post.medias && post.medias.length > 0 && is_detail
+          {post.medias && post.medias.length > 0 && isDetail
             ? post.medias.map((media, key) => (
                 <img
                   className="rounded-lg"
@@ -544,7 +545,7 @@ const PostCard: React.FC<PostCardProps> = ({ post, is_detail }) => {
 
           {/* Repost start */}
           {post.type === PostType.RePost && repost && (
-            <PostCard post={repost} is_detail={false} />
+            <PostCard post={repost} isDetail={false} isRepost={true} />
           )}
           {/* Repost end */}
 
@@ -589,7 +590,7 @@ const PostCard: React.FC<PostCardProps> = ({ post, is_detail }) => {
               {post.repost_count > 0 && post.repost_count} Repost
             </Button>
           </div>
-          {is_detail && (
+          {isDetail && (
             <div className="space-y-4">
               {/* Comment form start */}
               {showFormAnswer && (

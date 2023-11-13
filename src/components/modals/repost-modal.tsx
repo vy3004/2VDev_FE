@@ -126,10 +126,7 @@ const RepostModal = () => {
             </div>
 
             {repostModal.post && (
-              <PostCard post={repostModal.post} is_detail={false} />
-            )}
-            {repostModal.post && (
-              <PostCard post={repostModal.post} is_detail={false} />
+              <PostCard post={repostModal.post} isDetail={false} />
             )}
           </DialogBody>
           <DialogFooter>
