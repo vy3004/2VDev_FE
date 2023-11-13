@@ -42,8 +42,8 @@ interface CommentProps {
   userId: string;
   postUserId: string;
   isPinComment: boolean;
-  votePost: (postId: string, type: boolean) => void;
-  pinComment: (commentId: string | null) => Promise<void>;
+  votePost: (postId: string, otherUserId: string, type: boolean) => void;
+  pinComment: (commentId: string | null, otherUserId: string) => Promise<void>;
 }
 
 const Comment: React.FC<CommentProps> = ({
@@ -95,8 +95,8 @@ const Comment: React.FC<CommentProps> = ({
     setLoadingReplies(false);
   };
 
-  const handleVote = (postId: string, type: boolean) => {
-    votePost(postId, type);
+  const handleVote = (postId: string, userId: string, type: boolean) => {
+    votePost(postId, userId, type);
     setVote(!type);
     setVotesCount((prevCount) => (type ? prevCount - 1 : prevCount + 1));
   };
@@ -106,6 +106,7 @@ const Comment: React.FC<CommentProps> = ({
       setReportModal({
         reportModalOpen: true,
         postId: comment._id,
+        otherUserId: comment.user_detail._id,
         isReported: false,
       })
     );
@@ -123,9 +124,9 @@ const Comment: React.FC<CommentProps> = ({
 
   const handlePinComment = () => {
     if (isPinComment) {
-      pinComment(null);
+      pinComment(null, comment.user_detail._id);
     } else {
-      pinComment(comment._id);
+      pinComment(comment._id, comment.user_detail._id);
     }
   };
 
@@ -202,7 +203,9 @@ const Comment: React.FC<CommentProps> = ({
 
         <div className="flex items-center gap-4">
           <Button
-            onClick={() => handleVote(comment._id, vote)}
+            onClick={() =>
+              handleVote(comment._id, comment.user_detail._id, vote)
+            }
             variant="text"
             className={`p-2 flex items-center justify-center gap-2 normal-case text-xs ${
               vote ? "text-blue-500" : "text-gray-900 dark:text-gray-50"

@@ -174,8 +174,6 @@ const Users = () => {
     setIsLoading(false);
   };
 
-  console.log("USerS", users);
-
   useEffect(() => {
     if (filter === "all" && searchValue === "") getUsers("created_at");
     if (filter === "point" && searchValue === "") getUsers("point");
@@ -232,14 +230,14 @@ const Users = () => {
           <div className="relative h-80">
             <Loading />
           </div>
-        ) : users && users.length > 0 ? (
+        ) : currentUser && users && users.length > 0 ? (
           <div className="space-y-4">
             <div className="grid grid-cols-6 gap-6 mt-4">
               {users.map((user) => (
                 <UserCard
                   key={user._id}
-                  current_username={currentUser?.username}
-                  user_detail={user}
+                  currentUser={currentUser}
+                  userDetail={user}
                 />
               ))}
             </div>

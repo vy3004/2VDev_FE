@@ -23,8 +23,6 @@ import {
   BookmarkIcon,
   BookmarkSlashIcon,
   ExclamationTriangleIcon,
-  UserMinusIcon,
-  UserPlusIcon,
   HandThumbUpIcon,
   ChatBubbleLeftIcon,
   ShareIcon,
@@ -58,7 +56,11 @@ import { setConfirmModal } from "../../redux/features/confirm-modal-slice";
 import { setRepostModal } from "../../redux/features/repost-modal-slice";
 
 import { Post } from "../../utils/types";
-import { COMMENTS_SORT, PostType } from "../../utils/constant";
+import {
+  COMMENTS_SORT,
+  PostType,
+  USER_UPDATE_POINT,
+} from "../../utils/constant";
 import { formatTime, formatTimeDistanceToNow } from "../../utils/string-utils";
 
 interface PostCardProps {
@@ -77,8 +79,7 @@ const PostCard: React.FC<PostCardProps> = ({ post, isDetail, isRepost }) => {
 
   const [vote, setVote] = useState(post.is_voted);
   const [votesCount, setVotesCount] = useState(post.votes_count);
-  const [bookmark, setBookmark] = useState(false);
-  const [follow, setFollow] = useState(false);
+  const [bookmark, setBookmark] = useState(post.is_bookmarked);
   const [report, setReport] = useState(post.is_reported);
   const [showFormAnswer, setShowFormAnswer] = useState(false);
   const [comments, setComments] = useState<Post[]>([]);
@@ -122,111 +123,86 @@ const PostCard: React.FC<PostCardProps> = ({ post, isDetail, isRepost }) => {
 
   useEffect(() => {
     if (post.type === PostType.RePost && post.parent_id) {
-      getPost();
+      getRepost();
     }
   }, []);
 
-  const getPost = async () => {
-    try {
-      if (post.parent_id) {
-        const { response } = await postService.getPost({
-          post_id: post.parent_id,
-        });
+  const getRepost = async () => {
+    if (post.parent_id) {
+      const { response } = await postService.getPost({
+        post_id: post.parent_id,
+      });
 
-        if (response) {
-          setRepost(response.data.result);
-        }
+      if (response) {
+        setRepost(response.data.result);
       }
-    } catch (error) {
-      console.log(error);
     }
   };
 
-  const votePost = async (postId: string, type: boolean) => {
-    try {
-      if (!type) {
-        const { response } = await voteService.votePost({
-          post_id: postId,
-        });
+  const votePost = async (
+    postId: string,
+    otherUserId: string,
+    type: boolean
+  ) => {
+    if (!type) {
+      const { response } = await voteService.votePost({
+        post_id: postId,
+      });
 
-        if (response) {
-          toast.success(response.data.message);
-        }
-      } else {
-        const { response } = await voteService.removeVotePost({
-          post_id: postId,
-        });
-
-        if (response) {
-          toast.success(response.data.message);
-        }
+      if (response) {
+        toast.success(response.data.message);
+        updateUserPoints(otherUserId, USER_UPDATE_POINT.vote);
       }
-    } catch (error) {
-      console.log(error);
+    } else {
+      const { response } = await voteService.removeVotePost({
+        post_id: postId,
+      });
+
+      if (response) {
+        toast.success(response.data.message);
+        updateUserPoints(otherUserId, USER_UPDATE_POINT.unVote);
+      }
     }
   };
 
-  const handleVote = (postId: string, type: boolean) => {
-    votePost(postId, type);
+  const handleVote = (postId: string, userId: string, type: boolean) => {
+    votePost(postId, userId, type);
     setVote(!type);
     setVotesCount((prevCount) => (type ? prevCount - 1 : prevCount + 1));
   };
 
-  const followUser = async (otherUserId: string, type: boolean) => {
-    try {
-      if (!type) {
-        const { response } = await userService.follow({
-          followed_user_id: otherUserId,
-        });
+  const bookmarkPost = async (
+    postId: string,
+    otherUserId: string,
+    type: boolean
+  ) => {
+    if (!type) {
+      const { response } = await bookmarkService.bookmarkPost({
+        post_id: postId,
+      });
 
-        if (response) {
-          toast.success(response.data.message);
-        }
-      } else {
-        const { response } = await userService.unFollow({
-          user_id: otherUserId,
-        });
-
-        if (response) {
-          toast.success(response.data.message);
-        }
+      if (response) {
+        toast.success(response.data.message);
+        updateUserPoints(otherUserId, USER_UPDATE_POINT.bookmark);
       }
-    } catch (error) {
-      console.log(error);
+    } else {
+      const { response } = await bookmarkService.unmarkPost({
+        post_id: postId,
+      });
+
+      if (response) {
+        toast.success(response.data.message);
+        updateUserPoints(otherUserId, USER_UPDATE_POINT.unBookmark);
+      }
     }
   };
 
-  const handleFollow = (otherUserId: string, type: boolean) => {
-    followUser(otherUserId, type);
-    setFollow(!type);
-  };
-
-  const bookmarkPost = async (postId: string, type: boolean) => {
-    try {
-      if (!type) {
-        const { response } = await bookmarkService.bookmarkPost({
-          post_id: postId,
-        });
-
-        if (response) {
-          toast.success(response.data.message);
-        }
-      } else {
-        const { response } = await bookmarkService.unmarkPost({
-          post_id: postId,
-        });
-
-        if (response) {
-          toast.success(response.data.message);
-        }
-      }
-    } catch (error) {
-      console.log(error);
-    }
-  };
-
-  const handleBookmark = (postId: string, type: boolean) => {
-    bookmarkPost(postId, type);
+  const handleBookmark = (
+    postId: string,
+    otherUserId: string,
+    type: boolean
+  ) => {
+    bookmarkPost(postId, otherUserId, type);
     setBookmark(!type);
   };
 
@@ -235,6 +211,7 @@ const PostCard: React.FC<PostCardProps> = ({ post, isDetail, isRepost }) => {
       setReportModal({
         reportModalOpen: true,
         postId: post._id,
+        otherUserId: post.user_detail._id,
         isReported: false,
       })
     );
@@ -335,58 +312,60 @@ const PostCard: React.FC<PostCardProps> = ({ post, isDetail, isRepost }) => {
     }
   };
 
-  const pinComment = async (commentId: string | null) => {
-    try {
-      const { response } = await postService.pinComment({
-        post_id: post._id,
-        resolved_id: commentId,
-      });
-      if (response) {
-        window.location.reload();
+  const pinComment = async (commentId: string | null, otherUserId: string) => {
+    const { response } = await postService.pinComment({
+      post_id: post._id,
+      resolved_id: commentId,
+    });
+    if (response) {
+      window.location.reload();
 
-        if (typeof commentId === "string") {
-          toast.success("Comment has been pinned");
-        } else {
-          toast.success("Comment has been unpinned");
-        }
+      if (typeof commentId === "string") {
+        updateUserPoints(otherUserId, USER_UPDATE_POINT.pinComment);
+        toast.success("Comment has been pinned");
+      } else {
+        toast.success("Comment has been unpinned");
+        updateUserPoints(otherUserId, USER_UPDATE_POINT.unpinComment);
       }
-    } catch (error) {
-      console.log(error);
     }
   };
 
   const getOpenAIComment = async () => {
     setIsLoading(true);
-    try {
-      const { response } = await openaiService.chatCompletions({
-        content: post.content,
-      });
-      if (response && response.trim() !== "") {
-        postOpenAIComment(response);
-      }
-    } catch (error) {
-      console.log(error);
+
+    const { response } = await openaiService.chatCompletions({
+      content: post.content,
+    });
+    if (response && response.trim() !== "") {
+      postOpenAIComment(response);
     }
+
     setIsLoading(false);
   };
 
   const postOpenAIComment = async (content: string) => {
-    try {
-      const data = {
-        post_id: "",
-        parent_id: post._id,
-        title: null,
-        content: content,
-        type: PostType.Comment,
-        hashtags: [],
-      };
-      const { response } = await postService.postOpenAI(data);
-      if (response) {
-        window.location.reload();
-        toast.success("OpenAI has commented on your post");
-      }
-    } catch (error) {
-      console.log(error);
+    const data = {
+      post_id: "",
+      parent_id: post._id,
+      title: null,
+      content: content,
+      type: PostType.Comment,
+      hashtags: [],
+    };
+    const { response } = await postService.postOpenAI(data);
+
+    if (response) {
+      window.location.reload();
+      toast.success("OpenAI has commented on your post");
+    }
+  };
+
+  const updateUserPoints = async (otherUserId: string, point: number) => {
+    if (user && user._id !== otherUserId) {
+      await userService.updatePoints({
+        user_id: otherUserId,
+        point: point,
+      });
     }
   };
 
@@ -408,7 +387,9 @@ const PostCard: React.FC<PostCardProps> = ({ post, isDetail, isRepost }) => {
             <MenuList>
               <MenuItem
                 className="flex items-center gap-2"
-                onClick={() => handleBookmark(post._id, bookmark)}
+                onClick={() =>
+                  handleBookmark(post._id, post.user_detail._id, bookmark)
+                }
               >
                 {bookmark ? (
                   <>
@@ -420,25 +401,6 @@ const PostCard: React.FC<PostCardProps> = ({ post, isDetail, isRepost }) => {
                   </>
                 )}
               </MenuItem>
-
-              {user._id !== post.user_detail._id && (
-                <MenuItem
-                  className="flex items-center gap-2"
-                  onClick={() => handleFollow(post.user_detail._id, follow)}
-                >
-                  {follow ? (
-                    <>
-                      <UserMinusIcon className="w-5 h-5" /> Unfollow{" "}
-                      {post.user_detail.name}
-                    </>
-                  ) : (
-                    <>
-                      <UserPlusIcon className="w-5 h-5" /> Follow{" "}
-                      {post.user_detail.name}
-                    </>
-                  )}
-                </MenuItem>
-              )}
 
               {user._id !== post.user_detail._id && !report && (
                 <MenuItem
@@ -564,7 +526,7 @@ const PostCard: React.FC<PostCardProps> = ({ post, isDetail, isRepost }) => {
 
           <div className="flex items-center justify-center gap-4">
             <Button
-              onClick={() => handleVote(post._id, vote)}
+              onClick={() => handleVote(post._id, post.user_detail._id, vote)}
               variant="text"
               fullWidth
               className={`flex items-center justify-center gap-2 normal-case text-base ${

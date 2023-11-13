@@ -5,16 +5,21 @@ export interface User {
   username: string;
   name: string;
   email: string;
-  date_of_birth?: string;
   verify: number;
   role: number;
-  level: number;
   point: number;
+  date_of_birth?: string;
   bio?: string;
   location?: string;
   website?: string;
   avatar?: string;
   cover_photo?: string;
+  questions: number;
+  answers: number;
+  following: number;
+  followers: number;
+  created_at: string;
+  updated_at: string;
 }
 
 export interface Media {
@@ -48,6 +53,7 @@ export interface Post {
   reply_comment?: Post[];
   is_voted: boolean;
   is_reported: boolean;
+  is_bookmarked: boolean;
   resolved_id: string;
   created_at: string;
   updated_at: string;

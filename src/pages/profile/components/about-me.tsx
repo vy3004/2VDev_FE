@@ -11,16 +11,21 @@ import {
   BookOpenIcon,
   UserGroupIcon,
   TrophyIcon,
+  ArrowTrendingDownIcon,
 } from "@heroicons/react/24/solid";
 import StatsButton from "./stats-button";
 
 import { getLevelByPoint } from "../../../utils/string-utils";
+import { User } from "../../../utils/types";
+
 interface AboutMeProps {
-  user: any;
+  user: User;
 }
 
 const AboutMe: React.FC<AboutMeProps> = ({ user }) => {
   const navigate = useNavigate();
+
+  const isNegative = user.point < 0;
 
   const statsItems = [
     {
@@ -40,8 +45,12 @@ const AboutMe: React.FC<AboutMeProps> = ({ user }) => {
     },
     {
       label: "Points",
-      stats: user.point,
-      icon: <StarIcon className="w-8 h-8 text-orange-500" />,
+      stats: isNegative ? 0 : user.point,
+      icon: isNegative ? (
+        <ArrowTrendingDownIcon className="w-8 h-8 text-orange-500" />
+      ) : (
+        <StarIcon className="w-8 h-8 text-orange-500" />
+      ),
     },
   ];
 
@@ -62,35 +71,40 @@ const AboutMe: React.FC<AboutMeProps> = ({ user }) => {
     <div className="space-y-6 dark:text-gray-50">
       <div className="border rounded-lg space-y-6 p-10">
         <div className="flex justify-center">
-          {user?.bio && (
+          {user.bio && (
             <Typography className="border-l-8 px-4 py-2 w-fit text-center sm:text-2xl italic font-bold">
-              "{user?.bio}"
+              "{user.bio}"
             </Typography>
           )}
         </div>
 
         <div className="md:flex justify-center gap-4">
-          <div className="flex items-center gap-2">
-            {user?.date_of_birth && <CakeIcon className="w4 h-4" />}
-            <Typography className="text-center font-bold">
-              {user?.date_of_birth &&
-                format(new Date(user?.date_of_birth), "dd/MM/yyyy")}
-            </Typography>
-          </div>
+          {user.date_of_birth && (
+            <div className="flex items-center gap-2">
+              <CakeIcon className="w4 h-4" />
+              <Typography className="text-center font-bold">
+                {format(new Date(user.date_of_birth), "dd/MM/yyyy")}
+              </Typography>
+            </div>
+          )}
 
-          <div className="flex items-center gap-2">
-            {user?.website && <GlobeAltIcon className="w4 h-4" />}
-            <Typography className="text-center font-bold">
-              {user?.website}
-            </Typography>
-          </div>
+          {user.website && (
+            <div className="flex items-center gap-2">
+              <GlobeAltIcon className="w4 h-4" />
+              <Typography className="text-center font-bold">
+                {user.website}
+              </Typography>
+            </div>
+          )}
 
-          <div className="flex items-center gap-2">
-            {user?.location && <MapPinIcon className="w4 h-4" />}
-            <Typography className="text-center font-bold">
-              {user?.location}
-            </Typography>
-          </div>
+          {user.location && (
+            <div className="flex items-center gap-2">
+              <MapPinIcon className="w4 h-4" />
+              <Typography className="text-center font-bold">
+                {user.location}
+              </Typography>
+            </div>
+          )}
         </div>
       </div>
 

@@ -6,6 +6,7 @@ interface ReportModalState {
   reportModal: {
     reportModalOpen: boolean;
     postId: string;
+    otherUserId: string;
     isReported: boolean;
   };
 }
@@ -14,6 +15,7 @@ const initialState: ReportModalState = {
   reportModal: {
     reportModalOpen: false,
     postId: "",
+    otherUserId: "",
     isReported: false,
   },
 };
