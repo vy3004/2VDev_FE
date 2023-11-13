@@ -335,7 +335,7 @@ const PostCard: React.FC<PostCardProps> = ({ post, isDetail, isRepost }) => {
     }
   };
 
-  const pinComment = async (commentId: string) => {
+  const pinComment = async (commentId: string | null) => {
     try {
       const { response } = await postService.pinComment({
         post_id: post._id,
@@ -343,7 +343,12 @@ const PostCard: React.FC<PostCardProps> = ({ post, isDetail, isRepost }) => {
       });
       if (response) {
         window.location.reload();
-        toast.success(response.data.message);
+
+        if (typeof commentId === "string") {
+          toast.success("Comment has been pinned");
+        } else {
+          toast.success("Comment has been unpinned");
+        }
       }
     } catch (error) {
       console.log(error);

@@ -57,7 +57,7 @@ interface EditPostPayLoad {
 
 interface PinCommentPayLoad {
   post_id: string;
-  resolved_id: string;
+  resolved_id: string | null;
 }
 
 interface DeletePostPayLoad {

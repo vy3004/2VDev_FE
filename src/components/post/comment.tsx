@@ -43,7 +43,7 @@ interface CommentProps {
   postUserId: string;
   isPinComment: boolean;
   votePost: (postId: string, type: boolean) => void;
-  pinComment: (commentId: string) => Promise<void>;
+  pinComment: (commentId: string | null) => Promise<void>;
 }
 
 const Comment: React.FC<CommentProps> = ({
@@ -122,7 +122,11 @@ const Comment: React.FC<CommentProps> = ({
   };
 
   const handlePinComment = () => {
-    pinComment(comment._id);
+    if (isPinComment) {
+      pinComment(null);
+    } else {
+      pinComment(comment._id);
+    }
   };
 
   return (
@@ -250,14 +254,14 @@ const Comment: React.FC<CommentProps> = ({
             </Button>
           )}
 
-          {postUserId === userId && !isPinComment && (
+          {postUserId === userId && (
             <Button
               onClick={handlePinComment}
               variant="text"
               className="p-2 flex items-center justify-center gap-2 normal-case text-xs"
             >
               <EyeDropperIcon className="w-4 h-4" />
-              Pin
+              {isPinComment ? "Unpin" : "Pin"}
             </Button>
           )}
         </div>
