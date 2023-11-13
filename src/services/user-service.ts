@@ -24,6 +24,12 @@ interface ResetPasswordPayload {
   confirm_password: string;
 }
 
+interface ChangePasswordPayload {
+  old_password: string;
+  password: string;
+  confirm_password: string;
+}
+
 interface GetUsersPayload {
   limit: number;
   page: number;
@@ -95,6 +101,7 @@ const userEndpoints = {
   forgotPassword: `${apiEndPoints.users}/forgot-password`,
   verifyForgotPassword: `${apiEndPoints.users}/verify-forgot-password`,
   resetPassword: `${apiEndPoints.users}/reset-password`,
+  changePassword: `${apiEndPoints.users}/change-password`,
 
   getMe: `${apiEndPoints.users}/me`,
   getData: `${apiEndPoints.users}/data`,
@@ -322,6 +329,23 @@ const userService = {
 
       const response = await axiosInstance.post(userEndpoints.resetPassword, {
         forgot_password_token,
+        password,
+        confirm_password,
+      });
+
+      return { response };
+    } catch (error) {
+      return { error: error as AxiosError };
+    }
+  },
+  changePassword: async ({
+    old_password,
+    password,
+    confirm_password,
+  }: ChangePasswordPayload): Promise<ApiResponse<any>> => {
+    try {
+      const response = await axiosInstance.put(userEndpoints.changePassword, {
+        old_password,
         password,
         confirm_password,
       });
