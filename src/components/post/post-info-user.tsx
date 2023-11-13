@@ -1,8 +1,8 @@
 import { useNavigate } from "react-router-dom";
 
-import { StarIcon } from "@heroicons/react/24/solid";
 import { Avatar, Typography } from "@material-tailwind/react";
 import LevelChip from "../common/level-chip";
+import UserPoint from "../common/user-point";
 
 import { User } from "../../utils/types";
 
@@ -34,12 +34,7 @@ const PostInfoUser: React.FC<PostInfoUserProps> = ({ user_detail }) => {
           <LevelChip level={user_detail.point} />
         </div>
 
-        <div className="text-orange-500 flex gap-1">
-          <StarIcon className="w-4 h-4" />
-          <Typography className="text-sm font-semibold">
-            {user_detail.point} points
-          </Typography>
-        </div>
+        <UserPoint point={user_detail.point} />
       </div>
     </div>
   );

@@ -75,6 +75,11 @@ interface GetFollowersPayLoad {
   page: number;
 }
 
+interface UpdatePointsPayLoad {
+  user_id: string;
+  point: number;
+}
+
 interface ApiResponse<T> {
   response?: AxiosResponse<T>;
   error?: AxiosError;
@@ -131,6 +136,7 @@ const userEndpoints = {
   follow: `${apiEndPoints.users}/follow`,
   unFollow: ({ user_id }: { user_id: string }) =>
     `${apiEndPoints.users}/follow/${user_id}`,
+  updatePoints: `${apiEndPoints.users}/update-point/`,
   // Role admin
   updateUser: ({ user_id }: { user_id: string }) =>
     `${apiEndPoints.users}/update-account/${user_id}`,
@@ -401,6 +407,21 @@ const userService = {
       const response = await axiosInstance.delete(
         userEndpoints.unFollow({ user_id })
       );
+
+      return { response };
+    } catch (error) {
+      return { error: error as AxiosError };
+    }
+  },
+  updatePoints: async ({
+    user_id,
+    point,
+  }: UpdatePointsPayLoad): Promise<ApiResponse<any>> => {
+    try {
+      const response = await axiosInstance.post(userEndpoints.updatePoints, {
+        user_id,
+        point,
+      });
 
       return { response };
     } catch (error) {

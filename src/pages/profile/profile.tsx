@@ -12,7 +12,11 @@ import {
   Typography,
   Button,
 } from "@material-tailwind/react";
-import { PencilSquareIcon } from "@heroicons/react/24/solid";
+import {
+  PencilSquareIcon,
+  UserMinusIcon,
+  UserPlusIcon,
+} from "@heroicons/react/24/solid";
 import AboutMe from "./components/about-me";
 import PostsTab from "./components/posts-tab";
 import Loading from "../../components/common/loading";
@@ -21,7 +25,7 @@ import NotFoundAlert from "../../components/common/not-found-alert";
 import userService from "../../services/user-service";
 import { selectUser } from "../../redux/features/user-slice";
 import { setEditMyProfileModalOpen } from "../../redux/features/edit-my-profile-modal-slice";
-import { PostType } from "../../utils/constant";
+import { PostType, USER_UPDATE_POINT } from "../../utils/constant";
 import { User } from "../../utils/types";
 
 const Profile = () => {
@@ -34,6 +38,7 @@ const Profile = () => {
   const [userProfile, setUserProfile] = useState<User>();
   const [activeTab, setActiveTab] = useState<string>(tabParam || "about");
   const [isLoading, setIsLoading] = useState(false);
+  const [follow, setFollow] = useState<boolean>(false);
 
   const handleTabChange = (value: string) => {
     setActiveTab(value);
@@ -45,6 +50,30 @@ const Profile = () => {
     );
   };
 
+  const handleFollow = async (userId: string) => {
+    if (follow && userId !== currentUser?._id) {
+      const { response } = await userService.unFollow({ user_id: userId });
+      if (response) {
+        setFollow(false);
+        await userService.updatePoints({
+          user_id: userId,
+          point: USER_UPDATE_POINT.unFollow,
+        });
+      }
+    } else {
+      const { response } = await userService.follow({
+        followed_user_id: userId,
+      });
+      if (response) {
+        setFollow(true);
+        await userService.updatePoints({
+          user_id: userId,
+          point: USER_UPDATE_POINT.follow,
+        });
+      }
+    }
+  };
+
   const getUserProfile = async () => {
     setIsLoading(true);
     if (username) {
@@ -54,6 +83,7 @@ const Profile = () => {
 
       if (response) {
         setUserProfile(response.data.result);
+        setFollow(response.data.result.is_followed);
       }
     }
     setIsLoading(false);
@@ -74,7 +104,7 @@ const Profile = () => {
     {
       label: "About",
       value: "about",
-      content: <AboutMe user={userProfile} />,
+      content: userProfile && <AboutMe user={userProfile} />,
     },
     {
       label: "My Posts",
@@ -142,7 +172,7 @@ const Profile = () => {
         </div>
 
         {/* Edit button my profile start */}
-        {userProfile.username === currentUser?.username && (
+        {userProfile.username === currentUser?.username ? (
           <Button
             onClick={() => dispatch(setEditMyProfileModalOpen(true))}
             variant="outlined"
@@ -150,6 +180,22 @@ const Profile = () => {
           >
             <PencilSquareIcon className="w-4 h-4" />
             Edit Profile
+          </Button>
+        ) : (
+          <Button
+            onClick={() => handleFollow(userProfile._id)}
+            variant="outlined"
+            className="!absolute right-0 -bottom-28 lg:-bottom-24 flex items-center gap-2 dark:text-gray-50 dark:border-gray-50 dark:bg-gray-700"
+          >
+            {follow ? (
+              <>
+                <UserMinusIcon className="w-4 h-4" /> Unfollow
+              </>
+            ) : (
+              <>
+                <UserPlusIcon className="w-4 h-4" /> Follow
+              </>
+            )}
           </Button>
         )}
 

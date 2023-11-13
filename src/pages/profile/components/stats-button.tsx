@@ -2,7 +2,7 @@ import { Button } from "@material-tailwind/react";
 
 interface StatsButtonProps {
   label: string;
-  stats: string;
+  stats: string | number;
   icon: any;
 }
 

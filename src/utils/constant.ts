@@ -1,7 +1,5 @@
 export const STATISTICS_DURATION = 500;
 
-export const USER_LEVELS = ["Bronze", "Silver", "Gold", "Platinum", "Diamond"];
-
 export const POSTS_TYPE = [
   {
     label: "all",
@@ -46,6 +44,20 @@ export const COMMENTS_SORT = [
     value: "comments_count",
   },
 ];
+
+export const USER_UPDATE_POINT = {
+  vote: 5,
+  unVote: -5,
+  bookmark: 10,
+  unBookmark: -10,
+  pinComment: 20,
+  unpinComment: -20,
+  follow: 5,
+  unFollow: -5,
+  report: -10,
+};
+
+export const USER_LEVELS = ["Bronze", "Silver", "Gold", "Platinum", "Diamond"];
 
 export const USERS_TYPE = [
   {

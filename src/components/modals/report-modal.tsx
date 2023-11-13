@@ -17,10 +17,12 @@ import { XMarkIcon } from "@heroicons/react/24/solid";
 import ErrorMessageForm from "../common/error-message-form";
 
 import reportPostService from "../../services/report-service";
+import userService from "../../services/user-service";
 import {
   selectReportModal,
   setReportModal,
 } from "../../redux/features/report-modal-slice";
+import { USER_UPDATE_POINT } from "../../utils/constant";
 
 interface ReportFormValues {
   reason: string;
@@ -34,7 +36,12 @@ const ReportModal = () => {
 
   const handleClose = () =>
     dispatch(
-      setReportModal({ reportModalOpen: false, postId: "", isReported: false })
+      setReportModal({
+        reportModalOpen: false,
+        postId: "",
+        otherUserId: "",
+        isReported: false,
+      })
     );
 
   const reportForm = useFormik<ReportFormValues>({
@@ -58,9 +65,14 @@ const ReportModal = () => {
           setReportModal({
             reportModalOpen: false,
             postId: reportModal.postId,
+            otherUserId: reportModal.otherUserId,
             isReported: true,
           })
         );
+        await userService.updatePoints({
+          user_id: reportModal.otherUserId,
+          point: USER_UPDATE_POINT.report,
+        });
 
         toast.success(response.data.message);
       }
