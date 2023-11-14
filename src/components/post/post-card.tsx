@@ -334,7 +334,7 @@ const PostCard: React.FC<PostCardProps> = ({ post, isDetail, isRepost }) => {
     setIsLoading(true);
 
     const { response } = await openaiService.chatCompletions({
-      content: post.content,
+      content: post.title + " " + post.content,
     });
     if (response && response.trim() !== "") {
       postOpenAIComment(response);

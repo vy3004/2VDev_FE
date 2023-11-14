@@ -61,8 +61,8 @@ export const USER_LEVELS = ["Bronze", "Silver", "Gold", "Platinum", "Diamond"];
 
 export const USERS_TYPE = [
   {
-    label: "all",
-    value: "all",
+    label: "new",
+    value: "new",
   },
   {
     label: "most points",

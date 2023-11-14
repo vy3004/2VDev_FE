@@ -51,7 +51,7 @@ const TopUsers = () => {
     <div className="space-y-2">
       {users.map((user) => (
         <div
-          className="rounded-lg p-2 bg-white shadow-md dark:bg-gray-900"
+          className="border rounded-lg p-2 bg-white shadow-md dark:bg-gray-900"
           key={user._id}
         >
           <PostInfoUser user_detail={user} />

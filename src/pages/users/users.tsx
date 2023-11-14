@@ -25,7 +25,7 @@ const Users = () => {
   const filterQueryParam = queryParams.get("filter");
   const pageQueryParam = queryParams.get("page");
   const limitQueryParam = queryParams.get("limit");
-  const [filter, setFilter] = useState(filterQueryParam || "all");
+  const [filter, setFilter] = useState(filterQueryParam || "new");
   const [page, setPage] = useState(
     pageQueryParam ? parseInt(pageQueryParam) : 1
   );
@@ -175,7 +175,7 @@ const Users = () => {
   };
 
   useEffect(() => {
-    if (filter === "all" && searchValue === "") getUsers("created_at");
+    if (filter === "new" && searchValue === "") getUsers("created_at");
     if (filter === "point" && searchValue === "") getUsers("point");
     if (filter === "followers" && searchValue === "") getUsers("followers");
     if (filter === "following" && searchValue === "") getFollowing();
