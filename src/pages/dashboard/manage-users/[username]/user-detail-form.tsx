@@ -54,7 +54,7 @@ const UserDetailForm: React.FC<UserDetailFormProps> = ({ user }) => {
 
   const [avatar, setAvatar] = useState(user.avatar || "/user.svg");
   const [coverPhoto, setCoverPhoto] = useState(
-    user.avatar || "/cover-photo.svg"
+    user.avatar || "/images/cover-photo.svg"
   );
   const [coverPhotoFile, setCoverPhotoFile] = useState<File>();
   const [errorMessage, setErrorMessage] = useState("");

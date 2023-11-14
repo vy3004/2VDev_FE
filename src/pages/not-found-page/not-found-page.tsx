@@ -9,7 +9,7 @@ const NotFoundPage = () => {
 
   return (
     <div className="relative">
-      <img src="/404.gif" alt="gif" />
+      <img src="/images/404.gif" alt="gif" />
 
       <div className="absolute w-full top-0 text-center backdrop-blur-[1px]">
         <Typography className="text-xl md:text-3xl font-bold">

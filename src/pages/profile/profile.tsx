@@ -147,7 +147,7 @@ const Profile = () => {
       <div className="relative">
         <img
           className="h-60 w-full border rounded-lg object-cover object-center"
-          src={userProfile.cover_photo || "/cover-photo.svg"}
+          src={userProfile.cover_photo || "/images/cover-photo.svg"}
           alt="cover"
         />
 

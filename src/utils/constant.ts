@@ -1,3 +1,16 @@
+export const LANGUAGES = [
+  {
+    name: "English",
+    value: "en",
+    flag: "/images/uk.webp",
+  },
+  {
+    name: "Việt Nam",
+    value: "vi",
+    flag: "/images/vn.webp",
+  },
+];
+
 export const STATISTICS_DURATION = 500;
 
 export const POSTS_TYPE = [
