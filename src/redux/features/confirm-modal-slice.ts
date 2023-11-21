@@ -7,6 +7,7 @@ interface ConfirmModalState {
     confirmModalOpen: boolean;
     type: number;
     postId: string;
+    role: number;
   };
 }
 
@@ -15,6 +16,7 @@ const initialState: ConfirmModalState = {
     confirmModalOpen: false,
     type: 0,
     postId: "",
+    role: 0,
   },
 };
 

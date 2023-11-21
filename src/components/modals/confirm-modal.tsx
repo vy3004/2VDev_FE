@@ -27,12 +27,19 @@ const ConfirmModal = () => {
   const [isSubmit, setIsSubmit] = useState(false);
 
   const handleClose = () =>
-    dispatch(setConfirmModal({ confirmModalOpen: false, type: 0, postId: "" }));
+    dispatch(
+      setConfirmModal({ confirmModalOpen: false, type: 0, postId: "", role: 0 })
+    );
 
   const handleDelete = async () => {
     setIsSubmit(true);
     if (confirmModal.postId) {
-      const { response, error } = await postService.deletePost({
+      const serviceFunction =
+        confirmModal.role === 1
+          ? postService.deletePostForAdmin
+          : postService.deletePost;
+
+      const { response, error } = await serviceFunction({
         post_id: confirmModal.postId,
       });
       if (response) {

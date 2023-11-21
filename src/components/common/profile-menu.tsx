@@ -46,6 +46,7 @@ const ProfileMenu = () => {
         confirmModalOpen: true,
         type: 2,
         postId: "",
+        role: 0,
       })
     );
   };

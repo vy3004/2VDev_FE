@@ -236,6 +236,7 @@ const PostCard: React.FC<PostCardProps> = ({ post, isDetail, isRepost }) => {
         confirmModalOpen: true,
         type: 0,
         postId: post._id,
+        role: user?.role || 0,
       })
     );
   };
@@ -421,13 +422,15 @@ const PostCard: React.FC<PostCardProps> = ({ post, isDetail, isRepost }) => {
                   </MenuItem>
                 )}
 
-                {user._id === post.user_detail._id && (
+                {user._id === post.user_detail._id || user.role === 1 ? (
                   <MenuItem
                     className="flex items-center gap-2"
                     onClick={handleDelete}
                   >
                     <TrashIcon className="w-5 h-5" /> Delete
                   </MenuItem>
+                ) : (
+                  <></>
                 )}
               </MenuList>
             </Menu>
@@ -593,7 +596,7 @@ const PostCard: React.FC<PostCardProps> = ({ post, isDetail, isRepost }) => {
                   {detailPinComment && (
                     <Comment
                       comment={detailPinComment}
-                      userId={user._id}
+                      currentUser={user}
                       postUserId={post.user_detail._id}
                       isPinComment={true}
                       votePost={votePost}
@@ -607,7 +610,7 @@ const PostCard: React.FC<PostCardProps> = ({ post, isDetail, isRepost }) => {
                       <Comment
                         key={item._id}
                         comment={item}
-                        userId={user._id}
+                        currentUser={user}
                         postUserId={post.user_detail._id}
                         isPinComment={false}
                         votePost={votePost}

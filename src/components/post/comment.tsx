@@ -28,7 +28,7 @@ import LevelChip from "../common/level-chip";
 import CommentForm from "./comment-form";
 
 import postService from "../../services/post-service";
-import { Post } from "../../utils/types";
+import { Post, User } from "../../utils/types";
 import { PostType } from "../../utils/constant";
 import { formatTime, formatTimeDistanceToNow } from "../../utils/string-utils";
 import {
@@ -39,7 +39,7 @@ import { setConfirmModal } from "../../redux/features/confirm-modal-slice";
 
 interface CommentProps {
   comment: Post;
-  userId: string;
+  currentUser: User;
   postUserId: string;
   isPinComment: boolean;
   votePost: (postId: string, otherUserId: string, type: boolean) => void;
@@ -48,7 +48,7 @@ interface CommentProps {
 
 const Comment: React.FC<CommentProps> = ({
   comment,
-  userId,
+  currentUser,
   postUserId,
   isPinComment,
   votePost,
@@ -118,6 +118,7 @@ const Comment: React.FC<CommentProps> = ({
         confirmModalOpen: true,
         postId: comment._id,
         type: 1,
+        role: currentUser.role,
       })
     );
   };
@@ -224,7 +225,7 @@ const Comment: React.FC<CommentProps> = ({
             Reply
           </Button>
 
-          {comment.user_detail._id !== userId && !report && (
+          {comment.user_detail._id !== currentUser._id && !report && (
             <Button
               onClick={handleReport}
               variant="text"
@@ -235,7 +236,7 @@ const Comment: React.FC<CommentProps> = ({
             </Button>
           )}
 
-          {comment.user_detail._id === userId && (
+          {comment.user_detail._id === currentUser._id && (
             <Button
               onClick={() => setShowEditCommentForm(!showEditCommentForm)}
               variant="text"
@@ -246,7 +247,8 @@ const Comment: React.FC<CommentProps> = ({
             </Button>
           )}
 
-          {comment.user_detail._id === userId && !isPinComment && (
+          {(comment.user_detail._id === currentUser._id && !isPinComment) ||
+          currentUser.role === 1 ? (
             <Button
               onClick={handleDelete}
               variant="text"
@@ -255,9 +257,11 @@ const Comment: React.FC<CommentProps> = ({
               <TrashIcon className="w-4 h-4" />
               Delete
             </Button>
+          ) : (
+            <></>
           )}
 
-          {postUserId === userId && (
+          {postUserId === currentUser._id && (
             <Button
               onClick={handlePinComment}
               variant="text"
@@ -308,7 +312,7 @@ const Comment: React.FC<CommentProps> = ({
             <Comment
               key={reply._id}
               comment={reply}
-              userId={userId}
+              currentUser={currentUser}
               postUserId={comment.user_detail._id}
               isPinComment={isPinComment}
               votePost={votePost}

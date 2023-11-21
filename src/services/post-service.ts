@@ -74,6 +74,7 @@ const postEndpoints = {
   postOpenAI: `${apiEndPoints.posts}/gpt`,
   getPost: ({ post_id }: { post_id: string }) =>
     `${apiEndPoints.posts}/${post_id}`,
+  getPostsForAdmin: `${apiEndPoints.posts}/dashboard`,
   getComments: ({
     post_id,
     limit,
@@ -150,6 +151,8 @@ const postEndpoints = {
     `${apiEndPoints.posts}/resolve/${post_id}`,
   deletePost: ({ post_id }: { post_id: string }) =>
     `${apiEndPoints.posts}/${post_id}`,
+  deletePostForAdmin: ({ post_id }: { post_id: string }) =>
+    `${apiEndPoints.posts}/admin/${post_id}`,
 };
 
 const postService = {
@@ -204,6 +207,15 @@ const postService = {
       const response = await axiosInstance.get(
         postEndpoints.getPost({ post_id })
       );
+
+      return { response };
+    } catch (error) {
+      return { error: error as AxiosError };
+    }
+  },
+  getPostsForAdmin: async (): Promise<ApiResponse<any>> => {
+    try {
+      const response = await axiosInstance.get(postEndpoints.getPostsForAdmin);
 
       return { response };
     } catch (error) {
@@ -361,6 +373,19 @@ const postService = {
     try {
       const response = await axiosInstance.delete(
         postEndpoints.deletePost({ post_id })
+      );
+
+      return { response };
+    } catch (error) {
+      return { error: error as AxiosError };
+    }
+  },
+  deletePostForAdmin: async ({
+    post_id,
+  }: DeletePostPayLoad): Promise<ApiResponse<any>> => {
+    try {
+      const response = await axiosInstance.delete(
+        postEndpoints.deletePostForAdmin({ post_id })
       );
 
       return { response };
