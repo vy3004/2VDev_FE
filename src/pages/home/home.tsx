@@ -2,6 +2,7 @@
 import { useEffect, useState } from "react";
 import { useLocation } from "react-router-dom";
 import { useTranslation } from "react-i18next";
+import { useSelector } from "react-redux";
 
 import { Typography } from "@material-tailwind/react";
 import MenuFilter from "../../components/common/menu-filter";
@@ -11,9 +12,11 @@ import postService from "../../services/post-service";
 import { Post } from "../../utils/types";
 import { POSTS_SORT, POSTS_TYPE, PostType } from "../../utils/constant";
 import { getLabelByValue } from "../../utils/string-utils";
+import { selectUser } from "../../redux/features/user-slice";
 
 const Home = () => {
   const { t } = useTranslation();
+  const { user } = useSelector(selectUser);
   const location = useLocation();
   const queryParams = new URLSearchParams(location.search);
   const typeQueryParam = queryParams.get("type");
@@ -25,8 +28,12 @@ const Home = () => {
   const [posts, setPosts] = useState<Post[]>([]);
   const [hasMore, setHasMore] = useState(true);
 
-  const getNewsFeed = async () => {
-    const { response } = await postService.getNewsFeed({
+  const getPosts = async () => {
+    const serviceFunction = user
+      ? postService.getNewsFeed
+      : postService.getNewsFeedForGuest;
+
+    const { response } = await serviceFunction({
       limit: 10,
       page: page,
       type: type,
@@ -58,7 +65,7 @@ const Home = () => {
   }, [window.location.search]);
 
   useEffect(() => {
-    getNewsFeed();
+    getPosts();
   }, [type, sortField]);
 
   const handleChangeType = (typePost: string) => {
@@ -91,7 +98,9 @@ const Home = () => {
           </Typography>
         </div>
 
-        <MenuFilter content={POSTS_TYPE} handleChange={handleChangeType} />
+        {user && (
+          <MenuFilter content={POSTS_TYPE} handleChange={handleChangeType} />
+        )}
       </div>
       {/* Header end */}
 
@@ -99,7 +108,7 @@ const Home = () => {
       <PostsList
         posts={posts}
         postType={PostType.Post}
-        getPosts={getNewsFeed}
+        getPosts={getPosts}
         hasMore={hasMore}
       />
       {/* List posts end */}

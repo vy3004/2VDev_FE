@@ -15,7 +15,7 @@ import UserDetailPage from "../pages/dashboard/manage-users/[username]/user-deta
 import Profile from "../pages/profile/profile";
 import Tags from "../pages/tags/tags";
 import TagDetail from "../pages/tags/[tag_id]/tag_detail";
-import Communities from "../pages/communities/communities";
+import Bookmarks from "../pages/bookmark/bookmarks";
 import Message from "../pages/message/message";
 import Notification from "../pages/notification/notification";
 import Settings from "../pages/settings/settings";
@@ -29,11 +29,7 @@ interface Route {
 const routes: Route[] = [
   {
     path: "/",
-    element: (
-      <ProtectedPage>
-        <Home />
-      </ProtectedPage>
-    ),
+    element: <Home />,
   },
   {
     path: "/post",
@@ -89,11 +85,15 @@ const routes: Route[] = [
   },
   {
     path: "/tags/:tag_id",
-    element: <TagDetail />,
+    element: (
+      <ProtectedPage>
+        <TagDetail />
+      </ProtectedPage>
+    ),
   },
   {
-    path: "/communities",
-    element: <Communities />,
+    path: "/bookmarks",
+    element: <Bookmarks />,
   },
   {
     path: "/users",

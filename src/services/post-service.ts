@@ -102,6 +102,21 @@ const postEndpoints = {
     sort_value: number;
   }) =>
     `${apiEndPoints.posts}/newfeeds?limit=${limit}&page=${page}&type=${type}&sort_field=${sort_field}&sort_value=${sort_value}`,
+  getNewsFeedForGuest: ({
+    type,
+    limit,
+    page,
+    sort_field,
+    sort_value,
+  }: {
+    type: string;
+    limit: number;
+    page: number;
+    sort_field: string;
+    sort_value: number;
+  }) =>
+    `${apiEndPoints.posts}/guess-newfeeds?limit=${limit}&page=${page}&type=${type}&sort_field=${sort_field}&sort_value=${sort_value}`,
+
   getPostsByHashtag: ({
     hashtag_id,
     limit,
@@ -228,6 +243,29 @@ const postService = {
     try {
       const response = await axiosInstance.get(
         postEndpoints.getNewsFeed({ type, limit, page, sort_field, sort_value })
+      );
+
+      return { response };
+    } catch (error) {
+      return { error: error as AxiosError };
+    }
+  },
+  getNewsFeedForGuest: async ({
+    type,
+    limit,
+    page,
+    sort_field,
+    sort_value,
+  }: GetNewsFeedPayLoad): Promise<ApiResponse<any>> => {
+    try {
+      const response = await axiosInstance.get(
+        postEndpoints.getNewsFeedForGuest({
+          type,
+          limit,
+          page,
+          sort_field,
+          sort_value,
+        })
       );
 
       return { response };

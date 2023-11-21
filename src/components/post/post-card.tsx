@@ -369,7 +369,7 @@ const PostCard: React.FC<PostCardProps> = ({ post, isDetail, isRepost }) => {
     }
   };
 
-  return post && user ? (
+  return post ? (
     <div className={`border rounded-lg p-4 ${!isRepost && "shadow-md"}`}>
       <div className="space-y-2">
         <div className="flex justify-between">
@@ -378,58 +378,60 @@ const PostCard: React.FC<PostCardProps> = ({ post, isDetail, isRepost }) => {
           {/* Info user end */}
 
           {/* Post menu start */}
-          <Menu placement="bottom-end">
-            <MenuHandler>
-              <IconButton variant="text" className="rounded-full">
-                <EllipsisHorizontalIcon className="w-8 h-8" />
-              </IconButton>
-            </MenuHandler>
-            <MenuList>
-              <MenuItem
-                className="flex items-center gap-2"
-                onClick={() =>
-                  handleBookmark(post._id, post.user_detail._id, bookmark)
-                }
-              >
-                {bookmark ? (
-                  <>
-                    <BookmarkSlashIcon className="w-5 h-5" /> Unmark the post
-                  </>
-                ) : (
-                  <>
-                    <BookmarkIcon className="w-5 h-5" /> Bookmark the post
-                  </>
+          {user && (
+            <Menu placement="bottom-end">
+              <MenuHandler>
+                <IconButton variant="text" className="rounded-full">
+                  <EllipsisHorizontalIcon className="w-8 h-8" />
+                </IconButton>
+              </MenuHandler>
+              <MenuList>
+                <MenuItem
+                  className="flex items-center gap-2"
+                  onClick={() =>
+                    handleBookmark(post._id, post.user_detail._id, bookmark)
+                  }
+                >
+                  {bookmark ? (
+                    <>
+                      <BookmarkSlashIcon className="w-5 h-5" /> Unmark the post
+                    </>
+                  ) : (
+                    <>
+                      <BookmarkIcon className="w-5 h-5" /> Bookmark the post
+                    </>
+                  )}
+                </MenuItem>
+
+                {user._id !== post.user_detail._id && !report && (
+                  <MenuItem
+                    className="flex items-center gap-2"
+                    onClick={handleReport}
+                  >
+                    <ExclamationTriangleIcon className="w-5 h-5" /> Report
+                  </MenuItem>
                 )}
-              </MenuItem>
 
-              {user._id !== post.user_detail._id && !report && (
-                <MenuItem
-                  className="flex items-center gap-2"
-                  onClick={handleReport}
-                >
-                  <ExclamationTriangleIcon className="w-5 h-5" /> Report
-                </MenuItem>
-              )}
+                {user._id === post.user_detail._id && (
+                  <MenuItem
+                    className="flex items-center gap-2"
+                    onClick={() => navigate(`/post?post_id=${post._id}`)}
+                  >
+                    <PencilSquareIcon className="w-5 h-5" /> Edit
+                  </MenuItem>
+                )}
 
-              {user._id === post.user_detail._id && (
-                <MenuItem
-                  className="flex items-center gap-2"
-                  onClick={() => navigate(`/post?post_id=${post._id}`)}
-                >
-                  <PencilSquareIcon className="w-5 h-5" /> Edit
-                </MenuItem>
-              )}
-
-              {user._id === post.user_detail._id && (
-                <MenuItem
-                  className="flex items-center gap-2"
-                  onClick={handleDelete}
-                >
-                  <TrashIcon className="w-5 h-5" /> Delete
-                </MenuItem>
-              )}
-            </MenuList>
-          </Menu>
+                {user._id === post.user_detail._id && (
+                  <MenuItem
+                    className="flex items-center gap-2"
+                    onClick={handleDelete}
+                  >
+                    <TrashIcon className="w-5 h-5" /> Delete
+                  </MenuItem>
+                )}
+              </MenuList>
+            </Menu>
+          )}
           {/* Post menu end */}
         </div>
 
@@ -557,7 +559,7 @@ const PostCard: React.FC<PostCardProps> = ({ post, isDetail, isRepost }) => {
               {post.repost_count > 0 && post.repost_count} Repost
             </Button>
           </div>
-          {isDetail && (
+          {isDetail && user && (
             <div className="space-y-4">
               {/* Comment form start */}
               {showFormAnswer && (

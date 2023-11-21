@@ -134,7 +134,7 @@ const AboutMe: React.FC<AboutMeProps> = ({ user }) => {
               <UserGroupIcon className="w-8 h-8" />
 
               <Typography className="text-xl font-semibold">
-                {item.users} User{item.users > 1 && "s"} {item.label}
+                {item.users} {item.label}
               </Typography>
             </div>
           </Button>

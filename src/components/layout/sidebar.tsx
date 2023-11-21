@@ -21,10 +21,10 @@ import {
   Cog6ToothIcon,
   NewspaperIcon,
   TagIcon,
-  IdentificationIcon,
   ChatBubbleBottomCenterTextIcon,
   BellIcon,
   UserGroupIcon,
+  BookmarkSquareIcon,
 } from "@heroicons/react/24/solid";
 import { ChevronRightIcon, ChevronDownIcon } from "@heroicons/react/24/outline";
 
@@ -80,15 +80,28 @@ const Sidebar = () => {
       icon: <TagIcon className="h-5 w-5" />,
       href: "/tags",
     },
+  ];
+
+  const listUser: sidebarItem[] = [
     {
-      label: t("sidebar.communities"),
-      icon: <IdentificationIcon className="h-5 w-5" />,
-      href: "/communities",
+      label: t("sidebar.profile"),
+      icon: <UserCircleIcon className="h-5 w-5" />,
+      href: `/profile/${user && user.username}`,
     },
     {
       label: t("sidebar.users"),
       icon: <UserGroupIcon className="h-5 w-5" />,
       href: "/users",
+    },
+    {
+      label: t("sidebar.bookmarks"),
+      icon: <BookmarkSquareIcon className="h-5 w-5" />,
+      href: "/bookmarks",
+    },
+    {
+      label: t("sidebar.settings"),
+      icon: <Cog6ToothIcon className="h-5 w-5" />,
+      href: "/settings",
     },
   ];
 
@@ -127,7 +140,7 @@ const Sidebar = () => {
                 <ListItem
                   className={`${
                     appState === href && "dark:bg-gray-50 dark:text-gray-900"
-                  }`}
+                  } select-none`}
                   selected={appState === href}
                   onClick={() => navigate(href)}
                   key={key}
@@ -173,7 +186,7 @@ const Sidebar = () => {
                   <ListItem
                     className={`${
                       appState === href && "dark:bg-gray-50 dark:text-gray-900"
-                    }`}
+                    } select-none`}
                     selected={appState === href}
                     onClick={() => navigate(href)}
                     key={key}
@@ -191,6 +204,7 @@ const Sidebar = () => {
         {/* Guest items start */}
         {listGuest.map(({ label, icon, href }, key) => (
           <ListItem
+            className="select-none"
             selected={appState === href}
             onClick={() => navigate(href)}
             key={key}
@@ -234,21 +248,17 @@ const Sidebar = () => {
                 />
               </ListItemSuffix>
             </ListItem>
-            <ListItem
-              onClick={() => navigate(`/profile/${user.username}`)}
-              selected={appState === "/profile/:username"}
-            >
-              <ListItemPrefix>
-                <UserCircleIcon className="h-5 w-5" />
-              </ListItemPrefix>
-              {t("user.profile")}
-            </ListItem>
-            <ListItem onClick={() => navigate("/settings")}>
-              <ListItemPrefix>
-                <Cog6ToothIcon className="h-5 w-5" />
-              </ListItemPrefix>
-              {t("user.setting")}
-            </ListItem>
+            {listUser.map(({ label, icon, href }, key) => (
+              <ListItem
+                className="select-none"
+                selected={appState === href}
+                onClick={() => navigate(href)}
+                key={key}
+              >
+                <ListItemPrefix>{icon}</ListItemPrefix>
+                {label}
+              </ListItem>
+            ))}
           </>
         )}
         {/* User items start */}
