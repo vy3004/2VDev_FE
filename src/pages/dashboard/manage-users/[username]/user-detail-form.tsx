@@ -50,7 +50,6 @@ const UserDetailForm: React.FC<UserDetailFormProps> = ({ user }) => {
   const navigate = useNavigate();
   const { t } = useTranslation();
   const { themeMode } = useSelector(selectApp);
-  console.log(themeMode);
 
   const [avatar, setAvatar] = useState(user.avatar || "/user.svg");
   const [coverPhoto, setCoverPhoto] = useState(
@@ -61,8 +60,9 @@ const UserDetailForm: React.FC<UserDetailFormProps> = ({ user }) => {
   const [isSubmit, setIsSubmit] = useState(false);
   const [changeAvatar, setChangeAvatar] = useState(false);
   const [changeCoverPhoto, setChangeCoverPhoto] = useState(false);
-  const [verify, setVerify] = useState(user.verify === 1);
   const [admin, setAdmin] = useState(user.role === 1);
+  const [verify, setVerify] = useState(user.verify === 1);
+  const [lockAccount, setLockAccount] = useState(user.verify === 2);
 
   const onClose = () => {
     setAvatar(user.avatar || "");
@@ -120,10 +120,12 @@ const UserDetailForm: React.FC<UserDetailFormProps> = ({ user }) => {
       setIsSubmit(true);
       setErrorMessage("");
 
+      const newVerify = lockAccount ? 2 : verify;
+
       let data = {
         ...values,
         user_id: user._id,
-        verify: +verify,
+        verify: +newVerify,
         role: +admin,
       };
 
@@ -152,7 +154,6 @@ const UserDetailForm: React.FC<UserDetailFormProps> = ({ user }) => {
 
       const { response, error } = await userService.updateUser(data);
       if (response) {
-        console.log("RES", response);
         navigate("/dashboard/manage-users");
         toast.success(t("user.User editing successful"));
       }
@@ -233,10 +234,9 @@ const UserDetailForm: React.FC<UserDetailFormProps> = ({ user }) => {
             {t("user.Personal Information")}
           </Typography>
           <div className="grid grid-cols-2 gap-4">
-            <div>
+            <div className="col-span-2 sm:col-span-1">
               {/* Name input start */}
               <Input
-                containerProps={{ className: "col-span-2 sm:col-span-1" }}
                 label={t("auth.name")}
                 name="name"
                 type="text"
@@ -260,10 +260,9 @@ const UserDetailForm: React.FC<UserDetailFormProps> = ({ user }) => {
               {/* Name input end */}
             </div>
 
-            <div>
+            <div className="col-span-2 sm:col-span-1">
               {/* Username input start */}
               <Input
-                containerProps={{ className: "col-span-2 sm:col-span-1" }}
                 label={t("user.Username")}
                 name="username"
                 type="text"
@@ -316,18 +315,20 @@ const UserDetailForm: React.FC<UserDetailFormProps> = ({ user }) => {
           </div>
 
           <div className="grid grid-cols-2 gap-4">
-            {/* Date of birth input start */}
-            <Input
-              label={t("user.Date of birth")}
-              name="date_of_birth"
-              type="date"
-              size="lg"
-              color={themeMode ? "white" : "black"}
-              crossOrigin=""
-              value={userDetailForm.values.date_of_birth}
-              onChange={userDetailForm.handleChange}
-            />
-            {/* Date of birth input end */}
+            <div className="col-span-2 sm:col-span-1">
+              {/* Date of birth input start */}
+              <Input
+                label={t("user.Date of birth")}
+                name="date_of_birth"
+                type="date"
+                size="lg"
+                color={themeMode ? "white" : "black"}
+                crossOrigin=""
+                value={userDetailForm.values.date_of_birth}
+                onChange={userDetailForm.handleChange}
+              />
+              {/* Date of birth input end */}
+            </div>
 
             <div className="col-span-2 sm:col-span-1">
               {/* Website input start */}
@@ -392,39 +393,52 @@ const UserDetailForm: React.FC<UserDetailFormProps> = ({ user }) => {
             {/* Address input end */}
           </div>
 
-          <div className="grid grid-cols-2 gap-4">
-            <div className="col-span-2 sm:col-span-1">
-              <List className="flex-row gap-4 p-0">
-                {/* Role checkbox start */}
-                <ListItem className="p-0" onClick={() => setAdmin(!admin)}>
-                  <Checkbox
-                    checked={admin}
-                    readOnly
-                    className="hover:before:opacity-0"
-                    crossOrigin={""}
-                  />
-                  <Typography className="font-medium select-none">
-                    {t("user.Admin")}
-                  </Typography>
-                </ListItem>
-                {/* Role checkbox end */}
+          <List className="flex-col sm:flex-row gap-4 p-0">
+            {/* Role checkbox start */}
+            <ListItem className="p-0" onClick={() => setAdmin(!admin)}>
+              <Checkbox
+                checked={admin}
+                readOnly
+                className="hover:before:opacity-0"
+                crossOrigin={""}
+              />
+              <Typography className="font-medium select-none">
+                {t("user.Admin")}
+              </Typography>
+            </ListItem>
+            {/* Role checkbox end */}
 
-                {/* Verify checkbox start */}
-                <ListItem className="p-0" onClick={() => setVerify(!verify)}>
-                  <Checkbox
-                    checked={verify}
-                    readOnly
-                    className="hover:before:opacity-0"
-                    crossOrigin={""}
-                  />
-                  <Typography className="font-medium select-none">
-                    {t("user.Email Verify")}
-                  </Typography>
-                </ListItem>
-                {/* Verify checkbox start */}
-              </List>
-            </div>
-          </div>
+            {/* Verify checkbox start */}
+            <ListItem className="p-0" onClick={() => setVerify(!verify)}>
+              <Checkbox
+                checked={verify}
+                readOnly
+                className="hover:before:opacity-0"
+                crossOrigin={""}
+              />
+              <Typography className="font-medium select-none">
+                {t("user.Email Verify")}
+              </Typography>
+            </ListItem>
+            {/* Verify checkbox start */}
+
+            {/* Lock account checkbox start */}
+            <ListItem
+              className="p-0"
+              onClick={() => setLockAccount(!lockAccount)}
+            >
+              <Checkbox
+                checked={lockAccount}
+                readOnly
+                className="hover:before:opacity-0"
+                crossOrigin={""}
+              />
+              <Typography className="font-medium select-none">
+                {t("user.Lock Account")}
+              </Typography>
+            </ListItem>
+            {/* Lock account checkbox start */}
+          </List>
         </div>
         {/* Error message form start */}
         {errorMessage && (

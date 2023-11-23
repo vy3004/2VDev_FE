@@ -222,6 +222,10 @@ const userService = {
   getInfo: async (): Promise<ApiResponse<any>> => {
     try {
       const response = await axiosInstance.get(userEndpoints.getMe);
+      if (response.data.result.verify === 2) {
+        localStorage.removeItem("access_token");
+        localStorage.removeItem("refresh_token");
+      }
 
       return { response };
     } catch (error) {

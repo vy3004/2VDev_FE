@@ -27,7 +27,7 @@ import { getOauthGoogleUrl } from "../../utils/oauth-google-url";
 
 interface SignInFormProps {
   switchAuthState: (name: string) => void;
-  authUser: () => void;
+  authUser: () => Promise<boolean>;
 }
 
 interface SignInFormValues {
@@ -74,10 +74,14 @@ const SignInForm: React.FC<SignInFormProps> = ({
       setIsSubmit(false);
 
       if (response) {
-        authUser();
         signInForm.resetForm();
-        dispatch(setAuthModalOpen(false));
-        toast.success(t("auth.Sign In Success"));
+        const auth = await authUser();
+        if (auth) {
+          dispatch(setAuthModalOpen(false));
+          toast.success(t("auth.Sign In Success"));
+        } else {
+          setErrorMessage("Sorry, your account has been locked.");
+        }
       }
 
       if (error) setErrorMessage(error.message);

@@ -71,6 +71,7 @@
     "Diamond": "Diamond",
     "Admin": "Admin",
     "Email Verify": "Email Verify",
+    "Lock Account": "Lock Account",
     "Cancel": "Cancel",
     "Submit": "Submit"
   },
@@ -85,7 +86,7 @@
     "most votes": "Most votes",
     "most interactions": "Most interactions",
     "tags": "Tags",
-    "communities": "Communities",
+    "bookmarks": "Bookmarks",
     "users": "Users"
   },
   "right-sidebar": {

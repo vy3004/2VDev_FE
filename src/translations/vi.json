@@ -70,6 +70,7 @@
     "Diamond": "Kim cương",
     "Admin": "Quản trị viên",
     "Email Verify": "Xác thực Email",
+    "Lock Account": "Khóa tài khoản",
     "Cancel": "Hủy",
     "Submit": "Xác nhận"
   },
@@ -84,7 +85,7 @@
     "most votes": "Nhiều lượt đánh giá nhất",
     "most interactions": "Nhiều tương tác nhất",
     "tags": "Từ khóa",
-    "communities": "Cộng đồng",
+    "bookmarks": "Danh sách bookmark",
     "users": "Danh sách người dùng"
   },
   "right-sidebar": {

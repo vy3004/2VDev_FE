@@ -28,11 +28,18 @@ const AuthModal = () => {
 
   const switchAuthState = (name: string) => dispatch(setAuthModalName(name));
 
-  const authUser = async () => {
+  const authUser = async (): Promise<boolean> => {
     const { response } = await authService.getInfo();
 
     if (response) {
-      dispatch(setUser(response.data.result));
+      if (response.data.result?.verify === 2) {
+        return false;
+      } else {
+        dispatch(setUser(response.data.result));
+        return true;
+      }
+    } else {
+      return false;
     }
   };
 

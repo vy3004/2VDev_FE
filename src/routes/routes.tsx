@@ -12,6 +12,7 @@ import ManagePosts from "../pages/dashboard/manage-posts/manage-posts";
 import Users from "../pages/users/users";
 import ManageUsers from "../pages/dashboard/manage-users/manage-users";
 import UserDetailPage from "../pages/dashboard/manage-users/[username]/user-detail-page";
+import Overview from "../pages/dashboard/overview/overview";
 import Profile from "../pages/profile/profile";
 import Tags from "../pages/tags/tags";
 import TagDetail from "../pages/tags/[tag_id]/tag_detail";
@@ -76,6 +77,14 @@ const routes: Route[] = [
     element: (
       <AdminPage>
         <ManagePosts />
+      </AdminPage>
+    ),
+  },
+  {
+    path: "/dashboard/overview",
+    element: (
+      <AdminPage>
+        <Overview />
       </AdminPage>
     ),
   },
