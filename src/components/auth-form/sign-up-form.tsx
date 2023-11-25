@@ -109,17 +109,18 @@ const SignUpForm: React.FC<SignUpFormProps> = ({
               </Typography>
             </div>
 
-            <Typography variant="small" className="mt-1 text-center">
-              {t("auth.have-an-account")}
+            <div className="text-center">
+              <Typography variant="small" className="mt-1">
+                {t("auth.have-an-account")}
+              </Typography>
               <Typography
                 variant="small"
-                color="blue"
-                className="font-bold cursor-pointer"
+                className="font-bold cursor-pointer text-blue-500"
                 onClick={() => switchAuthState("signIn")}
               >
                 {t("auth.sign-in")}
               </Typography>
-            </Typography>
+            </div>
           </div>
           {/* Form header end */}
 
