@@ -24,7 +24,7 @@ const Tags = () => {
       const { response } = await tagService.getTags();
 
       if (response) {
-        // setTags(response.data.data);
+        setTags(response.data.data);
       }
 
       setIsLoading(false);
