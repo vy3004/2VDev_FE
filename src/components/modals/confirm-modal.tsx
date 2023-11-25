@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
+import { useTranslation } from "react-i18next";
 import toast from "react-hot-toast";
 
 import {
@@ -21,6 +22,7 @@ import userService from "../../services/user-service";
 import { setUser } from "../../redux/features/user-slice";
 
 const ConfirmModal = () => {
+  const { t } = useTranslation();
   const { confirmModal } = useSelector(selectConfirmModal);
   const dispatch = useDispatch();
 
@@ -45,11 +47,11 @@ const ConfirmModal = () => {
       if (response) {
         handleClose();
         window.location.reload();
-        toast.success("Deleted Successfully");
+        toast.success(t("post.You have deleted successfully"));
       }
 
       if (error) {
-        toast.error("Delete Failed");
+        toast.error(t("post.Something went wrong"));
       }
     }
     setIsSubmit(false);
@@ -60,32 +62,30 @@ const ConfirmModal = () => {
     if (response) {
       dispatch(setUser(null));
       handleClose();
-      toast.success("Sign Out Success");
+      toast.success(t("auth.Logout Success"));
     }
   };
 
   const contentModal = [
     {
-      title: "Delete Your Post",
-      content: "Are you sure you want to delete the post?",
-      warning:
-        "All information and comments on the post will be deleted. You will not be able to restore them.",
+      title: t("post.Delete Your Question"),
+      content: t("post.Delete Your Question content"),
+      warning: t("post.Delete Your Question warning"),
       handleSubmit: handleDelete,
-      submitButton: "Yes, Delete",
+      submitButton: t("post.Yes, Delete"),
     },
     {
-      title: "Delete Your Comment",
-      content: "Are you sure you want to delete the comment?",
-      warning:
-        "All information and replies on comment will be deleted. You will not be able to restore them.",
+      title: t("post.Delete Your Answer"),
+      content: t("post.Delete Your Answer content"),
+      warning: t("post.Delete Your Answer warning"),
       handleSubmit: handleDelete,
-      submitButton: "Yes, Delete",
+      submitButton: t("post.Yes, Delete"),
     },
     {
-      title: "Log out",
-      content: "Are you sure you want to log out?",
+      title: t("auth.Logout"),
+      content: t("auth.Are you sure you want to logout?"),
       handleSubmit: handleLogout,
-      submitButton: "Yes, Log out",
+      submitButton: t("auth.Yes, Logout"),
     },
   ];
 
@@ -125,7 +125,7 @@ const ConfirmModal = () => {
             onClick={handleClose}
             className="normal-case"
           >
-            <span>No, Cancel</span>
+            <span>{t("auth.No, Cancel")}</span>
           </Button>
           <Button
             size="lg"

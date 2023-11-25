@@ -1,4 +1,5 @@
 import { useState, useEffect } from "react";
+import { useTranslation } from "react-i18next";
 
 import Loading from "./loading";
 import TagButton from "./tag-button";
@@ -7,6 +8,8 @@ import tagService from "../../services/tag-service";
 import NotFoundAlert from "./not-found-alert";
 
 const TagsTrending = () => {
+  const { t } = useTranslation();
+
   const [tags, setTags] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
 
@@ -37,7 +40,10 @@ const TagsTrending = () => {
           <TagButton key={_id} id={_id} name={name} />
         ))
       ) : (
-        <NotFoundAlert message="No tags found" isBack={false} />
+        <NotFoundAlert
+          message={t("post.Trending tags not found")}
+          isBack={false}
+        />
       )}
     </div>
   );

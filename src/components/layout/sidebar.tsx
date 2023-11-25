@@ -52,17 +52,17 @@ const Sidebar = () => {
 
   const listDashboard: sidebarItem[] = [
     {
-      label: t("sidebar.overview"),
+      label: t("sidebar.Overview"),
       icon: <ChevronRightIcon strokeWidth={3} className="h-3 w-5" />,
       href: "/dashboard/overview",
     },
     {
-      label: t("sidebar.manage-users"),
+      label: t("sidebar.Manage Users"),
       icon: <ChevronRightIcon strokeWidth={3} className="h-3 w-5" />,
       href: "/dashboard/manage-users",
     },
     {
-      label: t("sidebar.manage-posts"),
+      label: t("sidebar.Manage Posts"),
       icon: <ChevronRightIcon strokeWidth={3} className="h-3 w-5" />,
       href: "/dashboard/manage-posts",
     },
@@ -76,7 +76,7 @@ const Sidebar = () => {
 
   const listGuest: sidebarItem[] = [
     {
-      label: t("sidebar.tags"),
+      label: t("sidebar.Tags"),
       icon: <TagIcon className="h-5 w-5" />,
       href: "/tags",
     },
@@ -84,22 +84,22 @@ const Sidebar = () => {
 
   const listUser: sidebarItem[] = [
     {
-      label: t("sidebar.profile"),
+      label: t("sidebar.Profile"),
       icon: <UserCircleIcon className="h-5 w-5" />,
       href: `/profile/${user && user.username}`,
     },
     {
-      label: t("sidebar.users"),
+      label: t("sidebar.Users"),
       icon: <UserGroupIcon className="h-5 w-5" />,
       href: "/users",
     },
     {
-      label: t("sidebar.bookmarks"),
+      label: t("sidebar.My Bookmarks"),
       icon: <BookmarkSquareIcon className="h-5 w-5" />,
       href: "/bookmarks",
     },
     {
-      label: t("sidebar.settings"),
+      label: t("sidebar.Settings"),
       icon: <Cog6ToothIcon className="h-5 w-5" />,
       href: "/settings",
     },
@@ -130,7 +130,7 @@ const Sidebar = () => {
               </ListItemPrefix>
               <Typography className="mr-auto font-normal">
                 {" "}
-                {t("sidebar.news-feed")}
+                {t("sidebar.Questions")}
               </Typography>
             </AccordionHeader>
           </ListItem>
@@ -176,7 +176,7 @@ const Sidebar = () => {
                   <PresentationChartBarIcon className="h-5 w-5" />
                 </ListItemPrefix>
                 <Typography className="mr-auto font-normal">
-                  {t("sidebar.dashboard")}
+                  {t("sidebar.Dashboard")}
                 </Typography>
               </AccordionHeader>
             </ListItem>
@@ -224,7 +224,7 @@ const Sidebar = () => {
               <ListItemPrefix>
                 <ChatBubbleBottomCenterTextIcon className="h-5 w-5" />
               </ListItemPrefix>
-              {t("user.message")}
+              {t("sidebar.Message")}
               <ListItemSuffix>
                 <Chip
                   value="14"
@@ -238,7 +238,7 @@ const Sidebar = () => {
               <ListItemPrefix>
                 <BellIcon className="h-5 w-5" />
               </ListItemPrefix>
-              {t("user.notification")}
+              {t("sidebar.Notification")}
               <ListItemSuffix>
                 <Chip
                   value="7"

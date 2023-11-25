@@ -48,11 +48,11 @@ const ResetPasswordForm: React.FC<ResetPasswordFormProps> = ({
     },
     validationSchema: Yup.object({
       password: Yup.string()
-        .min(8, t("auth.Password minimum 8 characters"))
+        .min(6, t("auth.Password minimum 6 characters"))
         .required(t("auth.Password is required")),
       confirm_password: Yup.string()
         .oneOf([Yup.ref("password")], t("auth.Confirm password not match"))
-        .min(8, t("auth.Confirm password minimum 8 characters"))
+        .min(6, t("auth.Confirm password minimum 6 characters"))
         .required(t("auth.Confirm password is required")),
     }),
     onSubmit: async (values: ResetPasswordFormValues) => {
@@ -89,10 +89,9 @@ const ResetPasswordForm: React.FC<ResetPasswordFormProps> = ({
               </Typography>
             </div>
 
-            <Typography variant="small" className="mt-1">
+            <Typography variant="small" className="mt-1 text-center">
               {t("auth.no-account")}
               <Typography
-                as="a"
                 variant="small"
                 color="blue"
                 className="font-bold cursor-pointer"

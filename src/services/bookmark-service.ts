@@ -16,12 +16,25 @@ interface ApiResponse<T> {
 }
 
 const bookmarkEndpoints = {
+  getMyBookmarks: `${apiEndPoints.bookmarks}`,
   bookmarkPost: `${apiEndPoints.bookmarks}`,
   unmarkPost: ({ post_id }: { post_id: string }) =>
     `${apiEndPoints.bookmarks}/posts/${post_id}`,
 };
 
 const bookmarkService = {
+  getMyBookmarks: async (): Promise<ApiResponse<any>> => {
+    try {
+      const response = await axiosInstance.post(
+        bookmarkEndpoints.getMyBookmarks
+      );
+
+      return { response };
+    } catch (error) {
+      return { error: error as AxiosError };
+    }
+  },
+
   bookmarkPost: async ({
     post_id,
   }: BookmarkPostPayload): Promise<ApiResponse<any>> => {

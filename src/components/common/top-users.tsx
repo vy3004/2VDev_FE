@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import { useTranslation } from "react-i18next";
 
 import Loading from "./loading";
 import NotFoundAlert from "./not-found-alert";
@@ -8,8 +9,11 @@ import userService from "../../services/user-service";
 import { UserCardType } from "../../utils/types";
 
 const TopUsers = () => {
+  const { t } = useTranslation();
+
   const [users, setUsers] = useState<UserCardType[]>([]);
   const [isLoading, setIsLoading] = useState(false);
+
   const getUsers = async () => {
     setIsLoading(true);
 
@@ -58,18 +62,19 @@ const TopUsers = () => {
 
           <div className="flex items-center gap-4 pl-[4.8rem] font-bold text-gray-600">
             <p>
-              {user.followers} {user.followers === 1 ? "follower" : "followers"}
+              {user.followers}{" "}
+              {t(`user.${user.followers === 1 ? "follower" : "followers"}`)}
             </p>
             <p>
               {user.following}{" "}
-              {user.following === 1 ? "following" : "followings"}
+              {t(`user.${user.following === 1 ? "following" : "followings"}`)}
             </p>
           </div>
         </div>
       ))}
     </div>
   ) : (
-    <NotFoundAlert message="Top users not found!" isBack={false} />
+    <NotFoundAlert message={t("user.Top users not found")} isBack={false} />
   );
 };
 

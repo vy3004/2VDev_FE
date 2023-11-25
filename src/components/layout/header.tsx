@@ -2,16 +2,14 @@ import { useDispatch, useSelector } from "react-redux";
 import { useTranslation } from "react-i18next";
 import { useNavigate } from "react-router-dom";
 
-import { Typography, IconButton, Button } from "@material-tailwind/react";
-import {
-  BellIcon,
-  ChatBubbleBottomCenterTextIcon,
-} from "@heroicons/react/24/solid";
+import { Typography, Button } from "@material-tailwind/react";
 
 import Container from "../common/container";
-import ProfileMenu from "../common/profile-menu";
 import NavList from "../common/nav-list";
 import SearchInput from "../common/search-input";
+import MessageMenu from "../common/message-menu";
+import NotificationMenu from "../common/notification-menu";
+import ProfileMenu from "../common/profile-menu";
 import MobileSidebar from "./mobile-sidebar";
 
 import {
@@ -62,19 +60,8 @@ const Header = () => {
             {/* Auth start */}
             {user ? (
               <div className="flex items-center space-x-2">
-                <IconButton
-                  variant="text"
-                  className="hidden lg:flex dark:text-gray-50"
-                >
-                  <ChatBubbleBottomCenterTextIcon className="h-5 w-5" />
-                </IconButton>
-                <IconButton
-                  variant="text"
-                  className="hidden lg:flex dark:text-gray-50"
-                >
-                  <BellIcon className="h-5 w-5" />
-                </IconButton>
-
+                <MessageMenu />
+                <NotificationMenu />
                 <ProfileMenu />
               </div>
             ) : (

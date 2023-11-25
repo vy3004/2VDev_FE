@@ -1,5 +1,6 @@
 import { useState, useEffect } from "react";
 import { useParams } from "react-router-dom";
+import { useTranslation } from "react-i18next";
 
 import { Typography } from "@material-tailwind/react";
 import PostsList from "../../../components/post/posts-list";
@@ -10,6 +11,7 @@ import { PostType } from "../../../utils/constant";
 
 const TagDetail = () => {
   const { tag_id } = useParams();
+  const { t } = useTranslation();
 
   const [posts, setPosts] = useState<Post[]>([]);
   const [page, setPage] = useState(1);
@@ -50,9 +52,13 @@ const TagDetail = () => {
       {/* Header start */}
       <div className="flex items-end justify-between">
         <div>
-          <Typography variant="h5">Tag {tagName}</Typography>
+          <Typography variant="h5">
+            {t("post.Tag")} <span className="text-blue-500">{tagName}</span>
+          </Typography>
           <Typography className="mt-1 font-normal">
-            There are a total of {postsCount} posts tagged with {tagName}
+            {t("post.There are a total of")} {postsCount}{" "}
+            {t("post.questions tagged with")}{" "}
+            <span className="text-blue-500">{tagName}</span>
           </Typography>
         </div>
       </div>

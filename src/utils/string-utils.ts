@@ -1,4 +1,4 @@
-import { parseISO, formatDistanceToNow, format } from "date-fns";
+import { parseISO, formatDistanceToNowStrict, format } from "date-fns";
 import { enUS, vi } from "date-fns/locale";
 
 export const getLastTwoWords = (str: string): string => {
@@ -25,12 +25,12 @@ export const formatTimeDistanceToNow = (
   language: string
 ): string => {
   const parsedTime = parseISO(time);
-  const formattedTime = formatDistanceToNow(parsedTime, {
+  const formattedTime = formatDistanceToNowStrict(parsedTime, {
     addSuffix: true,
     locale: language === "en" ? enUS : vi,
   });
 
-  return formattedTime;
+  return formattedTime.replace("ago", "").replace("trước", "").trim();
 };
 
 export const formatTime = (time: string, language: string): string => {

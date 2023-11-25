@@ -99,9 +99,9 @@ const SignUpForm: React.FC<SignUpFormProps> = ({
           <div className="flex justify-between mb-10">
             <div>
               <div className="flex items-end font-bold">
-                {t("auth.welcome-to")}
-                <Typography color="blue" className="ml-1 font-bold text-lg">
-                  {t("header.logo")}
+                <Typography className="font-bold text-lg">
+                  {t("auth.welcome-to")}{" "}
+                  <span className="text-blue-500">{t("header.logo")}</span>
                 </Typography>
               </div>
               <Typography className="text-4xl font-bold">
@@ -109,10 +109,9 @@ const SignUpForm: React.FC<SignUpFormProps> = ({
               </Typography>
             </div>
 
-            <Typography variant="small" className="mt-1">
+            <Typography variant="small" className="mt-1 text-center">
               {t("auth.have-an-account")}
               <Typography
-                as="a"
                 variant="small"
                 color="blue"
                 className="font-bold cursor-pointer"

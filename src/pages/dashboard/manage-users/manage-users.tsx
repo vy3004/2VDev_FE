@@ -2,6 +2,7 @@ import { useState, useEffect } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import { format } from "date-fns";
 import { debounce } from "lodash";
+import { useTranslation } from "react-i18next";
 
 import {
   MagnifyingGlassIcon,
@@ -47,9 +48,8 @@ const MENU = [
   },
 ];
 
-const TABLE_HEAD = ["User", "Level", "Verify", "Date added", ""];
-
 const ManageUsers = () => {
+  const { t } = useTranslation();
   const navigate = useNavigate();
   const location = useLocation();
   const queryParams = new URLSearchParams(location.search);
@@ -65,6 +65,14 @@ const ManageUsers = () => {
   const [totalPage, setTotalPage] = useState(1);
   const [isLoading, setIsLoading] = useState(false);
   const [searchValue, setSearchValue] = useState("");
+
+  const TABLE_HEAD = [
+    t("user.User"),
+    t("user.Level"),
+    t("user.Verify"),
+    t("user.Date added"),
+    "",
+  ];
 
   const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setSearchValue(event.target.value);
@@ -152,23 +160,27 @@ const ManageUsers = () => {
         className="rounded-none dark:bg-gray-700 dark:text-gray-50"
       >
         {/* Title start */}
-        <Typography variant="h5">Manage Users</Typography>
+        <Typography variant="h5">{t("user.Manage Users")}</Typography>
         <Typography className="mt-1 mb-8 font-normal">
-          See information about all users
+          {t("user.See information about all users")}
         </Typography>
         {/* Title end */}
 
         <div className="flex items-center justify-end gap-4">
           <Input
             className="dark:text-gray-50"
-            label="Search"
+            label={t("search.Find users")}
             icon={<MagnifyingGlassIcon className="h-5 w-5" />}
             crossOrigin={""}
             name="search"
             value={searchValue}
             onChange={handleChange}
           />
-          <MenuFilter content={MENU} handleChange={setFilter} />
+          <MenuFilter
+            content={MENU}
+            selected={filter}
+            handleChange={setFilter}
+          />
         </div>
       </CardHeader>
       <CardBody className="relative px-0 overflow-hidden overflow-x-scroll">
@@ -307,7 +319,9 @@ const ManageUsers = () => {
               )
             ) : (
               <tr>
-                <td className="p-4 text-gray-600">No result</td>
+                <td className="p-4 text-gray-600">
+                  {t("search.No result found")}
+                </td>
               </tr>
             )}
           </tbody>
@@ -315,7 +329,14 @@ const ManageUsers = () => {
         {/* Table end */}
       </CardBody>
       <CardFooter className="border-t border-blue-gray-50 p-4">
-        <Pagination page={page} totalPage={totalPage} next={next} prev={prev} />
+        {page > 0 && totalPage > 0 && (
+          <Pagination
+            page={page}
+            totalPage={totalPage}
+            next={next}
+            prev={prev}
+          />
+        )}
       </CardFooter>
     </Card>
   );

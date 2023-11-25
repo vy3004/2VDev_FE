@@ -1,5 +1,6 @@
 import { format } from "date-fns";
 import { useNavigate } from "react-router-dom";
+import { useTranslation } from "react-i18next";
 
 import { Button, Typography } from "@material-tailwind/react";
 import {
@@ -23,6 +24,7 @@ interface AboutMeProps {
 }
 
 const AboutMe: React.FC<AboutMeProps> = ({ user }) => {
+  const { t } = useTranslation();
   const navigate = useNavigate();
 
   const isNegative = user.point < 0;
@@ -56,12 +58,12 @@ const AboutMe: React.FC<AboutMeProps> = ({ user }) => {
 
   const followItems = [
     {
-      label: "Followers",
+      label: user.followers === 1 ? "follower" : "followers",
       users: user.followers,
       href: `/users?id=${user._id}&filter=follower&limit=6&page=1`,
     },
     {
-      label: "Following",
+      label: user.following === 1 ? "following" : "followings",
       users: user.following,
       href: `/users?id=${user._id}&filter=following&limit=6&page=1`,
     },
@@ -112,8 +114,12 @@ const AboutMe: React.FC<AboutMeProps> = ({ user }) => {
         {statsItems.map((item, key) => (
           <div key={key} className="col-span-4 sm:col-span-2 lg:col-span-1">
             <StatsButton
-              label={item.label}
-              stats={item.stats}
+              label={t(`user.${item.label}`)}
+              stats={
+                typeof item.stats === "string"
+                  ? t(`user.${item.stats}`)
+                  : item.stats
+              }
               icon={item.icon}
             />
           </div>
@@ -134,7 +140,7 @@ const AboutMe: React.FC<AboutMeProps> = ({ user }) => {
               <UserGroupIcon className="w-8 h-8" />
 
               <Typography className="text-xl font-semibold">
-                {item.users} {item.label}
+                {item.users} {t(`user.${item.label}`)}
               </Typography>
             </div>
           </Button>

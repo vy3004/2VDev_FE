@@ -41,25 +41,33 @@ interface CommentProps {
   comment: Post;
   currentUser: User;
   postUserId: string;
-  isPinComment: boolean;
+  resolvedId: string;
+  levelComment: number;
+  superChild: Post[];
+  userParent: User;
   votePost: (postId: string, otherUserId: string, type: boolean) => void;
   pinComment: (commentId: string | null, otherUserId: string) => Promise<void>;
+  getSuperChild: (posts: Post[]) => void;
 }
 
 const Comment: React.FC<CommentProps> = ({
   comment,
   currentUser,
   postUserId,
-  isPinComment,
+  resolvedId,
+  levelComment,
+  superChild,
+  userParent,
   votePost,
   pinComment,
+  getSuperChild,
 }) => {
-  const { i18n } = useTranslation();
+  const { i18n, t } = useTranslation();
   const { reportModal } = useSelector(selectReportModal);
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
-  const [children, setChildren] = useState<Post[]>();
+  const [children, setChildren] = useState<Post[]>([]);
   const [loadingReplies, setLoadingReplies] = useState(false);
   const [showReplies, setShowReplies] = useState(false);
   const [showCommentForm, setShowCommentForm] = useState(false);
@@ -68,10 +76,20 @@ const Comment: React.FC<CommentProps> = ({
   const [report, setReport] = useState(comment.is_reported);
   const [showEditCommentForm, setShowEditCommentForm] = useState(false);
 
+  const isResolved = resolvedId === comment._id;
+  levelComment++;
+
   useEffect(() => {
     if (reportModal.isReported && reportModal.postId === comment._id)
       setReport(true);
   }, [reportModal, comment._id]);
+
+  useEffect(() => {
+    if (levelComment >= 2) {
+      getSuperChild(children);
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [children]);
 
   const getReplies = async (show: boolean) => {
     setLoadingReplies(true);
@@ -124,7 +142,7 @@ const Comment: React.FC<CommentProps> = ({
   };
 
   const handlePinComment = () => {
-    if (isPinComment) {
+    if (isResolved) {
       pinComment(null, comment.user_detail._id);
     } else {
       pinComment(comment._id, comment.user_detail._id);
@@ -138,26 +156,37 @@ const Comment: React.FC<CommentProps> = ({
         size="sm"
         alt="avatar"
         withBorder={true}
-        className="p-0.5"
+        className="p-0.5 hidden sm:inline"
       />
       <div
         className={`space-y-2 border rounded-lg w-full min-w-0 p-2 ${
-          isPinComment && "border-blue-500 bg-blue-50"
+          isResolved ? "border-blue-500 bg-blue-50" : "border-gray-300"
         }`}
       >
         <div className="flex items-center justify-between">
           {postUserId === comment.user_detail._id ? (
             <div className="flex items-center gap-1 text-gray-600">
               <PaintBrushIcon className="w-4 h-4" />
-              <Typography className="text-xs font-semibold">Author</Typography>
+              <Typography className="text-xs font-semibold">
+                {t("post.Author")}
+              </Typography>
             </div>
           ) : (
             <div></div>
           )}
-          {isPinComment && <EyeDropperIcon className="w-4 h-4 text-blue-500" />}
+
+          {isResolved && <EyeDropperIcon className="w-4 h-4 text-blue-500" />}
         </div>
         <div className="flex items-center justify-between">
-          <div className="flex items-center gap-4">
+          <div className="flex items-center gap-2 sm:gap-4">
+            <Avatar
+              src={comment.user_detail.avatar}
+              size="sm"
+              alt="avatar"
+              withBorder={true}
+              className="p-0.5 inline sm:hidden"
+            />
+
             <Typography
               onClick={() =>
                 navigate(`/profile/${comment.user_detail.username}`)
@@ -167,12 +196,14 @@ const Comment: React.FC<CommentProps> = ({
               {comment.user_detail.name}
             </Typography>
 
-            <LevelChip level={comment.user_detail.point} />
+            <div className="hidden sm:inline">
+              <LevelChip level={comment.user_detail.point} />
+            </div>
 
-            <div className="text-orange-500 flex gap-1">
+            <div className="text-orange-500 gap-1 hidden md:flex">
               <StarIcon className="w-4 h-4" />
               <Typography className="text-sm font-semibold">
-                {comment.user_detail.point} points
+                {comment.user_detail.point} {t("user.points")}
               </Typography>
             </div>
           </div>
@@ -184,6 +215,18 @@ const Comment: React.FC<CommentProps> = ({
             </Typography>
           </Tooltip>
         </div>
+
+        {levelComment > 2 && (
+          <Typography className="text-xs font-bold">
+            {t("post.Reply")}{" "}
+            <span
+              onClick={() => navigate(`/profile/${userParent.username}`)}
+              className="text-blue-500 hover:text-gray-900 cursor-pointer"
+            >
+              {userParent.name}
+            </span>
+          </Typography>
+        )}
 
         {showEditCommentForm ? (
           // Edit comment form
@@ -213,7 +256,8 @@ const Comment: React.FC<CommentProps> = ({
             }`}
           >
             <HandThumbUpIcon className="w-4 h-4" />
-            {votesCount > 0 && votesCount} Like
+            {votesCount > 0 && votesCount}{" "}
+            <span className="hidden md:inline">{t("post.Vote")}</span>
           </Button>
 
           <Button
@@ -222,7 +266,7 @@ const Comment: React.FC<CommentProps> = ({
             className="p-2 flex items-center justify-center gap-2 normal-case text-xs"
           >
             <ChatBubbleLeftIcon className="w-4 h-4" />
-            Reply
+            <span className="hidden md:inline">{t("post.Reply")}</span>
           </Button>
 
           {comment.user_detail._id !== currentUser._id && !report && (
@@ -232,7 +276,7 @@ const Comment: React.FC<CommentProps> = ({
               className="p-2 flex items-center justify-center gap-2 normal-case text-xs"
             >
               <ExclamationTriangleIcon className="w-4 h-4" />
-              Report
+              <span className="hidden md:inline">{t("post.Report")}</span>
             </Button>
           )}
 
@@ -243,11 +287,11 @@ const Comment: React.FC<CommentProps> = ({
               className="p-2 flex items-center justify-center gap-2 normal-case text-xs"
             >
               <PencilSquareIcon className="w-4 h-4" />
-              Edit
+              <span className="hidden md:inline">{t("post.Edit")}</span>
             </Button>
           )}
 
-          {(comment.user_detail._id === currentUser._id && !isPinComment) ||
+          {(comment.user_detail._id === currentUser._id && !isResolved) ||
           currentUser.role === 1 ? (
             <Button
               onClick={handleDelete}
@@ -255,7 +299,7 @@ const Comment: React.FC<CommentProps> = ({
               className="p-2 flex items-center justify-center gap-2 normal-case text-xs"
             >
               <TrashIcon className="w-4 h-4" />
-              Delete
+              <span className="hidden md:inline">{t("post.Delete")}</span>
             </Button>
           ) : (
             <></>
@@ -268,7 +312,9 @@ const Comment: React.FC<CommentProps> = ({
               className="p-2 flex items-center justify-center gap-2 normal-case text-xs"
             >
               <EyeDropperIcon className="w-4 h-4" />
-              {isPinComment ? "Unpin" : "Pin"}
+              <span className="hidden md:inline">
+                {isResolved ? t("post.Unpin") : t("post.Pin")}
+              </span>
             </Button>
           )}
         </div>
@@ -285,7 +331,7 @@ const Comment: React.FC<CommentProps> = ({
         {/* Comment form end */}
 
         {/* Button show reply start */}
-        {comment.comments_count > 0 && (
+        {comment.comments_count > 0 && !showReplies && (
           <Button
             onClick={() => getReplies(!showReplies)}
             className="py-1 px-2 flex items-center gap-1 normal-case"
@@ -295,31 +341,54 @@ const Comment: React.FC<CommentProps> = ({
             {loadingReplies ? (
               <Spinner className="h-4 w-4 m-auto" />
             ) : (
-              <ArrowUturnLeftIcon
-                className={`w-3 h-3 ${!showReplies && "rotate-180"}`}
-              />
+              <ArrowUturnLeftIcon className="w-3 h-3 rotate-180" />
             )}{" "}
             {comment.comments_count > 0 && comment.comments_count}{" "}
-            {comment.comments_count === 1 ? "Reply" : "Replies"}
+            {comment.comments_count === 1 ? t("post.Reply") : t("post.Replies")}
           </Button>
         )}
         {/* Button show reply end */}
 
         {/* Comment children start */}
-        {showReplies &&
+        {levelComment < 2 &&
           children &&
           children.map((reply) => (
             <Comment
               key={reply._id}
               comment={reply}
               currentUser={currentUser}
-              postUserId={comment.user_detail._id}
-              isPinComment={isPinComment}
+              postUserId={postUserId}
+              resolvedId={resolvedId}
+              levelComment={levelComment}
+              superChild={superChild}
+              userParent={comment.user_detail}
               votePost={votePost}
               pinComment={pinComment}
+              getSuperChild={getSuperChild}
             />
           ))}
         {/* Comment children end */}
+
+        {superChild.length > 0 &&
+          comment._id === superChild[0].parent_id &&
+          superChild.map((reply) => (
+            <Comment
+              key={reply._id}
+              comment={reply}
+              currentUser={currentUser}
+              postUserId={postUserId}
+              resolvedId={resolvedId}
+              levelComment={levelComment}
+              superChild={superChild}
+              userParent={
+                superChild.find((item) => item._id === reply.parent_id)
+                  ?.user_detail || comment.user_detail
+              }
+              votePost={votePost}
+              pinComment={pinComment}
+              getSuperChild={getSuperChild}
+            />
+          ))}
       </div>
     </div>
   );

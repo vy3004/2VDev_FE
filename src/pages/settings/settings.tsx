@@ -9,7 +9,7 @@ import { selectApp, setThemeMode } from "../../redux/features/app-state-slice";
 import { LANGUAGES } from "../../utils/constant";
 
 const Settings = () => {
-  const { i18n } = useTranslation();
+  const { i18n, t } = useTranslation();
   const { themeMode } = useSelector(selectApp);
   const dispatch = useDispatch();
 
@@ -48,12 +48,12 @@ const Settings = () => {
 
       <div className="space-y-4 bg-gray-100 rounded-md p-4">
         <Typography className="font-bold text-xl text-gray-900">
-          Language
+          {t("home.Language")}
         </Typography>
 
         <Select
           size="lg"
-          label="Select Language"
+          label={t("home.Select Language")}
           selected={(element) =>
             element &&
             React.cloneElement(element, {
@@ -86,11 +86,11 @@ const Settings = () => {
 
       <div className="space-y-4 bg-gray-100 rounded-md p-4">
         <Typography className="font-bold text-xl text-gray-900">
-          Theme
+          {t("home.Theme")}
         </Typography>
 
         <div className="flex items-center gap-2 px-1 font-bold">
-          <p>Light</p>
+          <p>{t("home.Light")}</p>
           <Switch
             crossOrigin={""}
             ripple={false}
@@ -108,7 +108,7 @@ const Settings = () => {
             checked={themeMode}
             onChange={handleThemeSwitch}
           />
-          <p>Dark</p>
+          <p>{t("home.Dark")}</p>
         </div>
       </div>
     </div>

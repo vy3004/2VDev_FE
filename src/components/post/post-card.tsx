@@ -70,7 +70,7 @@ interface PostCardProps {
 }
 
 const PostCard: React.FC<PostCardProps> = ({ post, isDetail, isRepost }) => {
-  const { i18n } = useTranslation();
+  const { i18n, t } = useTranslation();
   const { user } = useSelector(selectUser);
   const { reportModal } = useSelector(selectReportModal);
   const dispatch = useDispatch();
@@ -89,6 +89,7 @@ const PostCard: React.FC<PostCardProps> = ({ post, isDetail, isRepost }) => {
   const [isLoading, setIsLoading] = useState(false);
   const [detailPinComment, setDetailPinComment] = useState<Post>();
   const [repost, setRepost] = useState<Post>();
+  const [superChild, setSuperChild] = useState<Post[]>([]);
 
   useEffect(() => {
     if (reportModal.isReported && reportModal.postId === post._id)
@@ -150,7 +151,7 @@ const PostCard: React.FC<PostCardProps> = ({ post, isDetail, isRepost }) => {
       });
 
       if (response) {
-        toast.success(response.data.message);
+        toast.success(t("post.You have voted successfully"));
         updateUserPoints(otherUserId, USER_UPDATE_POINT.vote);
       }
     } else {
@@ -159,7 +160,7 @@ const PostCard: React.FC<PostCardProps> = ({ post, isDetail, isRepost }) => {
       });
 
       if (response) {
-        toast.success(response.data.message);
+        toast.success(t("post.You have unvoted successfully"));
         updateUserPoints(otherUserId, USER_UPDATE_POINT.unVote);
       }
     }
@@ -182,7 +183,7 @@ const PostCard: React.FC<PostCardProps> = ({ post, isDetail, isRepost }) => {
       });
 
       if (response) {
-        toast.success(response.data.message);
+        toast.success(t("post.You have marked the question"));
         updateUserPoints(otherUserId, USER_UPDATE_POINT.bookmark);
       }
     } else {
@@ -191,7 +192,7 @@ const PostCard: React.FC<PostCardProps> = ({ post, isDetail, isRepost }) => {
       });
 
       if (response) {
-        toast.success(response.data.message);
+        toast.success(t("post.You have unmarked the question"));
         updateUserPoints(otherUserId, USER_UPDATE_POINT.unBookmark);
       }
     }
@@ -323,9 +324,9 @@ const PostCard: React.FC<PostCardProps> = ({ post, isDetail, isRepost }) => {
 
       if (typeof commentId === "string") {
         updateUserPoints(otherUserId, USER_UPDATE_POINT.pinComment);
-        toast.success("Comment has been pinned");
+        toast.success(t("post.Answer has been pinned"));
       } else {
-        toast.success("Comment has been unpinned");
+        toast.success(t("post.Answer has been unpinned"));
         updateUserPoints(otherUserId, USER_UPDATE_POINT.unpinComment);
       }
     }
@@ -357,7 +358,7 @@ const PostCard: React.FC<PostCardProps> = ({ post, isDetail, isRepost }) => {
 
     if (response) {
       window.location.reload();
-      toast.success("OpenAI has commented on your post");
+      toast.success(t("post.OpenAI has answered your question"));
     }
   };
 
@@ -368,6 +369,10 @@ const PostCard: React.FC<PostCardProps> = ({ post, isDetail, isRepost }) => {
         point: point,
       });
     }
+  };
+
+  const getSuperChild = (posts: Post[]) => {
+    setSuperChild((prevSuperChild) => [...prevSuperChild, ...posts]);
   };
 
   return post ? (
@@ -395,11 +400,12 @@ const PostCard: React.FC<PostCardProps> = ({ post, isDetail, isRepost }) => {
                 >
                   {bookmark ? (
                     <>
-                      <BookmarkSlashIcon className="w-5 h-5" /> Unmark the post
+                      <BookmarkSlashIcon className="w-5 h-5" />{" "}
+                      {t("post.Unmark")}
                     </>
                   ) : (
                     <>
-                      <BookmarkIcon className="w-5 h-5" /> Bookmark the post
+                      <BookmarkIcon className="w-5 h-5" /> {t("post.Mark")}
                     </>
                   )}
                 </MenuItem>
@@ -409,7 +415,8 @@ const PostCard: React.FC<PostCardProps> = ({ post, isDetail, isRepost }) => {
                     className="flex items-center gap-2"
                     onClick={handleReport}
                   >
-                    <ExclamationTriangleIcon className="w-5 h-5" /> Report
+                    <ExclamationTriangleIcon className="w-5 h-5" />{" "}
+                    {t("post.Report")}
                   </MenuItem>
                 )}
 
@@ -418,7 +425,7 @@ const PostCard: React.FC<PostCardProps> = ({ post, isDetail, isRepost }) => {
                     className="flex items-center gap-2"
                     onClick={() => navigate(`/post?post_id=${post._id}`)}
                   >
-                    <PencilSquareIcon className="w-5 h-5" /> Edit
+                    <PencilSquareIcon className="w-5 h-5" /> {t("post.Edit")}
                   </MenuItem>
                 )}
 
@@ -427,7 +434,7 @@ const PostCard: React.FC<PostCardProps> = ({ post, isDetail, isRepost }) => {
                     className="flex items-center gap-2"
                     onClick={handleDelete}
                   >
-                    <TrashIcon className="w-5 h-5" /> Delete
+                    <TrashIcon className="w-5 h-5" /> {t("post.Delete")}
                   </MenuItem>
                 ) : (
                   <></>
@@ -441,12 +448,19 @@ const PostCard: React.FC<PostCardProps> = ({ post, isDetail, isRepost }) => {
         <div className="space-y-4">
           {/* Post title start */}
           <div className="space-y-2">
-            <div className="flex items-center justify-between">
-              {post.resolved_id ? (
-                <Chip value="Resolved" color="yellow" />
-              ) : (
-                <div></div>
-              )}
+            <div className="mt-4 sm:flex sm:items-center sm:justify-between space-y-2">
+              <div className="flex items-center gap-2">
+                {post.resolved_id ? (
+                  <Chip value={t("post.Resolved")} color="yellow" />
+                ) : (
+                  <></>
+                )}
+                {post.is_bookmarked ? (
+                  <Chip value={t("post.Marked")} color="green" />
+                ) : (
+                  <></>
+                )}
+              </div>
               <div className="flex items-center justify-end gap-4">
                 <Tooltip content={formatTime(post.created_at, i18n.language)}>
                   <Typography className="text-sm text-gray-600 hover:text-blue-500 cursor-pointer flex items-center gap-1">
@@ -456,7 +470,7 @@ const PostCard: React.FC<PostCardProps> = ({ post, isDetail, isRepost }) => {
                 </Tooltip>
                 <Typography className="text-sm text-gray-600 hover:text-blue-500 cursor-pointer flex items-center gap-1">
                   <EyeIcon className="w-4 h-4" />
-                  {post.views_count} views
+                  {post.views_count} {t("post.views")}
                 </Typography>
               </div>
             </div>
@@ -485,7 +499,7 @@ const PostCard: React.FC<PostCardProps> = ({ post, isDetail, isRepost }) => {
                 onClick={() => navigate(`/${post._id}`)}
                 className="w-fit font-bold text-sm cursor-pointer hover:underline"
               >
-                See more
+                {t("post.See more")}
               </Typography>
             )}
           </div>
@@ -539,7 +553,8 @@ const PostCard: React.FC<PostCardProps> = ({ post, isDetail, isRepost }) => {
               }`}
             >
               <HandThumbUpIcon className="w-5 h-5" />
-              {votesCount > 0 && votesCount} Like
+              {votesCount > 0 && votesCount}{" "}
+              <span className="hidden sm:inline">{t("post.Vote")}</span>
             </Button>
 
             <Button
@@ -549,7 +564,8 @@ const PostCard: React.FC<PostCardProps> = ({ post, isDetail, isRepost }) => {
               className="flex items-center justify-center gap-2 normal-case text-base"
             >
               <ChatBubbleLeftIcon className="w-5 h-5" />
-              {post.comments_count > 0 && post.comments_count} Comment
+              {post.comments_count > 0 && post.comments_count}{" "}
+              <span className="hidden sm:inline">{t("post.Answer")}</span>
             </Button>
 
             <Button
@@ -559,7 +575,8 @@ const PostCard: React.FC<PostCardProps> = ({ post, isDetail, isRepost }) => {
               className="flex items-center justify-center gap-2 normal-case text-base"
             >
               <ShareIcon className="w-5 h-5" />
-              {post.repost_count > 0 && post.repost_count} Repost
+              {post.repost_count > 0 && post.repost_count}{" "}
+              <span className="hidden sm:inline">{t("post.Repost")}</span>
             </Button>
           </div>
           {isDetail && user && (
@@ -588,6 +605,7 @@ const PostCard: React.FC<PostCardProps> = ({ post, isDetail, isRepost }) => {
                   <div className="flex justify-end">
                     <MenuFilter
                       content={COMMENTS_SORT}
+                      selected={sortField}
                       handleChange={handleChangeSort}
                     />
                   </div>
@@ -598,9 +616,13 @@ const PostCard: React.FC<PostCardProps> = ({ post, isDetail, isRepost }) => {
                       comment={detailPinComment}
                       currentUser={user}
                       postUserId={post.user_detail._id}
-                      isPinComment={true}
+                      resolvedId={post.resolved_id}
+                      levelComment={0}
+                      superChild={superChild}
+                      userParent={post.user_detail}
                       votePost={votePost}
                       pinComment={pinComment}
+                      getSuperChild={getSuperChild}
                     />
                   )}
                   {/* Pin comment end */}
@@ -612,9 +634,13 @@ const PostCard: React.FC<PostCardProps> = ({ post, isDetail, isRepost }) => {
                         comment={item}
                         currentUser={user}
                         postUserId={post.user_detail._id}
-                        isPinComment={false}
+                        resolvedId={post.resolved_id}
+                        levelComment={0}
+                        superChild={superChild}
+                        userParent={post.user_detail}
                         votePost={votePost}
                         pinComment={pinComment}
+                        getSuperChild={getSuperChild}
                       />
                     ))}
                   {/* Comments menu end */}
@@ -623,31 +649,33 @@ const PostCard: React.FC<PostCardProps> = ({ post, isDetail, isRepost }) => {
               {/* Comments end */}
 
               {/* Load more comments start */}
-              {page < totalPage && (
-                <>
-                  <hr />
+              <hr />
 
-                  <div className="flex items-center justify-between">
-                    <Button
-                      className="!overflow-visible normal-case flex items-center justify-center gap-1"
-                      size="sm"
-                      variant="text"
-                      onClick={handleCommentsLoadMore}
-                    >
-                      {isLoading ? (
-                        <Spinner className="w-5 h-5" />
-                      ) : (
-                        <PlusCircleIcon className="w-5 h-5" />
-                      )}
-                      Load more
-                    </Button>
+              <div className="flex items-center justify-between">
+                {page < totalPage ? (
+                  <Button
+                    className="!overflow-visible normal-case flex items-center justify-center gap-1"
+                    size="sm"
+                    variant="text"
+                    onClick={handleCommentsLoadMore}
+                  >
+                    {isLoading ? (
+                      <Spinner className="w-5 h-5" />
+                    ) : (
+                      <PlusCircleIcon className="w-5 h-5" />
+                    )}
+                    {t("post.Load more")}
+                  </Button>
+                ) : (
+                  <div></div>
+                )}
 
-                    <Typography>
-                      {comments.length} of {post.comments_count}
-                    </Typography>
-                  </div>
-                </>
-              )}
+                {comments.length > 0 && post.comments_count > 0 && (
+                  <Typography>
+                    {comments.length} {t("post.of")} {post.comments_count}
+                  </Typography>
+                )}
+              </div>
               {/* Load more comments end */}
             </div>
           )}
@@ -655,7 +683,7 @@ const PostCard: React.FC<PostCardProps> = ({ post, isDetail, isRepost }) => {
       </div>
     </div>
   ) : (
-    <NotFoundAlert message="Post not found!" />
+    <NotFoundAlert message={t("post.Question not found")} />
   );
 };
 

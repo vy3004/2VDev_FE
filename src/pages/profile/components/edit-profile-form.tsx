@@ -3,6 +3,7 @@ import { useFormik } from "formik";
 import { format } from "date-fns";
 import { toast } from "react-hot-toast";
 import { useDispatch } from "react-redux";
+import { useTranslation } from "react-i18next";
 import AvatarEdit from "react-avatar-edit";
 
 import { GlobeAltIcon, MapPinIcon } from "@heroicons/react/24/solid";
@@ -39,6 +40,7 @@ interface EditMyProfileFormValues {
 
 const EditProfileForm: React.FC<EditProfileFormProps> = ({ user }) => {
   const dispatch = useDispatch();
+  const { t } = useTranslation();
 
   const [avatar, setAvatar] = useState(user.avatar);
   const [coverPhoto, setCoverPhoto] = useState(user.cover_photo);
@@ -140,12 +142,12 @@ const EditProfileForm: React.FC<EditProfileFormProps> = ({ user }) => {
       {/* Edit avatar start */}
       <div className="h-[500px] overflow-hidden overflow-y-scroll p-4 space-y-4">
         <div className="flex items-center justify-between">
-          <Typography className="font-bold">Avatar</Typography>
+          <Typography className="font-bold">{t("user.Avatar")}</Typography>
           <Button
             onClick={() => setChangeAvatar(!changeAvatar)}
             variant="outlined"
           >
-            Change
+            {t("user.Change")}
           </Button>
         </div>
         <div className="flex items-center justify-around flex-col sm:flex-row gap-4">
@@ -167,12 +169,12 @@ const EditProfileForm: React.FC<EditProfileFormProps> = ({ user }) => {
 
         {/* Edit cover photo start */}
         <div className="flex items-center justify-between">
-          <Typography className="font-bold">Cover Photo</Typography>
+          <Typography className="font-bold">{t("user.Cover Photo")}</Typography>
           <Button
             onClick={() => setChangeCoverPhoto(!changeCoverPhoto)}
             variant="outlined"
           >
-            Change
+            {t("user.Change")}
           </Button>
         </div>
         {changeCoverPhoto && (
@@ -194,11 +196,13 @@ const EditProfileForm: React.FC<EditProfileFormProps> = ({ user }) => {
         />
         {/* Edit cover photo start */}
 
-        <Typography className="font-bold">Personal Information</Typography>
+        <Typography className="font-bold">
+          {t("user.Personal Information")}
+        </Typography>
         <div className="grid grid-cols-2 gap-4">
           <Input
             containerProps={{ className: "col-span-2 sm:col-span-1" }}
-            label="Name"
+            label={t("user.Name")}
             name="name"
             type="text"
             size="lg"
@@ -208,7 +212,7 @@ const EditProfileForm: React.FC<EditProfileFormProps> = ({ user }) => {
           />
           <Input
             containerProps={{ className: "col-span-2 sm:col-span-1" }}
-            label="User name"
+            label={t("user.Username")}
             name="username"
             type="text"
             size="lg"
@@ -220,7 +224,7 @@ const EditProfileForm: React.FC<EditProfileFormProps> = ({ user }) => {
 
         <Textarea
           size="md"
-          label="Biography"
+          label={t("user.Biography")}
           name="bio"
           value={editMyProfileForm.values.bio}
           onChange={editMyProfileForm.handleChange}
@@ -229,7 +233,7 @@ const EditProfileForm: React.FC<EditProfileFormProps> = ({ user }) => {
         <div className="grid grid-cols-2 gap-4">
           <Input
             containerProps={{ className: "col-span-2 sm:col-span-1" }}
-            label="Date of birth"
+            label={t("user.Date of birth")}
             name="date_of_birth"
             type="date"
             size="lg"
@@ -239,7 +243,7 @@ const EditProfileForm: React.FC<EditProfileFormProps> = ({ user }) => {
           />
           <Input
             containerProps={{ className: "col-span-2 sm:col-span-1" }}
-            label="Website"
+            label={t("user.Website")}
             name="website"
             type="text"
             size="lg"
@@ -250,7 +254,7 @@ const EditProfileForm: React.FC<EditProfileFormProps> = ({ user }) => {
           />
         </div>
         <Input
-          label="Address"
+          label={t("user.Address")}
           name="location"
           type="text"
           size="lg"
@@ -263,7 +267,7 @@ const EditProfileForm: React.FC<EditProfileFormProps> = ({ user }) => {
 
       <div className="border-t rounded-b-lg sticky bottom-0 p-4">
         <Button type="submit" variant="gradient" fullWidth disabled={isSubmit}>
-          {isSubmit ? <Spinner className="h-4 w-4 m-auto" /> : "Submit"}
+          {isSubmit ? <Spinner className="h-4 w-4 m-auto" /> : t("user.Submit")}
         </Button>
       </div>
     </form>

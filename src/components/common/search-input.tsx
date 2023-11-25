@@ -138,7 +138,8 @@ const SearchInput = () => {
         >
           {!isSearch ? (
             <>
-              <MagnifyingGlassIcon className="h-4 w-4" /> {t("header.search")}{" "}
+              <MagnifyingGlassIcon className="w-4 h-4 sm:w-5 sm:h-5" />{" "}
+              {t("search.Search")}{" "}
               <kbd className="border rounded-md px-1.5 py-0.5">
                 <span className="">⌘ + </span>K
               </kbd>
@@ -163,7 +164,7 @@ const SearchInput = () => {
         <Card className="w-full lg:w-[600px] absolute right-0 top-14 border">
           <div className="px-4 py-2 flex items-center justify-between">
             <Typography className="font-bold">
-              Results ({posts?.length || 0})
+              {t("search.Results")} ({posts?.length || 0})
             </Typography>
             {isLoading ? (
               <Spinner className="w-5 h-5" />
@@ -220,13 +221,13 @@ const SearchInput = () => {
                       onClick={handleLoadMore}
                     >
                       <PlusCircleIcon className="w-5 h-5" />
-                      Load more
+                      {t("search.Load more")}
                     </Button>
                   </>
                 )}
               </>
             ) : (
-              <ListItem>Not found</ListItem>
+              <ListItem>{t("search.Not found")}</ListItem>
             )}
           </List>
         </Card>

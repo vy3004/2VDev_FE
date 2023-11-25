@@ -14,10 +14,15 @@ interface MenuFilterProps {
     label: string;
     value: string;
   }[];
+  selected: string;
   handleChange: (value: string) => void;
 }
 
-const MenuFilter: React.FC<MenuFilterProps> = ({ content, handleChange }) => {
+const MenuFilter: React.FC<MenuFilterProps> = ({
+  content,
+  selected,
+  handleChange,
+}) => {
   return (
     <Menu
       placement="bottom-end"
@@ -32,14 +37,16 @@ const MenuFilter: React.FC<MenuFilterProps> = ({ content, handleChange }) => {
           <AdjustmentsHorizontalIcon className="w-6 h-6 transition-transform hover:rotate-180" />
         </IconButton>
       </MenuHandler>
-      <MenuList className="min-w-10">
+      <MenuList className="min-w-10 space-y-1">
         {content.map((type, key) => (
           <MenuItem
+            className={`flex items-center justify-between gap-2 ${
+              selected === type.value && "bg-gray-200 font-bold text-gray-900"
+            }`}
             key={key}
-            className="capitalize"
             onClick={() => handleChange(type.value)}
           >
-            {t(`${type.label}`)}
+            {t(`menu.${type.label}`)}
           </MenuItem>
         ))}
       </MenuList>

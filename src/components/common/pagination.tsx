@@ -1,3 +1,4 @@
+import { useTranslation } from "react-i18next";
 import { ArrowLeftIcon, ArrowRightIcon } from "@heroicons/react/24/solid";
 import { IconButton, Typography } from "@material-tailwind/react";
 
@@ -14,6 +15,8 @@ const Pagination: React.FC<PaginationProps> = ({
   next,
   prev,
 }) => {
+  const { t } = useTranslation();
+
   return (
     <div className="flex items-center justify-end gap-4">
       <IconButton
@@ -25,8 +28,8 @@ const Pagination: React.FC<PaginationProps> = ({
         <ArrowLeftIcon strokeWidth={2} className="h-4 w-4" />
       </IconButton>
       <Typography color="gray" className="font-normal">
-        Page <strong className="text-gray-900">{page}</strong> of{" "}
-        <strong className="text-gray-900">{totalPage}</strong>
+        {t("user.Page")} <strong className="text-gray-900">{page}</strong>{" "}
+        {t("user.of")} <strong className="text-gray-900">{totalPage}</strong>
       </Typography>
       <IconButton
         size="sm"

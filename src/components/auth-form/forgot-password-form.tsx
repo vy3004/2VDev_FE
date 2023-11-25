@@ -83,10 +83,9 @@ const ForgotPasswordForm: React.FC<ForgotPasswordFormProps> = ({
               </Typography>
             </div>
 
-            <Typography variant="small" className="mt-1">
+            <Typography variant="small" className="mt-1 text-center">
               {t("auth.no-account")}
               <Typography
-                as="a"
                 variant="small"
                 color="blue"
                 className="font-bold cursor-pointer"

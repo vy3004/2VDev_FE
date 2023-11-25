@@ -1,5 +1,6 @@
 import { useState, useEffect } from "react";
 import { useParams } from "react-router-dom";
+import { useTranslation } from "react-i18next";
 
 import { Typography } from "@material-tailwind/react";
 import Loading from "../../../components/common/loading";
@@ -12,6 +13,7 @@ import { PostType } from "../../../utils/constant";
 
 const PostDetail = () => {
   const { post_id } = useParams();
+  const { t } = useTranslation();
 
   const [post, setPost] = useState<Post>();
   const [loading, setLoading] = useState(false);
@@ -47,18 +49,18 @@ const PostDetail = () => {
     <div className="space-y-4">
       <div>
         <Typography variant="h5">
-          {post.user_detail.name}'s{" "}
-          {post.type === PostType.Post ? "Post" : "Repost"}
+          {post.type === PostType.Post ? t("post.Question") : t("post.Repost")}{" "}
+          {t("post.from")} {post.user_detail.name}
         </Typography>
         <Typography className="mt-1 font-normal">
-          See detail information of the{" "}
-          {post.type === PostType.Post ? "post" : "repost"}
+          {t("post.See detailed content of the")}{" "}
+          {post.type === PostType.Post ? t("post.question") : t("post.repost")}
         </Typography>
       </div>
       <PostCard post={post} isDetail={true} />
     </div>
   ) : (
-    <NotFoundAlert message="Post not found!" />
+    <NotFoundAlert message={t("post.Question not found")} />
   );
 };
 

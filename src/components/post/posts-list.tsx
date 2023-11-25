@@ -1,4 +1,5 @@
 import InfiniteScroll from "react-infinite-scroll-component";
+import { useTranslation } from "react-i18next";
 
 import Loading from "../common/loading";
 import NotFoundAlert from "../common/not-found-alert";
@@ -28,9 +29,9 @@ const postCardMap = {
 };
 
 const typeMap = {
-  [PostType.Post]: "posts",
+  [PostType.Post]: "questions",
   [PostType.RePost]: "reposts",
-  [PostType.Comment]: "comments",
+  [PostType.Comment]: "answers",
 };
 
 const PostsList: React.FC<PostsListProps> = ({
@@ -39,6 +40,8 @@ const PostsList: React.FC<PostsListProps> = ({
   getPosts,
   hasMore,
 }) => {
+  const { t } = useTranslation();
+
   return (
     <InfiniteScroll
       dataLength={posts.length}
@@ -51,7 +54,7 @@ const PostsList: React.FC<PostsListProps> = ({
       }
       endMessage={
         <NotFoundAlert
-          message={`No more ${typeMap[postType]} to load!`}
+          message={t(`user.No more ${typeMap[postType]} to load`)}
           isBack={false}
         />
       }

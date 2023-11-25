@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import toast from "react-hot-toast";
 import ReactQuill from "react-quill";
 import { useFormik } from "formik";
+import { useTranslation } from "react-i18next";
 import * as Yup from "yup";
 
 import { Spinner, Button } from "@material-tailwind/react";
@@ -27,6 +28,8 @@ const CommentForm: React.FC<CommentFormProps> = ({
   medias,
   hashtags,
 }) => {
+  const { t } = useTranslation();
+
   const [isSubmit, setIsSubmit] = useState(false);
 
   const commentForm = useFormik<CommentFormProps>({
@@ -40,9 +43,9 @@ const CommentForm: React.FC<CommentFormProps> = ({
     },
     validationSchema: Yup.object({
       content: Yup.string()
-        .required("Content is required")
-        .min(20, "Content contains at least 20 characters")
-        .max(5000, "Content must only contain 5000 characters"),
+        .required(t("post.Answer is required"))
+        .min(20, t("post.Answer contains at least 20 characters"))
+        .max(5000, t("post.Answer must only contain 5000 characters")),
     }),
 
     onSubmit: async (values: CommentFormProps) => {
@@ -52,20 +55,20 @@ const CommentForm: React.FC<CommentFormProps> = ({
       if (post_id) {
         const { response, error } = await postService.editPost(data);
         if (response) {
-          toast.success("Your comment has been updated");
+          toast.success(t("post.Your answer has been edited"));
           window.location.reload();
         }
-        if (error) toast.error(error.message);
+        if (error) toast.error(t("post.Something went wrong"));
       } else {
         const { response, error } = await postService.post({
           ...data,
           title: null,
         });
         if (response) {
-          toast.success("Your comment has been posted");
+          toast.success(t("post.Your answer has been posted"));
           window.location.reload();
         }
-        if (error) toast.error(error.message);
+        if (error) toast.error(t("post.Something went wrong"));
       }
 
       setIsSubmit(false);
@@ -78,7 +81,7 @@ const CommentForm: React.FC<CommentFormProps> = ({
         value={commentForm.values.content}
         onChange={(value) => commentForm.setFieldValue("content", value)}
         theme="snow"
-        placeholder="Write something..."
+        placeholder={t("post.Write something...")}
       />
       {commentForm.touched.content && commentForm.errors.content && (
         <ErrorMessageForm
@@ -95,9 +98,9 @@ const CommentForm: React.FC<CommentFormProps> = ({
           {isSubmit ? (
             <Spinner className="h-4 w-4 m-auto" />
           ) : post_id ? (
-            "Edit"
+            t("post.Edit")
           ) : (
-            "Comment"
+            t("post.Answer")
           )}
         </Button>
       </div>

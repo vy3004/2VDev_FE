@@ -2,6 +2,7 @@ import { useState, useEffect } from "react";
 import { useSelector } from "react-redux";
 import { useLocation } from "react-router-dom";
 import { debounce } from "lodash";
+import { useTranslation } from "react-i18next";
 
 import { MagnifyingGlassIcon } from "@heroicons/react/24/solid";
 import { Typography, Input } from "@material-tailwind/react";
@@ -18,6 +19,7 @@ import { USERS_HEADER_PAGE, USERS_TYPE } from "../../utils/constant";
 import { UserCardType } from "../../utils/types";
 
 const Users = () => {
+  const { t } = useTranslation();
   const currentUser = useSelector(selectUser).user;
   const location = useLocation();
   const queryParams = new URLSearchParams(location.search);
@@ -202,9 +204,11 @@ const Users = () => {
             (item) =>
               item.type === filter && (
                 <div key={item.type}>
-                  <Typography variant="h5">{item.title}</Typography>
+                  <Typography variant="h5">
+                    {t(`user.${item.title}`)}
+                  </Typography>
                   <Typography className="mt-1 font-normal">
-                    {item.desc}
+                    {t(`user.${item.desc}`)}
                   </Typography>
                 </div>
               )
@@ -212,7 +216,7 @@ const Users = () => {
 
           <div className="flex items-center gap-4">
             <Input
-              label="Find users"
+              label={t("search.Find users")}
               type="text"
               icon={<MagnifyingGlassIcon />}
               crossOrigin={""}
@@ -221,7 +225,11 @@ const Users = () => {
               onChange={handleChange}
             />
 
-            <MenuFilter content={USERS_TYPE} handleChange={setFilter} />
+            <MenuFilter
+              content={USERS_TYPE}
+              selected={filter}
+              handleChange={setFilter}
+            />
           </div>
         </div>
         {/* Header end */}
@@ -250,7 +258,7 @@ const Users = () => {
             />
           </div>
         ) : (
-          <NotFoundAlert message="Users not found!" isBack={false} />
+          <NotFoundAlert message={t("user.Users not found")} isBack={false} />
         )}
       </div>
     </div>

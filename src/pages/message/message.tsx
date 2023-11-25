@@ -4,6 +4,7 @@ import {
   PhoneIcon,
   PhotoIcon,
   VideoCameraIcon,
+  PaperAirplaneIcon,
 } from "@heroicons/react/24/solid";
 import {
   Avatar,
@@ -44,7 +45,7 @@ const Message = () => {
       </div>
       <hr />
 
-      <div className="h-fit sticky bottom-0 px-2 flex items-center">
+      <div className="h-fit sticky bottom-0 px-2 py-1 flex items-center">
         <div className="flex w-full flex-row items-center gap-2 rounded-full border border-gray-900/10 p-2">
           <div className="flex">
             <IconButton variant="text" className="rounded-full">
@@ -56,7 +57,6 @@ const Message = () => {
           </div>
           <Textarea
             rows={1}
-            // resize={true}
             placeholder="Your Message"
             className="min-h-full !border-0 focus:border-transparent"
             containerProps={{
@@ -68,20 +68,7 @@ const Message = () => {
           />
           <div>
             <IconButton variant="text" className="rounded-full">
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                fill="none"
-                viewBox="0 0 24 24"
-                stroke="currentColor"
-                strokeWidth={2}
-                className="h-6 w-6"
-              >
-                <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  d="M6 12L3.269 3.126A59.768 59.768 0 0121.485 12 59.77 59.77 0 013.27 20.876L5.999 12zm0 0h7.5"
-                />
-              </svg>
+              <PaperAirplaneIcon className="h-6 w-6" />
             </IconButton>
           </div>
         </div>

@@ -15,10 +15,9 @@ const PostInfoUser: React.FC<PostInfoUserProps> = ({ user_detail }) => {
     <div className="flex items-center gap-4">
       <Avatar
         src={user_detail.avatar}
-        size="lg"
         alt="avatar"
         withBorder={true}
-        className="p-0.5 cursor-pointer"
+        className="p-0.5 cursor-pointer w-12 h-12 sm:w-16 sm:h-16"
         onClick={() => navigate(`/profile/${user_detail.username}`)}
       />
       <div>
@@ -29,10 +28,17 @@ const PostInfoUser: React.FC<PostInfoUserProps> = ({ user_detail }) => {
           >
             {user_detail.name}
           </Typography>
-          <LevelChip level={user_detail.point} />
+          <div className="hidden sm:inline">
+            <LevelChip level={user_detail.point} />
+          </div>
         </div>
 
-        <UserPoint point={user_detail.point} />
+        <div className="flex items-center gap-2">
+          <div className="inline sm:hidden">
+            <LevelChip level={user_detail.point} />
+          </div>
+          <UserPoint point={user_detail.point} />
+        </div>
       </div>
     </div>
   );

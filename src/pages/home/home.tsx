@@ -86,20 +86,24 @@ const Home = () => {
       <div className="flex items-end justify-between">
         <div>
           <Typography variant="h5">
-            {t(`home.${getLabelByValue(sortField, POSTS_SORT)} posts`)}
+            {t(`home.${getLabelByValue(sortField, POSTS_SORT)} questions`)}
           </Typography>
           <Typography className="mt-1 font-normal">
             {t(
               `home.see information about ${getLabelByValue(
                 type,
                 POSTS_TYPE
-              )} ${getLabelByValue(sortField, POSTS_SORT)} posts`
+              )} ${getLabelByValue(sortField, POSTS_SORT)} questions`
             )}
           </Typography>
         </div>
 
         {user && (
-          <MenuFilter content={POSTS_TYPE} handleChange={handleChangeType} />
+          <MenuFilter
+            content={POSTS_TYPE}
+            selected={type}
+            handleChange={handleChangeType}
+          />
         )}
       </div>
       {/* Header end */}

@@ -53,7 +53,7 @@ export const COMMENTS_SORT = [
     value: "votes_count",
   },
   {
-    label: "most relies",
+    label: "most replies",
     value: "comments_count",
   },
 ];

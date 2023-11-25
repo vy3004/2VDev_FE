@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { useTranslation } from "react-i18next";
 
 import { Button, Typography } from "@material-tailwind/react";
 import { TagIcon } from "@heroicons/react/24/solid";
@@ -11,6 +12,7 @@ import tagService from "../../services/tag-service";
 
 const Tags = () => {
   const navigate = useNavigate();
+  const { t } = useTranslation();
 
   const [tags, setTags] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
@@ -22,7 +24,7 @@ const Tags = () => {
       const { response } = await tagService.getTags();
 
       if (response) {
-        setTags(response.data.data);
+        // setTags(response.data.data);
       }
 
       setIsLoading(false);
@@ -49,14 +51,16 @@ const Tags = () => {
 
             <div className="text-left">
               <Typography className="font-bold lowercase">{name}</Typography>
-              <Typography className="text-sm">{count} questions</Typography>
+              <Typography className="text-sm">
+                {count} {t(`post.${count === 1 ? "question" : "questions"}`)}
+              </Typography>
             </div>
           </div>
         </Button>
       ))}
     </div>
   ) : (
-    <NotFoundAlert message="No tags found" />
+    <NotFoundAlert message={t("post.No tags found")} />
   );
 };
 

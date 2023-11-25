@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { useTranslation } from "react-i18next";
 import toast from "react-hot-toast";
 
 import { Avatar, Button, Typography } from "@material-tailwind/react";
@@ -17,6 +18,7 @@ interface UserCardProps {
 }
 
 const UserCard: React.FC<UserCardProps> = ({ currentUser, userDetail }) => {
+  const { t } = useTranslation();
   const navigate = useNavigate();
   const [follow, setFollow] = useState(userDetail.is_followed);
 
@@ -27,7 +29,7 @@ const UserCard: React.FC<UserCardProps> = ({ currentUser, userDetail }) => {
       });
 
       if (response) {
-        toast.success(response.data.message);
+        toast.success(t("user.You have follow successfully"));
         setFollow(!type);
         updatePoints(otherUserId, USER_UPDATE_POINT.follow);
       }
@@ -37,7 +39,7 @@ const UserCard: React.FC<UserCardProps> = ({ currentUser, userDetail }) => {
       });
 
       if (response) {
-        toast.success(response.data.message);
+        toast.success(t("user.You have unfollow successfully"));
         setFollow(!type);
         updatePoints(otherUserId, USER_UPDATE_POINT.unFollow);
       }
@@ -99,8 +101,12 @@ const UserCard: React.FC<UserCardProps> = ({ currentUser, userDetail }) => {
 
       {userDetail.followers || userDetail.following ? (
         <div className="border border-gray-700 rounded-lg px-2 py-1 flex flex-col text-gray-700 font-bold select-none">
-          <p className="text-sm">{userDetail.followers} followers</p>
-          <p className="text-sm">{userDetail.following} following</p>
+          <p className="text-sm">
+            {userDetail.followers} {t("user.followers")}
+          </p>
+          <p className="text-sm">
+            {userDetail.following} {t("user.following")}
+          </p>
         </div>
       ) : (
         <></>

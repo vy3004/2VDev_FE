@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
+import { useTranslation } from "react-i18next";
 
 import UserDetailForm from "./user-detail-form";
 import Loading from "../../../../components/common/loading";
@@ -11,6 +12,7 @@ import { User } from "../../../../utils/types";
 
 const UserDetailPage = () => {
   const { username } = useParams();
+  const { t } = useTranslation();
 
   const [user, setUser] = useState<User>();
   const [loading, setLoading] = useState(false);
@@ -45,7 +47,7 @@ const UserDetailPage = () => {
   ) : user ? (
     <UserDetailForm user={user} />
   ) : (
-    <NotFoundAlert message="User not found!" />
+    <NotFoundAlert message={t("user.User not found")} />
   );
 };
 

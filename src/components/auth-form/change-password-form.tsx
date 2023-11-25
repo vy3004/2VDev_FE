@@ -57,11 +57,11 @@ const ChangePasswordForm = () => {
 
       if (response) {
         changePasswordForm.resetForm();
-        setSuccessMessage(response.data.message);
+        setSuccessMessage(t("auth.Password changed successfully"));
         setIsChangingPassword(!isChangingPassword);
       }
 
-      if (error) setErrorMessage(error.message);
+      if (error) setErrorMessage(t("auth.Password change failed"));
       setIsSubmit(false);
     },
   });
@@ -71,7 +71,7 @@ const ChangePasswordForm = () => {
       {user && (
         <div className="space-y-4 bg-gray-100 rounded-md p-4">
           <Typography className="font-bold text-xl text-gray-900">
-            Account
+            {t("auth.Account")}
           </Typography>
 
           {successMessage && (
@@ -86,7 +86,7 @@ const ChangePasswordForm = () => {
           )}
           <Input
             type="email"
-            label="Email"
+            label={t("auth.email")}
             value={user.email}
             disabled
             crossOrigin={""}
@@ -100,7 +100,7 @@ const ChangePasswordForm = () => {
               <Input
                 name="old_password"
                 type="password"
-                label="Old Password"
+                label={t("auth.Old Password")}
                 crossOrigin={""}
                 value={changePasswordForm.values.old_password}
                 onChange={changePasswordForm.handleChange}
@@ -124,7 +124,7 @@ const ChangePasswordForm = () => {
                   <Input
                     name="password"
                     type="password"
-                    label="New Password"
+                    label={t("auth.New Password")}
                     crossOrigin={""}
                     value={changePasswordForm.values.password}
                     onChange={changePasswordForm.handleChange}
@@ -147,7 +147,7 @@ const ChangePasswordForm = () => {
                   <Input
                     name="confirm_password"
                     type="password"
-                    label="Confirm New Password"
+                    label={t("auth.Confirm New Password")}
                     crossOrigin={""}
                     value={changePasswordForm.values.confirm_password}
                     onChange={changePasswordForm.handleChange}
@@ -170,13 +170,20 @@ const ChangePasswordForm = () => {
 
               <div className="space-x-2">
                 <Button
-                  className="bg-gray-50 text-gray-900 border border-gray-900"
+                  className="bg-gray-50 text-gray-900 border border-gray-900 normal-case"
                   onClick={() => setIsChangingPassword(!isChangingPassword)}
                 >
-                  Cancel
+                  {t("auth.Cancel")}
                 </Button>
-                <Button className="border border-gray-900" type="submit">
-                  {isSubmit ? <Spinner className="h-4 w-4 m-auto" /> : "Save"}
+                <Button
+                  className="border border-gray-900 normal-case"
+                  type="submit"
+                >
+                  {isSubmit ? (
+                    <Spinner className="h-4 w-4 m-auto" />
+                  ) : (
+                    t("auth.Save")
+                  )}
                 </Button>
               </div>
             </form>
@@ -184,15 +191,16 @@ const ChangePasswordForm = () => {
             <div className="space-y-4">
               <Input
                 type="password"
-                label="Password"
+                label={t("auth.password")}
                 value={user.email}
                 disabled
                 crossOrigin={""}
               />
               <Button
+                className="normal-case"
                 onClick={() => setIsChangingPassword(!isChangingPassword)}
               >
-                Change Password
+                {t("auth.Change Password")}
               </Button>
             </div>
           )}

@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useFormik } from "formik";
+import { useTranslation } from "react-i18next";
 import toast from "react-hot-toast";
 import * as Yup from "yup";
 
@@ -30,6 +31,7 @@ interface ReportFormValues {
 
 const ReportModal = () => {
   const { reportModal } = useSelector(selectReportModal);
+  const { t } = useTranslation();
   const dispatch = useDispatch();
 
   const [isSubmit, setIsSubmit] = useState(false);
@@ -49,7 +51,7 @@ const ReportModal = () => {
       reason: "",
     },
     validationSchema: Yup.object({
-      reason: Yup.string().required("Reason is required"),
+      reason: Yup.string().required(t("post.Reason is required")),
     }),
     onSubmit: async (values: ReportFormValues) => {
       setIsSubmit(true);
@@ -74,10 +76,10 @@ const ReportModal = () => {
           point: USER_UPDATE_POINT.report,
         });
 
-        toast.success(response.data.message);
+        toast.success(t("post.You have reported successfully"));
       }
 
-      if (error) toast.error(error.message);
+      if (error) toast.error(t("post.Something went wrong"));
       setIsSubmit(false);
     },
   });
@@ -94,7 +96,7 @@ const ReportModal = () => {
         }}
       >
         <DialogHeader className="flex items-center justify-between">
-          Report
+          {t("post.Report")}
           <IconButton
             variant="text"
             color="red"
@@ -107,7 +109,7 @@ const ReportModal = () => {
         <DialogBody className="border-t">
           <form onSubmit={reportForm.handleSubmit}>
             <Textarea
-              label="Reason"
+              label={t("post.Reason")}
               name="reason"
               value={reportForm.values.reason}
               onChange={reportForm.handleChange}
@@ -122,13 +124,17 @@ const ReportModal = () => {
               />
             )}
             <Button
-              className="mt-4"
+              className="mt-4 normal-case"
               type="submit"
               variant="gradient"
               fullWidth
               disabled={isSubmit}
             >
-              {isSubmit ? <Spinner className="h-4 w-4 m-auto" /> : "Submit"}
+              {isSubmit ? (
+                <Spinner className="h-4 w-4 m-auto" />
+              ) : (
+                t("post.Submit")
+              )}
             </Button>
           </form>
         </DialogBody>

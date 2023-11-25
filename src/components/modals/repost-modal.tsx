@@ -2,6 +2,7 @@ import { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useFormik } from "formik";
 import { useNavigate } from "react-router-dom";
+import { useTranslation } from "react-i18next";
 import toast from "react-hot-toast";
 import ReactQuill from "react-quill";
 import * as Yup from "yup";
@@ -33,6 +34,7 @@ interface ReportFormValues {
 }
 
 const RepostModal = () => {
+  const { t } = useTranslation();
   const { repostModal } = useSelector(selectRepostModal);
   const { user } = useSelector(selectUser);
   const navigate = useNavigate();
@@ -49,9 +51,9 @@ const RepostModal = () => {
     },
     validationSchema: Yup.object({
       content: Yup.string()
-        .required("Content is required")
-        .min(20, "Content contains at least 20 characters")
-        .max(5000, "Content must only contain 5000 characters"),
+        .required(t("post.Content is required"))
+        .min(20, t("post.Content contains at least 20 characters"))
+        .max(5000, t("post.Content must only contain 5000 characters")),
     }),
     onSubmit: async (values: ReportFormValues) => {
       setIsSubmit(true);
@@ -72,10 +74,10 @@ const RepostModal = () => {
           console.log("CHECK", response);
           handleClose();
           navigate(`/profile/${user?.username}?tab=my-reposts`);
-          toast.success("Repost successfully");
+          toast.success(t("post.You have repost successfully"));
         }
 
-        if (error) toast.error(error.message);
+        if (error) toast.error(t("post.Something went wrong"));
       }
 
       setIsSubmit(false);
@@ -94,7 +96,7 @@ const RepostModal = () => {
         }}
       >
         <DialogHeader className="flex items-center justify-between">
-          Repost
+          {t("post.Repost")}
           <IconButton
             variant="text"
             color="red"
@@ -107,14 +109,14 @@ const RepostModal = () => {
         <form onSubmit={repostForm.handleSubmit}>
           <DialogBody className="border-t h-[70vh] overflow-hidden overflow-y-scroll space-y-2">
             <div className="border rounded-lg shadow-md p-2">
-              <Typography className="font-medium text-gray-900">
-                Content
+              <Typography className="font-bold text-gray-900">
+                {t("post.Content")}
               </Typography>
               <ReactQuill
                 value={repostForm.values.content}
                 onChange={(value) => repostForm.setFieldValue("content", value)}
                 theme="snow"
-                placeholder="Write something..."
+                placeholder={t("post.Write something...")}
               />
               {repostForm.touched.content && repostForm.errors.content && (
                 <ErrorMessageForm
@@ -136,7 +138,11 @@ const RepostModal = () => {
               fullWidth
               disabled={isSubmit}
             >
-              {isSubmit ? <Spinner className="h-4 w-4 m-auto" /> : "Submit"}
+              {isSubmit ? (
+                <Spinner className="h-4 w-4 m-auto" />
+              ) : (
+                t("post.Repost")
+              )}
             </Button>
           </DialogFooter>
         </form>

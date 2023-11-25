@@ -1,6 +1,8 @@
 import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useParams } from "react-router-dom";
+import { useTranslation } from "react-i18next";
+import toast from "react-hot-toast";
 
 import {
   Avatar,
@@ -30,6 +32,7 @@ import { User } from "../../utils/types";
 
 const Profile = () => {
   const { username } = useParams();
+  const { t } = useTranslation();
   const dispatch = useDispatch();
   const currentUser = useSelector(selectUser).user;
   const queryParams = new URLSearchParams(window.location.search);
@@ -54,6 +57,7 @@ const Profile = () => {
     if (follow && userId !== currentUser?._id) {
       const { response } = await userService.unFollow({ user_id: userId });
       if (response) {
+        toast.success(t("user.You have unfollow successfully"));
         setFollow(false);
         await userService.updatePoints({
           user_id: userId,
@@ -65,6 +69,7 @@ const Profile = () => {
         followed_user_id: userId,
       });
       if (response) {
+        toast.success(t("user.You have follow successfully"));
         setFollow(true);
         await userService.updatePoints({
           user_id: userId,
@@ -107,20 +112,20 @@ const Profile = () => {
       content: userProfile && <AboutMe user={userProfile} />,
     },
     {
-      label: "My Posts",
-      value: "my-posts",
+      label: "My Questions",
+      value: "my-questions",
       content:
-        userProfile?._id && activeTab === "my-posts" ? (
+        userProfile?._id && activeTab === "my-questions" ? (
           <PostsTab user_id={userProfile._id} postType={PostType.Post} />
         ) : (
           <></>
         ),
     },
     {
-      label: "My Comments",
-      value: "my-comments",
+      label: "My Answers",
+      value: "my-answers",
       content:
-        userProfile?._id && activeTab === "my-comments" ? (
+        userProfile?._id && activeTab === "my-answers" ? (
           <PostsTab user_id={userProfile._id} postType={PostType.Comment} />
         ) : (
           <></>
@@ -176,24 +181,24 @@ const Profile = () => {
           <Button
             onClick={() => dispatch(setEditMyProfileModalOpen(true))}
             variant="outlined"
-            className="!absolute right-0 -bottom-28 lg:-bottom-24 flex items-center gap-2 dark:text-gray-50 dark:border-gray-50 dark:bg-gray-700"
+            className="!absolute right-0 -bottom-28 lg:-bottom-24 normal-case text-sm flex items-center gap-2 dark:text-gray-50 dark:border-gray-50 dark:bg-gray-700"
           >
             <PencilSquareIcon className="w-4 h-4" />
-            Edit Profile
+            {t("user.Edit Profile")}
           </Button>
         ) : (
           <Button
             onClick={() => handleFollow(userProfile._id)}
             variant="outlined"
-            className="!absolute right-0 -bottom-28 lg:-bottom-24 flex items-center gap-2 dark:text-gray-50 dark:border-gray-50 dark:bg-gray-700"
+            className="!absolute right-0 -bottom-28 lg:-bottom-24 normal-case text-sm flex items-center gap-2 dark:text-gray-50 dark:border-gray-50 dark:bg-gray-700"
           >
             {follow ? (
               <>
-                <UserMinusIcon className="w-4 h-4" /> Unfollow
+                <UserMinusIcon className="w-4 h-4" /> {t("user.Unfollow")}
               </>
             ) : (
               <>
-                <UserPlusIcon className="w-4 h-4" /> Follow
+                <UserPlusIcon className="w-4 h-4" /> {t("user.Follow")}
               </>
             )}
           </Button>
@@ -210,7 +215,7 @@ const Profile = () => {
               value={value}
               onClick={() => handleTabChange(value)}
             >
-              {label}
+              {t(`user.${label}`)}
             </Tab>
           ))}
         </TabsHeader>
@@ -230,7 +235,7 @@ const Profile = () => {
       </Tabs>
     </div>
   ) : (
-    <NotFoundAlert message="User not found" />
+    <NotFoundAlert message={t("user.User not found")} />
   );
 };
 
