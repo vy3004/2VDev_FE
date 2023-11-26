@@ -154,7 +154,7 @@ const PostForm: React.FC<PostFormProps> = ({ initialData }) => {
         });
         if (response) {
           toast.success(t("post.You have successfully edited your question"));
-          navigate(-1);
+          navigate(`/${initialData._id}`);
         }
         if (error) toast.error(t("post.Something went wrong"));
       } else {

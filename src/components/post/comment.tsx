@@ -48,6 +48,7 @@ interface CommentProps {
   votePost: (postId: string, otherUserId: string, type: boolean) => void;
   pinComment: (commentId: string | null, otherUserId: string) => Promise<void>;
   getSuperChild: (posts: Post[]) => void;
+  getCommentsAfterComment: () => Promise<void>;
 }
 
 const Comment: React.FC<CommentProps> = ({
@@ -61,6 +62,7 @@ const Comment: React.FC<CommentProps> = ({
   votePost,
   pinComment,
   getSuperChild,
+  getCommentsAfterComment,
 }) => {
   const { i18n, t } = useTranslation();
   const { reportModal } = useSelector(selectReportModal);
@@ -236,6 +238,7 @@ const Comment: React.FC<CommentProps> = ({
             type={PostType.Comment}
             content={comment.content}
             medias={comment.medias}
+            getCommentsAfterComment={getCommentsAfterComment}
           />
         ) : (
           // Content comment
@@ -326,6 +329,7 @@ const Comment: React.FC<CommentProps> = ({
             parent_id={comment._id}
             type={PostType.Comment}
             content=""
+            getCommentsAfterComment={getCommentsAfterComment}
           />
         )}
         {/* Comment form end */}
@@ -365,6 +369,7 @@ const Comment: React.FC<CommentProps> = ({
               votePost={votePost}
               pinComment={pinComment}
               getSuperChild={getSuperChild}
+              getCommentsAfterComment={getCommentsAfterComment}
             />
           ))}
         {/* Comment children end */}
@@ -387,6 +392,7 @@ const Comment: React.FC<CommentProps> = ({
               votePost={votePost}
               pinComment={pinComment}
               getSuperChild={getSuperChild}
+              getCommentsAfterComment={getCommentsAfterComment}
             />
           ))}
       </div>

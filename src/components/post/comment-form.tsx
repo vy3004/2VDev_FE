@@ -18,6 +18,16 @@ interface CommentFormProps {
   content: string;
   medias?: string[];
   hashtags?: string[];
+  getCommentsAfterComment: () => Promise<void>;
+}
+
+interface CommentFormValues {
+  post_id: string;
+  parent_id: string;
+  type: PostType;
+  content: string;
+  medias?: string[];
+  hashtags?: string[];
 }
 
 const CommentForm: React.FC<CommentFormProps> = ({
@@ -27,12 +37,13 @@ const CommentForm: React.FC<CommentFormProps> = ({
   content,
   medias,
   hashtags,
+  getCommentsAfterComment,
 }) => {
   const { t } = useTranslation();
 
   const [isSubmit, setIsSubmit] = useState(false);
 
-  const commentForm = useFormik<CommentFormProps>({
+  const commentForm = useFormik<CommentFormValues>({
     initialValues: {
       post_id: post_id,
       parent_id: parent_id,
@@ -48,7 +59,7 @@ const CommentForm: React.FC<CommentFormProps> = ({
         .max(5000, t("post.Answer must only contain 5000 characters")),
     }),
 
-    onSubmit: async (values: CommentFormProps) => {
+    onSubmit: async (values: CommentFormValues) => {
       setIsSubmit(true);
       let data = { ...values };
 
@@ -56,7 +67,7 @@ const CommentForm: React.FC<CommentFormProps> = ({
         const { response, error } = await postService.editPost(data);
         if (response) {
           toast.success(t("post.Your answer has been edited"));
-          window.location.reload();
+          getCommentsAfterComment();
         }
         if (error) toast.error(t("post.Something went wrong"));
       } else {
@@ -66,7 +77,7 @@ const CommentForm: React.FC<CommentFormProps> = ({
         });
         if (response) {
           toast.success(t("post.Your answer has been posted"));
-          window.location.reload();
+          getCommentsAfterComment();
         }
         if (error) toast.error(t("post.Something went wrong"));
       }

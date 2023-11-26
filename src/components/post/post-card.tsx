@@ -37,6 +37,7 @@ import NotFoundAlert from "../common/not-found-alert";
 import TagButton from "../common/tag-button";
 import MenuFilter from "../common/menu-filter";
 import PostInfoUser from "../common/post-info-user";
+import Loading from "../common/loading";
 import TypingComment from "./typing-comment";
 import CommentForm from "./comment-form";
 import Comment from "./comment";
@@ -86,7 +87,8 @@ const PostCard: React.FC<PostCardProps> = ({ post, isDetail, isRepost }) => {
   const [sortField, setSortField] = useState("votes_count");
   const [page, setPage] = useState(1);
   const [totalPage, setTotalPage] = useState(1);
-  const [isLoading, setIsLoading] = useState(false);
+  const [isAILoading, setIsAILoading] = useState(false);
+  const [isCmtLoading, setIsCmtLoading] = useState(false);
   const [detailPinComment, setDetailPinComment] = useState<Post>();
   const [repost, setRepost] = useState<Post>();
   const [superChild, setSuperChild] = useState<Post[]>([]);
@@ -243,7 +245,7 @@ const PostCard: React.FC<PostCardProps> = ({ post, isDetail, isRepost }) => {
   };
 
   const getComments = async () => {
-    setIsLoading(true);
+    setIsCmtLoading(true);
 
     const { response } = await postService.getComments({
       post_id: post._id,
@@ -279,7 +281,34 @@ const PostCard: React.FC<PostCardProps> = ({ post, isDetail, isRepost }) => {
       }
     }
 
-    setIsLoading(false);
+    setIsCmtLoading(false);
+  };
+
+  const getCommentsAfterComment = async () => {
+    setIsCmtLoading(true);
+
+    const { response } = await postService.getComments({
+      post_id: post._id,
+      limit: 10,
+      page: page,
+      sort_field: sortField,
+      sort_value: -1,
+    });
+
+    if (response) {
+      setTotalPage(response.data.result.total_page);
+
+      let newComments = response.data.result.post_children;
+      if (post.resolved_id) {
+        newComments = filterRemovePinComment(
+          [...newComments],
+          post.resolved_id
+        );
+      }
+      setComments(newComments);
+    }
+
+    setIsCmtLoading(false);
   };
 
   const handleCommentsLoadMore = () => {
@@ -333,7 +362,7 @@ const PostCard: React.FC<PostCardProps> = ({ post, isDetail, isRepost }) => {
   };
 
   const getOpenAIComment = async () => {
-    setIsLoading(true);
+    setIsAILoading(true);
 
     const { response } = await openaiService.chatCompletions({
       content: post.title + " " + post.content,
@@ -342,7 +371,7 @@ const PostCard: React.FC<PostCardProps> = ({ post, isDetail, isRepost }) => {
       postOpenAIComment(response);
     }
 
-    setIsLoading(false);
+    setIsAILoading(false);
   };
 
   const postOpenAIComment = async (content: string) => {
@@ -590,13 +619,14 @@ const PostCard: React.FC<PostCardProps> = ({ post, isDetail, isRepost }) => {
                     parent_id={post._id}
                     type={PostType.Comment}
                     content=""
+                    getCommentsAfterComment={getCommentsAfterComment}
                   />
                 </>
               )}
               {/* Comment form end */}
 
               {/* OpenAI is typing comments */}
-              {isLoading && <TypingComment />}
+              {isAILoading && <TypingComment />}
 
               {/* Comments start */}
               {post.comments_count > 0 && (
@@ -610,39 +640,46 @@ const PostCard: React.FC<PostCardProps> = ({ post, isDetail, isRepost }) => {
                     />
                   </div>
 
-                  {/* Pin comment start */}
-                  {detailPinComment && (
-                    <Comment
-                      comment={detailPinComment}
-                      currentUser={user}
-                      postUserId={post.user_detail._id}
-                      resolvedId={post.resolved_id}
-                      levelComment={0}
-                      superChild={superChild}
-                      userParent={post.user_detail}
-                      votePost={votePost}
-                      pinComment={pinComment}
-                      getSuperChild={getSuperChild}
-                    />
+                  {isCmtLoading ? (
+                    <div className="relative h-80">
+                      <Loading />
+                    </div>
+                  ) : (
+                    <>
+                      {detailPinComment && (
+                        <Comment
+                          comment={detailPinComment}
+                          currentUser={user}
+                          postUserId={post.user_detail._id}
+                          resolvedId={post.resolved_id}
+                          levelComment={0}
+                          superChild={superChild}
+                          userParent={post.user_detail}
+                          votePost={votePost}
+                          pinComment={pinComment}
+                          getSuperChild={getSuperChild}
+                          getCommentsAfterComment={getCommentsAfterComment}
+                        />
+                      )}
+                      {comments.length > 0 &&
+                        comments.map((item) => (
+                          <Comment
+                            key={item._id}
+                            comment={item}
+                            currentUser={user}
+                            postUserId={post.user_detail._id}
+                            resolvedId={post.resolved_id}
+                            levelComment={0}
+                            superChild={superChild}
+                            userParent={post.user_detail}
+                            votePost={votePost}
+                            pinComment={pinComment}
+                            getSuperChild={getSuperChild}
+                            getCommentsAfterComment={getCommentsAfterComment}
+                          />
+                        ))}
+                    </>
                   )}
-                  {/* Pin comment end */}
-
-                  {comments.length > 0 &&
-                    comments.map((item) => (
-                      <Comment
-                        key={item._id}
-                        comment={item}
-                        currentUser={user}
-                        postUserId={post.user_detail._id}
-                        resolvedId={post.resolved_id}
-                        levelComment={0}
-                        superChild={superChild}
-                        userParent={post.user_detail}
-                        votePost={votePost}
-                        pinComment={pinComment}
-                        getSuperChild={getSuperChild}
-                      />
-                    ))}
                   {/* Comments menu end */}
                 </div>
               )}
@@ -659,7 +696,7 @@ const PostCard: React.FC<PostCardProps> = ({ post, isDetail, isRepost }) => {
                     variant="text"
                     onClick={handleCommentsLoadMore}
                   >
-                    {isLoading ? (
+                    {isCmtLoading ? (
                       <Spinner className="w-5 h-5" />
                     ) : (
                       <PlusCircleIcon className="w-5 h-5" />
@@ -672,7 +709,8 @@ const PostCard: React.FC<PostCardProps> = ({ post, isDetail, isRepost }) => {
 
                 {comments.length > 0 && post.comments_count > 0 && (
                   <Typography>
-                    {comments.length} {t("post.of")} {post.comments_count}
+                    {post.resolved_id ? comments.length + 1 : comments.length}{" "}
+                    {t("post.of")} {post.comments_count}
                   </Typography>
                 )}
               </div>
