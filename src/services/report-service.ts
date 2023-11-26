@@ -14,6 +14,7 @@ interface ApiResponse<T> {
 
 const reportPostEndpoints = {
   reportPost: `${apiEndPoints.reports}`,
+  getReports: `${apiEndPoints.reports}`,
 };
 
 const reportPostService = {
@@ -29,6 +30,15 @@ const reportPostService = {
           reason,
         }
       );
+
+      return { response };
+    } catch (error) {
+      return { error: error as AxiosError };
+    }
+  },
+  getReports: async (): Promise<ApiResponse<any>> => {
+    try {
+      const response = await axiosInstance.get(reportPostEndpoints.getReports);
 
       return { response };
     } catch (error) {

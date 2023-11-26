@@ -2,6 +2,11 @@ import { AxiosResponse, AxiosError } from "axios";
 import axiosInstance from "../configs/axios-config";
 import { apiEndPoints } from "../utils/api-endpoints";
 
+interface GetMyBookmarksPayload {
+  limit: number;
+  page: number;
+}
+
 interface BookmarkPostPayload {
   post_id: string;
 }
@@ -16,17 +21,21 @@ interface ApiResponse<T> {
 }
 
 const bookmarkEndpoints = {
-  getMyBookmarks: `${apiEndPoints.bookmarks}`,
+  getMyBookmarks: ({ limit, page }: { limit: number; page: number }) =>
+    `${apiEndPoints.bookmarks}?page=${page}&limit=${limit}`,
   bookmarkPost: `${apiEndPoints.bookmarks}`,
   unmarkPost: ({ post_id }: { post_id: string }) =>
     `${apiEndPoints.bookmarks}/posts/${post_id}`,
 };
 
 const bookmarkService = {
-  getMyBookmarks: async (): Promise<ApiResponse<any>> => {
+  getMyBookmarks: async ({
+    page,
+    limit,
+  }: GetMyBookmarksPayload): Promise<ApiResponse<any>> => {
     try {
-      const response = await axiosInstance.post(
-        bookmarkEndpoints.getMyBookmarks
+      const response = await axiosInstance.get(
+        bookmarkEndpoints.getMyBookmarks({ page, limit })
       );
 
       return { response };

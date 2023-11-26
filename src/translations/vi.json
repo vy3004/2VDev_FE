@@ -298,7 +298,9 @@
     "questions tagged with": "câu hỏi được gắn thẻ",
     "Trending tags not found": "Không tìm thấy từ khóa xu hướng",
     "No tags found": "Không tìm thấy thẻ nào",
-    "Question not found": "Không tìm thấy câu hỏi"
+    "Question not found": "Không tìm thấy câu hỏi",
+    "My Bookmarks": "Đánh dấu của tôi",
+    "See information about all marked questions": "Xem thông tin về tất cả các câu hỏi đã đánh dấu"
   },
   "menu": {
     "newest": "Mới nhất",

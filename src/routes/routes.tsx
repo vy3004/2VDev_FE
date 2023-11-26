@@ -102,7 +102,11 @@ const routes: Route[] = [
   },
   {
     path: "/bookmarks",
-    element: <Bookmarks />,
+    element: (
+      <ProtectedPage>
+        <Bookmarks />
+      </ProtectedPage>
+    ),
   },
   {
     path: "/users",
