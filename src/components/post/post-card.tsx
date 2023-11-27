@@ -14,12 +14,9 @@ import {
   MenuItem,
   MenuList,
   Spinner,
-  Tooltip,
   Typography,
 } from "@material-tailwind/react";
 import {
-  ClockIcon,
-  EyeIcon,
   BookmarkIcon,
   BookmarkSlashIcon,
   ExclamationTriangleIcon,
@@ -33,11 +30,14 @@ import {
   EllipsisHorizontalIcon,
   PlusCircleIcon,
 } from "@heroicons/react/24/solid";
+
 import NotFoundAlert from "../common/not-found-alert";
 import TagButton from "../common/tag-button";
 import MenuFilter from "../common/menu-filter";
 import PostInfoUser from "../common/post-info-user";
 import Loading from "../common/loading";
+import Time from "../common/time";
+import View from "../common/view";
 import TypingComment from "./typing-comment";
 import CommentForm from "./comment-form";
 import Comment from "./comment";
@@ -46,7 +46,7 @@ import voteService from "../../services/vote-service";
 import bookmarkService from "../../services/bookmark-service";
 import userService from "../../services/user-service";
 import postService from "../../services/post-service";
-import openaiService from "../../services/openai -service";
+import openaiService from "../../services/openai-service";
 
 import { selectUser } from "../../redux/features/user-slice";
 import { setConfirmModal } from "../../redux/features/confirm-modal-slice";
@@ -66,16 +66,21 @@ import {
   PostType,
   USER_UPDATE_POINT,
 } from "../../utils/constant";
-import { formatTime, formatTimeDistanceToNow } from "../../utils/string-utils";
 
 interface PostCardProps {
   post: Post;
   isDetail: boolean;
   isRepost?: boolean;
+  isView?: boolean;
 }
 
-const PostCard: React.FC<PostCardProps> = ({ post, isDetail, isRepost }) => {
-  const { i18n, t } = useTranslation();
+const PostCard: React.FC<PostCardProps> = ({
+  post,
+  isDetail,
+  isRepost,
+  isView,
+}) => {
+  const { t } = useTranslation();
   const { user } = useSelector(selectUser);
   const { reportModal } = useSelector(selectReportModal);
   const dispatch = useDispatch();
@@ -103,7 +108,7 @@ const PostCard: React.FC<PostCardProps> = ({ post, isDetail, isRepost }) => {
   }, [reportModal, post._id]);
 
   useEffect(() => {
-    if (isDetail) {
+    if (isDetail && !isView) {
       if (page > 1) {
         getComments();
       }
@@ -111,19 +116,24 @@ const PostCard: React.FC<PostCardProps> = ({ post, isDetail, isRepost }) => {
   }, [page]);
 
   useEffect(() => {
-    if (isDetail && post.comments_count > 0) {
+    if (isDetail && !isView && post.comments_count > 0) {
       getComments();
     }
   }, [sortField]);
 
   useEffect(() => {
-    if (isDetail && post.resolved_id) {
+    if (isDetail && !isView && post.resolved_id) {
       getPinComment();
     }
   }, []);
 
   useEffect(() => {
-    if (isDetail && post.comments_count === 0 && post.type === PostType.Post) {
+    if (
+      isDetail &&
+      !isView &&
+      post.comments_count === 0 &&
+      post.type === PostType.Post
+    ) {
       getOpenAIComment();
     }
   }, []);
@@ -429,7 +439,7 @@ const PostCard: React.FC<PostCardProps> = ({ post, isDetail, isRepost }) => {
           {/* Info user end */}
 
           {/* Post menu start */}
-          {user && (
+          {user && !isView && (
             <Menu placement="bottom-end">
               <MenuHandler>
                 <IconButton variant="text" className="rounded-full">
@@ -507,16 +517,8 @@ const PostCard: React.FC<PostCardProps> = ({ post, isDetail, isRepost }) => {
                 )}
               </div>
               <div className="flex items-center justify-end gap-4">
-                <Tooltip content={formatTime(post.created_at, i18n.language)}>
-                  <Typography className="text-sm text-gray-600 hover:text-blue-500 cursor-pointer flex items-center gap-1">
-                    <ClockIcon className="w-4 h-4" />
-                    {formatTimeDistanceToNow(post.created_at, i18n.language)}
-                  </Typography>
-                </Tooltip>
-                <Typography className="text-sm text-gray-600 hover:text-blue-500 cursor-pointer flex items-center gap-1">
-                  <EyeIcon className="w-4 h-4" />
-                  {post.views_count} {t("post.views")}
-                </Typography>
+                {post.created_at && <Time time={post.created_at} />}
+                {post.views_count && <View view={post.views_count} />}
               </div>
             </div>
 
@@ -581,50 +583,58 @@ const PostCard: React.FC<PostCardProps> = ({ post, isDetail, isRepost }) => {
           {/* Repost end */}
 
           {/* Tag list start */}
-          {post.hashtags.map((tag) => (
-            <TagButton key={tag._id} id={tag._id} name={tag.name} />
-          ))}
+          {post.hashtags.map(
+            ({ _id, name }) =>
+              _id && name && <TagButton key={_id} id={_id} name={name} />
+          )}
           {/* Tag list end */}
 
-          <hr />
+          {!isView && (
+            <>
+              <hr />
 
-          <div className="flex items-center justify-center gap-4">
-            <Button
-              onClick={() => handleVote(post._id, post.user_detail._id, vote)}
-              variant="text"
-              fullWidth
-              className={`flex items-center justify-center gap-2 normal-case text-base ${
-                vote ? "text-blue-500" : "text-gray-900 dark:text-gray-50"
-              }`}
-            >
-              <HandThumbUpIcon className="w-5 h-5" />
-              {votesCount > 0 && votesCount}{" "}
-              <span className="hidden sm:inline">{t("post.Vote")}</span>
-            </Button>
+              <div className="flex items-center justify-center gap-4">
+                <Button
+                  onClick={() =>
+                    handleVote(post._id, post.user_detail._id, vote)
+                  }
+                  variant="text"
+                  fullWidth
+                  className={`flex items-center justify-center gap-2 normal-case text-base ${
+                    vote ? "text-blue-500" : "text-gray-900 dark:text-gray-50"
+                  }`}
+                >
+                  <HandThumbUpIcon className="w-5 h-5" />
+                  {votesCount > 0 && votesCount}{" "}
+                  <span className="hidden sm:inline">{t("post.Vote")}</span>
+                </Button>
 
-            <Button
-              onClick={handleComment}
-              variant="text"
-              fullWidth
-              className="flex items-center justify-center gap-2 normal-case text-base"
-            >
-              <ChatBubbleLeftIcon className="w-5 h-5" />
-              {post.comments_count > 0 && post.comments_count}{" "}
-              <span className="hidden sm:inline">{t("post.Answer")}</span>
-            </Button>
+                <Button
+                  onClick={handleComment}
+                  variant="text"
+                  fullWidth
+                  className="flex items-center justify-center gap-2 normal-case text-base"
+                >
+                  <ChatBubbleLeftIcon className="w-5 h-5" />
+                  {post.comments_count > 0 && post.comments_count}{" "}
+                  <span className="hidden sm:inline">{t("post.Answer")}</span>
+                </Button>
 
-            <Button
-              onClick={handleRepost}
-              variant="text"
-              fullWidth
-              className="flex items-center justify-center gap-2 normal-case text-base"
-            >
-              <ShareIcon className="w-5 h-5" />
-              {post.repost_count > 0 && post.repost_count}{" "}
-              <span className="hidden sm:inline">{t("post.Repost")}</span>
-            </Button>
-          </div>
-          {isDetail && user && (
+                <Button
+                  onClick={handleRepost}
+                  variant="text"
+                  fullWidth
+                  className="flex items-center justify-center gap-2 normal-case text-base"
+                >
+                  <ShareIcon className="w-5 h-5" />
+                  {post.reposts_count > 0 && post.reposts_count}{" "}
+                  <span className="hidden sm:inline">{t("post.Repost")}</span>
+                </Button>
+              </div>
+            </>
+          )}
+
+          {isDetail && !isView && user && (
             <div className="space-y-4">
               {/* Comment form start */}
               {showFormAnswer && (
@@ -737,7 +747,7 @@ const PostCard: React.FC<PostCardProps> = ({ post, isDetail, isRepost }) => {
       </div>
     </div>
   ) : (
-    <NotFoundAlert message={t("post.Question not found")} />
+    <NotFoundAlert message={t("post.Question not found")} type={"error"} />
   );
 };
 

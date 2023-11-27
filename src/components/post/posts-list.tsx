@@ -55,7 +55,7 @@ const PostsList: React.FC<PostsListProps> = ({
       endMessage={
         <NotFoundAlert
           message={t(`user.No more ${typeMap[postType]} to load`)}
-          isBack={false}
+          type="success"
         />
       }
     >

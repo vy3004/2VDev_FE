@@ -47,7 +47,7 @@ const UserDetailPage = () => {
   ) : user ? (
     <UserDetailForm user={user} />
   ) : (
-    <NotFoundAlert message={t("user.User not found")} />
+    <NotFoundAlert message={t("user.User not found")} type="error" />
   );
 };
 

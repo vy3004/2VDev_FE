@@ -3,15 +3,8 @@ import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 
+import { Avatar, Button, Spinner, Typography } from "@material-tailwind/react";
 import {
-  Avatar,
-  Button,
-  Spinner,
-  Tooltip,
-  Typography,
-} from "@material-tailwind/react";
-import {
-  ClockIcon,
   ExclamationTriangleIcon,
   HandThumbUpIcon,
   ChatBubbleLeftIcon,
@@ -22,15 +15,17 @@ import {
   ArrowUturnLeftIcon,
   EyeDropperIcon,
   PaintBrushIcon,
-  StarIcon,
 } from "@heroicons/react/24/solid";
 import LevelChip from "../common/level-chip";
 import CommentForm from "./comment-form";
+import UserPoint from "../common/user-point";
+import Time from "../common/time";
 
 import postService from "../../services/post-service";
+
 import { Post, User } from "../../utils/types";
 import { PostType } from "../../utils/constant";
-import { formatTime, formatTimeDistanceToNow } from "../../utils/string-utils";
+
 import {
   selectReportModal,
   setReportModal,
@@ -64,7 +59,7 @@ const Comment: React.FC<CommentProps> = ({
   getSuperChild,
   getCommentsAfterComment,
 }) => {
-  const { i18n, t } = useTranslation();
+  const { t } = useTranslation();
   const { reportModal } = useSelector(selectReportModal);
   const dispatch = useDispatch();
   const navigate = useNavigate();
@@ -202,20 +197,12 @@ const Comment: React.FC<CommentProps> = ({
               <LevelChip level={comment.user_detail.point} />
             </div>
 
-            <div className="text-orange-500 gap-1 hidden md:flex">
-              <StarIcon className="w-4 h-4" />
-              <Typography className="text-sm font-semibold">
-                {comment.user_detail.point} {t("user.points")}
-              </Typography>
+            <div className="hidden sm:inline">
+              <UserPoint point={comment.user_detail.point} />
             </div>
           </div>
 
-          <Tooltip content={formatTime(comment.created_at, i18n.language)}>
-            <Typography className="text-sm text-gray-600 hover:text-blue-500 cursor-pointer flex items-center gap-1">
-              <ClockIcon className="w-4 h-4 mb-1" />
-              {formatTimeDistanceToNow(comment.created_at, i18n.language)}
-            </Typography>
-          </Tooltip>
+          <Time time={comment.created_at} />
         </div>
 
         {levelComment > 2 && (

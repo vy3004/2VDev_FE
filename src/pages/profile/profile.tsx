@@ -235,7 +235,11 @@ const Profile = () => {
       </Tabs>
     </div>
   ) : (
-    <NotFoundAlert message={t("user.User not found")} />
+    <NotFoundAlert
+      message={t("user.User not found")}
+      type="error"
+      isBack={true}
+    />
   );
 };
 

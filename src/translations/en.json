@@ -224,6 +224,7 @@
     "Vote": "Vote",
     "Answer": "Answer",
     "Repost": "Repost",
+    "repost": "repost",
     "Load more": "Load more",
     "of": "of",
     "Author": "Author",
@@ -300,7 +301,16 @@
     "No tags found": "No tags found",
     "Question not found": "Question not found",
     "My Bookmarks": "My Bookmarks",
-    "See information about all marked questions": "See information about all marked questions"
+    "See information about all marked questions": "See information about all marked questions",
+    "Tags": "Tags",
+    "See information about all tags": "See information about all tags",
+    "Manage Questions": "Manage Questions",
+    "See information about all reported questions": "See information about all reported questions",
+    "Question Detail": "Question Detail",
+    "View root question": "View root question",
+    "View question": "View question",
+    "Read": "Read",
+    "Unread": "Unread"
   },
   "menu": {
     "newest": "Newest",

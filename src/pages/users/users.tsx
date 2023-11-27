@@ -5,11 +5,12 @@ import { debounce } from "lodash";
 import { useTranslation } from "react-i18next";
 
 import { MagnifyingGlassIcon } from "@heroicons/react/24/solid";
-import { Typography, Input } from "@material-tailwind/react";
+import { Input } from "@material-tailwind/react";
 import Loading from "../../components/common/loading";
 import Pagination from "../../components/common/pagination";
 import NotFoundAlert from "../../components/common/not-found-alert";
 import MenuFilter from "../../components/common/menu-filter";
+import PageDescription from "../../components/common/page-description";
 import UserCard from "./components/user-card";
 
 import userService from "../../services/user-service";
@@ -203,14 +204,11 @@ const Users = () => {
           {USERS_HEADER_PAGE.map(
             (item) =>
               item.type === filter && (
-                <div key={item.type}>
-                  <Typography variant="h5">
-                    {t(`user.${item.title}`)}
-                  </Typography>
-                  <Typography className="mt-1 font-normal">
-                    {t(`user.${item.desc}`)}
-                  </Typography>
-                </div>
+                <PageDescription
+                  key={item.type}
+                  title={t(`user.${item.title}`)}
+                  desc={t(`user.${item.desc}`)}
+                />
               )
           )}
 
@@ -258,7 +256,7 @@ const Users = () => {
             />
           </div>
         ) : (
-          <NotFoundAlert message={t("user.Users not found")} isBack={false} />
+          <NotFoundAlert message={t("user.Users not found")} type="error" />
         )}
       </div>
     </div>

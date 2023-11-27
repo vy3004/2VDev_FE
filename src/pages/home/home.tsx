@@ -4,15 +4,17 @@ import { useLocation } from "react-router-dom";
 import { useTranslation } from "react-i18next";
 import { useSelector } from "react-redux";
 
-import { Typography } from "@material-tailwind/react";
+import PageDescription from "../../components/common/page-description";
 import MenuFilter from "../../components/common/menu-filter";
 import PostsList from "../../components/post/posts-list";
 
 import postService from "../../services/post-service";
+
+import { selectUser } from "../../redux/features/user-slice";
+
 import { Post } from "../../utils/types";
 import { POSTS_SORT, POSTS_TYPE, PostType } from "../../utils/constant";
 import { getLabelByValue } from "../../utils/string-utils";
-import { selectUser } from "../../redux/features/user-slice";
 
 const Home = () => {
   const { t } = useTranslation();
@@ -84,19 +86,15 @@ const Home = () => {
     <div>
       {/* Header start */}
       <div className="flex items-end justify-between">
-        <div>
-          <Typography variant="h5">
-            {t(`home.${getLabelByValue(sortField, POSTS_SORT)} questions`)}
-          </Typography>
-          <Typography className="mt-1 font-normal">
-            {t(
-              `home.see information about ${getLabelByValue(
-                type,
-                POSTS_TYPE
-              )} ${getLabelByValue(sortField, POSTS_SORT)} questions`
-            )}
-          </Typography>
-        </div>
+        <PageDescription
+          title={t(`home.${getLabelByValue(sortField, POSTS_SORT)} questions`)}
+          desc={t(
+            `home.see information about ${getLabelByValue(
+              type,
+              POSTS_TYPE
+            )} ${getLabelByValue(sortField, POSTS_SORT)} questions`
+          )}
+        />
 
         {user && (
           <MenuFilter

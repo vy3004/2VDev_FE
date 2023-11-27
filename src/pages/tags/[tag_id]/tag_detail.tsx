@@ -2,7 +2,7 @@ import { useState, useEffect } from "react";
 import { useParams } from "react-router-dom";
 import { useTranslation } from "react-i18next";
 
-import { Typography } from "@material-tailwind/react";
+import PageDescription from "../../../components/common/page-description";
 import PostsList from "../../../components/post/posts-list";
 
 import postService from "../../../services/post-service";
@@ -50,18 +50,20 @@ const TagDetail = () => {
   return (
     <div>
       {/* Header start */}
-      <div className="flex items-end justify-between">
-        <div>
-          <Typography variant="h5">
+      <PageDescription
+        title={
+          <>
             {t("post.Tag")} <span className="text-blue-500">{tagName}</span>
-          </Typography>
-          <Typography className="mt-1 font-normal">
+          </>
+        }
+        desc={
+          <>
             {t("post.There are a total of")} {postsCount}{" "}
             {t("post.questions tagged with")}{" "}
             <span className="text-blue-500">{tagName}</span>
-          </Typography>
-        </div>
-      </div>
+          </>
+        }
+      />
       {/* Header end */}
 
       {/* List posts start */}

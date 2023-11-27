@@ -1,15 +1,13 @@
-import {
-  StarIcon,
-  ClockIcon,
-  ChatBubbleLeftIcon,
-  HandThumbUpIcon,
-} from "@heroicons/react/24/solid";
-import { Typography, Tooltip, Avatar, Button } from "@material-tailwind/react";
-import i18n from "../../configs/i18n";
-import { formatTime, formatTimeDistanceToNow } from "../../utils/string-utils";
-import { Post } from "../../utils/types";
-import LevelChip from "../common/level-chip";
 import { useNavigate } from "react-router-dom";
+import { useTranslation } from "react-i18next";
+
+import { ChatBubbleLeftIcon, HandThumbUpIcon } from "@heroicons/react/24/solid";
+import { Typography, Avatar, Button } from "@material-tailwind/react";
+import LevelChip from "../common/level-chip";
+import Time from "../common/time";
+import UserPoint from "../common/user-point";
+
+import { Post } from "../../utils/types";
 
 interface CommentCardProps {
   comment: Post;
@@ -17,6 +15,7 @@ interface CommentCardProps {
 
 const CommentCard: React.FC<CommentCardProps> = ({ comment }) => {
   const navigate = useNavigate();
+  const { t } = useTranslation();
 
   return (
     <div className="flex gap-4">
@@ -25,34 +24,36 @@ const CommentCard: React.FC<CommentCardProps> = ({ comment }) => {
         size="sm"
         alt="avatar"
         withBorder={true}
-        className="p-0.5"
+        className="p-0.5 hidden sm:inline"
       />
       <div
         className="space-y-2 border rounded-lg w-full min-w-0 p-2 cursor-pointer"
         onClick={() => navigate(`/${comment.parent_id}`)}
       >
         <div className="flex items-center justify-between">
-          <div className="flex items-center gap-4">
-            <Typography className="font-bold text-sm text-blue-500 hover:text-gray-900">
+          <div className="flex items-center gap-2 sm:gap-4">
+            <Avatar
+              src={comment.user_detail.avatar}
+              size="sm"
+              alt="avatar"
+              withBorder={true}
+              className="p-0.5 inline sm:hidden"
+            />
+
+            <Typography className="font-bold text-sm text-blue-500 hover:text-gray-900 cursor-pointer">
               {comment.user_detail.name}
             </Typography>
 
-            <LevelChip level={comment.user_detail.point} />
+            <div className="hidden sm:inline">
+              <LevelChip level={comment.user_detail.point} />
+            </div>
 
-            <div className="text-orange-500 flex gap-1">
-              <StarIcon className="w-4 h-4" />
-              <Typography className="text-sm font-semibold">
-                {comment.user_detail.point} points
-              </Typography>
+            <div className="hidden sm:inline">
+              <UserPoint point={comment.user_detail.point} />
             </div>
           </div>
 
-          <Tooltip content={formatTime(comment.created_at, i18n.language)}>
-            <Typography className="text-sm text-gray-600 hover:text-blue-500 flex items-center gap-1">
-              <ClockIcon className="w-4 h-4 mb-1" />
-              {formatTimeDistanceToNow(comment.created_at, i18n.language)}
-            </Typography>
-          </Tooltip>
+          <Time time={comment.created_at} />
         </div>
 
         <div
@@ -70,7 +71,7 @@ const CommentCard: React.FC<CommentCardProps> = ({ comment }) => {
             }`}
           >
             <HandThumbUpIcon className="w-4 h-4" />
-            {comment.votes_count > 0 && comment.votes_count} Like
+            {comment.votes_count > 0 && comment.votes_count} {t("post.Vote")}
           </Button>
 
           <Button
@@ -79,7 +80,7 @@ const CommentCard: React.FC<CommentCardProps> = ({ comment }) => {
           >
             <ChatBubbleLeftIcon className="w-4 h-4" />
             {comment.comments_count > 0 && comment.comments_count}{" "}
-            {comment.comments_count > 1 ? "Replies" : "Reply"}
+            {comment.comments_count > 1 ? t("post.Reply") : t("post.Replies")}
           </Button>
         </div>
       </div>

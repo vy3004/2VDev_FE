@@ -10,10 +10,11 @@ import RightSidebar from "./right-sidebar";
 import Container from "../common/container";
 import GlobalLoading from "../common/global-loading";
 import VerifyMailAlert from "../common/verify-mail-alert";
-import BreadcrumbsCustom from "../common/breadcrumbs";
+// import BreadcrumbsCustom from "../common/breadcrumbs";
 import AnswerQuestion from "../common/answer-question";
 import AuthModal from "../modals/auth-modal";
 import EditMyProfileModal from "../modals/edit-my-profile-modal";
+import PostInfoModal from "../modals/post-info-modal";
 import ReportModal from "../modals/report-modal";
 import RepostModal from "../modals/repost-modal";
 import ConfirmModal from "../modals/confirm-modal";
@@ -136,6 +137,7 @@ const MainLayout = () => {
       {/* Modal */}
       <AuthModal />
       <EditMyProfileModal />
+      <PostInfoModal />
       <ReportModal />
       <RepostModal />
       <ConfirmModal />
@@ -160,7 +162,7 @@ const MainLayout = () => {
               children={
                 <div className="px-4 pb-4 space-y-4">
                   <AnswerQuestion />
-                  <BreadcrumbsCustom />
+                  {/* <BreadcrumbsCustom /> */}
                   {user && !user?.verify ? <VerifyMailAlert /> : <></>}
                   <Outlet />
                 </div>

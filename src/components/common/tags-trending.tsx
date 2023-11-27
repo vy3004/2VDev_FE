@@ -42,7 +42,7 @@ const TagsTrending = () => {
       ) : (
         <NotFoundAlert
           message={t("post.Trending tags not found")}
-          isBack={false}
+          type="error"
         />
       )}
     </div>

@@ -1,10 +1,11 @@
 import { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 
-import { Typography } from "@material-tailwind/react";
+import PageDescription from "../../components/common/page-description";
 import PostsList from "../../components/post/posts-list";
 
 import bookmarkService from "../../services/bookmark-service";
+
 import { Post } from "../../utils/types";
 import { PostType } from "../../utils/constant";
 
@@ -26,6 +27,15 @@ const Bookmarks = () => {
         ...item.post_detail,
         user_detail: item.user_detail,
         hashtags: item.hashtags,
+        reposts_count: item.reposts_count,
+        comments_count: item.comments_count,
+        views_count: item.views_count,
+        votes_count: item.votes_count,
+        reports_count: item.reports_count,
+        bookmarks_count: item.bookmarks_count,
+        is_voted: item.is_voted,
+        is_bookmarked: item.is_bookmarked,
+        is_reported: item.is_reported,
       }));
       if (newData.length > 0) {
         setPosts([...posts, ...newData]);
@@ -43,14 +53,10 @@ const Bookmarks = () => {
   return (
     <div>
       {/* Header start */}
-      <div className="flex items-end justify-between">
-        <div>
-          <Typography variant="h5">{t("post.My Bookmarks")}</Typography>
-          <Typography className="mt-1 font-normal">
-            {t("post.See information about all marked questions")}
-          </Typography>
-        </div>
-      </div>
+      <PageDescription
+        title={t("post.My Bookmarks")}
+        desc={t("post.See information about all marked questions")}
+      />
       {/* Header end */}
 
       {/* List posts start */}

@@ -29,16 +29,18 @@ const PostInfoUser: React.FC<PostInfoUserProps> = ({ user_detail }) => {
             {user_detail.name}
           </Typography>
           <div className="hidden sm:inline">
-            <LevelChip level={user_detail.point} />
+            {user_detail.point && <LevelChip level={user_detail.point} />}
           </div>
         </div>
 
-        <div className="flex items-center gap-2">
-          <div className="inline sm:hidden">
-            <LevelChip level={user_detail.point} />
+        {user_detail.point && (
+          <div className="flex items-center gap-2">
+            <div className="inline sm:hidden">
+              <LevelChip level={user_detail.point} />
+            </div>
+            <UserPoint point={user_detail.point} />
           </div>
-          <UserPoint point={user_detail.point} />
-        </div>
+        )}
       </div>
     </div>
   );

@@ -7,6 +7,15 @@ interface ReportPostPayload {
   reason: string;
 }
 
+interface GetReportsPayload {
+  limit: number;
+  page: number;
+}
+
+interface ReadReportPayload {
+  post_id: string;
+}
+
 interface ApiResponse<T> {
   response?: AxiosResponse<T>;
   error?: AxiosError;
@@ -14,7 +23,10 @@ interface ApiResponse<T> {
 
 const reportPostEndpoints = {
   reportPost: `${apiEndPoints.reports}`,
-  getReports: `${apiEndPoints.reports}`,
+  getReports: ({ limit, page }: { limit: number; page: number }) =>
+    `${apiEndPoints.reports}?page=${page}&limit=${limit}`,
+  readReport: ({ post_id }: { post_id: string }) =>
+    `${apiEndPoints.reports}/${post_id}`,
 };
 
 const reportPostService = {
@@ -36,9 +48,27 @@ const reportPostService = {
       return { error: error as AxiosError };
     }
   },
-  getReports: async (): Promise<ApiResponse<any>> => {
+  getReports: async ({
+    limit,
+    page,
+  }: GetReportsPayload): Promise<ApiResponse<any>> => {
     try {
-      const response = await axiosInstance.get(reportPostEndpoints.getReports);
+      const response = await axiosInstance.get(
+        reportPostEndpoints.getReports({ limit, page })
+      );
+
+      return { response };
+    } catch (error) {
+      return { error: error as AxiosError };
+    }
+  },
+  readReport: async ({
+    post_id,
+  }: ReadReportPayload): Promise<ApiResponse<any>> => {
+    try {
+      const response = await axiosInstance.post(
+        reportPostEndpoints.readReport({ post_id })
+      );
 
       return { response };
     } catch (error) {

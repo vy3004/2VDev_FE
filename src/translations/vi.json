@@ -224,6 +224,7 @@
     "Vote": "Bỏ phiếu",
     "Answer": "Trả lời",
     "Repost": "Đăng lại",
+    "repost": "đăng lại",
     "Load more": "Tải thêm",
     "of": "trên",
     "Author": "Tác giả",
@@ -300,7 +301,16 @@
     "No tags found": "Không tìm thấy thẻ nào",
     "Question not found": "Không tìm thấy câu hỏi",
     "My Bookmarks": "Đánh dấu của tôi",
-    "See information about all marked questions": "Xem thông tin về tất cả các câu hỏi đã đánh dấu"
+    "See information about all marked questions": "Xem thông tin về tất cả các câu hỏi đã đánh dấu",
+    "Tags": "Thẻ",
+    "See information about all tags": "Xem thông tin về tất cả các thẻ",
+    "Manage Questions": "Quản lý Câu hỏi",
+    "See information about all reported questions": "Xem thông tin về tất cả các câu hỏi bị báo cáo",
+    "Question Detail": "Chi tiết Câu hỏi",
+    "View root question": "Xem câu hỏi gốc",
+    "View question": "Xem câu hỏi",
+    "Read": "Đã đọc",
+    "Unread": "Chưa đọc"
   },
   "menu": {
     "newest": "Mới nhất",

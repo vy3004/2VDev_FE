@@ -44,7 +44,7 @@ export interface Post {
   resolved?: string | number;
   votes_count: number;
   comments_count: number;
-  repost_count: number;
+  reposts_count: number;
   reports_count: number;
   bookmarks_count: number;
   views_count: number;

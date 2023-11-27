@@ -29,6 +29,7 @@ import Loading from "../../../components/common/loading";
 import LevelChip from "../../../components/common/level-chip";
 import Pagination from "../../../components/common/pagination";
 import MenuFilter from "../../../components/common/menu-filter";
+import PageDescription from "../../../components/common/page-description";
 
 import userService from "../../../services/user-service";
 import searchService from "../../../services/search-service";
@@ -157,13 +158,13 @@ const ManageUsers = () => {
       <CardHeader
         floated={false}
         shadow={false}
-        className="rounded-none dark:bg-gray-700 dark:text-gray-50"
+        className="rounded-none space-y-4 dark:bg-gray-700 dark:text-gray-50"
       >
         {/* Title start */}
-        <Typography variant="h5">{t("user.Manage Users")}</Typography>
-        <Typography className="mt-1 mb-8 font-normal">
-          {t("user.See information about all users")}
-        </Typography>
+        <PageDescription
+          title={t("user.Manage Users")}
+          desc={t("user.See information about all users")}
+        />
         {/* Title end */}
 
         <div className="flex items-center justify-end gap-4">

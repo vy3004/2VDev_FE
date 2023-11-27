@@ -55,12 +55,12 @@ const TopUsers = () => {
     <div className="space-y-2">
       {users.map((user) => (
         <div
-          className="border rounded-lg p-2 bg-white shadow-md dark:bg-gray-900"
+          className="border rounded-lg p-2 space-y-2 sm:space-y-0 bg-white shadow-md dark:bg-gray-900"
           key={user._id}
         >
           <PostInfoUser user_detail={user} />
 
-          <div className="flex items-center gap-4 pl-[4.8rem] font-bold text-gray-600">
+          <div className="flex items-center gap-4 sm:pl-[4.8rem] font-bold text-gray-600">
             <p>
               {user.followers}{" "}
               {t(`user.${user.followers === 1 ? "follower" : "followers"}`)}
@@ -74,7 +74,7 @@ const TopUsers = () => {
       ))}
     </div>
   ) : (
-    <NotFoundAlert message={t("user.Top users not found")} isBack={false} />
+    <NotFoundAlert message={t("user.Top users not found")} type="error" />
   );
 };
 
