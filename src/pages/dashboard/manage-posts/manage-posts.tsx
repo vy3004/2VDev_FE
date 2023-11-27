@@ -61,17 +61,17 @@ const ManagePosts = () => {
     }
   };
 
-  const readReport = async (postId: string) => {
+  const readReport = async (reportId: string) => {
     const { response } = await reportPostService.readReport({
-      post_id: postId,
+      post_id: reportId,
     });
     if (response) {
       getData(false);
     }
   };
 
-  const handleRead = (post: Post, reason: string) => {
-    readReport(post._id);
+  const handleRead = (post: Post, reason: string, reportId: string) => {
+    readReport(reportId);
     dispatch(
       setPostInfoModal({
         postInfoModalOpen: true,
@@ -119,7 +119,9 @@ const ManagePosts = () => {
                   <Button
                     variant="text"
                     className="hidden md:flex md:items-center md:gap-2 normal-case text-base"
-                    onClick={() => handleRead(data.post_info, data.reason)}
+                    onClick={() =>
+                      handleRead(data.post_info, data.reason, data._id)
+                    }
                   >
                     <EyeIcon className="w-5 h-5" />
                     {t("post.View question")}
@@ -137,7 +139,9 @@ const ManagePosts = () => {
                 variant="text"
                 fullWidth
                 className="sm:hidden flex items-center gap-2 normal-case text-base"
-                onClick={() => handleRead(data.post_info, data.reason)}
+                onClick={() =>
+                  handleRead(data.post_info, data.reason, data._id)
+                }
               >
                 <EyeIcon className="w-5 h-5" />
                 {t("post.View question")}
