@@ -8,4 +8,5 @@ export const apiEndPoints = {
   votes: "/votes",
   reports: "/reports",
   search: "/search",
+  notifications: "/notifications",
 };

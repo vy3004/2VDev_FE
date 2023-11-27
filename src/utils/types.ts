@@ -1,4 +1,4 @@
-import { MediaType, PostType } from "./constant";
+import { MEDIA_TYPE, NOTIFICATION_TYPE, POST_TYPE } from "./constant";
 
 export interface User {
   _id: string;
@@ -24,7 +24,7 @@ export interface User {
 
 export interface Media {
   url: string;
-  type: MediaType; // 0 = image, 1 = video
+  type: MEDIA_TYPE; // 0 = image, 1 = video
 }
 
 export interface Tag {
@@ -39,7 +39,7 @@ export interface Post {
   title: string;
   content: string;
   medias: string[];
-  type: PostType;
+  type: POST_TYPE;
   hashtags: Tag[];
   resolved?: string | number;
   votes_count: number;
@@ -68,4 +68,13 @@ export interface UserCardType {
   is_followed: boolean;
   followers?: number;
   following?: number;
+}
+
+export interface Notification {
+  _id: string;
+  is_readed: boolean;
+  type: NOTIFICATION_TYPE;
+  direct_id: string;
+  created_at: string;
+  sender_detail: User;
 }

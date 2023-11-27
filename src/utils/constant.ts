@@ -123,24 +123,46 @@ export const USERS_HEADER_PAGE = [
   },
 ];
 
-export enum UserVerifyStatus {
-  Unverified, // chưa xác thực email, mặc định = 0
-  Verified, // đã xác thực email
-  Banned, // bị khóa
+export enum USER_VERIFY {
+  Unverified,
+  Verified,
+  Banned,
 }
 
-export enum UserRoleStatus {
-  User, // tào khoản người dùng, mặc định = 0
-  Admin, // tài khoản admin
+export enum USER_ROLE {
+  User,
+  Admin,
 }
 
-export enum MediaType {
+export enum MEDIA_TYPE {
   Image,
   Video,
 }
 
-export enum PostType {
+export enum POST_TYPE {
   Post,
   RePost,
   Comment,
 }
+
+export enum NOTIFICATION_TYPE {
+  VotePost,
+  VoteRepost,
+  VoteComment,
+  Comment,
+  Repost,
+  Pin,
+  Bookmark,
+  Follow,
+}
+
+export const NOTIFICATION_CONTENT = [
+  "voted for your question",
+  "voted for your repost",
+  "voted for your answer",
+  "has answered your question",
+  "has reposted your question",
+  "has pinned your answer",
+  "has marked your question",
+  "has followed you",
+];

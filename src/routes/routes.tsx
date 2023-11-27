@@ -18,7 +18,6 @@ import Tags from "../pages/tags/tags";
 import TagDetail from "../pages/tags/[tag_id]/tag_detail";
 import Bookmarks from "../pages/bookmark/bookmarks";
 import Message from "../pages/message/message";
-import Notification from "../pages/notification/notification";
 import Settings from "../pages/settings/settings";
 import NotFoundPage from "../pages/not-found-page/not-found-page";
 
@@ -121,14 +120,6 @@ const routes: Route[] = [
     element: (
       <ProtectedPage>
         <Message />
-      </ProtectedPage>
-    ),
-  },
-  {
-    path: "/notification",
-    element: (
-      <ProtectedPage>
-        <Notification />
       </ProtectedPage>
     ),
   },
