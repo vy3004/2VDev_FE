@@ -7,31 +7,31 @@ import PostCard from "./post-card";
 import CommentCard from "./comment-card";
 
 import { Post } from "../../utils/types";
-import { PostType } from "../../utils/constant";
+import { POST_TYPE } from "../../utils/constant";
 
 interface PostsListProps {
   posts: Post[];
-  postType: PostType;
+  postType: POST_TYPE;
   getPosts: () => void;
   hasMore: boolean;
 }
 
 const postCardMap = {
-  [PostType.Post]: (post: Post, index: number) => (
+  [POST_TYPE.Post]: (post: Post, index: number) => (
     <PostCard key={post._id + index} post={post} isDetail={false} />
   ),
-  [PostType.RePost]: (post: Post, index: number) => (
+  [POST_TYPE.RePost]: (post: Post, index: number) => (
     <PostCard key={post._id + index} post={post} isDetail={false} />
   ),
-  [PostType.Comment]: (post: Post, index: number) => (
+  [POST_TYPE.Comment]: (post: Post, index: number) => (
     <CommentCard key={post._id + index} comment={post} />
   ),
 };
 
 const typeMap = {
-  [PostType.Post]: "questions",
-  [PostType.RePost]: "reposts",
-  [PostType.Comment]: "answers",
+  [POST_TYPE.Post]: "questions",
+  [POST_TYPE.RePost]: "reposts",
+  [POST_TYPE.Comment]: "answers",
 };
 
 const PostsList: React.FC<PostsListProps> = ({

@@ -10,6 +10,7 @@ import {
 } from "@heroicons/react/24/outline";
 import {
   CheckCircleIcon,
+  NoSymbolIcon,
   PencilIcon,
   XCircleIcon,
 } from "@heroicons/react/24/solid";
@@ -25,6 +26,7 @@ import {
   IconButton,
   Tooltip,
 } from "@material-tailwind/react";
+
 import Loading from "../../../components/common/loading";
 import LevelChip from "../../../components/common/level-chip";
 import Pagination from "../../../components/common/pagination";
@@ -33,6 +35,8 @@ import PageDescription from "../../../components/common/page-description";
 
 import userService from "../../../services/user-service";
 import searchService from "../../../services/search-service";
+
+import { USER_VERIFY } from "../../../utils/constant";
 
 const MENU = [
   {
@@ -278,13 +282,21 @@ const ManageUsers = () => {
                             variant="ghost"
                             size="sm"
                             value={
-                              verify ? (
+                              verify === USER_VERIFY.Banned ? (
+                                <NoSymbolIcon className="w-6 h-6" />
+                              ) : verify === USER_VERIFY.Verified ? (
                                 <CheckCircleIcon className="w-6 h-6" />
                               ) : (
                                 <XCircleIcon className="w-6 h-6 " />
                               )
                             }
-                            color={verify ? "green" : "yellow"}
+                            color={
+                              verify === USER_VERIFY.Banned
+                                ? "red"
+                                : verify === USER_VERIFY.Verified
+                                ? "green"
+                                : "yellow"
+                            }
                           />
                         </div>
                       </td>

@@ -9,7 +9,7 @@ import PostCard from "../../../components/post/post-card";
 
 import postService from "../../../services/post-service";
 import { Post } from "../../../utils/types";
-import { PostType } from "../../../utils/constant";
+import { POST_TYPE } from "../../../utils/constant";
 
 const PostDetail = () => {
   const { post_id } = useParams();
@@ -49,11 +49,13 @@ const PostDetail = () => {
     <div className="space-y-4">
       <PageDescription
         title={`${
-          post.type === PostType.Post ? t("post.Question") : t("post.Repost")
+          post.type === POST_TYPE.Post ? t("post.Question") : t("post.Repost")
         }
           ${t("post.from")} ${post.user_detail.name}`}
         desc={`${t("post.See detailed content of the")} 
-        ${post.type === PostType.Post ? t("post.question") : t("post.repost")}`}
+        ${
+          post.type === POST_TYPE.Post ? t("post.question") : t("post.repost")
+        }`}
       />
       <PostCard post={post} isDetail={true} />
     </div>

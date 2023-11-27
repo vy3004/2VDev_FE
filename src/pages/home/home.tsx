@@ -13,7 +13,7 @@ import postService from "../../services/post-service";
 import { selectUser } from "../../redux/features/user-slice";
 
 import { Post } from "../../utils/types";
-import { POSTS_SORT, POSTS_TYPE, PostType } from "../../utils/constant";
+import { POSTS_SORT, POSTS_TYPE, POST_TYPE } from "../../utils/constant";
 import { getLabelByValue } from "../../utils/string-utils";
 
 const Home = () => {
@@ -109,7 +109,7 @@ const Home = () => {
       {/* List posts start */}
       <PostsList
         posts={posts}
-        postType={PostType.Post}
+        postType={POST_TYPE.Post}
         getPosts={getPosts}
         hasMore={hasMore}
       />

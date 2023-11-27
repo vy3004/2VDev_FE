@@ -7,7 +7,7 @@ import PostsList from "../../components/post/posts-list";
 import bookmarkService from "../../services/bookmark-service";
 
 import { Post } from "../../utils/types";
-import { PostType } from "../../utils/constant";
+import { POST_TYPE } from "../../utils/constant";
 
 const Bookmarks = () => {
   const { t } = useTranslation();
@@ -62,7 +62,7 @@ const Bookmarks = () => {
       {/* List posts start */}
       <PostsList
         posts={posts}
-        postType={PostType.Post}
+        postType={POST_TYPE.Post}
         getPosts={getPosts}
         hasMore={hasMore}
       />

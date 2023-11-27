@@ -25,9 +25,11 @@ import Loading from "../../components/common/loading";
 import NotFoundAlert from "../../components/common/not-found-alert";
 
 import userService from "../../services/user-service";
+
 import { selectUser } from "../../redux/features/user-slice";
 import { setEditMyProfileModalOpen } from "../../redux/features/edit-my-profile-modal-slice";
-import { PostType, USER_UPDATE_POINT } from "../../utils/constant";
+
+import { POST_TYPE, USER_UPDATE_POINT } from "../../utils/constant";
 import { User } from "../../utils/types";
 
 const Profile = () => {
@@ -116,7 +118,7 @@ const Profile = () => {
       value: "my-questions",
       content:
         userProfile?._id && activeTab === "my-questions" ? (
-          <PostsTab user_id={userProfile._id} postType={PostType.Post} />
+          <PostsTab user_id={userProfile._id} postType={POST_TYPE.Post} />
         ) : (
           <></>
         ),
@@ -126,7 +128,7 @@ const Profile = () => {
       value: "my-answers",
       content:
         userProfile?._id && activeTab === "my-answers" ? (
-          <PostsTab user_id={userProfile._id} postType={PostType.Comment} />
+          <PostsTab user_id={userProfile._id} postType={POST_TYPE.Comment} />
         ) : (
           <></>
         ),
@@ -136,7 +138,7 @@ const Profile = () => {
       value: "my-reposts",
       content:
         userProfile?._id && activeTab === "my-reposts" ? (
-          <PostsTab user_id={userProfile._id} postType={PostType.RePost} />
+          <PostsTab user_id={userProfile._id} postType={POST_TYPE.RePost} />
         ) : (
           <></>
         ),

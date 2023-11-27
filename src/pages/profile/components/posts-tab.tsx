@@ -3,12 +3,13 @@ import { useEffect, useState } from "react";
 import PostsList from "../../../components/post/posts-list";
 
 import postService from "../../../services/post-service";
+
 import { Post } from "../../../utils/types";
-import { PostType } from "../../../utils/constant";
+import { POST_TYPE } from "../../../utils/constant";
 
 interface PostsTabProps {
   user_id: string;
-  postType: PostType;
+  postType: POST_TYPE;
 }
 
 const PostsTab: React.FC<PostsTabProps> = ({ user_id, postType }) => {

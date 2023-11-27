@@ -99,7 +99,12 @@ const ManagePosts = () => {
             <Loading />
           </div>
         }
-        endMessage={<NotFoundAlert message={t(`No more`)} type="success" />}
+        endMessage={
+          <NotFoundAlert
+            message={t("post.No more report to load")}
+            type="success"
+          />
+        }
       >
         <div className="py-4 space-y-4">
           {data.map((data) => (
@@ -113,7 +118,7 @@ const ManagePosts = () => {
                   <Chip
                     value={data.is_readed ? t("post.Read") : t("post.Unread")}
                     color={data.is_readed ? "green" : "red"}
-                    className="normal-case"
+                    className="normal-case w-min"
                   />
                   <Time time={data.created_at} />
                   <Button
@@ -124,7 +129,7 @@ const ManagePosts = () => {
                     }
                   >
                     <EyeIcon className="w-5 h-5" />
-                    {t("post.View question")}
+                    {t("post.View")}
                   </Button>
                 </div>
               </div>
@@ -144,7 +149,7 @@ const ManagePosts = () => {
                 }
               >
                 <EyeIcon className="w-5 h-5" />
-                {t("post.View question")}
+                {t("post.View")}
               </Button>
             </div>
           ))}

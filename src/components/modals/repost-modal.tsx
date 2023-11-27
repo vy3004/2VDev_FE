@@ -26,7 +26,7 @@ import {
   selectRepostModal,
   setRepostModal,
 } from "../../redux/features/repost-modal-slice";
-import { PostType } from "../../utils/constant";
+import { POST_TYPE } from "../../utils/constant";
 import { selectUser } from "../../redux/features/user-slice";
 
 interface ReportFormValues {
@@ -64,7 +64,7 @@ const RepostModal = () => {
           parent_id: repostModal.post._id,
           title: null,
           content: values.content,
-          type: PostType.RePost,
+          type: POST_TYPE.RePost,
           hashtags: [],
         };
 

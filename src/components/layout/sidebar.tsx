@@ -9,8 +9,8 @@ import {
   List,
   ListItem,
   ListItemPrefix,
-  ListItemSuffix,
-  Chip,
+  // ListItemSuffix,
+  // Chip,
   Accordion,
   AccordionHeader,
   AccordionBody,
@@ -22,7 +22,6 @@ import {
   NewspaperIcon,
   TagIcon,
   // ChatBubbleBottomCenterTextIcon,
-  BellIcon,
   UserGroupIcon,
   BookmarkSquareIcon,
 } from "@heroicons/react/24/solid";
@@ -234,20 +233,6 @@ const Sidebar = () => {
                 />
               </ListItemSuffix>
             </ListItem> */}
-            <ListItem onClick={() => navigate("/notification")}>
-              <ListItemPrefix>
-                <BellIcon className="h-5 w-5" />
-              </ListItemPrefix>
-              {t("sidebar.Notification")}
-              <ListItemSuffix>
-                <Chip
-                  value="7"
-                  size="sm"
-                  variant="ghost"
-                  className="rounded-full dark:bg-blue-gray-50"
-                />
-              </ListItemSuffix>
-            </ListItem>
             {listUser.map(({ label, icon, href }, key) => (
               <ListItem
                 className="select-none"

@@ -9,12 +9,13 @@ import { Spinner, Button } from "@material-tailwind/react";
 import ErrorMessageForm from "../common/error-message-form";
 
 import postService from "../../services/post-service";
-import { PostType } from "../../utils/constant";
+
+import { POST_TYPE } from "../../utils/constant";
 
 interface CommentFormProps {
   post_id: string;
   parent_id: string;
-  type: PostType;
+  type: POST_TYPE;
   content: string;
   medias?: string[];
   hashtags?: string[];
@@ -24,7 +25,7 @@ interface CommentFormProps {
 interface CommentFormValues {
   post_id: string;
   parent_id: string;
-  type: PostType;
+  type: POST_TYPE;
   content: string;
   medias?: string[];
   hashtags?: string[];

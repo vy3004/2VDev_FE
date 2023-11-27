@@ -63,7 +63,7 @@ import {
 import { Post } from "../../utils/types";
 import {
   COMMENTS_SORT,
-  PostType,
+  POST_TYPE,
   USER_UPDATE_POINT,
 } from "../../utils/constant";
 
@@ -132,14 +132,14 @@ const PostCard: React.FC<PostCardProps> = ({
       isDetail &&
       !isView &&
       post.comments_count === 0 &&
-      post.type === PostType.Post
+      post.type === POST_TYPE.Post
     ) {
       getOpenAIComment();
     }
   }, []);
 
   useEffect(() => {
-    if (post.type === PostType.RePost && post.parent_id) {
+    if (post.type === POST_TYPE.RePost && post.parent_id) {
       getRepost();
     }
   }, []);
@@ -323,7 +323,6 @@ const PostCard: React.FC<PostCardProps> = ({
 
     if (response) {
       setTotalPage(response.data.result.total_page);
-
       let newComments = response.data.result.post_children;
       if (post.resolved_id) {
         newComments = filterRemovePinComment(
@@ -332,6 +331,7 @@ const PostCard: React.FC<PostCardProps> = ({
         );
       }
       setComments(newComments);
+      setShowFormAnswer(false);
     }
 
     setIsCmtLoading(false);
@@ -406,7 +406,7 @@ const PostCard: React.FC<PostCardProps> = ({
       parent_id: post._id,
       title: null,
       content: content,
-      type: PostType.Comment,
+      type: POST_TYPE.Comment,
       hashtags: [],
     };
     const { response } = await postService.postOpenAI(data);
@@ -577,7 +577,7 @@ const PostCard: React.FC<PostCardProps> = ({
           {/* Medias end */}
 
           {/* Repost start */}
-          {post.type === PostType.RePost && repost && (
+          {post.type === POST_TYPE.RePost && repost && (
             <PostCard post={repost} isDetail={false} isRepost={true} />
           )}
           {/* Repost end */}
@@ -643,7 +643,7 @@ const PostCard: React.FC<PostCardProps> = ({
                   <CommentForm
                     post_id=""
                     parent_id={post._id}
-                    type={PostType.Comment}
+                    type={POST_TYPE.Comment}
                     content=""
                     getCommentsAfterComment={getCommentsAfterComment}
                   />

@@ -140,9 +140,7 @@ const PostForm: React.FC<PostFormProps> = ({ initialData }) => {
             if (response) {
               data.medias.push(response.data.result[0].url);
             }
-            if (error) {
-              toast.error(error.message);
-            }
+            if (error) toast.error(t("post.Something went wrong"));
           })
         );
       }

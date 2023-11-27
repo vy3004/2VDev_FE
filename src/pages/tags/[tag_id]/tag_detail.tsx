@@ -6,8 +6,9 @@ import PageDescription from "../../../components/common/page-description";
 import PostsList from "../../../components/post/posts-list";
 
 import postService from "../../../services/post-service";
+
 import { Post } from "../../../utils/types";
-import { PostType } from "../../../utils/constant";
+import { POST_TYPE } from "../../../utils/constant";
 
 const TagDetail = () => {
   const { tag_id } = useParams();
@@ -69,7 +70,7 @@ const TagDetail = () => {
       {/* List posts start */}
       <PostsList
         posts={posts}
-        postType={PostType.Post}
+        postType={POST_TYPE.Post}
         getPosts={() => getPosts(posts, page)}
         hasMore={hasMore}
       />

@@ -24,7 +24,7 @@ import Time from "../common/time";
 import postService from "../../services/post-service";
 
 import { Post, User } from "../../utils/types";
-import { PostType } from "../../utils/constant";
+import { POST_TYPE } from "../../utils/constant";
 
 import {
   selectReportModal,
@@ -222,7 +222,7 @@ const Comment: React.FC<CommentProps> = ({
           <CommentForm
             post_id={comment._id}
             parent_id={comment._id}
-            type={PostType.Comment}
+            type={POST_TYPE.Comment}
             content={comment.content}
             medias={comment.medias}
             getCommentsAfterComment={getCommentsAfterComment}
@@ -314,7 +314,7 @@ const Comment: React.FC<CommentProps> = ({
           <CommentForm
             post_id=""
             parent_id={comment._id}
-            type={PostType.Comment}
+            type={POST_TYPE.Comment}
             content=""
             getCommentsAfterComment={getCommentsAfterComment}
           />

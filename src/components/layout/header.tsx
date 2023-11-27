@@ -52,14 +52,14 @@ const Header = () => {
             <NavList />
           </div>
 
-          <div className="w-auto flex items-center space-x-2 xl:space-x-6">
+          <div className="w-auto flex items-center space-x-4 xl:space-x-6">
             <div className="hidden lg:flex">
               <SearchInput />
             </div>
 
             {/* Auth start */}
             {user ? (
-              <div className="flex items-center space-x-2">
+              <div className="flex items-center space-x-4">
                 {/* <MessageMenu /> */}
                 <NotificationMenu />
                 <ProfileMenu />

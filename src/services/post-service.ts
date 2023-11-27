@@ -1,7 +1,7 @@
 import { AxiosResponse, AxiosError } from "axios";
 import axiosInstance from "../configs/axios-config";
 import { apiEndPoints } from "../utils/api-endpoints";
-import { PostType } from "../utils/constant";
+import { POST_TYPE } from "../utils/constant";
 
 interface PostPayLoad {
   title: string | null;
@@ -44,7 +44,7 @@ interface GetPostsByUserPayLoad {
   user_id: string;
   limit: number;
   page: number;
-  type: PostType;
+  type: POST_TYPE;
 }
 
 interface EditPostPayLoad {
@@ -141,7 +141,7 @@ const postEndpoints = {
     user_id: string;
     limit: number;
     page: number;
-    type: PostType;
+    type: POST_TYPE;
   }) =>
     `${apiEndPoints.posts}/userposts/${user_id}?limit=${limit}&page=${page}&type=${type}`,
 
