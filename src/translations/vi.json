@@ -56,7 +56,12 @@
     "Account": "Tài khoản",
     "Change Password": "Thay đổi mật khẩu",
     "Cancel": "Cancel",
-    "Save": "Save"
+    "Save": "Save",
+    "Sorry, your account has been locked": "Xin lỗi, tài khoản của bạn đã bị khóa",
+    "Email or password is incorrect": "Email hoặc mật khẩu không đúng",
+    "Email address is incorrect": "Địa chỉ email không đúng",
+    "Please check your email to reset your password": "Vui lòng kiểm tra email của bạn để đặt lại mật khẩu",
+    "Reset password successfully": "Đặt lại mật khẩu thành công"
   },
   "user": {
     "welcome": "Xin chào",
@@ -181,7 +186,16 @@
     "Sorry, you don't have permission to access this page.": "Rất tiếc, bạn không có quyền truy cập trang này.",
     "verify-mail-1": "Thư xác nhận đã được gửi đến tài khoản email đã đăng ký của bạn. Nếu bạn chưa nhận được thư xác nhận, vui lòng",
     "verify-mail-2": "Nhấn vào đây",
-    "verify-mail-3": "để gửi lại một thư xác nhận khác."
+    "verify-mail-3": "để gửi lại một thư xác nhận khác.",
+    "voted for your question": "đã bình chọn cho câu hỏi của bạn",
+    "voted for your repost": "đã bình chọn cho bài đăng lại của bạn",
+    "voted for your answer": "đã bình chọn cho câu trả lời của bạn",
+    "has answered your question": "đã trả lời câu hỏi của bạn",
+    "has reposted your question": "đã đăng lại câu hỏi của bạn",
+    "has pinned your answer": "đã ghim câu trả lời của bạn",
+    "has marked your question": "đã đánh dấu câu hỏi của bạn",
+    "has followed you": "đã theo dõi bạn",
+    "No notifications": "Không có thông báo"
   },
   "home": {
     "all": "Tất cả",
@@ -308,9 +322,10 @@
     "See information about all reported questions": "Xem thông tin về tất cả các câu hỏi bị báo cáo",
     "Question Detail": "Chi tiết Câu hỏi",
     "View root question": "Xem câu hỏi gốc",
-    "View question": "Xem câu hỏi",
+    "View": "Xem",
     "Read": "Đã đọc",
-    "Unread": "Chưa đọc"
+    "Unread": "Chưa đọc",
+    "No more report to load": "Không còn báo cáo nào để tải"
   },
   "menu": {
     "newest": "Mới nhất",

@@ -82,7 +82,7 @@ const SignUpForm: React.FC<SignUpFormProps> = ({
         toast.success(t("auth.Sign Up Success"));
       }
 
-      if (error) setErrorMessage(error.message);
+      if (error) setErrorMessage(t("auth.Email address is incorrect"));
     },
   });
 

@@ -56,7 +56,12 @@
     "Account": "Account",
     "Change Password": "Change Password",
     "Cancel": "Cancel",
-    "Save": "Save"
+    "Save": "Save",
+    "Sorry, your account has been locked": "Sorry, your account has been locked",
+    "Email or password is incorrect": "Email or password is incorrect",
+    "Email address is incorrect": "Email address is incorrect",
+    "Please check your email to reset your password": "Please check your email to reset your password",
+    "Reset password successfully": "Reset password successfully"
   },
   "user": {
     "welcome": "Welcome",
@@ -181,7 +186,16 @@
     "Sorry, you don't have permission to access this page.": "Sorry, you don't have permission to access this page.",
     "verify-mail-1": "A confirmation mail has been sent to your registered email account, If you have not received the confirmation mail, kindly",
     "verify-mail-2": "Click here",
-    "verify-mail-3": "to resend another confirmation mail."
+    "verify-mail-3": "to resend another confirmation mail.",
+    "voted for your question": "voted for your question",
+    "voted for your repost": "voted for your repost",
+    "voted for your answer": "voted for your answer",
+    "has answered your question": "has answered your question",
+    "has reposted your question": "has reposted your question",
+    "has pinned your answer": "has pinned your answer",
+    "has marked your question": "has marked your question",
+    "has followed you": "has followed you",
+    "No notifications": "No notifications"
   },
   "home": {
     "all": "All",
@@ -308,9 +322,10 @@
     "See information about all reported questions": "See information about all reported questions",
     "Question Detail": "Question Detail",
     "View root question": "View root question",
-    "View question": "View question",
+    "View": "View",
     "Read": "Read",
-    "Unread": "Unread"
+    "Unread": "Unread",
+    "No more report to load": "No more report to load"
   },
   "menu": {
     "newest": "Newest",

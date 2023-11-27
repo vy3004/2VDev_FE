@@ -63,12 +63,12 @@ const ResetPasswordForm: React.FC<ResetPasswordFormProps> = ({
       setIsSubmit(false);
 
       if (response) {
-        dispatch(setNotification(response.data.message));
+        dispatch(setNotification(t("auth.Reset password successfully")));
         navigate("/");
         switchAuthState("signIn");
       }
 
-      if (error) setErrorMessage(error.message);
+      if (error) setErrorMessage(t("post.Something went wrong"));
     },
   });
 

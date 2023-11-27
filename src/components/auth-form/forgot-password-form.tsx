@@ -59,10 +59,10 @@ const ForgotPasswordForm: React.FC<ForgotPasswordFormProps> = ({
       if (response) {
         forgotPasswordForm.resetForm();
         dispatch(setAuthModalOpen(false));
-        toast.success(response.data.message);
+        toast.success(t("auth.Please check your email to reset your password"));
       }
 
-      if (error) setErrorMessage(error.message);
+      if (error) setErrorMessage(t("auth.Email address is incorrect"));
     },
   });
 
@@ -103,7 +103,9 @@ const ForgotPasswordForm: React.FC<ForgotPasswordFormProps> = ({
 
           {/* Form error message start */}
           {errorMessage && (
-            <NotificationForm type="error" message={errorMessage} />
+            <div className="mb-8">
+              <NotificationForm type="error" message={errorMessage} />
+            </div>
           )}
           {/* Form error message end */}
 

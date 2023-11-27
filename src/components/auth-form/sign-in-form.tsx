@@ -80,11 +80,11 @@ const SignInForm: React.FC<SignInFormProps> = ({
           dispatch(setAuthModalOpen(false));
           toast.success(t("auth.Sign In Success"));
         } else {
-          setErrorMessage("Sorry, your account has been locked.");
+          setErrorMessage(t("auth.Sorry, your account has been locked"));
         }
       }
 
-      if (error) setErrorMessage(error.message);
+      if (error) setErrorMessage(t("auth.Email or password is incorrect"));
     },
   });
 
