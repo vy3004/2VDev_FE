@@ -49,12 +49,16 @@ import postService from "../../services/post-service";
 import openaiService from "../../services/openai -service";
 
 import { selectUser } from "../../redux/features/user-slice";
+import { setConfirmModal } from "../../redux/features/confirm-modal-slice";
+import { setRepostModal } from "../../redux/features/repost-modal-slice";
 import {
   selectReportModal,
   setReportModal,
 } from "../../redux/features/report-modal-slice";
-import { setConfirmModal } from "../../redux/features/confirm-modal-slice";
-import { setRepostModal } from "../../redux/features/repost-modal-slice";
+import {
+  setAuthModalOpen,
+  setAuthModalName,
+} from "../../redux/features/auth-modal-slice";
 
 import { Post } from "../../utils/types";
 import {
@@ -169,6 +173,12 @@ const PostCard: React.FC<PostCardProps> = ({ post, isDetail, isRepost }) => {
   };
 
   const handleVote = (postId: string, userId: string, type: boolean) => {
+    if (!user) {
+      dispatch(setAuthModalOpen(!user));
+      dispatch(setAuthModalName("signIn"));
+      return;
+    }
+
     votePost(postId, userId, type);
     setVote(!type);
     setVotesCount((prevCount) => (type ? prevCount - 1 : prevCount + 1));
@@ -221,6 +231,12 @@ const PostCard: React.FC<PostCardProps> = ({ post, isDetail, isRepost }) => {
   };
 
   const handleRepost = () => {
+    if (!user) {
+      dispatch(setAuthModalOpen(!user));
+      dispatch(setAuthModalName("signIn"));
+      return;
+    }
+
     dispatch(
       setRepostModal({
         repostModalOpen: true,
