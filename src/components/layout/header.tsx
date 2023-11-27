@@ -7,7 +7,7 @@ import { Typography, Button } from "@material-tailwind/react";
 import Container from "../common/container";
 import NavList from "../common/nav-list";
 import SearchInput from "../common/search-input";
-import MessageMenu from "../common/message-menu";
+// import MessageMenu from "../common/message-menu";
 import NotificationMenu from "../common/notification-menu";
 import ProfileMenu from "../common/profile-menu";
 import MobileSidebar from "./mobile-sidebar";
@@ -60,7 +60,7 @@ const Header = () => {
             {/* Auth start */}
             {user ? (
               <div className="flex items-center space-x-2">
-                <MessageMenu />
+                {/* <MessageMenu /> */}
                 <NotificationMenu />
                 <ProfileMenu />
               </div>

@@ -21,7 +21,7 @@ import {
   Cog6ToothIcon,
   NewspaperIcon,
   TagIcon,
-  ChatBubbleBottomCenterTextIcon,
+  // ChatBubbleBottomCenterTextIcon,
   BellIcon,
   UserGroupIcon,
   BookmarkSquareIcon,
@@ -220,7 +220,7 @@ const Sidebar = () => {
           <>
             <hr className="my-2 border-blue-gray-50" />
 
-            <ListItem onClick={() => navigate("/message")}>
+            {/* <ListItem onClick={() => navigate("/message")}>
               <ListItemPrefix>
                 <ChatBubbleBottomCenterTextIcon className="h-5 w-5" />
               </ListItemPrefix>
@@ -233,7 +233,7 @@ const Sidebar = () => {
                   className="rounded-full dark:bg-blue-gray-50"
                 />
               </ListItemSuffix>
-            </ListItem>
+            </ListItem> */}
             <ListItem onClick={() => navigate("/notification")}>
               <ListItemPrefix>
                 <BellIcon className="h-5 w-5" />
