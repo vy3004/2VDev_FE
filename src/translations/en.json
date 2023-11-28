@@ -338,5 +338,19 @@
     "most followed": "Most Followed",
     "follower": "Follower",
     "following": "Following"
+  },
+  "overview": {
+    "Statistical chart from last 3 months": "Statistical chart from last 3 months",
+    "Statistical chart from": "Statistical chart from",
+    "Question": "Question",
+    "Answer": "Answer",
+    "Repost": "Repost",
+    "Select month": "Select month",
+    "Overview": "Overview",
+    "Total Questions": "Total Questions",
+    "Total Answers": "Total Answers",
+    "Total Reposts": "Total Reposts",
+    "vs last month": "vs last month",
+    "No data found": "No data found"
   }
 }

@@ -78,3 +78,15 @@ export interface Notification {
   created_at: string;
   sender_detail: User;
 }
+
+export interface DashboardData {
+  posts_count: number;
+  reposts_count: number;
+  comments_count: number;
+  year: number;
+  month: number;
+  date: string;
+  postsPercentageChange: number;
+  repostsPercentageChange: number;
+  commentsPercentageChange: number;
+}

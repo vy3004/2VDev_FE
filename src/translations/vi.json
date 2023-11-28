@@ -338,5 +338,19 @@
     "most followed": "Được theo dõi nhiều nhất",
     "follower": "Người theo dõi",
     "following": "Đang theo dõi"
+  },
+  "overview": {
+    "Statistical chart from last 3 months": "Biểu đồ thống kê từ 3 tháng gần nhất",
+    "Statistical chart from": "Biểu đồ thống kê từ tháng",
+    "Question": "Câu hỏi",
+    "Answer": "Câu trả lời",
+    "Repost": "Bài đăng lại",
+    "Select month": "Chọn tháng",
+    "Overview": "Tổng quan",
+    "Total Questions": "Tổng số Câu hỏi",
+    "Total Answers": "Tổng số Câu trả lời",
+    "Total Reposts": "Tổng số Bài đăng lại",
+    "vs last month": "so với tháng trước",
+    "No data found": "Không tìm thấy dữ liệu"
   }
 }

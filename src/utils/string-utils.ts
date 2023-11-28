@@ -1,10 +1,19 @@
 import {
   parseISO,
   formatDistanceToNowStrict,
-  format,
   formatDistanceToNow,
+  format,
 } from "date-fns";
 import { enUS, vi } from "date-fns/locale";
+
+import i18n from "../configs/i18n";
+
+const getLocale = () => (i18n.language === "en" ? enUS : vi);
+
+const generateLocaleConfig = () => ({
+  addSuffix: true,
+  locale: getLocale(),
+});
 
 export const getLastTwoWords = (str: string): string => {
   const words = str.split(" ");
@@ -25,37 +34,27 @@ export const splitPath = (path: string): { label: string; path: string }[] => {
   });
 };
 
-export const formatTimeDistanceToNow = (
-  time: string,
-  language: string
-): string => {
-  const parsedTime = parseISO(time);
-  const formattedTime = formatDistanceToNowStrict(parsedTime, {
-    addSuffix: true,
-    locale: language === "en" ? enUS : vi,
-  });
+export const formatTimeDistanceToNow = (time: string): string =>
+  formatDistanceToNowStrict(parseISO(time), generateLocaleConfig())
+    .replace("ago", "")
+    .replace("trước", "")
+    .trim();
 
-  return formattedTime.replace("ago", "").replace("trước", "").trim();
-};
+export const formatTimeDistanceToNowAbout = (time: string): string =>
+  formatDistanceToNow(parseISO(time), generateLocaleConfig());
 
-export const formatTimeDistanceToNowAbout = (
-  time: string,
-  language: string
-): string => {
-  const parsedTime = parseISO(time);
-  const formattedTime = formatDistanceToNow(parsedTime, {
-    addSuffix: true,
-    locale: language === "en" ? enUS : vi,
-  });
+export const formatTime = (time: string): string => {
+  const locale = getLocale();
 
-  return formattedTime;
-};
-
-export const formatTime = (time: string, language: string): string => {
-  const parsedTime = parseISO(time);
-  const formattedTime = format(parsedTime, "HH:mm EEEE, MMMM dd, yyyy", {
-    locale: language === "en" ? enUS : vi,
-  });
+  const formattedTime = format(
+    parseISO(time),
+    i18n.language === "en"
+      ? "HH:mm EEEE, MMMM dd, yyyy"
+      : "HH:mm EEEE, dd/MM/yyyy",
+    {
+      locale,
+    }
+  );
 
   return formattedTime;
 };
@@ -83,4 +82,23 @@ export const getLevelByPoint = (point: number): string => {
   } else {
     return "Diamond";
   }
+};
+
+const getCurrentMonth = () => new Date().getMonth() + 1;
+
+export const generateMonthOptions = () =>
+  Array.from({ length: 12 }, (_, index) => {
+    const monthValue = index + 1;
+    return {
+      value: monthValue.toString(),
+      label: new Date(2000, index, 1).toLocaleString(i18n.language, {
+        month: "long",
+      }),
+    };
+  }).filter((option) => parseInt(option.value, 10) < getCurrentMonth());
+
+export const calculatePercentageChange = (count: number, prevCount: number) => {
+  if (prevCount === 0) return count >= 0 ? 100 : -100;
+  const percentageChange = ((count - prevCount) / Math.abs(prevCount)) * 100;
+  return isFinite(percentageChange) ? percentageChange : 100;
 };

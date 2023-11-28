@@ -60,7 +60,7 @@ const NotificationItem: React.FC<NotificationItemProps> = ({
   notification,
   handleReadNotification,
 }) => {
-  const { t, i18n } = useTranslation();
+  const { t } = useTranslation();
 
   return (
     <MenuItem
@@ -106,10 +106,7 @@ const NotificationItem: React.FC<NotificationItemProps> = ({
           </Typography>
           <Typography className="flex items-center gap-1 text-sm font-medium text-blue-gray-500">
             <ClockIcon className="h-4 w-4" />
-            {formatTimeDistanceToNowAbout(
-              notification.created_at,
-              i18n.language
-            )}
+            {formatTimeDistanceToNowAbout(notification.created_at)}
           </Typography>
         </div>
       </Badge>
