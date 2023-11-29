@@ -84,7 +84,7 @@ export const getLevelByPoint = (point: number): string => {
   }
 };
 
-const getCurrentMonth = () => new Date().getMonth() + 1;
+export const getCurrentMonth = () => new Date().getMonth() + 1;
 
 export const generateMonthOptions = () =>
   Array.from({ length: 12 }, (_, index) => {
@@ -96,6 +96,13 @@ export const generateMonthOptions = () =>
       }),
     };
   }).filter((option) => parseInt(option.value, 10) < getCurrentMonth());
+
+export const generateMonthLabel = (monthValue: string) => {
+  const monthIndex = parseInt(monthValue, 10) - 1;
+  return new Date(2000, monthIndex, 1).toLocaleString(i18n.language, {
+    month: "long",
+  });
+};
 
 export const calculatePercentageChange = (count: number, prevCount: number) => {
   if (prevCount === 0) return count >= 0 ? 100 : -100;

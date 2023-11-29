@@ -9,7 +9,12 @@ import routes from "./routes/routes";
 function App() {
   return (
     <>
-      <Toaster toastOptions={{ duration: 5000 }} />
+      <Toaster
+        toastOptions={{
+          duration: 5000,
+          className: "dark:bg-gray-800 dark:text-gray-300",
+        }}
+      />
 
       <BrowserRouter>
         <Routes>

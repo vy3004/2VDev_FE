@@ -10,7 +10,7 @@ const StatsButton: React.FC<StatsButtonProps> = ({ label, stats, icon }) => {
   return (
     <Button
       variant="outlined"
-      className="normal-case w-full sm:space-y-2 sm:p-2 dark:text-gray-50 dark:border-gray-50"
+      className="normal-case w-full sm:space-y-2 sm:p-2 dark:text-gray-300 dark:border-gray-800 dark:bg-gray-800"
     >
       <div className="flex items-center gap-4">
         <div>{icon}</div>

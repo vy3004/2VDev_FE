@@ -33,11 +33,14 @@ const MenuFilter: React.FC<MenuFilterProps> = ({
       }}
     >
       <MenuHandler>
-        <IconButton className="mr-5 w-20 h-20" variant="outlined">
+        <IconButton
+          className="mr-5 w-20 h-20 dark:bg-gray-900 dark:text-gray-300 dark:border-gray-300"
+          variant="outlined"
+        >
           <AdjustmentsHorizontalIcon className="w-6 h-6 transition-transform hover:rotate-180" />
         </IconButton>
       </MenuHandler>
-      <MenuList className="min-w-10 space-y-1">
+      <MenuList className="min-w-10 space-y-1 dark:bg-gray-900 dark:border-gray-800 dark:text-gray-300">
         {content.map((type, key) => (
           <MenuItem
             className={`flex items-center justify-between gap-2 ${

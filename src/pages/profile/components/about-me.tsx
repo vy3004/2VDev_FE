@@ -15,6 +15,7 @@ import {
   ArrowTrendingDownIcon,
 } from "@heroicons/react/24/solid";
 import StatsButton from "./stats-button";
+import Divider from "../../../components/common/divider";
 
 import { getLevelByPoint } from "../../../utils/string-utils";
 import { User } from "../../../utils/types";
@@ -70,8 +71,8 @@ const AboutMe: React.FC<AboutMeProps> = ({ user }) => {
   ];
 
   return (
-    <div className="space-y-6 dark:text-gray-50">
-      <div className="border rounded-lg space-y-6 p-10">
+    <div className="space-y-6 dark:text-gray-300">
+      <div className="border rounded-lg space-y-6 p-10 dark:bg-gray-800 dark:border-gray-800">
         <div className="flex justify-center">
           {user.bio && (
             <Typography className="border-l-8 px-4 py-2 w-fit text-center sm:text-2xl italic font-bold">
@@ -126,7 +127,7 @@ const AboutMe: React.FC<AboutMeProps> = ({ user }) => {
         ))}
       </div>
 
-      <hr />
+      <Divider />
 
       <div className="grid grid-cols-2 gap-4 sm:gap-8">
         {followItems.map((item, key) => (
@@ -134,7 +135,7 @@ const AboutMe: React.FC<AboutMeProps> = ({ user }) => {
             key={key}
             variant="outlined"
             onClick={() => navigate(item.href)}
-            className="normal-case w-full space-y-2 col-span-2 sm:col-span-1 dark:text-gray-50 dark:border-gray-50"
+            className="normal-case w-full space-y-2 col-span-2 sm:col-span-1 dark:text-gray-300 dark:border-gray-800 dark:bg-gray-800"
           >
             <div className="flex items-center justify-center gap-2">
               <UserGroupIcon className="w-8 h-8" />

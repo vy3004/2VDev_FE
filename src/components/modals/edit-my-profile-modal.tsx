@@ -53,8 +53,9 @@ const EditMyProfileModal = () => {
           mount: { scale: 1, y: 0 },
           unmount: { scale: 0.9, y: -100 },
         }}
+        className="dark:bg-gray-800"
       >
-        <DialogHeader className="flex items-center justify-between">
+        <DialogHeader className="flex items-center justify-between dark:text-gray-300">
           Edit Profile
           <IconButton
             variant="text"
@@ -65,7 +66,7 @@ const EditMyProfileModal = () => {
             <XMarkIcon className="w-8 h-8" />
           </IconButton>
         </DialogHeader>
-        <DialogBody className="p-0 border-t">
+        <DialogBody className="p-0 border-t dark:border-gray-300">
           {userProfile ? <EditProfileForm user={userProfile} /> : <></>}
         </DialogBody>
       </Dialog>

@@ -12,20 +12,19 @@ const LevelChip: React.FC<LevelChipPops> = ({ level }) => {
 
   return (
     <Chip
-      className="normal-case"
-      variant="ghost"
+      className="normal-case dark:text-gray-100"
       size="sm"
       value={t(`user.${getLevelByPoint(level)}`)}
       color={
         level < 50
           ? "brown"
           : level < 200
-          ? "gray"
+          ? "blue-gray"
           : level < 1000
           ? "yellow"
           : level < 10000
           ? "cyan"
-          : "blue"
+          : "indigo"
       }
     />
   );

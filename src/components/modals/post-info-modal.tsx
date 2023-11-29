@@ -45,8 +45,9 @@ const PostInfoModal = () => {
           mount: { scale: 1, y: 0 },
           unmount: { scale: 0.9, y: -100 },
         }}
+        className="dark:bg-gray-900"
       >
-        <DialogHeader className="flex items-center justify-between">
+        <DialogHeader className="flex items-center justify-between dark:text-gray-300">
           {t("post.Question Detail")}
           <IconButton
             variant="text"
@@ -57,10 +58,10 @@ const PostInfoModal = () => {
             <XMarkIcon className="w-8 h-8" />
           </IconButton>
         </DialogHeader>
-        <DialogBody className="border-t h-[70vh] overflow-hidden overflow-y-scroll space-y-2">
+        <DialogBody className="border-t max-h-[70vh] overflow-hidden overflow-y-auto space-y-2 dark:border-gray-800">
           {postInfoModal.reason && (
             <div>
-              <Typography className="font-bold text-gray-900">
+              <Typography className="font-bold text-gray-900 dark:text-gray-300">
                 {t("post.Reason")}
               </Typography>
               <Textarea value={postInfoModal.reason} disabled />
@@ -74,9 +75,9 @@ const PostInfoModal = () => {
         </DialogBody>
         <DialogFooter>
           <Button
-            className="normal-case"
+            className="normal-case dark:bg-gray-800"
             onClick={handleView}
-            variant="gradient"
+            variant="filled"
             fullWidth
           >
             {t("post.View root question")}

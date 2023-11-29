@@ -16,6 +16,7 @@ import {
 
 import Loading from "./loading";
 import NotificationItem from "./notification-item";
+import Divider from "./divider";
 
 import notificationService from "../../services/notification-service";
 
@@ -131,14 +132,14 @@ const NotificationMenu = () => {
           >
             <IconButton
               variant="outlined"
-              className="h-9 w-9 dark:text-gray-50"
+              className="h-9 w-9 dark:text-gray-400 dark:border-gray-400"
             >
               <BellIcon className="h-5 w-5" />
             </IconButton>
           </Badge>
         </div>
       </MenuHandler>
-      <MenuList className="max-h-[400px] sm:max-h-[500px] w-[360px] sm:w-[400px] space-y-2">
+      <MenuList className="max-h-[400px] sm:max-h-[500px] w-[360px] sm:w-[400px] space-y-2 dark:bg-gray-900 dark:border-gray-800">
         {isLoading ? (
           <div className="relative h-20">
             <Loading />
@@ -155,9 +156,9 @@ const NotificationMenu = () => {
 
             {page < totalPage && (
               <>
-                <hr />
+                <Divider />
                 <Button
-                  className="!overflow-visible normal-case flex items-center justify-center gap-1"
+                  className="!overflow-visible normal-case flex items-center justify-center gap-1 dark:text-gray-400"
                   size="sm"
                   variant="text"
                   fullWidth

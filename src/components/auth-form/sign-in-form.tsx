@@ -19,10 +19,13 @@ import NotificationForm from "./notification-form";
 import ErrorMessageForm from "../common/error-message-form";
 
 import userService from "../../services/user-service";
+
 import {
   selectAuthModal,
   setAuthModalOpen,
 } from "../../redux/features/auth-modal-slice";
+import { selectApp } from "../../redux/features/app-state-slice";
+
 import { getOauthGoogleUrl } from "../../utils/oauth-google-url";
 
 interface SignInFormProps {
@@ -42,12 +45,14 @@ const SignInForm: React.FC<SignInFormProps> = ({
   const dispatch = useDispatch();
   const { t } = useTranslation();
   const { notification } = useSelector(selectAuthModal);
-  const oauthURL = getOauthGoogleUrl();
+  const { themeMode } = useSelector(selectApp);
 
   const [isSubmit, setIsSubmit] = useState(false);
   const [successMessage] = useState(notification);
   const [errorMessage, setErrorMessage] = useState("");
   const [showPassword, setShowPassword] = useState(false);
+
+  const oauthURL = getOauthGoogleUrl();
 
   const signInForm = useFormik<SignInFormValues>({
     initialValues: {
@@ -89,7 +94,7 @@ const SignInForm: React.FC<SignInFormProps> = ({
   });
 
   return (
-    <Card className="mx-auto w-full max-w-[48rem]">
+    <Card className="mx-auto w-full max-w-[48rem] dark:bg-gray-800 dark:text-gray-300">
       <CardBody className="flex gap-0 md:gap-8">
         <img
           src="/images/auth-sign-in.svg"
@@ -148,6 +153,8 @@ const SignInForm: React.FC<SignInFormProps> = ({
               name="email"
               type="text"
               size="lg"
+              className="dark:text-gray-300"
+              color={themeMode ? "white" : "black"}
               crossOrigin=""
               value={signInForm.values.email}
               onChange={signInForm.handleChange}
@@ -171,7 +178,7 @@ const SignInForm: React.FC<SignInFormProps> = ({
               size="lg"
               icon={
                 <div
-                  className="cursor-pointer"
+                  className="cursor-pointer dark:text-gray-300"
                   onClick={() => setShowPassword(!showPassword)}
                 >
                   {showPassword ? (
@@ -181,6 +188,8 @@ const SignInForm: React.FC<SignInFormProps> = ({
                   )}
                 </div>
               }
+              className="dark:text-gray-300"
+              color={themeMode ? "white" : "black"}
               crossOrigin=""
               value={signInForm.values.password}
               onChange={signInForm.handleChange}
@@ -213,7 +222,7 @@ const SignInForm: React.FC<SignInFormProps> = ({
             <Button
               type="submit"
               className="mt-10"
-              variant="gradient"
+              variant="filled"
               fullWidth
               disabled={isSubmit}
             >
@@ -232,7 +241,11 @@ const SignInForm: React.FC<SignInFormProps> = ({
               <div className="w-full border" />
             </div>
 
-            <Button variant="outlined" fullWidth>
+            <Button
+              variant="outlined"
+              fullWidth
+              className="dark:bg-gray-400 dark:border-gray-800 dark:text-gray-900"
+            >
               <Link
                 to={oauthURL}
                 className="flex justify-center items-center gap-2"

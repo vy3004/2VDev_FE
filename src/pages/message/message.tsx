@@ -13,6 +13,7 @@ import {
   Textarea,
   Typography,
 } from "@material-tailwind/react";
+import Divider from "../../components/common/divider";
 
 const Message = () => {
   return (
@@ -39,11 +40,11 @@ const Message = () => {
           </IconButton>
         </div>
       </div>
-      <hr />
-      <div className="h-[calc(100vh-300px)] overflow-hidden overflow-y-scroll">
+      <Divider />
+      <div className="h-[calc(100vh-300px)] overflow-hidden overflow-y-auto">
         <div className="h-screen">message</div>
       </div>
-      <hr />
+      <Divider />
 
       <div className="h-fit sticky bottom-0 px-2 py-1 flex items-center">
         <div className="flex w-full flex-row items-center gap-2 rounded-full border border-gray-900/10 p-2">

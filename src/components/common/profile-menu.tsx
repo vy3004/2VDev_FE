@@ -79,7 +79,7 @@ const ProfileMenu = () => {
         <Button
           variant="text"
           color="blue-gray"
-          className="sm:w-32 flex items-center gap-2 rounded-full py-0.5 pr-2 pl-0.5 lg:ml-auto dark:bg-gray-900"
+          className="sm:w-32 flex items-center gap-2 rounded-full py-0.5 pr-2 pl-0.5 lg:ml-auto normal-case text-gray-900 dark:text-gray-400 dark:bg-gray-800"
         >
           <Avatar
             variant="circular"
@@ -92,10 +92,10 @@ const ProfileMenu = () => {
             }
           />
           <div>
-            <Typography className="normal-case text-gray-700 dark:text-gray-4   00 text-xs font-medium">
+            <Typography className="text-xs font-medium">
               {t("user.welcome")}!
             </Typography>
-            <Typography className="normal-case text-gray-900 dark:text-gray-50 text-sm font-bold">
+            <Typography className="text-sm font-bold">
               {getLastTwoWords(user?.name || "")}
             </Typography>
           </div>
@@ -109,7 +109,7 @@ const ProfileMenu = () => {
         </Button>
       </MenuHandler>
       <MenuList
-        className="p-1 dark:bg-gray-700 dark:text-gray-50 dark:border-gray-700"
+        className="p-1 dark:bg-gray-900 dark:text-gray-400 dark:border-gray-800"
         onClick={closeMenu}
       >
         {profileMenuItems.map(({ label, icon, onClick }, key) => {
@@ -121,7 +121,7 @@ const ProfileMenu = () => {
               className={`flex items-center gap-2 rounded ${
                 isLastItem
                   ? "hover:bg-red-500/10 focus:bg-red-500/10 active:bg-red-500/10"
-                  : ""
+                  : "dark:hover:bg-gray-800 dark:hover:text-gray-50"
               }`}
             >
               {React.createElement(icon, {

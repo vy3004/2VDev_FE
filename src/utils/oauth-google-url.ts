@@ -1,6 +1,8 @@
 const redirect_uri = process.env.REACT_APP_GOOGLE_REDIRECT_URI || "";
 const client_id = process.env.REACT_APP_GOOGLE_CLIENT_ID || "";
 
+console.log("redirect_uri", redirect_uri);
+
 export const getOauthGoogleUrl = () => {
   const url = "https://accounts.google.com/o/oauth2/v2/auth";
   const query = {

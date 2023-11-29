@@ -5,6 +5,7 @@ import { Typography } from "@material-tailwind/react";
 import AnimatedNumber from "./animate-number";
 
 import userService from "../../services/user-service";
+
 import { STATISTICS_DURATION } from "../../utils/constant";
 
 const Statistics = () => {

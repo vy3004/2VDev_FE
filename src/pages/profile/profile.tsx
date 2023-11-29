@@ -150,10 +150,10 @@ const Profile = () => {
       <Loading />
     </div>
   ) : userProfile ? (
-    <div className="dark:text-gray-50">
+    <div className="dark:text-gray-300">
       <div className="relative">
         <img
-          className="h-60 w-full border rounded-lg object-cover object-center"
+          className="h-60 w-full border rounded-lg object-cover object-center dark:border-gray-900"
           src={userProfile.cover_photo || "/images/cover-photo.svg"}
           alt="cover"
         />
@@ -183,7 +183,7 @@ const Profile = () => {
           <Button
             onClick={() => dispatch(setEditMyProfileModalOpen(true))}
             variant="outlined"
-            className="!absolute right-0 -bottom-28 lg:-bottom-24 normal-case text-sm flex items-center gap-2 dark:text-gray-50 dark:border-gray-50 dark:bg-gray-700"
+            className="!absolute right-0 -bottom-28 lg:-bottom-24 normal-case text-sm flex items-center gap-2 dark:text-gray-300 dark:border-gray-300 dark:bg-gray-800"
           >
             <PencilSquareIcon className="w-4 h-4" />
             {t("user.Edit Profile")}
@@ -192,7 +192,7 @@ const Profile = () => {
           <Button
             onClick={() => handleFollow(userProfile._id)}
             variant="outlined"
-            className="!absolute right-0 -bottom-28 lg:-bottom-24 normal-case text-sm flex items-center gap-2 dark:text-gray-50 dark:border-gray-50 dark:bg-gray-700"
+            className="!absolute right-0 -bottom-28 lg:-bottom-24 normal-case text-sm flex items-center gap-2 dark:text-gray-300 dark:border-gray-300 dark:bg-gray-800"
           >
             {follow ? (
               <>

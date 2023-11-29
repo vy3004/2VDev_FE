@@ -325,7 +325,8 @@
     "View": "Xem",
     "Read": "Đã đọc",
     "Unread": "Chưa đọc",
-    "No more report to load": "Không còn báo cáo nào để tải"
+    "No more report to load": "Không còn báo cáo nào để tải",
+    "is typing ...": "đang nhập..."
   },
   "menu": {
     "newest": "Mới nhất",
@@ -347,10 +348,12 @@
     "Repost": "Bài đăng lại",
     "Select month": "Chọn tháng",
     "Overview": "Tổng quan",
+    "Overview data in": "Tổng quan dữ liệu trong",
     "Total Questions": "Tổng số Câu hỏi",
     "Total Answers": "Tổng số Câu trả lời",
     "Total Reposts": "Tổng số Bài đăng lại",
     "vs last month": "so với tháng trước",
-    "No data found": "Không tìm thấy dữ liệu"
+    "No data found": "Không tìm thấy dữ liệu",
+    "vs": "so với"
   }
 }

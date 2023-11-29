@@ -25,26 +25,21 @@ const Header = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
-  const handleOpenSignInModal = () => {
-    dispatch(setAuthModalName("signIn"));
-    dispatch(setAuthModalOpen(true));
-  };
-
-  const handleOpenSignUpModal = () => {
-    dispatch(setAuthModalName("signUp"));
+  const handleOpenAuthModal = (modalName: string) => {
+    dispatch(setAuthModalName(modalName));
     dispatch(setAuthModalOpen(true));
   };
 
   return (
-    <nav className="sticky top-0 z-50 bg-white dark:bg-gray-800 dark:border-gray-800 h-max max-w-full border-b p-2 sm:p-4">
+    <nav className="sticky top-0 z-50 bg-white dark:bg-gray-900 dark:border-gray-800 h-max max-w-full border-b p-2 sm:p-4">
       <Container>
-        <div className="flex flex-wrap items-center justify-between text-black dark:text-gray-50">
+        <div className="flex flex-wrap items-center justify-between">
           <div className="flex items-center">
             <MobileSidebar />
 
             <Typography
               onClick={() => navigate("/?type=all&sort_field=created_at")}
-              className="sm:mr-4 ml-3 cursor-pointer py-1.5 pr-4 font-bold border-r-2 border-r-black dark:border-r-gray-50"
+              className="sm:mr-4 ml-3 cursor-pointer py-1.5 pr-4 font-semibold dark:text-gray-50 border-r-2 border-r-black dark:border-r-gray-50"
             >
               2VDev
             </Typography>
@@ -67,15 +62,15 @@ const Header = () => {
             ) : (
               <div className="space-x-2 ">
                 <Button
-                  className="bg-white dark:bg-gray-50"
-                  onClick={handleOpenSignInModal}
+                  className="bg-white dark:border-gray-800 dark:bg-gray-800 dark:text-gray-50"
+                  onClick={() => handleOpenAuthModal("signIn")}
                   variant="outlined"
                 >
                   {t("auth.sign-in")}
                 </Button>
                 <Button
-                  onClick={handleOpenSignUpModal}
-                  className="hidden xl:inline"
+                  onClick={() => handleOpenAuthModal("signUp")}
+                  className="hidden xl:inline dark:text-gray-400 border border-gray-900 dark:border-gray-400"
                 >
                   {t("auth.sign-up")}
                 </Button>

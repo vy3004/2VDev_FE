@@ -109,7 +109,7 @@ const ManagePosts = () => {
         <div className="py-4 space-y-4">
           {data.map((data) => (
             <div
-              className="border rounded-lg p-2 bg-white space-y-2 sm:space-y-0 shadow-md dark:bg-gray-900"
+              className="border rounded-lg p-2 bg-white space-y-2 sm:space-y-0 shadow-md dark:bg-gray-800 dark:border-gray-800"
               key={data._id}
             >
               <div className="flex justify-between">
@@ -123,7 +123,7 @@ const ManagePosts = () => {
                   <Time time={data.created_at} />
                   <Button
                     variant="text"
-                    className="hidden md:flex md:items-center md:gap-2 normal-case text-base"
+                    className="hidden md:flex md:items-center md:gap-2 normal-case text-base dark:bg-gray-900 dark:text-gray-300"
                     onClick={() =>
                       handleRead(data.post_info, data.reason, data._id)
                     }
@@ -135,7 +135,7 @@ const ManagePosts = () => {
               </div>
 
               <div className="sm:pl-[4.5rem]">
-                <Typography className="p-2 rounded-lg bg-gray-50">
+                <Typography className="p-2 rounded-lg bg-gray-50 dark:bg-gray-700 dark:text-gray-300">
                   {data.reason}
                 </Typography>
               </div>
@@ -143,7 +143,7 @@ const ManagePosts = () => {
               <Button
                 variant="text"
                 fullWidth
-                className="sm:hidden flex items-center gap-2 normal-case text-base"
+                className="sm:hidden flex items-center gap-2 normal-case text-base dark:bg-gray-900 dark:text-gray-300"
                 onClick={() =>
                   handleRead(data.post_info, data.reason, data._id)
                 }

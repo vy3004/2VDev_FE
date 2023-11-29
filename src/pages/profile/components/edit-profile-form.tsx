@@ -2,7 +2,7 @@ import { useState } from "react";
 import { useFormik } from "formik";
 import { format } from "date-fns";
 import { toast } from "react-hot-toast";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { useTranslation } from "react-i18next";
 import AvatarEdit from "react-avatar-edit";
 
@@ -22,6 +22,7 @@ import userService from "../../../services/user-service";
 import { base64ToFile, fileToBase64 } from "../../../utils/file-utils";
 
 import { setEditMyProfileModalOpen } from "../../../redux/features/edit-my-profile-modal-slice";
+import { selectApp } from "../../../redux/features/app-state-slice";
 
 interface EditProfileFormProps {
   user: any;
@@ -41,6 +42,7 @@ interface EditMyProfileFormValues {
 const EditProfileForm: React.FC<EditProfileFormProps> = ({ user }) => {
   const dispatch = useDispatch();
   const { t } = useTranslation();
+  const { themeMode } = useSelector(selectApp);
 
   const [avatar, setAvatar] = useState(user.avatar);
   const [coverPhoto, setCoverPhoto] = useState(user.cover_photo);
@@ -140,12 +142,13 @@ const EditProfileForm: React.FC<EditProfileFormProps> = ({ user }) => {
       {/* Error message form end */}
 
       {/* Edit avatar start */}
-      <div className="h-[500px] overflow-hidden overflow-y-scroll p-4 space-y-4">
+      <div className="h-[500px] overflow-hidden overflow-y-auto p-4 space-y-4 dark:text-gray-300">
         <div className="flex items-center justify-between">
           <Typography className="font-bold">{t("user.Avatar")}</Typography>
           <Button
             onClick={() => setChangeAvatar(!changeAvatar)}
             variant="outlined"
+            className="dark:text-gray-300 dark:bg-gray-900"
           >
             {t("user.Change")}
           </Button>
@@ -173,13 +176,14 @@ const EditProfileForm: React.FC<EditProfileFormProps> = ({ user }) => {
           <Button
             onClick={() => setChangeCoverPhoto(!changeCoverPhoto)}
             variant="outlined"
+            className="dark:text-gray-300 dark:bg-gray-900"
           >
             {t("user.Change")}
           </Button>
         </div>
         {changeCoverPhoto && (
           <Input
-            className="cursor-pointer"
+            className="cursor-pointer dark:text-gray-300"
             variant="standard"
             name="cover_photo"
             type="file"
@@ -190,7 +194,7 @@ const EditProfileForm: React.FC<EditProfileFormProps> = ({ user }) => {
         )}
 
         <img
-          className="h-60 w-full border rounded-lg object-cover object-center"
+          className="h-60 w-full border rounded-lg object-cover object-center dark:border-gray-800"
           alt="cover"
           src={coverPhoto}
         />
@@ -206,6 +210,8 @@ const EditProfileForm: React.FC<EditProfileFormProps> = ({ user }) => {
             name="name"
             type="text"
             size="lg"
+            className="dark:text-gray-300"
+            color={themeMode ? "white" : "black"}
             crossOrigin=""
             value={editMyProfileForm.values.name}
             onChange={editMyProfileForm.handleChange}
@@ -216,6 +222,8 @@ const EditProfileForm: React.FC<EditProfileFormProps> = ({ user }) => {
             name="username"
             type="text"
             size="lg"
+            className="dark:text-gray-300"
+            color={themeMode ? "white" : "black"}
             crossOrigin=""
             value={editMyProfileForm.values.username}
             onChange={editMyProfileForm.handleChange}
@@ -228,6 +236,8 @@ const EditProfileForm: React.FC<EditProfileFormProps> = ({ user }) => {
           name="bio"
           value={editMyProfileForm.values.bio}
           onChange={editMyProfileForm.handleChange}
+          className="dark:text-gray-300"
+          labelProps={{ className: "dark:!text-gray-300" }}
         />
 
         <div className="grid grid-cols-2 gap-4">
@@ -237,6 +247,8 @@ const EditProfileForm: React.FC<EditProfileFormProps> = ({ user }) => {
             name="date_of_birth"
             type="date"
             size="lg"
+            className="dark:text-gray-300"
+            color={themeMode ? "white" : "black"}
             crossOrigin=""
             value={editMyProfileForm.values.date_of_birth}
             onChange={editMyProfileForm.handleChange}
@@ -247,6 +259,8 @@ const EditProfileForm: React.FC<EditProfileFormProps> = ({ user }) => {
             name="website"
             type="text"
             size="lg"
+            className="dark:text-gray-300"
+            color={themeMode ? "white" : "black"}
             crossOrigin=""
             icon={<GlobeAltIcon className="w-4 h-4 text-black" />}
             value={editMyProfileForm.values.website}
@@ -258,6 +272,8 @@ const EditProfileForm: React.FC<EditProfileFormProps> = ({ user }) => {
           name="location"
           type="text"
           size="lg"
+          className="dark:text-gray-300"
+          color={themeMode ? "white" : "black"}
           crossOrigin=""
           icon={<MapPinIcon className="w-4 h-4 text-black" />}
           value={editMyProfileForm.values.location}
@@ -266,7 +282,7 @@ const EditProfileForm: React.FC<EditProfileFormProps> = ({ user }) => {
       </div>
 
       <div className="border-t rounded-b-lg sticky bottom-0 p-4">
-        <Button type="submit" variant="gradient" fullWidth disabled={isSubmit}>
+        <Button type="submit" variant="filled" fullWidth disabled={isSubmit}>
           {isSubmit ? <Spinner className="h-4 w-4 m-auto" /> : t("user.Submit")}
         </Button>
       </div>

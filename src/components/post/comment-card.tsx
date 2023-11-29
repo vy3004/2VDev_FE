@@ -23,11 +23,10 @@ const CommentCard: React.FC<CommentCardProps> = ({ comment }) => {
         src={comment.user_detail.avatar}
         size="sm"
         alt="avatar"
-        withBorder={true}
-        className="p-0.5 hidden sm:inline"
+        className="p-[1px] hidden sm:inline dark:bg-gray-300"
       />
       <div
-        className="space-y-2 border rounded-lg w-full min-w-0 p-2 cursor-pointer"
+        className="space-y-2 border rounded-lg w-full min-w-0 p-2 cursor-pointer dark:bg-gray-800 dark:border-gray-800"
         onClick={() => navigate(`/${comment.parent_id}`)}
       >
         <div className="flex items-center justify-between">
@@ -37,7 +36,7 @@ const CommentCard: React.FC<CommentCardProps> = ({ comment }) => {
               size="sm"
               alt="avatar"
               withBorder={true}
-              className="p-0.5 inline sm:hidden"
+              className="p-[1px] sm:hidden inline dark:bg-gray-300"
             />
 
             <Typography className="font-bold text-sm text-blue-500 hover:text-gray-900 cursor-pointer">
@@ -57,7 +56,7 @@ const CommentCard: React.FC<CommentCardProps> = ({ comment }) => {
         </div>
 
         <div
-          className="break-words line-clamp-4"
+          className="break-words line-clamp-4 dark:text-gray-300"
           dangerouslySetInnerHTML={{ __html: comment.content }}
         />
 
@@ -67,7 +66,7 @@ const CommentCard: React.FC<CommentCardProps> = ({ comment }) => {
             className={`p-2 flex items-center justify-center gap-2 normal-case text-xs ${
               comment.is_voted
                 ? "text-blue-500"
-                : "text-gray-900 dark:text-gray-50"
+                : "text-gray-900 dark:text-gray-300"
             }`}
           >
             <HandThumbUpIcon className="w-4 h-4" />
@@ -76,7 +75,7 @@ const CommentCard: React.FC<CommentCardProps> = ({ comment }) => {
 
           <Button
             variant="text"
-            className="p-2 flex items-center justify-center gap-2 normal-case text-xs"
+            className="p-2 flex items-center justify-center gap-2 normal-case text-xs text-gray-900 dark:text-gray-300"
           >
             <ChatBubbleLeftIcon className="w-4 h-4" />
             {comment.comments_count > 0 && comment.comments_count}{" "}

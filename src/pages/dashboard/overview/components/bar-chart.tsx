@@ -12,6 +12,8 @@ import {
 } from "chart.js";
 
 import { DashboardData } from "../../../../utils/types";
+import { useSelector } from "react-redux";
+import { selectApp } from "../../../../redux/features/app-state-slice";
 
 Chart.register(CategoryScale, LinearScale, BarElement, Title, Tooltip, Legend);
 
@@ -21,6 +23,7 @@ interface BarChartProps {
 
 const BarChart: React.FC<BarChartProps> = ({ dashboardData }) => {
   const { t } = useTranslation();
+  const { themeMode } = useSelector(selectApp);
 
   const labels = dashboardData.map((item) => item.date);
 
@@ -50,20 +53,37 @@ const BarChart: React.FC<BarChartProps> = ({ dashboardData }) => {
 
   const data = { labels, datasets };
 
+  const themeColor = themeMode ? "#fafafa" : "#212121";
+
   const options = {
     responsive: true,
     plugins: {
       legend: {
         position: "top" as const,
+        labels: {
+          color: themeColor,
+        },
       },
     },
     scales: {
       x: {
         type: "category" as const,
         stacked: false,
+        ticks: {
+          color: themeColor,
+        },
+        grid: {
+          color: themeColor,
+        },
       },
       y: {
         stacked: false,
+        ticks: {
+          color: themeColor,
+        },
+        grid: {
+          color: themeColor,
+        },
       },
     },
   };

@@ -8,10 +8,10 @@ interface PostSectionProps {
 
 const PostSection: React.FC<PostSectionProps> = ({ title, desc, children }) => {
   return (
-    <div className="border border-black rounded-lg p-4">
+    <div className="border border-gray-900 dark:bg-gray-800 rounded-lg p-4">
       <Typography className="font-bold">{title}</Typography>
       <Typography className="mb-2 text-sm">{desc}</Typography>
-      {children}
+      <div className="dark:text-gray-900">{children}</div>
     </div>
   );
 };

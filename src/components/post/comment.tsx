@@ -153,16 +153,18 @@ const Comment: React.FC<CommentProps> = ({
         size="sm"
         alt="avatar"
         withBorder={true}
-        className="p-0.5 hidden sm:inline"
+        className="p-[1px] hidden sm:inline dark:bg-gray-300"
       />
       <div
         className={`space-y-2 border rounded-lg w-full min-w-0 p-2 ${
-          isResolved ? "border-blue-500 bg-blue-50" : "border-gray-300"
+          isResolved
+            ? "border-blue-500 bg-blue-50 dark:bg-gray-700"
+            : "border-gray-300 dark:bg-gray-900 dark:border-gray-800"
         }`}
       >
         <div className="flex items-center justify-between">
           {postUserId === comment.user_detail._id ? (
-            <div className="flex items-center gap-1 text-gray-600">
+            <div className="flex items-center gap-1 text-gray-600 dark:text-gray-300">
               <PaintBrushIcon className="w-4 h-4" />
               <Typography className="text-xs font-semibold">
                 {t("post.Author")}
@@ -181,14 +183,14 @@ const Comment: React.FC<CommentProps> = ({
               size="sm"
               alt="avatar"
               withBorder={true}
-              className="p-0.5 inline sm:hidden"
+              className="p-[1px] sm:hidden inline dark:bg-gray-300"
             />
 
             <Typography
               onClick={() =>
                 navigate(`/profile/${comment.user_detail.username}`)
               }
-              className="font-bold text-sm text-blue-500 hover:text-gray-900 cursor-pointer"
+              className="font-bold text-sm text-blue-500 hover:text-gray-900 dark:hover:text-gray-300 cursor-pointer"
             >
               {comment.user_detail.name}
             </Typography>
@@ -210,7 +212,7 @@ const Comment: React.FC<CommentProps> = ({
             {t("post.Reply")}{" "}
             <span
               onClick={() => navigate(`/profile/${userParent.username}`)}
-              className="text-blue-500 hover:text-gray-900 cursor-pointer"
+              className="text-blue-500 hover:text-gray-900 cursor-pointer dark:hover:text-gray-300"
             >
               {userParent.name}
             </span>
@@ -242,7 +244,7 @@ const Comment: React.FC<CommentProps> = ({
             }
             variant="text"
             className={`p-2 flex items-center justify-center gap-2 normal-case text-xs ${
-              vote ? "text-blue-500" : "text-gray-900 dark:text-gray-50"
+              vote ? "text-blue-500" : "text-gray-900 dark:text-gray-300"
             }`}
           >
             <HandThumbUpIcon className="w-4 h-4" />
@@ -253,7 +255,7 @@ const Comment: React.FC<CommentProps> = ({
           <Button
             onClick={() => setShowCommentForm(!showCommentForm)}
             variant="text"
-            className="p-2 flex items-center justify-center gap-2 normal-case text-xs"
+            className="p-2 flex items-center justify-center gap-2 normal-case text-xs dark:text-gray-300"
           >
             <ChatBubbleLeftIcon className="w-4 h-4" />
             <span className="hidden md:inline">{t("post.Reply")}</span>
@@ -263,7 +265,7 @@ const Comment: React.FC<CommentProps> = ({
             <Button
               onClick={handleReport}
               variant="text"
-              className="p-2 flex items-center justify-center gap-2 normal-case text-xs"
+              className="p-2 flex items-center justify-center gap-2 normal-case text-xs dark:text-gray-300"
             >
               <ExclamationTriangleIcon className="w-4 h-4" />
               <span className="hidden md:inline">{t("post.Report")}</span>
@@ -274,7 +276,7 @@ const Comment: React.FC<CommentProps> = ({
             <Button
               onClick={() => setShowEditCommentForm(!showEditCommentForm)}
               variant="text"
-              className="p-2 flex items-center justify-center gap-2 normal-case text-xs"
+              className="p-2 flex items-center justify-center gap-2 normal-case text-xs dark:text-gray-300"
             >
               <PencilSquareIcon className="w-4 h-4" />
               <span className="hidden md:inline">{t("post.Edit")}</span>
@@ -286,7 +288,7 @@ const Comment: React.FC<CommentProps> = ({
             <Button
               onClick={handleDelete}
               variant="text"
-              className="p-2 flex items-center justify-center gap-2 normal-case text-xs"
+              className="p-2 flex items-center justify-center gap-2 normal-case text-xs dark:text-gray-300"
             >
               <TrashIcon className="w-4 h-4" />
               <span className="hidden md:inline">{t("post.Delete")}</span>
@@ -299,7 +301,7 @@ const Comment: React.FC<CommentProps> = ({
             <Button
               onClick={handlePinComment}
               variant="text"
-              className="p-2 flex items-center justify-center gap-2 normal-case text-xs"
+              className="p-2 flex items-center justify-center gap-2 normal-case text-xs dark:text-gray-300"
             >
               <EyeDropperIcon className="w-4 h-4" />
               <span className="hidden md:inline">
@@ -325,7 +327,7 @@ const Comment: React.FC<CommentProps> = ({
         {comment.comments_count > 0 && !showReplies && (
           <Button
             onClick={() => getReplies(!showReplies)}
-            className="py-1 px-2 flex items-center gap-1 normal-case"
+            className="py-1 px-2 flex items-center gap-1 normal-case dark:text-gray-300"
             variant="text"
             disabled={loadingReplies}
           >

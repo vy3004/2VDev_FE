@@ -8,7 +8,7 @@ interface PageDescriptionProps {
 
 const PageDescription: React.FC<PageDescriptionProps> = ({ title, desc }) => {
   return (
-    <div>
+    <div className="dark:text-gray-300">
       <Typography variant="h5">{title}</Typography>
       <Typography className="mt-1 font-normal">{desc}</Typography>
     </div>

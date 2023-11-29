@@ -16,15 +16,14 @@ const PostInfoUser: React.FC<PostInfoUserProps> = ({ user_detail }) => {
       <Avatar
         src={user_detail.avatar}
         alt="avatar"
-        withBorder={true}
-        className="p-0.5 cursor-pointer w-12 h-12 sm:w-16 sm:h-16"
+        className="p-[1px] cursor-pointer w-12 h-12 sm:w-16 sm:h-16 dark:bg-gray-300"
         onClick={() => navigate(`/profile/${user_detail.username}`)}
       />
       <div>
         <div className="flex items-center gap-4">
           <Typography
             onClick={() => navigate(`/profile/${user_detail.username}`)}
-            className="font-bold text-blue-500 cursor-pointer hover:text-gray-900"
+            className="font-bold text-blue-500 cursor-pointer hover:text-gray-900 dark:hover:text-gray-300"
           >
             {user_detail.name}
           </Typography>

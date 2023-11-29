@@ -88,12 +88,16 @@ const CommentForm: React.FC<CommentFormProps> = ({
   });
 
   return (
-    <form onSubmit={commentForm.handleSubmit} className="space-y-2">
+    <form
+      onSubmit={commentForm.handleSubmit}
+      className="space-y-2 p-2 rounded-md dark:bg-gray-100"
+    >
       <ReactQuill
         value={commentForm.values.content}
         onChange={(value) => commentForm.setFieldValue("content", value)}
         theme="snow"
         placeholder={t("post.Write something...")}
+        className="dark:text-gray-900"
       />
       {commentForm.touched.content && commentForm.errors.content && (
         <ErrorMessageForm

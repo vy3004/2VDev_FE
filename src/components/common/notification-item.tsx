@@ -64,7 +64,7 @@ const NotificationItem: React.FC<NotificationItemProps> = ({
 
   return (
     <MenuItem
-      className="flex items-center gap-1"
+      className="flex items-center gap-1 dark:hover:bg-gray-800"
       onClick={() => handleReadNotification(notification)}
     >
       <div>
@@ -92,19 +92,21 @@ const NotificationItem: React.FC<NotificationItemProps> = ({
         </Badge>
       </div>
       <Badge
-        className={`w-4 h-4 ${notification.is_readed ? "hidden" : ""}`}
+        className={`w-4 h-4 dark:border-gray-900 ${
+          notification.is_readed ? "hidden" : ""
+        }`}
         containerProps={{ className: "w-full" }}
         color="blue"
         withBorder
       >
         <div className="space-y-2 w-full py-2 px-3">
-          <Typography variant="small" color="gray" className="font-bold">
+          <Typography className="font-bold text-md dark:text-gray-400">
             <span className="text-blue-500">
               {notification.sender_detail.name}
             </span>{" "}
             {t(`notification.${NOTIFICATION_CONTENT[notification.type]}`)}
           </Typography>
-          <Typography className="flex items-center gap-1 text-sm font-medium text-blue-gray-500">
+          <Typography className="flex items-center gap-1 text-sm font-medium text-blue-gray-500 dark:text-blue-gray-300">
             <ClockIcon className="h-4 w-4" />
             {formatTimeDistanceToNowAbout(notification.created_at)}
           </Typography>

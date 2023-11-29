@@ -13,7 +13,7 @@ const TagButton: React.FC<TagButtonProps> = ({ id, name }) => {
   return (
     <Button
       key={id}
-      className="normal-case px-2 py-1 mr-1 mb-1 dark:bg-gray-50"
+      className="normal-case px-2 py-1 mr-1 mb-1 dark:bg-gray-300"
       variant="outlined"
       onClick={() => navigate(`/tags/${id}`)}
     >

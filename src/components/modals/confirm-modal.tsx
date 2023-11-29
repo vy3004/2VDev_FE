@@ -101,15 +101,15 @@ const ConfirmModal = () => {
           mount: { scale: 1, y: 0 },
           unmount: { scale: 0.9, y: -100 },
         }}
-        className="p-4"
+        className="p-4 dark:bg-gray-800"
       >
         <DialogHeader>
-          <Typography className="text-center text-2xl font-bold w-full">
+          <Typography className="text-center text-2xl font-bold w-full dark:text-gray-300">
             {modal.title}
           </Typography>
         </DialogHeader>
         <DialogBody>
-          <Typography className="font-bold text-center text-lg text-gray-900 w-full">
+          <Typography className="font-bold text-center text-lg text-gray-900 w-full dark:text-gray-300">
             {modal.content}
           </Typography>
           {modal.warning && (
@@ -123,7 +123,7 @@ const ConfirmModal = () => {
             size="lg"
             variant="text"
             onClick={handleClose}
-            className="normal-case"
+            className="normal-case dark:text-gray-300"
           >
             <span>{t("auth.No, Cancel")}</span>
           </Button>

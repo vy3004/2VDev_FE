@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { useFormik } from "formik";
 import { toast } from "react-hot-toast";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { useTranslation } from "react-i18next";
 import * as Yup from "yup";
 
@@ -17,7 +17,9 @@ import NotificationForm from "./notification-form";
 import ErrorMessageForm from "../common/error-message-form";
 
 import userService from "../../services/user-service";
+
 import { setAuthModalOpen } from "../../redux/features/auth-modal-slice";
+import { selectApp } from "../../redux/features/app-state-slice";
 
 interface ForgotPasswordFormProps {
   switchAuthState: (name: string) => void;
@@ -32,6 +34,7 @@ const ForgotPasswordForm: React.FC<ForgotPasswordFormProps> = ({
 }) => {
   const dispatch = useDispatch();
   const { t } = useTranslation();
+  const { themeMode } = useSelector(selectApp);
 
   const [isSubmit, setIsSubmit] = useState(false);
   const [errorMessage, setErrorMessage] = useState("");
@@ -67,7 +70,7 @@ const ForgotPasswordForm: React.FC<ForgotPasswordFormProps> = ({
   });
 
   return (
-    <Card className="mx-auto w-full max-w-[48rem]">
+    <Card className="mx-auto w-full max-w-[48rem] dark:bg-gray-800 dark:text-gray-300">
       <CardBody className="flex gap-0 md:gap-8">
         <img
           src="/images/auth-sign-in.svg"
@@ -120,6 +123,8 @@ const ForgotPasswordForm: React.FC<ForgotPasswordFormProps> = ({
               name="email"
               type="text"
               size="lg"
+              className="dark:text-gray-300"
+              color={themeMode ? "white" : "black"}
               crossOrigin=""
               value={forgotPasswordForm.values.email}
               onChange={forgotPasswordForm.handleChange}
@@ -154,7 +159,7 @@ const ForgotPasswordForm: React.FC<ForgotPasswordFormProps> = ({
             <Button
               type="submit"
               className="mt-10"
-              variant="gradient"
+              variant="filled"
               fullWidth
               disabled={isSubmit}
             >

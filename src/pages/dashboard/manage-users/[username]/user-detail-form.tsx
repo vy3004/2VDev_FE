@@ -27,6 +27,7 @@ import mediaService from "../../../../services/media-service";
 
 import { base64ToFile, fileToBase64 } from "../../../../utils/file-utils";
 import { User } from "../../../../utils/types";
+
 import { selectApp } from "../../../../redux/features/app-state-slice";
 
 interface UserDetailFormProps {
@@ -164,7 +165,7 @@ const UserDetailForm: React.FC<UserDetailFormProps> = ({ user }) => {
   });
 
   return (
-    <div className="p-4 rounded-lg dark:bg-gray-700 dark:text-gray-50">
+    <div className="p-4 rounded-lg dark:bg-gray-800 dark:text-gray-300">
       <Typography className="font-bold text-2xl">
         {t("user.Edit User")} {user.name}
       </Typography>
@@ -176,14 +177,14 @@ const UserDetailForm: React.FC<UserDetailFormProps> = ({ user }) => {
             <Typography className="font-bold">{t("user.Avatar")}</Typography>
             <Button
               onClick={() => setChangeAvatar(!changeAvatar)}
-              variant="gradient"
+              variant="filled"
             >
               {t("user.Change")}
             </Button>
           </div>
           <div className="flex items-center justify-around flex-col sm:flex-row gap-4">
             <img
-              className="border-4 border-black rounded-full w-20 h-20 sm:w-32 sm:h-32 p-0.5 dark:border-gray-50"
+              className="border-4 border-black rounded-full w-20 h-20 sm:w-32 sm:h-32 p-0.5 dark:border-gray-900"
               src={avatar}
               alt="avatar"
             />
@@ -205,7 +206,7 @@ const UserDetailForm: React.FC<UserDetailFormProps> = ({ user }) => {
             </Typography>
             <Button
               onClick={() => setChangeCoverPhoto(!changeCoverPhoto)}
-              variant="gradient"
+              variant="filled"
             >
               {t("user.Change")}
             </Button>
@@ -241,6 +242,7 @@ const UserDetailForm: React.FC<UserDetailFormProps> = ({ user }) => {
                 name="name"
                 type="text"
                 size="lg"
+                className="dark:text-gray-300"
                 color={themeMode ? "white" : "black"}
                 crossOrigin=""
                 value={userDetailForm.values.name}
@@ -267,6 +269,7 @@ const UserDetailForm: React.FC<UserDetailFormProps> = ({ user }) => {
                 name="username"
                 type="text"
                 size="lg"
+                className="dark:text-gray-300"
                 color={themeMode ? "white" : "black"}
                 crossOrigin=""
                 value={userDetailForm.values.username}
@@ -292,8 +295,8 @@ const UserDetailForm: React.FC<UserDetailFormProps> = ({ user }) => {
           <div>
             {/* Biography text area start */}
             <Textarea
-              className="dark:text-gray-50"
-              labelProps={{ className: "dark:!text-gray-50" }}
+              className="dark:text-gray-300"
+              labelProps={{ className: "dark:!text-gray-300" }}
               label={t("user.Biography")}
               name="bio"
               size="md"
@@ -322,6 +325,7 @@ const UserDetailForm: React.FC<UserDetailFormProps> = ({ user }) => {
                 name="date_of_birth"
                 type="date"
                 size="lg"
+                className="dark:text-gray-300"
                 color={themeMode ? "white" : "black"}
                 crossOrigin=""
                 value={userDetailForm.values.date_of_birth}
@@ -337,6 +341,7 @@ const UserDetailForm: React.FC<UserDetailFormProps> = ({ user }) => {
                 name="website"
                 type="text"
                 size="lg"
+                className="dark:text-gray-300"
                 color={themeMode ? "white" : "black"}
                 crossOrigin=""
                 icon={
@@ -369,6 +374,7 @@ const UserDetailForm: React.FC<UserDetailFormProps> = ({ user }) => {
               name="location"
               type="text"
               size="lg"
+              className="dark:text-gray-300"
               color={themeMode ? "white" : "black"}
               crossOrigin=""
               icon={
@@ -395,7 +401,10 @@ const UserDetailForm: React.FC<UserDetailFormProps> = ({ user }) => {
 
           <List className="flex-col sm:flex-row gap-4 p-0">
             {/* Role checkbox start */}
-            <ListItem className="p-0" onClick={() => setAdmin(!admin)}>
+            <ListItem
+              className="p-0 dark:text-gray-300 dark:hover:bg-gray-900/50 dark:focus:bg-gray-900/50"
+              onClick={() => setAdmin(!admin)}
+            >
               <Checkbox
                 checked={admin}
                 readOnly
@@ -409,7 +418,10 @@ const UserDetailForm: React.FC<UserDetailFormProps> = ({ user }) => {
             {/* Role checkbox end */}
 
             {/* Verify checkbox start */}
-            <ListItem className="p-0" onClick={() => setVerify(!verify)}>
+            <ListItem
+              className="p-0 dark:text-gray-300 dark:hover:bg-gray-900/50 dark:focus:bg-gray-900/50"
+              onClick={() => setVerify(!verify)}
+            >
               <Checkbox
                 checked={verify}
                 readOnly
@@ -424,7 +436,7 @@ const UserDetailForm: React.FC<UserDetailFormProps> = ({ user }) => {
 
             {/* Lock account checkbox start */}
             <ListItem
-              className="p-0"
+              className="p-0 dark:text-gray-300 dark:hover:bg-gray-900/50 dark:focus:bg-gray-900/50"
               onClick={() => setLockAccount(!lockAccount)}
             >
               <Checkbox
@@ -451,12 +463,12 @@ const UserDetailForm: React.FC<UserDetailFormProps> = ({ user }) => {
         <div className="mt-8 flex items-center justify-center gap-8">
           <Button
             onClick={() => navigate("/dashboard/manage-users")}
-            variant="outlined"
+            variant="filled"
             color="red"
           >
             {t("user.Cancel")}
           </Button>
-          <Button type="submit" variant="gradient" disabled={isSubmit}>
+          <Button type="submit" variant="filled" disabled={isSubmit}>
             {isSubmit ? (
               <Spinner className="h-4 w-4 m-auto" />
             ) : (

@@ -23,9 +23,12 @@ import {
   MagnifyingGlassIcon,
 } from "@heroicons/react/24/solid";
 import { PlusCircleIcon } from "@heroicons/react/24/outline";
+import Divider from "./divider";
 
 import searchService from "../../services/search-service";
+
 import { selectApp, setIsSearch } from "../../redux/features/app-state-slice";
+
 import { Post } from "../../utils/types";
 
 const SearchInput = () => {
@@ -130,10 +133,10 @@ const SearchInput = () => {
 
   return (
     <div className={`relative ${isSearch && "w-full"}`}>
-      <div className="p-0.5 border-2 border-gray-900 dark:bg-gray-50 dark:text-gray-900 rounded-full flex items-center">
+      <div className="p-0.5 border-2 border-gray-900 dark:bg-gray-400 dark:text-gray-900 rounded-full flex items-center">
         <Button
           size="sm"
-          className="rounded-full normal-case flex items-center gap-2 dark:bg-gray-900"
+          className="rounded-full normal-case flex items-center gap-2 dark:bg-gray-900 dark:text-gray-400"
           onClick={() => dispatch(setIsSearch(!isSearch))}
         >
           {!isSearch ? (
@@ -161,9 +164,9 @@ const SearchInput = () => {
       </div>
 
       {isSearch && (
-        <Card className="w-full lg:w-[600px] absolute right-0 top-14 border">
+        <Card className="w-full lg:w-[600px] absolute right-0 top-14 pb-2 border dark:bg-gray-900 dark:border-gray-800">
           <div className="px-4 py-2 flex items-center justify-between">
-            <Typography className="font-bold">
+            <Typography className="font-bold text-gray-900 dark:text-gray-400">
               {t("search.Results")} ({posts?.length || 0})
             </Typography>
             {isLoading ? (
@@ -173,16 +176,16 @@ const SearchInput = () => {
             )}
           </div>
 
-          <hr />
+          <Divider />
 
-          <List className="max-h-96 overflow-hidden overflow-y-scroll">
+          <List className="max-h-96 overflow-hidden overflow-y-auto">
             {posts && posts.length > 0 ? (
               <>
                 {posts.map((post) => (
                   <ListItem
                     key={post._id}
                     onClick={() => onClick(post._id)}
-                    className="!overflow-visible flex items-center gap-4"
+                    className="!overflow-visible flex items-center gap-4 text-gray-900 dark:text-gray-400 dark:hover:bg-gray-800"
                   >
                     <Avatar
                       variant="circular"
@@ -212,10 +215,10 @@ const SearchInput = () => {
 
                 {page < totalPage && (
                   <>
-                    <hr />
+                    <Divider />
 
                     <Button
-                      className="!overflow-visible normal-case flex items-center justify-center gap-1"
+                      className="!overflow-visible normal-case flex items-center justify-center gap-1 dark:text-gray-400"
                       size="sm"
                       variant="text"
                       onClick={handleLoadMore}
@@ -227,7 +230,9 @@ const SearchInput = () => {
                 )}
               </>
             ) : (
-              <ListItem>{t("search.Not found")}</ListItem>
+              <ListItem disabled className="text-gray-900 dark:text-gray-400">
+                {t("search.Not found")}
+              </ListItem>
             )}
           </List>
         </Card>

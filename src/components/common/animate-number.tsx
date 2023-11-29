@@ -39,7 +39,7 @@ const AnimatedNumber: React.FC<AnimatedNumberProps> = ({
   }, [finalNumber, duration, navigate]);
 
   return (
-    <Typography className="font-bold text-2xl dark:text-gray-50">
+    <Typography className="font-bold text-2xl dark:text-gray-300">
       {currentNumber}
     </Typography>
   );

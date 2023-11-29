@@ -12,7 +12,7 @@ interface TimeProps {
 const Time: React.FC<TimeProps> = ({ time }) => {
   return (
     <Tooltip content={formatTime(time)}>
-      <Typography className="text-sx text-gray-600 hover:text-blue-500 cursor-pointer flex items-center gap-1">
+      <Typography className="text-sx text-gray-600 hover:text-blue-500 dark:text-gray-400 cursor-pointer flex items-center gap-1">
         <ClockIcon className="w-4 h-4" />
         {formatTimeDistanceToNow(time)}
       </Typography>

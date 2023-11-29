@@ -173,7 +173,7 @@ const MainLayout = () => {
 
           {/* Right sidebar */}
           <div className="lg:h-[calc(100vh-78px)] lg:sticky lg:top-[78px] col-span-12 lg:col-span-4 xl:col-span-3 border-x dark:border-gray-900">
-            <div className="lg:overflow-hidden lg:overflow-y-scroll w-full h-full">
+            <div className="lg:overflow-hidden lg:overflow-y-auto w-full h-full">
               <RightSidebar />
             </div>
           </div>

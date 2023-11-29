@@ -1,29 +1,24 @@
 import { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 
-import {
-  ChatBubbleLeftIcon,
-  QuestionMarkCircleIcon,
-  ShareIcon,
-} from "@heroicons/react/24/solid";
 import { Select, Option, Typography } from "@material-tailwind/react";
 
 import Loading from "../../../components/common/loading";
 import PageDescription from "../../../components/common/page-description";
 import NotFoundAlert from "../../../components/common/not-found-alert";
-import StatisticCard from "./components/statistic-card";
+import StatisticOverview from "./components/statistics-overview";
 import BarChart from "./components/bar-chart";
 
 import postService from "../../../services/post-service";
 
 import {
-  calculatePercentageChange,
+  generateMonthLabel,
   generateMonthOptions,
+  getCurrentMonth,
 } from "../../../utils/string-utils";
 import { DashboardData } from "../../../utils/types";
 
 const currentYear = new Date().getFullYear();
-const getLastValue = (array: DashboardData[]) => array[array.length - 1];
 
 const Overview = () => {
   const { t } = useTranslation();
@@ -33,7 +28,7 @@ const Overview = () => {
   const [selectedMonth, setSelectedMonth] = useState<string>("");
   const [isLoading, setIsLoading] = useState(false);
 
-  const getLastDashboardValue = () => getLastValue(dashboardData);
+  const currentMonthName = generateMonthLabel(getCurrentMonth().toString());
 
   useEffect(() => {
     getDashboardData();
@@ -53,16 +48,14 @@ const Overview = () => {
       );
 
       const filteredData = filterData(sortedData, selectedMonth);
-      const withPercentageChange = calculatePercentage(filteredData);
 
-      setDashboardData(withPercentageChange);
-      setRootData(withPercentageChange);
+      setRootData(sortedData);
+      setDashboardData(filteredData);
     }
 
     setIsLoading(false);
   };
 
-  // Filter data based on the selectedMonth or default to the last 3 months
   const filterData = (data: DashboardData[], selectedMonth: string) => {
     return selectedMonth
       ? data.filter(
@@ -70,45 +63,23 @@ const Overview = () => {
             item.year === currentYear &&
             item.month >= parseInt(selectedMonth, 10)
         )
-      : data.slice(0, 3);
+      : data.slice(-3);
   };
-
-  // Calculate percentage change for each metric compared to the previous month
-  const calculatePercentage = (data: DashboardData[]) =>
-    data.map((item: DashboardData, index: number) => {
-      const prevItem = data[index - 1] || {
-        posts_count: 0,
-        reposts_count: 0,
-        comments_count: 0,
-      };
-
-      return {
-        ...item,
-        postsPercentageChange: calculatePercentageChange(
-          item.posts_count,
-          prevItem.posts_count
-        ),
-        repostsPercentageChange: calculatePercentageChange(
-          item.reposts_count,
-          prevItem.reposts_count
-        ),
-        commentsPercentageChange: calculatePercentageChange(
-          item.comments_count,
-          prevItem.comments_count
-        ),
-      };
-    });
 
   const handleMonthChange = (value: string) => {
     setSelectedMonth(value);
-
     const filteredDashboardData = filterData(rootData, value);
     setDashboardData(filteredDashboardData);
   };
 
   return (
     <div className="space-y-4">
-      <PageDescription title={t("overview.Overview")} desc="" />
+      <PageDescription
+        title={t("overview.Overview")}
+        desc={`${t(
+          "overview.Overview data in"
+        )} ${currentMonthName} ${currentYear}`}
+      />
       {isLoading ? (
         <div className="relative h-96">
           <Loading />
@@ -117,40 +88,20 @@ const Overview = () => {
         <NotFoundAlert message={t("overview.No data found")} type="error" />
       ) : (
         <>
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-            <StatisticCard
-              icon={
-                <QuestionMarkCircleIcon className="w-10 h-10 p-1 border rounded-md text-teal-500 bg-teal-50" />
-              }
-              title={t("overview.Total Questions")}
-              value={getLastDashboardValue().posts_count}
-              percentageChange={getLastDashboardValue().postsPercentageChange}
-            />
-            <StatisticCard
-              icon={
-                <ShareIcon className="w-10 h-10 p-1 border rounded-md text-pink-500 bg-pink-50" />
-              }
-              title={t("overview.Total Reposts")}
-              value={getLastDashboardValue().reposts_count}
-              percentageChange={getLastDashboardValue().repostsPercentageChange}
-            />
-            <StatisticCard
-              icon={
-                <ChatBubbleLeftIcon className="w-10 h-10 p-1 border rounded-md text-amber-500 bg-amber-50" />
-              }
-              title={t("overview.Total Answers")}
-              value={getLastDashboardValue().comments_count}
-              percentageChange={
-                getLastDashboardValue().commentsPercentageChange
-              }
-            />
-          </div>
+          <StatisticOverview
+            dashboardData={dashboardData}
+            selectedMonth={selectedMonth}
+          />
 
-          <div className="border rounded-lg shadow-md p-2 space-y-2">
+          <div className="border rounded-lg shadow-md p-2 space-y-2 dark:bg-gray-800 dark:border-gray-800">
             <div className="flex justify-end">
               <div className="w-fit">
                 <Select
                   label={t("overview.Select month")}
+                  className="font-bold dark:text-gray-200"
+                  labelProps={{
+                    className: "font-bold dark:text-gray-200",
+                  }}
                   value={selectedMonth}
                   onChange={(e) => handleMonthChange(e as string)}
                 >
@@ -173,7 +124,7 @@ const Overview = () => {
                 </Select>
               </div>
             </div>
-            <Typography className="text-base sm:text-lg text-center font-bold">
+            <Typography className="text-base sm:text-lg text-center font-bold dark:text-gray-200">
               {selectedMonth
                 ? `${t("overview.Statistical chart from")} ${
                     dashboardData[0].month

@@ -94,8 +94,9 @@ const ReportModal = () => {
           mount: { scale: 1, y: 0 },
           unmount: { scale: 0.9, y: -100 },
         }}
+        className="dark:bg-gray-800"
       >
-        <DialogHeader className="flex items-center justify-between">
+        <DialogHeader className="flex items-center justify-between dark:text-gray-300">
           {t("post.Report")}
           <IconButton
             variant="text"
@@ -106,9 +107,10 @@ const ReportModal = () => {
             <XMarkIcon className="w-8 h-8" />
           </IconButton>
         </DialogHeader>
-        <DialogBody className="border-t">
+        <DialogBody className="border-t dark:border-gray-700">
           <form onSubmit={reportForm.handleSubmit}>
             <Textarea
+              className="dark:text-gray-300"
               label={t("post.Reason")}
               name="reason"
               value={reportForm.values.reason}
@@ -126,7 +128,7 @@ const ReportModal = () => {
             <Button
               className="mt-4 normal-case"
               type="submit"
-              variant="gradient"
+              variant="filled"
               fullWidth
               disabled={isSubmit}
             >

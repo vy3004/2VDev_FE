@@ -169,7 +169,10 @@ const PostForm: React.FC<PostFormProps> = ({ initialData }) => {
   });
 
   return (
-    <form onSubmit={postForm.handleSubmit} className="space-y-4">
+    <form
+      onSubmit={postForm.handleSubmit}
+      className="space-y-4 dark:text-gray-300"
+    >
       <Typography className="font-bold text-xl sm:text-2xl">
         {t("post.Ask a public question")}
       </Typography>
@@ -191,7 +194,7 @@ const PostForm: React.FC<PostFormProps> = ({ initialData }) => {
         </ul>
       </Alert>
 
-      <Alert variant="outlined">
+      <Alert variant="outlined" className="dark:text-gray-300 dark:bg-gray-800">
         <Typography className="font-bold text-lg">
           {t("post.Writing a good title")}
         </Typography>
@@ -219,7 +222,7 @@ const PostForm: React.FC<PostFormProps> = ({ initialData }) => {
               onChange={postForm.handleChange}
               type="text"
               placeholder={t("post.Title e.g")}
-              className="!border !border-gray-300 text-gray-900 ring-1 ring-transparent focus:!border-blue-600 focus:!border-t-blue-600 focus:ring-blue-600"
+              className="!border !border-gray-300 ring-1 ring-transparent focus:!border-blue-600 focus:!border-t-blue-600 focus:ring-blue-600 dark:bg-gray-50"
               labelProps={{
                 className: "hidden",
               }}
@@ -269,7 +272,7 @@ const PostForm: React.FC<PostFormProps> = ({ initialData }) => {
         title={t("post.Content")}
         desc={t("post.Content description")}
         children={
-          <>
+          <div className="dark:bg-gray-50 dark:pb-2">
             <ReactQuill
               value={postForm.values.content}
               onChange={(value) => postForm.setFieldValue("content", value)}
@@ -281,7 +284,7 @@ const PostForm: React.FC<PostFormProps> = ({ initialData }) => {
                 message={postForm.touched.content && postForm.errors.content}
               />
             )}
-          </>
+          </div>
         }
       />
       {/* Content input end */}
@@ -296,7 +299,7 @@ const PostForm: React.FC<PostFormProps> = ({ initialData }) => {
               type="file"
               multiple
               onChange={convertToBase64}
-              className="!border !border-gray-300 text-gray-900 ring-1 ring-transparent focus:!border-blue-600 focus:!border-t-blue-600 focus:ring-blue-600"
+              className="!border !border-gray-300 text-gray-900 ring-1 ring-transparent focus:!border-blue-600 focus:!border-t-blue-600 focus:ring-blue-600 dark:bg-gray-50"
               labelProps={{
                 className: "hidden",
               }}
@@ -324,10 +327,10 @@ const PostForm: React.FC<PostFormProps> = ({ initialData }) => {
 
       <Button
         onClick={postForm.submitForm}
-        variant="gradient"
+        variant="filled"
         fullWidth
         disabled={isSubmit}
-        className="normal-case"
+        className="normal-case dark:bg-gray-800"
       >
         {isSubmit ? (
           <Spinner className="h-4 w-4 m-auto" />

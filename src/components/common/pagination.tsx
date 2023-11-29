@@ -24,18 +24,20 @@ const Pagination: React.FC<PaginationProps> = ({
         variant="outlined"
         onClick={prev}
         disabled={page === 1}
+        className="dark:text-gray-300 dark:bg-gray-800"
       >
         <ArrowLeftIcon strokeWidth={2} className="h-4 w-4" />
       </IconButton>
-      <Typography color="gray" className="font-normal">
-        {t("user.Page")} <strong className="text-gray-900">{page}</strong>{" "}
-        {t("user.of")} <strong className="text-gray-900">{totalPage}</strong>
+      <Typography className="font-normal dark:text-gray-300">
+        {t("user.Page")} <strong>{page}</strong> {t("user.of")}{" "}
+        <strong>{totalPage}</strong>
       </Typography>
       <IconButton
         size="sm"
         variant="outlined"
         onClick={next}
         disabled={page === totalPage}
+        className="dark:text-gray-300 dark:bg-gray-800"
       >
         <ArrowRightIcon strokeWidth={2} className="h-4 w-4" />
       </IconButton>

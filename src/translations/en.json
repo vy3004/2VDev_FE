@@ -325,7 +325,8 @@
     "View": "View",
     "Read": "Read",
     "Unread": "Unread",
-    "No more report to load": "No more report to load"
+    "No more report to load": "No more report to load",
+    "is typing ...": "is typing ..."
   },
   "menu": {
     "newest": "Newest",
@@ -347,10 +348,12 @@
     "Repost": "Repost",
     "Select month": "Select month",
     "Overview": "Overview",
+    "Overview data in": "Overview data in",
     "Total Questions": "Total Questions",
     "Total Answers": "Total Answers",
     "Total Reposts": "Total Reposts",
     "vs last month": "vs last month",
-    "No data found": "No data found"
+    "No data found": "No data found",
+    "vs": "vs"
   }
 }

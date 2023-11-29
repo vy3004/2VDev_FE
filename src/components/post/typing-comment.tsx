@@ -1,3 +1,5 @@
+import { useTranslation } from "react-i18next";
+
 import { Typography, Avatar, Spinner } from "@material-tailwind/react";
 
 interface TypingCommentProps {
@@ -5,6 +7,8 @@ interface TypingCommentProps {
 }
 
 const TypingComment: React.FC<TypingCommentProps> = ({ user }) => {
+  const { t } = useTranslation();
+
   if (!user) {
     user = {
       name: "OpenAI",
@@ -20,12 +24,13 @@ const TypingComment: React.FC<TypingCommentProps> = ({ user }) => {
         size="sm"
         alt="avatar"
         withBorder={true}
-        className="p-0.5"
+        className="p-[1px] dark:border-gray-300"
       />
-      <div className="space-y-2 border rounded-lg w-full min-w-0 p-2">
-        <div className="flex items-center justify-between gap-2">
-          <Typography className="font-bold text-gray-900">
-            {user.name} is typing ...
+      <div className="space-y-2 border rounded-lg w-full min-w-0 p-2 dark:bg-gray-900 dark:border-gray-900">
+        <div className="flex items-center justify-between gap-2 text-gray-900 dark:text-gray-300">
+          <Typography className="font-bold">
+            <span className="text-blue-500">{user.name}</span>{" "}
+            {t("post.is typing ...")}
           </Typography>
           <Spinner className="w-5 h-5" />
         </div>

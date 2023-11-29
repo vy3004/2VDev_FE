@@ -15,13 +15,17 @@ import UserCard from "./components/user-card";
 
 import userService from "../../services/user-service";
 import searchService from "../../services/search-service";
+
 import { selectUser } from "../../redux/features/user-slice";
+import { selectApp } from "../../redux/features/app-state-slice";
+
 import { USERS_HEADER_PAGE, USERS_TYPE } from "../../utils/constant";
 import { UserCardType } from "../../utils/types";
 
 const Users = () => {
   const { t } = useTranslation();
   const currentUser = useSelector(selectUser).user;
+  const { themeMode } = useSelector(selectApp);
   const location = useLocation();
   const queryParams = new URLSearchParams(location.search);
   const idQueryParam = queryParams.get("id");
@@ -215,12 +219,16 @@ const Users = () => {
           <div className="flex items-center gap-4">
             <Input
               label={t("search.Find users")}
-              type="text"
-              icon={<MagnifyingGlassIcon />}
-              crossOrigin={""}
               name="search"
+              type="text"
+              className="dark:text-gray-300"
+              color={themeMode ? "white" : "black"}
+              crossOrigin={""}
               value={searchValue}
               onChange={handleChange}
+              icon={
+                <MagnifyingGlassIcon className="h-5 w-5 dark:text-gray-300" />
+              }
             />
 
             <MenuFilter

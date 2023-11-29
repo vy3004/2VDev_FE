@@ -57,7 +57,7 @@ const UserCard: React.FC<UserCardProps> = ({ currentUser, userDetail }) => {
 
   return (
     <div
-      className="flex flex-col items-center border hover:border-black rounded-lg py-6 space-y-4 col-span-6 sm:col-span-3 lg:col-span-2"
+      className="flex flex-col items-center border hover:border-black rounded-lg py-6 space-y-4 col-span-6 sm:col-span-3 lg:col-span-2 dark:bg-gray-800 dark:text-gray-300"
       key={userDetail._id}
     >
       <div className="flex flex-col items-center space-y-2 text-center">
@@ -66,7 +66,7 @@ const UserCard: React.FC<UserCardProps> = ({ currentUser, userDetail }) => {
           variant="circular"
           size="xl"
           alt="avatar"
-          className="border border-gray-900 p-0.5 cursor-pointer"
+          className="border border-gray-900 p-[1px] cursor-pointer dark:bg-gray-300"
           src={
             userDetail.avatar ||
             "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTYmkp9a2rrD1Sskb9HLt5mDaTt4QaIs8CcBg&usqp=CAU"
@@ -81,7 +81,7 @@ const UserCard: React.FC<UserCardProps> = ({ currentUser, userDetail }) => {
           </Typography>
           {currentUser.username !== userDetail.username && (
             <Button
-              className="flex items-center gap-2 normal-case rounded-lg px-1 py-1"
+              className="flex items-center gap-2 normal-case rounded-lg px-1 py-1 dark:bg-gray-300"
               variant="text"
               onClick={() => handleFollowUser(userDetail._id, follow)}
             >
@@ -100,7 +100,7 @@ const UserCard: React.FC<UserCardProps> = ({ currentUser, userDetail }) => {
       </div>
 
       {userDetail.followers || userDetail.following ? (
-        <div className="border border-gray-700 rounded-lg px-2 py-1 flex flex-col text-gray-700 font-bold select-none">
+        <div className="border border-gray-700 rounded-lg px-2 py-1 flex flex-col text-gray-700 font-bold select-none dark:text-gray-400">
           <p className="text-sm">
             {userDetail.followers} {t("user.followers")}
           </p>

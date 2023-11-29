@@ -94,8 +94,9 @@ const RepostModal = () => {
           mount: { scale: 1, y: 0 },
           unmount: { scale: 0.9, y: -100 },
         }}
+        className="dark:bg-gray-900"
       >
-        <DialogHeader className="flex items-center justify-between">
+        <DialogHeader className="flex items-center justify-between dark:text-gray-300">
           {t("post.Repost")}
           <IconButton
             variant="text"
@@ -107,8 +108,8 @@ const RepostModal = () => {
           </IconButton>
         </DialogHeader>
         <form onSubmit={repostForm.handleSubmit}>
-          <DialogBody className="border-t h-[70vh] overflow-hidden overflow-y-scroll space-y-2">
-            <div className="border rounded-lg shadow-md p-2">
+          <DialogBody className="border-t max-h-[70vh] overflow-hidden overflow-y-auto space-y-2">
+            <div className="border rounded-lg shadow-md p-2 dark:bg-gray-50">
               <Typography className="font-bold text-gray-900">
                 {t("post.Content")}
               </Typography>
@@ -134,9 +135,10 @@ const RepostModal = () => {
           <DialogFooter>
             <Button
               onClick={() => repostForm.submitForm()}
-              variant="gradient"
+              variant="filled"
               fullWidth
               disabled={isSubmit}
+              className="dark:bg-gray-800 normal-case"
             >
               {isSubmit ? (
                 <Spinner className="h-4 w-4 m-auto" />

@@ -51,7 +51,7 @@ const Tags = () => {
             <Button
               key={_id}
               variant="outlined"
-              className="normal-case border-l-8"
+              className="normal-case border-l-8 dark:bg-gray-800 dark:text-gray-300 dark:border-gray-300"
               onClick={() => navigate(`/tags/${_id}`)}
             >
               <div className="flex gap-2">

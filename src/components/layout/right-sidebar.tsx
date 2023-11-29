@@ -16,15 +16,15 @@ const RightSidebar = () => {
 
   return (
     <div>
-      <div className="hidden lg:flex lg:justify-center py-4 dark:border-gray-900 dark:bg-gray-700">
+      <div className="hidden lg:flex lg:justify-center py-4 dark:bg-gray-900">
         <QuestionButton />
       </div>
 
-      <div className="border-t bg-gray-50 dark:bg-gray-800">
+      <div className="border-t bg-gray-50 dark:bg-gray-800 dark:border-gray-800">
         <Statistics />
       </div>
 
-      <div className="border-t p-4 dark:border-gray-900 dark:text-gray-50">
+      <div className="border-t p-4 dark:border-gray-900 dark:text-gray-300">
         <Typography className="font-bold mb-2 flex items-center gap-2">
           <TagIcon className="w-4 h-4" />
           {t("right-sidebar.Trending Tags")}
@@ -33,7 +33,7 @@ const RightSidebar = () => {
       </div>
 
       {user && (
-        <div className="border-t p-4 dark:border-gray-900 dark:text-gray-50 dark:bg-gray-700">
+        <div className="border-t p-4 dark:border-gray-900 dark:text-gray-300 dark:bg-gray-800">
           <Typography className="font-bold mb-2 flex items-center gap-2">
             <UsersIcon className="w-4 h-4" />
             {t("right-sidebar.Top Users")}

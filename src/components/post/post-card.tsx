@@ -431,7 +431,11 @@ const PostCard: React.FC<PostCardProps> = ({
   };
 
   return post ? (
-    <div className={`border rounded-lg p-4 ${!isRepost && "shadow-md"}`}>
+    <div
+      className={`border rounded-lg p-4 dark:bg-gray-800 dark:border-gray-900 dark:text-gray-300 ${
+        !isRepost && "shadow-md"
+      }`}
+    >
       <div className="space-y-2">
         <div className="flex justify-between">
           {/* Info user start */}
@@ -442,11 +446,14 @@ const PostCard: React.FC<PostCardProps> = ({
           {user && !isView && (
             <Menu placement="bottom-end">
               <MenuHandler>
-                <IconButton variant="text" className="rounded-full">
+                <IconButton
+                  variant="text"
+                  className="rounded-full dark:text-gray-300"
+                >
                   <EllipsisHorizontalIcon className="w-8 h-8" />
                 </IconButton>
               </MenuHandler>
-              <MenuList>
+              <MenuList className="dark:bg-gray-900 dark:border-gray-900 dark:text-gray-300">
                 <MenuItem
                   className="flex items-center gap-2"
                   onClick={() =>
@@ -533,10 +540,10 @@ const PostCard: React.FC<PostCardProps> = ({
           </div>
           {/* Post title end */}
 
-          <hr />
+          <hr className="dark:border-gray-300" />
 
           {/* Content start */}
-          <div className="p-2 rounded-lg bg-gray-50">
+          <div className="p-2 rounded-lg bg-gray-50 dark:bg-gray-900">
             <div
               className={`break-words ${!isDetail && "line-clamp-3"}`}
               dangerouslySetInnerHTML={{ __html: post.content }}
@@ -578,7 +585,7 @@ const PostCard: React.FC<PostCardProps> = ({
 
           {/* Repost start */}
           {post.type === POST_TYPE.RePost && repost && (
-            <PostCard post={repost} isDetail={false} isRepost={true} />
+            <PostCard post={repost} isDetail={false} isRepost={true} isView />
           )}
           {/* Repost end */}
 
@@ -591,7 +598,7 @@ const PostCard: React.FC<PostCardProps> = ({
 
           {!isView && (
             <>
-              <hr />
+              <hr className="dark:border-gray-300" />
 
               <div className="flex items-center justify-center gap-4">
                 <Button
@@ -600,8 +607,8 @@ const PostCard: React.FC<PostCardProps> = ({
                   }
                   variant="text"
                   fullWidth
-                  className={`flex items-center justify-center gap-2 normal-case text-base ${
-                    vote ? "text-blue-500" : "text-gray-900 dark:text-gray-50"
+                  className={`flex items-center justify-center gap-2 normal-case text-base dark:bg-gray-900 ${
+                    vote ? "text-blue-500" : "text-gray-900 dark:text-gray-300"
                   }`}
                 >
                   <HandThumbUpIcon className="w-5 h-5" />
@@ -613,7 +620,7 @@ const PostCard: React.FC<PostCardProps> = ({
                   onClick={handleComment}
                   variant="text"
                   fullWidth
-                  className="flex items-center justify-center gap-2 normal-case text-base"
+                  className="flex items-center justify-center gap-2 normal-case text-base text-gray-900 dark:text-gray-300 dark:bg-gray-900"
                 >
                   <ChatBubbleLeftIcon className="w-5 h-5" />
                   {post.comments_count > 0 && post.comments_count}{" "}
@@ -624,7 +631,7 @@ const PostCard: React.FC<PostCardProps> = ({
                   onClick={handleRepost}
                   variant="text"
                   fullWidth
-                  className="flex items-center justify-center gap-2 normal-case text-base"
+                  className="flex items-center justify-center gap-2 normal-case text-base text-gray-900 dark:text-gray-300 dark:bg-gray-900"
                 >
                   <ShareIcon className="w-5 h-5" />
                   {post.reposts_count > 0 && post.reposts_count}{" "}
@@ -639,7 +646,7 @@ const PostCard: React.FC<PostCardProps> = ({
               {/* Comment form start */}
               {showFormAnswer && (
                 <>
-                  <hr />
+                  <hr className="dark:border-gray-300" />
                   <CommentForm
                     post_id=""
                     parent_id={post._id}
@@ -712,12 +719,12 @@ const PostCard: React.FC<PostCardProps> = ({
               {/* Comments end */}
 
               {/* Load more comments start */}
-              <hr />
+              <hr className="dark:border-gray-300" />
 
               <div className="flex items-center justify-between">
                 {page < totalPage ? (
                   <Button
-                    className="!overflow-visible normal-case flex items-center justify-center gap-1"
+                    className="!overflow-visible normal-case flex items-center justify-center gap-1 dark:text-gray-300"
                     size="sm"
                     variant="text"
                     onClick={handleCommentsLoadMore}
