@@ -111,7 +111,7 @@ const PostForm: React.FC<PostFormProps> = ({ initialData }) => {
         .max(255, t("post.Title must only contain 255 characters")),
       content: Yup.string()
         .required(t("post.Content is required"))
-        .min(220, t("post.Content contains at least 220 characters"))
+        .min(50, t("post.Content contains at least 50 characters"))
         .max(5000, t("post.Content must only contain 5000 characters")),
       hashtags: Yup.array().test(
         "nonEmpty",
