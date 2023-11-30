@@ -6,11 +6,15 @@ import { ShieldExclamationIcon } from "@heroicons/react/24/solid";
 
 import { selectUser } from "../../redux/features/user-slice";
 
+import { USER_ROLE, USER_VERIFY } from "../../utils/constant";
+
 const AdminPage: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   const { user } = useSelector(selectUser);
   const { t } = useTranslation();
 
-  return user && user.role === 1 ? (
+  return user &&
+    user.verify === USER_VERIFY.Verified &&
+    user.role === USER_ROLE.Admin ? (
     <>{children}</>
   ) : (
     <div className="flex rounded-lg p-4 space-x-4 bg-red-100 text-red-500">

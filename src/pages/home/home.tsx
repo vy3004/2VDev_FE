@@ -13,7 +13,12 @@ import postService from "../../services/post-service";
 import { selectUser } from "../../redux/features/user-slice";
 
 import { Post } from "../../utils/types";
-import { POSTS_SORT, POSTS_TYPE, POST_TYPE } from "../../utils/constant";
+import {
+  POSTS_SORT,
+  POSTS_TYPE,
+  POST_TYPE,
+  USER_VERIFY,
+} from "../../utils/constant";
 import { getLabelByValue } from "../../utils/string-utils";
 
 const Home = () => {
@@ -31,9 +36,10 @@ const Home = () => {
   const [hasMore, setHasMore] = useState(true);
 
   const getPosts = async () => {
-    const serviceFunction = user
-      ? postService.getNewsFeed
-      : postService.getNewsFeedForGuest;
+    const serviceFunction =
+      user?.verify === USER_VERIFY.Verified
+        ? postService.getNewsFeed
+        : postService.getNewsFeedForGuest;
 
     const { response } = await serviceFunction({
       limit: 10,

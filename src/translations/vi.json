@@ -61,7 +61,8 @@
     "Email or password is incorrect": "Email hoặc mật khẩu không đúng",
     "Email address is incorrect": "Địa chỉ email không đúng",
     "Please check your email to reset your password": "Vui lòng kiểm tra email của bạn để đặt lại mật khẩu",
-    "Reset password successfully": "Đặt lại mật khẩu thành công"
+    "Reset password successfully": "Đặt lại mật khẩu thành công",
+    "User not verified.": "Người dùng chưa được xác thực"
   },
   "user": {
     "welcome": "Xin chào",
@@ -184,9 +185,9 @@
     "Back to home page": "Quay lại trang chủ",
     "You need to sign in to access this page.": "Bạn cần phải đăng nhập để truy cập vào trang này.",
     "Sorry, you don't have permission to access this page.": "Rất tiếc, bạn không có quyền truy cập trang này.",
-    "verify-mail-1": "Thư xác nhận đã được gửi đến tài khoản email đã đăng ký của bạn. Nếu bạn chưa nhận được thư xác nhận, vui lòng",
+    "verify-mail-1": "Vui lòng xác thực tài khoản của bạn để tương tác trên trang này. Thư xác thực đã được gửi đến tài khoản email đã đăng ký của bạn. Nếu bạn chưa nhận được thư xác thực, vui lòng",
     "verify-mail-2": "Nhấn vào đây",
-    "verify-mail-3": "để gửi lại một thư xác nhận khác.",
+    "verify-mail-3": "để gửi lại một thư xác thực khác.",
     "voted for your question": "đã bình chọn cho câu hỏi của bạn",
     "voted for your repost": "đã bình chọn cho bài đăng lại của bạn",
     "voted for your answer": "đã bình chọn cho câu trả lời của bạn",

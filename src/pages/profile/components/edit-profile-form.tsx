@@ -101,7 +101,7 @@ const EditProfileForm: React.FC<EditProfileFormProps> = ({ user }) => {
         );
         if (response) data = { ...data, avatar: response.data.result[0].url };
 
-        if (error) setErrorMessage(error.message);
+        if (error) setErrorMessage(t(`auth.${error.message}`));
       }
 
       // If cover photo changed then upload cover photo and return url
@@ -113,7 +113,7 @@ const EditProfileForm: React.FC<EditProfileFormProps> = ({ user }) => {
           if (response)
             data = { ...data, cover_photo: response.data.result[0].url };
 
-          if (error) setErrorMessage(error.message);
+          if (error) setErrorMessage(t(`auth.${error.message}`));
         }
       }
 
@@ -125,7 +125,7 @@ const EditProfileForm: React.FC<EditProfileFormProps> = ({ user }) => {
           : (window.location.href = `/profile/${data.username}`);
         toast.success("Edit Profile Success");
       }
-      if (error) setErrorMessage(error.message);
+      if (error) setErrorMessage(t(`auth.${error.message}`));
 
       setIsSubmit(false);
     },

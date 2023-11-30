@@ -61,7 +61,8 @@
     "Email or password is incorrect": "Email or password is incorrect",
     "Email address is incorrect": "Email address is incorrect",
     "Please check your email to reset your password": "Please check your email to reset your password",
-    "Reset password successfully": "Reset password successfully"
+    "Reset password successfully": "Reset password successfully",
+    "User not verified.": "User not verified"
   },
   "user": {
     "welcome": "Welcome",
@@ -184,7 +185,7 @@
     "Back to home page": "Back to home page",
     "You need to sign in to access this page.": "You need to sign in to access this page.",
     "Sorry, you don't have permission to access this page.": "Sorry, you don't have permission to access this page.",
-    "verify-mail-1": "A confirmation mail has been sent to your registered email account, If you have not received the confirmation mail, kindly",
+    "verify-mail-1": "Please authenticate your account to interact on this page. A confirmation mail has been sent to your registered email account, If you have not received the confirmation mail, kindly",
     "verify-mail-2": "Click here",
     "verify-mail-3": "to resend another confirmation mail.",
     "voted for your question": "voted for your question",

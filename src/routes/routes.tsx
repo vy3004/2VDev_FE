@@ -2,6 +2,7 @@ import { ReactElement } from "react";
 
 import ProtectedPage from "../components/common/protected-page";
 import AdminPage from "../components/common/admin-page";
+import VerifiedPage from "../components/common/verified-page";
 
 import Home from "../pages/home/home";
 import About from "../pages/about/about";
@@ -43,7 +44,9 @@ const routes: Route[] = [
     path: "/:post_id",
     element: (
       <ProtectedPage>
-        <PostDetail />
+        <VerifiedPage>
+          <PostDetail />
+        </VerifiedPage>
       </ProtectedPage>
     ),
   },
@@ -95,7 +98,9 @@ const routes: Route[] = [
     path: "/tags/:tag_id",
     element: (
       <ProtectedPage>
-        <TagDetail />
+        <VerifiedPage>
+          <TagDetail />
+        </VerifiedPage>
       </ProtectedPage>
     ),
   },

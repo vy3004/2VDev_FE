@@ -10,8 +10,8 @@ import RightSidebar from "./right-sidebar";
 import Container from "../common/container";
 import GlobalLoading from "../common/global-loading";
 import VerifyMailAlert from "../common/verify-mail-alert";
-// import BreadcrumbsCustom from "../common/breadcrumbs";
 import AnswerQuestion from "../common/answer-question";
+import SpeedDialCustom from "../common/speed-dial";
 import AuthModal from "../modals/auth-modal";
 import EditMyProfileModal from "../modals/edit-my-profile-modal";
 import PostInfoModal from "../modals/post-info-modal";
@@ -20,9 +20,11 @@ import RepostModal from "../modals/repost-modal";
 import ConfirmModal from "../modals/confirm-modal";
 
 import userService from "../../services/user-service";
+
 import { selectUser, setUser } from "../../redux/features/user-slice";
 import { setIsLoading } from "../../redux/features/global-loading";
-import SpeedDialCustom from "../common/speed-dial";
+
+import { USER_VERIFY } from "../../utils/constant";
 
 const MainLayout = () => {
   const { user } = useSelector(selectUser);
@@ -98,15 +100,15 @@ const MainLayout = () => {
         const { response } = await userService.verifyEmail();
 
         if (response) {
-          dispatch(
-            setUser({
-              ...user!,
-              verify: 1,
-              _id: user?._id || "",
-              username: user?.username || "",
-            })
+          localStorage.setItem(
+            "access_token",
+            response.data.result.access_token
           );
-          navigate("/");
+          localStorage.setItem(
+            "refresh_token",
+            response.data.result.refresh_token
+          );
+          navigate("/?type=all&sort_field=created_at");
         }
       } catch (error) {
         console.log(error);
@@ -115,7 +117,8 @@ const MainLayout = () => {
       }
     };
 
-    if (email_verify_token && user && !user?.verify) verifyEmail();
+    if (email_verify_token && user && user.verify === USER_VERIFY.Unverified)
+      verifyEmail();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [dispatch, user]);
 
@@ -128,7 +131,7 @@ const MainLayout = () => {
         localStorage.setItem("access_token", access_token);
         localStorage.setItem("refresh_token", refresh_token);
       }
-      navigate(-2);
+      navigate("/?type=all&sort_field=created_at");
     }
   }, [navigate, searchParams]);
 
@@ -162,7 +165,6 @@ const MainLayout = () => {
               children={
                 <div className="px-4 pb-4 space-y-4">
                   <AnswerQuestion />
-                  {/* <BreadcrumbsCustom /> */}
                   {user && !user?.verify ? <VerifyMailAlert /> : <></>}
                   <Outlet />
                 </div>

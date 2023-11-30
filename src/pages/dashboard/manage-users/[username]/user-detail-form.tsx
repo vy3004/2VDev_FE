@@ -137,7 +137,7 @@ const UserDetailForm: React.FC<UserDetailFormProps> = ({ user }) => {
         );
         if (response) data = { ...data, avatar: response.data.result[0].url };
 
-        if (error) setErrorMessage(error.message);
+        if (error) setErrorMessage(t(`auth.${error.message}`));
       }
 
       // If cover photo changed then upload cover photo and return url
@@ -149,7 +149,7 @@ const UserDetailForm: React.FC<UserDetailFormProps> = ({ user }) => {
           if (response)
             data = { ...data, cover_photo: response.data.result[0].url };
 
-          if (error) setErrorMessage(error.message);
+          if (error) setErrorMessage(t(`auth.${error.message}`));
         }
       }
 
@@ -158,7 +158,7 @@ const UserDetailForm: React.FC<UserDetailFormProps> = ({ user }) => {
         navigate("/dashboard/manage-users");
         toast.success(t("user.User editing successful"));
       }
-      if (error) setErrorMessage(error.message);
+      if (error) setErrorMessage(t(`auth.${error.message}`));
 
       setIsSubmit(false);
     },

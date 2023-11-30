@@ -65,6 +65,7 @@ import {
   COMMENTS_SORT,
   POST_TYPE,
   USER_UPDATE_POINT,
+  USER_VERIFY,
 } from "../../utils/constant";
 
 interface PostCardProps {
@@ -85,7 +86,6 @@ const PostCard: React.FC<PostCardProps> = ({
   const { reportModal } = useSelector(selectReportModal);
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  // console.log("POST", post);
 
   const [vote, setVote] = useState(post.is_voted);
   const [votesCount, setVotesCount] = useState(post.votes_count);
@@ -183,15 +183,11 @@ const PostCard: React.FC<PostCardProps> = ({
   };
 
   const handleVote = (postId: string, userId: string, type: boolean) => {
-    if (!user) {
-      dispatch(setAuthModalOpen(!user));
-      dispatch(setAuthModalName("signIn"));
-      return;
+    if (checkActionUser()) {
+      votePost(postId, userId, type);
+      setVote(!type);
+      setVotesCount((prevCount) => (type ? prevCount - 1 : prevCount + 1));
     }
-
-    votePost(postId, userId, type);
-    setVote(!type);
-    setVotesCount((prevCount) => (type ? prevCount - 1 : prevCount + 1));
   };
 
   const bookmarkPost = async (
@@ -225,34 +221,34 @@ const PostCard: React.FC<PostCardProps> = ({
     otherUserId: string,
     type: boolean
   ) => {
-    bookmarkPost(postId, otherUserId, type);
-    setBookmark(!type);
+    if (checkActionUser()) {
+      bookmarkPost(postId, otherUserId, type);
+      setBookmark(!type);
+    }
   };
 
   const handleReport = () => {
-    dispatch(
-      setReportModal({
-        reportModalOpen: true,
-        postId: post._id,
-        otherUserId: post.user_detail._id,
-        isReported: false,
-      })
-    );
+    if (checkActionUser()) {
+      dispatch(
+        setReportModal({
+          reportModalOpen: true,
+          postId: post._id,
+          otherUserId: post.user_detail._id,
+          isReported: false,
+        })
+      );
+    }
   };
 
   const handleRepost = () => {
-    if (!user) {
-      dispatch(setAuthModalOpen(!user));
-      dispatch(setAuthModalName("signIn"));
-      return;
+    if (checkActionUser()) {
+      dispatch(
+        setRepostModal({
+          repostModalOpen: true,
+          post: post,
+        })
+      );
     }
-
-    dispatch(
-      setRepostModal({
-        repostModalOpen: true,
-        post: post,
-      })
-    );
   };
 
   const handleComment = () => {
@@ -430,6 +426,19 @@ const PostCard: React.FC<PostCardProps> = ({
     setSuperChild((prevSuperChild) => [...prevSuperChild, ...posts]);
   };
 
+  const checkActionUser = () => {
+    if (!user) {
+      dispatch(setAuthModalOpen(!user));
+      dispatch(setAuthModalName("signIn"));
+      return false;
+    }
+    if (user.verify !== USER_VERIFY.Verified) {
+      toast.error(t("auth.User not verified."));
+      return false;
+    }
+    return true;
+  };
+
   return post ? (
     <div
       className={`border rounded-lg p-4 dark:bg-gray-800 dark:border-gray-900 dark:text-gray-300 ${
@@ -443,7 +452,7 @@ const PostCard: React.FC<PostCardProps> = ({
           {/* Info user end */}
 
           {/* Post menu start */}
-          {user && !isView && (
+          {user?.verify === USER_VERIFY.Verified && !isView && (
             <Menu placement="bottom-end">
               <MenuHandler>
                 <IconButton

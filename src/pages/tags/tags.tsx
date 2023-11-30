@@ -7,9 +7,9 @@ import { TagIcon } from "@heroicons/react/24/solid";
 
 import Loading from "../../components/common/loading";
 import NotFoundAlert from "../../components/common/not-found-alert";
+import PageDescription from "../../components/common/page-description";
 
 import tagService from "../../services/tag-service";
-import PageDescription from "../../components/common/page-description";
 
 const Tags = () => {
   const navigate = useNavigate();
