@@ -15,6 +15,7 @@ import { POST_TYPE } from "../../utils/constant";
 interface CommentFormProps {
   post_id: string;
   parent_id: string;
+  root_id: string;
   type: POST_TYPE;
   content: string;
   medias?: string[];
@@ -25,6 +26,7 @@ interface CommentFormProps {
 interface CommentFormValues {
   post_id: string;
   parent_id: string;
+  root_id: string;
   type: POST_TYPE;
   content: string;
   medias?: string[];
@@ -34,6 +36,7 @@ interface CommentFormValues {
 const CommentForm: React.FC<CommentFormProps> = ({
   post_id,
   parent_id,
+  root_id,
   type,
   content,
   medias,
@@ -48,6 +51,7 @@ const CommentForm: React.FC<CommentFormProps> = ({
     initialValues: {
       post_id: post_id,
       parent_id: parent_id,
+      root_id: root_id,
       type: type,
       content: content,
       medias: [],

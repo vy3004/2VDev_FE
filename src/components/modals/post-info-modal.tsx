@@ -21,6 +21,8 @@ import {
   setPostInfoModal,
 } from "../../redux/features/post-info-slice";
 
+import { POST_TYPE } from "../../utils/constant";
+
 const PostInfoModal = () => {
   const { t } = useTranslation();
   const { postInfoModal } = useSelector(selectPostInfoModal);
@@ -31,8 +33,12 @@ const PostInfoModal = () => {
     dispatch(setPostInfoModal({ postInfoModalOpen: false }));
 
   const handleView = () => {
-    navigate(`/${postInfoModal.post?._id}`);
     handleClose();
+    if (postInfoModal.post?.type === POST_TYPE.Comment) {
+      navigate(`/${postInfoModal.post?.root_id}`);
+    } else {
+      navigate(`/${postInfoModal.post?._id}`);
+    }
   };
 
   return (

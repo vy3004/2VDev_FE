@@ -109,12 +109,12 @@ const ManagePosts = () => {
         <div className="py-4 space-y-4">
           {data.map((data) => (
             <div
-              className="border rounded-lg p-2 bg-white space-y-2 sm:space-y-0 shadow-md dark:bg-gray-800 dark:border-gray-800"
+              className="border rounded-lg p-2 bg-white space-y-2 md:space-y-0 shadow-md dark:bg-gray-800 dark:border-gray-800"
               key={data._id}
             >
               <div className="flex justify-between">
                 <PostInfoUser user_detail={data.user_report} />
-                <div className="sm:flex sm:items-center sm:gap-4">
+                <div className="md:flex md:items-center md:gap-4">
                   <Chip
                     value={data.is_readed ? t("post.Read") : t("post.Unread")}
                     color={data.is_readed ? "green" : "red"}
@@ -143,7 +143,7 @@ const ManagePosts = () => {
               <Button
                 variant="text"
                 fullWidth
-                className="sm:hidden flex items-center gap-2 normal-case text-base dark:bg-gray-900 dark:text-gray-300"
+                className="md:hidden flex items-center gap-2 normal-case text-base dark:bg-gray-900 dark:text-gray-300"
                 onClick={() =>
                   handleRead(data.post_info, data.reason, data._id)
                 }

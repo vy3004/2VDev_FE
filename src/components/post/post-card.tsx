@@ -424,6 +424,7 @@ const PostCard: React.FC<PostCardProps> = ({
     const data = {
       post_id: "",
       parent_id: post._id,
+      root_id: post._id,
       title: null,
       content: content,
       type: POST_TYPE.Comment,
@@ -683,6 +684,7 @@ const PostCard: React.FC<PostCardProps> = ({
                   <CommentForm
                     post_id=""
                     parent_id={post._id}
+                    root_id={post._id}
                     type={POST_TYPE.Comment}
                     content=""
                     getCommentsAfterComment={getCommentsAfterComment}
@@ -716,6 +718,7 @@ const PostCard: React.FC<PostCardProps> = ({
                         <Comment
                           comment={detailPinComment}
                           currentUser={user}
+                          rootId={post._id}
                           postUserId={post.user_detail._id}
                           resolvedId={post.resolved_id}
                           levelComment={0}
@@ -733,6 +736,7 @@ const PostCard: React.FC<PostCardProps> = ({
                             key={item._id}
                             comment={item}
                             currentUser={user}
+                            rootId={post._id}
                             postUserId={post.user_detail._id}
                             resolvedId={post.resolved_id}
                             levelComment={0}

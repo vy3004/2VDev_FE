@@ -35,6 +35,7 @@ export interface Tag {
 export interface Post {
   _id: string;
   parent_id: null | string;
+  root_id: null | string;
   user_detail: User;
   title: string;
   content: string;

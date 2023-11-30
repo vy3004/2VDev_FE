@@ -35,6 +35,7 @@ import { setConfirmModal } from "../../redux/features/confirm-modal-slice";
 interface CommentProps {
   comment: Post;
   currentUser: User;
+  rootId: string;
   postUserId: string;
   resolvedId: string;
   levelComment: number;
@@ -49,6 +50,7 @@ interface CommentProps {
 const Comment: React.FC<CommentProps> = ({
   comment,
   currentUser,
+  rootId,
   postUserId,
   resolvedId,
   levelComment,
@@ -225,6 +227,7 @@ const Comment: React.FC<CommentProps> = ({
           <CommentForm
             post_id={comment._id}
             parent_id={comment._id}
+            root_id={rootId}
             type={POST_TYPE.Comment}
             content={comment.content}
             medias={comment.medias}
@@ -317,6 +320,7 @@ const Comment: React.FC<CommentProps> = ({
           <CommentForm
             post_id=""
             parent_id={comment._id}
+            root_id={rootId}
             type={POST_TYPE.Comment}
             content=""
             getCommentsAfterComment={getCommentsAfterComment}
@@ -351,6 +355,7 @@ const Comment: React.FC<CommentProps> = ({
               key={reply._id}
               comment={reply}
               currentUser={currentUser}
+              rootId={rootId}
               postUserId={postUserId}
               resolvedId={resolvedId}
               levelComment={levelComment}
@@ -371,6 +376,7 @@ const Comment: React.FC<CommentProps> = ({
               key={reply._id}
               comment={reply}
               currentUser={currentUser}
+              rootId={rootId}
               postUserId={postUserId}
               resolvedId={resolvedId}
               levelComment={levelComment}

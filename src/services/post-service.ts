@@ -9,6 +9,7 @@ interface PostPayLoad {
   hashtags?: string[];
   medias?: string[];
   parent_id: string | null;
+  root_id: string | null;
   type: number;
 }
 
@@ -162,6 +163,7 @@ const postService = {
     hashtags,
     medias,
     parent_id,
+    root_id,
     type,
   }: PostPayLoad): Promise<ApiResponse<any>> => {
     try {
@@ -171,6 +173,7 @@ const postService = {
         hashtags,
         medias,
         parent_id,
+        root_id,
         type,
       });
 
@@ -185,6 +188,7 @@ const postService = {
     hashtags,
     medias,
     parent_id,
+    root_id,
     type,
   }: PostPayLoad): Promise<ApiResponse<any>> => {
     try {
@@ -194,6 +198,7 @@ const postService = {
         hashtags,
         medias,
         parent_id,
+        root_id,
         type,
       });
 

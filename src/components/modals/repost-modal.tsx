@@ -62,6 +62,7 @@ const RepostModal = () => {
         const data = {
           post_id: "",
           parent_id: repostModal.post._id,
+          root_id: null,
           title: null,
           content: values.content,
           type: POST_TYPE.RePost,
@@ -71,7 +72,6 @@ const RepostModal = () => {
         const { response, error } = await postService.post(data);
 
         if (response) {
-          console.log("CHECK", response);
           handleClose();
           navigate(`/profile/${user?.username}?tab=my-reposts`);
           toast.success(t("post.You have repost successfully"));

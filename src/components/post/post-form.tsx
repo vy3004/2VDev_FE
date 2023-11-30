@@ -36,6 +36,7 @@ interface PostFormValues {
   hashtags: string[];
   medias: string[];
   parent_id: string | null;
+  root_id: string | null;
   type: number;
 }
 
@@ -94,6 +95,7 @@ const PostForm: React.FC<PostFormProps> = ({ initialData }) => {
           medias: initialData.medias,
           type: 0,
           parent_id: null,
+          root_id: null,
         }
       : {
           title: "",
@@ -102,6 +104,7 @@ const PostForm: React.FC<PostFormProps> = ({ initialData }) => {
           medias: [],
           type: 0,
           parent_id: null,
+          root_id: null,
         },
 
     validationSchema: Yup.object({

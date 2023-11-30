@@ -27,7 +27,7 @@ const CommentCard: React.FC<CommentCardProps> = ({ comment }) => {
       />
       <div
         className="space-y-2 border rounded-lg w-full min-w-0 p-2 cursor-pointer dark:bg-gray-800 dark:border-gray-800"
-        onClick={() => navigate(`/${comment.parent_id}`)}
+        onClick={() => navigate(`/${comment.root_id}`)}
       >
         <div className="flex items-center justify-between">
           <div className="flex items-center gap-2 sm:gap-4">
