@@ -43,7 +43,7 @@ const MainLayout = () => {
         try {
           const decodedToken: any = jwtDecode(accessToken);
           const currentTime = Math.floor(Date.now() / 1000);
-          const tokenTimeout = 15; // 15 minutes in seconds
+          const tokenTimeout = 900; // 15 minutes in seconds
 
           if (decodedToken.exp - currentTime < tokenTimeout) {
             const { response } = await userService.refreshToken();
@@ -64,9 +64,10 @@ const MainLayout = () => {
         console.log("Token is missing or invalid");
       }
     };
+
     const tokenCheckInterval = setInterval(() => {
       authUser();
-    }, 89000); // Check token every 14 minutes and 50 seconds
+    }, 900000); // Check token every 15 minutes
 
     return () => {
       clearInterval(tokenCheckInterval); // Clear the interval when the component unmounts
