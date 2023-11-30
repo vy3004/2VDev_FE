@@ -8,6 +8,7 @@ interface ConfirmModalState {
     type: number;
     postId: string;
     role: number;
+    isDeleted: boolean;
   };
 }
 
@@ -17,6 +18,7 @@ const initialState: ConfirmModalState = {
     type: 0,
     postId: "",
     role: 0,
+    isDeleted: false,
   },
 };
 

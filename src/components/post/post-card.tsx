@@ -49,7 +49,10 @@ import postService from "../../services/post-service";
 import openaiService from "../../services/openai-service";
 
 import { selectUser } from "../../redux/features/user-slice";
-import { setConfirmModal } from "../../redux/features/confirm-modal-slice";
+import {
+  selectConfirmModal,
+  setConfirmModal,
+} from "../../redux/features/confirm-modal-slice";
 import { setRepostModal } from "../../redux/features/repost-modal-slice";
 import {
   selectReportModal,
@@ -73,6 +76,7 @@ interface PostCardProps {
   isDetail: boolean;
   isRepost?: boolean;
   isView?: boolean;
+  reLoadPost?: () => Promise<void>;
 }
 
 const PostCard: React.FC<PostCardProps> = ({
@@ -80,10 +84,12 @@ const PostCard: React.FC<PostCardProps> = ({
   isDetail,
   isRepost,
   isView,
+  reLoadPost,
 }) => {
   const { t } = useTranslation();
   const { user } = useSelector(selectUser);
   const { reportModal } = useSelector(selectReportModal);
+  const { confirmModal } = useSelector(selectConfirmModal);
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
@@ -106,6 +112,22 @@ const PostCard: React.FC<PostCardProps> = ({
     if (reportModal.isReported && reportModal.postId === post._id)
       setReport(true);
   }, [reportModal, post._id]);
+
+  useEffect(() => {
+    if (confirmModal.isDeleted)
+      if (reLoadPost) {
+        dispatch(
+          setConfirmModal({
+            confirmModalOpen: false,
+            type: 0,
+            postId: "",
+            role: 0,
+            isDeleted: false,
+          })
+        );
+        reLoadPost();
+      }
+  }, [confirmModal]);
 
   useEffect(() => {
     if (isDetail && !isView) {
@@ -262,6 +284,7 @@ const PostCard: React.FC<PostCardProps> = ({
         type: 0,
         postId: post._id,
         role: user?.role || 0,
+        isDeleted: false,
       })
     );
   };
@@ -328,6 +351,7 @@ const PostCard: React.FC<PostCardProps> = ({
       }
       setComments(newComments);
       setShowFormAnswer(false);
+      getPinComment();
     }
 
     setIsCmtLoading(false);
@@ -371,8 +395,6 @@ const PostCard: React.FC<PostCardProps> = ({
       resolved_id: commentId,
     });
     if (response) {
-      window.location.reload();
-
       if (typeof commentId === "string") {
         updateUserPoints(otherUserId, USER_UPDATE_POINT.pinComment);
         toast.success(t("post.Answer has been pinned"));
@@ -380,6 +402,8 @@ const PostCard: React.FC<PostCardProps> = ({
         toast.success(t("post.Answer has been unpinned"));
         updateUserPoints(otherUserId, USER_UPDATE_POINT.unpinComment);
       }
+
+      if (reLoadPost) reLoadPost();
     }
   };
 
@@ -408,7 +432,7 @@ const PostCard: React.FC<PostCardProps> = ({
     const { response } = await postService.postOpenAI(data);
 
     if (response) {
-      window.location.reload();
+      if (reLoadPost) reLoadPost();
       toast.success(t("post.OpenAI has answered your question"));
     }
   };

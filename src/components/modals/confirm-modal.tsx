@@ -30,7 +30,13 @@ const ConfirmModal = () => {
 
   const handleClose = () =>
     dispatch(
-      setConfirmModal({ confirmModalOpen: false, type: 0, postId: "", role: 0 })
+      setConfirmModal({
+        confirmModalOpen: false,
+        type: 0,
+        postId: "",
+        role: 0,
+        isDeleted: false,
+      })
     );
 
   const handleDelete = async () => {
@@ -46,7 +52,15 @@ const ConfirmModal = () => {
       });
       if (response) {
         handleClose();
-        window.location.reload();
+        dispatch(
+          setConfirmModal({
+            confirmModalOpen: false,
+            type: 0,
+            postId: "",
+            role: 0,
+            isDeleted: true,
+          })
+        );
         toast.success(t("post.You have deleted successfully"));
       }
 

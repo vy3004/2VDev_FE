@@ -134,6 +134,7 @@ const Comment: React.FC<CommentProps> = ({
         postId: comment._id,
         type: 1,
         role: currentUser.role,
+        isDeleted: false,
       })
     );
   };

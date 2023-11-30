@@ -19,27 +19,25 @@ const PostDetail = () => {
   const [loading, setLoading] = useState(false);
 
   useEffect(() => {
-    const getPost = async () => {
-      try {
-        setLoading(true);
-
-        if (post_id) {
-          const postData = await postService.getPost({
-            post_id: post_id,
-          });
-
-          if (postData.response) {
-            setPost(postData.response.data.result);
-          }
-        }
-      } catch (error) {
-        console.log(error);
-      } finally {
-        setLoading(false);
-      }
-    };
     getPost();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [post_id]);
+
+  const getPost = async () => {
+    setLoading(true);
+
+    if (post_id) {
+      const { response, error } = await postService.getPost({
+        post_id: post_id,
+      });
+
+      if (response) setPost(response.data.result);
+
+      if (error) setPost(undefined);
+    }
+
+    setLoading(false);
+  };
 
   return loading ? (
     <div className="relative h-96">
@@ -57,7 +55,7 @@ const PostDetail = () => {
           post.type === POST_TYPE.Post ? t("post.question") : t("post.repost")
         }`}
       />
-      <PostCard post={post} isDetail={true} />
+      <PostCard post={post} isDetail={true} reLoadPost={getPost} />
     </div>
   ) : (
     <NotFoundAlert

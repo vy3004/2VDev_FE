@@ -47,6 +47,7 @@ const ProfileMenu = () => {
         type: 2,
         postId: "",
         role: 0,
+        isDeleted: false,
       })
     );
   };
