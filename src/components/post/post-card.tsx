@@ -31,7 +31,6 @@ import {
   PlusCircleIcon,
 } from "@heroicons/react/24/solid";
 
-import NotFoundAlert from "../common/not-found-alert";
 import TagButton from "../common/tag-button";
 import MenuFilter from "../common/menu-filter";
 import PostInfoUser from "../common/post-info-user";
@@ -464,10 +463,10 @@ const PostCard: React.FC<PostCardProps> = ({
     return true;
   };
 
-  return post ? (
+  return (
     <div
       className={`border rounded-lg p-4 dark:bg-gray-800 dark:border-gray-900 dark:text-gray-300 ${
-        !isRepost && "shadow-md"
+        !isRepost ? "shadow-md" : ""
       }`}
     >
       <div className="space-y-2">
@@ -790,8 +789,6 @@ const PostCard: React.FC<PostCardProps> = ({
         </div>
       </div>
     </div>
-  ) : (
-    <NotFoundAlert message={t("post.Question not found")} type={"error"} />
   );
 };
 

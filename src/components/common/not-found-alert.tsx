@@ -25,9 +25,9 @@ const NotFoundAlert: React.FC<NotFoundAlertProps> = ({
 
   return (
     <div
-      className={`flex items-center justify-between rounded-lg p-4 ${alertStyles}`}
+      className={`flex items-center justify-between rounded-lg p-4 gap-2 ${alertStyles}`}
     >
-      <div className="flex space-x-4">
+      <div className="flex space-x-4 w-fit">
         <div>
           <ExclamationCircleIcon className="h-6 w-6" />
         </div>

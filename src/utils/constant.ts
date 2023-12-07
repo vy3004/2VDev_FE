@@ -145,6 +145,18 @@ export enum POST_TYPE {
   Comment,
 }
 
+export const POST_TYPE_LABEL = {
+  [POST_TYPE.Post]: "Question",
+  [POST_TYPE.Comment]: "Answer",
+  [POST_TYPE.RePost]: "Repost",
+};
+
+export enum POST_DELETE_TYPE {
+  No,
+  Admin,
+  User,
+}
+
 export enum NOTIFICATION_TYPE {
   VotePost,
   VoteRepost,
@@ -154,6 +166,7 @@ export enum NOTIFICATION_TYPE {
   Pin,
   Bookmark,
   Follow,
+  PostDeleted,
 }
 
 export const NOTIFICATION_CONTENT = [
@@ -165,4 +178,5 @@ export const NOTIFICATION_CONTENT = [
   "has pinned your answer",
   "has marked your question",
   "has followed you",
+  "has deleted your question/answer",
 ];

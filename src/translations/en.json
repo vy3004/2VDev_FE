@@ -196,6 +196,7 @@
     "has pinned your answer": "has pinned your answer",
     "has marked your question": "has marked your question",
     "has followed you": "has followed you",
+    "has deleted your question/answer": "has deleted your question / answer",
     "No notifications": "No notifications"
   },
   "home": {
@@ -238,6 +239,7 @@
     "See more": "See more",
     "Vote": "Vote",
     "Answer": "Answer",
+    "answer": "answer",
     "Repost": "Repost",
     "repost": "repost",
     "Load more": "Load more",
@@ -327,7 +329,11 @@
     "Read": "Read",
     "Unread": "Unread",
     "No more report to load": "No more report to load",
-    "is typing ...": "is typing ..."
+    "is typing ...": "is typing ...",
+    "is deleted": "has been deleted due to user policy violation. Please contact us via email 'admin@2vdev.xyz' if you think this is a mistake.",
+    "Restore": "Restore",
+    "You have successfully restored": "You have successfully restored",
+    "has been deleted": "has been deleted"
   },
   "menu": {
     "newest": "Newest",

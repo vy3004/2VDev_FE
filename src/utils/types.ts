@@ -36,13 +36,13 @@ export interface Post {
   _id: string;
   parent_id: null | string;
   root_id: null | string;
+  resolved_id: string;
   user_detail: User;
   title: string;
   content: string;
   medias: string[];
   type: POST_TYPE;
   hashtags: Tag[];
-  resolved?: string | number;
   votes_count: number;
   comments_count: number;
   reposts_count: number;
@@ -55,7 +55,7 @@ export interface Post {
   is_voted: boolean;
   is_reported: boolean;
   is_bookmarked: boolean;
-  resolved_id: string;
+  is_deleted: number;
   created_at: string;
   updated_at: string;
 }

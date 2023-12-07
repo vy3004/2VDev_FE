@@ -154,6 +154,8 @@ const postEndpoints = {
     `${apiEndPoints.posts}/${post_id}`,
   deletePostForAdmin: ({ post_id }: { post_id: string }) =>
     `${apiEndPoints.posts}/admin/${post_id}`,
+  restorePostForAdmin: ({ post_id }: { post_id: string }) =>
+    `${apiEndPoints.posts}/admin-undelete/${post_id}`,
 };
 
 const postService = {
@@ -376,7 +378,7 @@ const postService = {
     post_id,
   }: DeletePostPayLoad): Promise<ApiResponse<any>> => {
     try {
-      const response = await axiosInstance.delete(
+      const response = await axiosInstance.post(
         postEndpoints.deletePost({ post_id })
       );
 
@@ -389,8 +391,21 @@ const postService = {
     post_id,
   }: DeletePostPayLoad): Promise<ApiResponse<any>> => {
     try {
-      const response = await axiosInstance.delete(
+      const response = await axiosInstance.post(
         postEndpoints.deletePostForAdmin({ post_id })
+      );
+
+      return { response };
+    } catch (error) {
+      return { error: error as AxiosError };
+    }
+  },
+  restorePostForAdmin: async ({
+    post_id,
+  }: DeletePostPayLoad): Promise<ApiResponse<any>> => {
+    try {
+      const response = await axiosInstance.post(
+        postEndpoints.restorePostForAdmin({ post_id })
       );
 
       return { response };

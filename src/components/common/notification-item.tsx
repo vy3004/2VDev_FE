@@ -8,6 +8,7 @@ import {
   EyeDropperIcon,
   HandThumbUpIcon,
   ShareIcon,
+  TrashIcon,
   UserPlusIcon,
 } from "@heroicons/react/24/solid";
 import { MenuItem, Badge, Typography, Avatar } from "@material-tailwind/react";
@@ -35,18 +36,22 @@ const NotificationIcons = [
   },
   {
     icon: ShareIcon,
-    color: "bg-blue-500",
+    color: "bg-cyan-500",
   },
   {
     icon: EyeDropperIcon,
-    color: "bg-indigo-500",
+    color: "bg-blue-500",
   },
   {
     icon: BookmarkIcon,
-    color: "bg-purple-500",
+    color: "bg-indigo-500",
   },
   {
     icon: UserPlusIcon,
+    color: "bg-purple-500",
+  },
+  {
+    icon: TrashIcon,
     color: "bg-pink-500",
   },
 ];

@@ -196,6 +196,7 @@
     "has pinned your answer": "đã ghim câu trả lời của bạn",
     "has marked your question": "đã đánh dấu câu hỏi của bạn",
     "has followed you": "đã theo dõi bạn",
+    "has deleted your question/answer": "đã xoá câu hỏi / câu trả lời của bạn",
     "No notifications": "Không có thông báo"
   },
   "home": {
@@ -238,6 +239,7 @@
     "See more": "Xem thêm",
     "Vote": "Bỏ phiếu",
     "Answer": "Trả lời",
+    "answer": "trả lời",
     "Repost": "Đăng lại",
     "repost": "đăng lại",
     "Load more": "Tải thêm",
@@ -327,7 +329,11 @@
     "Read": "Đã đọc",
     "Unread": "Chưa đọc",
     "No more report to load": "Không còn báo cáo nào để tải",
-    "is typing ...": "đang nhập..."
+    "is typing ...": "đang nhập...",
+    "is deleted": "đã bị xóa do vi phạm chính sách người dùng. Vui lòng liên hệ với chúng tôi qua email 'admin@2vdev.xyz' nếu bạn cho rằng đây là sự nhầm lẫn.",
+    "Restore": "Khôi phục",
+    "You have successfully restored": "Bạn đã khôi phục thành công",
+    "has been deleted": "đã bị xóa"
   },
   "menu": {
     "newest": "Mới nhất",
