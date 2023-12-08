@@ -97,6 +97,16 @@ const PostDetail = () => {
           type="error"
           isBack={true}
         />
+
+        {isAdmin || post.user_detail._id === user?._id ? (
+          <PostCard
+            post={post}
+            isDetail={true}
+            isView={true}
+            reLoadPost={getPost}
+          />
+        ) : null}
+
         {isAdmin && (
           <Button
             className="normal-case text-base dark:bg-gray-800"
